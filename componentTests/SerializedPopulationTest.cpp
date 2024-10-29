@@ -173,11 +173,8 @@ SUITE( SerializedPopulationTest )
                 em_info["emod_sccs_date"].As<json::String>()
             };
 
-            printf( "%s\n--------------------\n", error_msg.c_str() );
-
             for( std::string& expected_message : expected_messages )
             {
-                printf( "%s\n", expected_message.c_str() );
                 int found_pos = error_msg.find( expected_message );
                 CHECK( found_pos != std::string::npos );
             }
