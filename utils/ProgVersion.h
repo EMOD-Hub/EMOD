@@ -1,6 +1,11 @@
 
 #pragma once
 
+// ----------------------------------------------------------------------------------------------
+// --- DanB - 10/29/2024 -- Below is the old comments about the versioning numbers.  Things have
+// --- changed a lot since this was written, but somethings are worth remembering.
+// --- SEE utils\version_info.tmpl for the latest details.
+// ----------------------------------------------------------------------------------------------
 // Product version numbers.
 // Definition for version number in the forma of major.minor.revision.build, 1.2.1432.0
 // Major version: Major feature release, e.g., Version 1.0 release with major features of Malaria, Polio modeling,
@@ -11,6 +16,9 @@
 // Build number:    Number of builds done (none zero values) for this revision with local modification (monotonically increasing)  
 // Note: 1. All numbers could be jumped to indicate significant changes
 //       2. The build script will first set these four numbers before start the building process 
+// ----------------------------------------------------------------------------------------------
+
+
 
 #include "elements.h"
 #include "JsonObject.h"

@@ -1,19 +1,79 @@
-#define STRINGIFY(ver)       #ver
-#define XSTRINGIFY(ver)       STRINGIFY(ver)
-
-static const char* BUILD_DATE = __DATE__ " " __TIME__;
-
-#ifndef SCCS_BRANCH
-#define    SCCS_BRANCH      "$BRANCH$($HASH$)"
-#endif
-#ifndef SCCS_DATE
-#define    SCCS_DATE        "$DATE$"
-#endif
-
 // ------------------------------------------------------------------------------------------
 // --- DanB 10/28/2024 - I changed utils\ProgVersion::updateVersionString() to only include
 // --- the Major and minor version numbers because revision and build aren't getting
 // --- populated like they used to.  I'm keeping everything here incase we enable them again.
+// ---
+// --- We should update the MINOR_VERSION every time we make a release.  We will update the
+// --- MAJOR_VERSION when we have changed something very significant like change the malaria
+// --- or HIV intra-host model (something changing the science significantly) or a major 
+// --- change to the processing (i.e. don't loop over each node and each human in each node.').
+// ---
+// --- We are NOT doing Semantic Versioning because we have not been doing that for the last
+// --- 9 years.  For much of those years, we have had a version number to define a certain
+// --- baseline version of the code, but used the branch and commit hash as the real version.
+// --- Keeping it at two digits will keep us connected to past versions, but updating the 
+// --- number and releasing it with a new emodpy-XXX will still be a huge improvement.
+// ---
+// --- VERSIONING RULES 10/29/2024
+// ---
+// --- When creating a new version, please log the big things that changed so that we can easily
+// --- remember what has changed and when.  This is developer facing information, not user
+// --- facing info.
+// ---
+// --- MAJOR_VERSION - Change when something very significant changes like the malaria
+// ---                 or HIV intra-host model (something changing the science significantly)
+// ---                 or a major change to the processing (i.e. don't loop over each node
+// ---                 and each human in each node.').  Set by developer.
+// ---
+// --- MINOR_VERSION - Change every time we make a release.  Every time we make an EMOD
+// ---                 release we should be making an emodpy-XXX release.  An EMOD bug fix
+// ---                 that has not interface/input/output changes could be just a minor
+// ---                 emodpy-XXX version change.  If we add a "minor" feature to EMOD, this
+// ---                 may cause a major version change to emodpy-XXX if it breaks existing
+// ---                 code.  If the emodpy-XXX code can be updated such that people can get
+// ---                 the new version of EMOD and user their existing emodpy-XXX code, then
+// ---                 emodpy-XXX can have a minor version change.  Set by developer.
+// ---
+// --- REVISION_NUMBER - Ignored at this time.  Used to be the number of commits in the repo
+// ---                 for the given branch, but for build performance reasons, we only download
+// ---                 the files for the last commit.  Hence, the number of commits/revision
+// ---                 is always one.  Set by scripts, but ignored.
+// ---
+// --- BUILD_NUMBER -  Ignored at this time.  I don't remember us ever using this value.
+// ---                 I can't find anything setting right now.  Not set.
+// ---
+// --- BUILDER_NAME -  This is the user name of the person building EMOD. Set via the scripts.
+// ---
+// --- BUILD_DATE -    The data and time that the code is being compiled.  Set by compiler.
+// ---
+// --- BRANCH -        The name of the branch in git.  Set via the scripts.
+// ---
+// --- HASH -          The short commit hash value of the commit in git.  The branch and the
+// ---                 has allow the user to get the exact version of code.
+// ---                 THE BRANCH AND HASH ARE THE MOST IMPORTANT PART OF THE VERSIONING.
+// ---                 IT IS CRITICAL THAT THEY ARE CORRECT AND FINDABLE IN GITHUB!!!
+// ---                 Set via the scripts.
+// ---
+// --- SCCS_BRANCH -   Combination of branch and commit hash.  Set via the scripts.
+// ---
+// --- SCCS_DATE -     The data of the commit indicated by the hash.  Set via the scripts.
+// ---
+// --- ============= Scripts Used in Versioning ===============
+// ---
+// --- utils\SConstruct - This is the SCons build script for building the utils library.
+// ---                 In addition to building the library, the file also contains logic to
+// ---                 extract git information and set compiler directives for SCCS_BRANCH,
+// ---                 SCCS_DATE, BUILDER_NAME, and REVISION_NUMBER.  It copies this file to
+// ---                 version_info.h and then relies on the compiler directives to set the
+// ---                 values.  Used only for Linux builds.
+// ---
+// --- Scripts\gitversion.cmd - A Windows build will use this file via a Pre-Build Event in
+// ---                 the utils.vs.proj file or is called from the utils\SConstruct file
+// ---                 when doing a Windows build via SCons.  This script will get the git
+// ---                 information and create a version_info.h file that has the REVISION,
+// ---                 BRANCH, HASH, DATE, and BUILDER replaced with the values from git.
+// ---
+// --- NOTE: version_info.h is created during a build and should not be checked in.
 // ------------------------------------------------------------------------------------------
 
 
@@ -30,9 +90,21 @@ static const char* BUILD_DATE = __DATE__ " " __TIME__;
 #endif
 #define    BUILD_NUMBER     0
 
+static const char* BUILD_DATE = __DATE__ " " __TIME__;
+
+#ifndef SCCS_BRANCH
+#define    SCCS_BRANCH      "$BRANCH$($HASH$)"
+#endif
+#ifndef SCCS_DATE
+#define    SCCS_DATE        "$DATE$"
+#endif
+
 #ifndef BUILDER_NAME
 #define    BUILDER_NAME     "$BUILDER$"
 #endif
+
+#define STRINGIFY(ver)       #ver
+#define XSTRINGIFY(ver)       STRINGIFY(ver)
 
 #define FULL_VERSION_WITH_SVN       XSTRINGIFY(MAJOR_VERSION) "." XSTRINGIFY(MINOR_VERSION) "." XSTRINGIFY(REVISION_NUMBER)
 #define FULL_VERSION_WITH_SVN_NQ    MAJOR_VERSION,MINOR_VERSION,REVISION_NUMBER,BUILD_NUMBER
