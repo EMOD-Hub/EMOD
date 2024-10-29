@@ -33,7 +33,7 @@ public:
 
     uint64_t getMajorVersion() const { return m_nMajor; }
     uint64_t getMinorVersion() const { return m_nMinor; }
-    uint64_t getRevisionNumber() const { return m_nRevision; }
+    //uint64_t getRevisionNumber() const { return m_nRevision; }
 
     uint64_t getSerPopMajorVersion() const { return m_nSerPopMajor; }
     uint64_t getSerPopMinorVersion() const { return m_nSerPopMinor; }
@@ -64,6 +64,8 @@ public:
     
 protected:
     bool parseProgVersion(const char* sVersion, uint8_t& maj, uint8_t& min, uint16_t& rev) const;
+
+    void updateVersionString();
 
 private:
     uint64_t m_nMajor; 

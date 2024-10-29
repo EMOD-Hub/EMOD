@@ -379,7 +379,7 @@ void ChannelDataMap::WriteOutput(
 
     ProgDllVersion pv;
     ostringstream dtk_ver;
-    dtk_ver << pv.getRevisionNumber() << " " << pv.getSccsBranch() << " " << pv.getBuildDate();
+    dtk_ver << pv.getVersion() << " " << pv.getSccsBranch() << " " << pv.getBuildDate();
 
     Kernel::JSerializer js;
     Kernel::IJsonObjectAdapter* pIJsonObj = Kernel::CreateJsonObjAdapter();

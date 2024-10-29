@@ -189,7 +189,7 @@ ReportPluginAgeAtInfection::Finalize()
 
     ProgDllVersion pv;
     ostringstream dtk_ver;
-    dtk_ver << pv.getRevisionNumber() << " " << pv.getSccsBranch() << " " << pv.getBuildDate();
+    dtk_ver << pv.getVersion() << " " << pv.getSccsBranch() << " " << pv.getBuildDate();
     qb["Header"]["DTK_Version"] = String(dtk_ver.str());
     qb["Header"]["Report_Version"] = String("3");
     qb["Header"]["Timesteps"] = String("3");

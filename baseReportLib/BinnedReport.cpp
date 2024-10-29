@@ -276,7 +276,7 @@ void BinnedReport::Finalize()
     pIJsonObj->Insert("DateTime", now3.substr(0,now3.length()-1).c_str()); // have to remove trailing '\n'
     ProgDllVersion pv;
     ostringstream dtk_ver;
-    dtk_ver << pv.getRevisionNumber() << " " << pv.getSccsBranch() << " " << pv.getBuildDate();
+    dtk_ver << pv.getVersion() << " " << pv.getSccsBranch() << " " << pv.getBuildDate();
     pIJsonObj->Insert("DTK_Version", dtk_ver.str().c_str());
     pIJsonObj->Insert("Report_Version", "2.1");
     int timesteps = 0;

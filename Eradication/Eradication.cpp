@@ -131,14 +131,14 @@ int main(int argc, char* argv[])
     setStackSize();
 #endif
 
-    ProgDllVersion* pv = new ProgDllVersion(); // why new this instead of just put it on the stack?
+    ProgDllVersion pv;
     auto sims = getSimTypeList();
     std::stringstream output;
-    output << "EMOD Disease Transmission Kernel " << pv->getVersion() << std::endl
-           << "Built on " << pv->getBuildDate() <<
-           " by " << pv->getBuilderName() <<
-           " from " << pv->getSccsBranch() <<
-           " checked in on " << pv->getSccsDate() << std::endl;
+    output << "EMOD Disease Transmission Kernel " << pv.getVersion() << std::endl
+           << "Built on " << pv.getBuildDate() <<
+           " by " << pv.getBuilderName() <<
+           " from " << pv.getSccsBranch() <<
+           " checked in on " << pv.getSccsDate() << std::endl;
     
     std::string sim_types_str = "Supports sim_types: ";
     for( auto sim_type: sims  )
@@ -158,7 +158,6 @@ int main(int argc, char* argv[])
     output << std::endl;
     LOG_INFO_F( output.str().c_str() );
     EnvPtr->Log->Flush();
-    delete pv;
  
 /* // for debugging all kernel allocations, use inner block around controller lifetime to ignore some environment and mpi stuff
 #ifdef WIN32

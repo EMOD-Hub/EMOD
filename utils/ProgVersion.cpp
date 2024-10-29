@@ -40,7 +40,7 @@ ProgDllVersion::ProgDllVersion()
             m_sSccsDate[i] = ' ';
     }
 
-    sprintf( m_sVersion, "%Iu.%Iu.%Iu.%Iu", m_nMajor, m_nMinor, m_nRevision, m_nBuild );
+    updateVersionString();
 }
 
 
@@ -75,7 +75,7 @@ ProgDllVersion::ProgDllVersion( Kernel::IJsonObjectAdapter* emod_info )
             m_sSccsDate[i] = ' ';
     }
 
-    sprintf( m_sVersion, "%Iu.%Iu.%Iu.%Iu", m_nMajor, m_nMinor, m_nRevision, m_nBuild );
+    updateVersionString();
 }
 
 ProgDllVersion::ProgDllVersion( json::Object& emod_info )
@@ -111,9 +111,23 @@ ProgDllVersion::ProgDllVersion( json::Object& emod_info )
             m_sSccsDate[i] = ' ';
     }
 
-    sprintf( m_sVersion, "%Iu.%Iu.%Iu.%Iu", m_nMajor, m_nMinor, m_nRevision, m_nBuild );
+    updateVersionString();
 }
 
+
+void ProgDllVersion::updateVersionString()
+{
+    // ----------------------------------------------------------------------------------
+    // --- DanB - commenting out the revision and build number because we aren't really
+    // --- setting them right now.  The revision used to be the number of commits in the
+    // --- branch, but now on Jenkins, we only get the code for the last revision.  This
+    // --- means it is always "1".  I don't know what happened to build number it appears
+    // --- to have been zero for a while.
+    // ----------------------------------------------------------------------------------
+    //sprintf( m_sVersion, "%Iu.%Iu.%Iu.%Iu", m_nMajor, m_nMinor, m_nRevision, m_nBuild );
+
+    sprintf( m_sVersion, "%Iu.%Iu", m_nMajor, m_nMinor );
+}
 
 std::string ProgDllVersion::getSerPopVersion() const
 {
