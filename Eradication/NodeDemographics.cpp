@@ -291,18 +291,11 @@ std::string NodeDemographics::getMissingParamHelperMessage(const std::string &mi
     stringstream ss;
     ss << "Was ";
 
-    if(missing_param == "AgeDistribution")               ss << "EnableAgeInitializationDistribution set to 1";
-    else if(missing_param == "FertilityDistribution")    ss << "Birth_Rate_Dependence set to INDIVIDUAL_PREGNANCIES_BY_AGE_AND_YEAR";
-    else if(missing_param == "MortalityDistribution")    ss << "Death_Rate_Dependence set to NONDISEASE_MORTALITY_BY_AGE_AND_GENDER";
-    else if(missing_param == "MortalityDistributionMale")    ss << "Death_Rate_Dependence set to NONDISEASE_MORTALITY_BY_YEAR_AND_AGE_FOR_EACH_GENDER";
-    else if(missing_param == "MortalityDistributionFemale")    ss << "Death_Rate_Dependence set to NONDISEASE_MORTALITY_BY_YEAR_AND_AGE_FOR_EACH_GENDER";
-    else if(missing_param == "mucosal_memory_distribution1")     ss << "EnableImmunityInitializationDistribution set to 1";
-    else if(missing_param == "mucosal_memory_distribution2")     ss << "EnableImmunityInitializationDistribution set to 1";
-    else if(missing_param == "mucosal_memory_distribution3")     ss << "EnableImmunityInitializationDistribution set to 1";
-    else if(missing_param == "humoral_memory_distribution1")     ss << "EnableImmunityInitializationDistribution set to 1";
-    else if(missing_param == "humoral_memory_distribution2")     ss << "EnableImmunityInitializationDistribution set to 1";
-    else if(missing_param == "humoral_memory_distribution3")     ss << "EnableImmunityInitializationDistribution set to 1";
-    else if(missing_param == "time_since_last_infection_distribution")     ss << "EnableImmunityInitializationDistribution set to 1";
+    if(     missing_param == "AgeDistribution"            ) ss << "Age_Initialization_Distribution_Type set to DISTRIBUTION_COMPLEX";
+    else if(missing_param == "FertilityDistribution"      ) ss << "Birth_Rate_Dependence set to INDIVIDUAL_PREGNANCIES_BY_AGE_AND_YEAR";
+    else if(missing_param == "MortalityDistribution"      ) ss << "Death_Rate_Dependence set to NONDISEASE_MORTALITY_BY_AGE_AND_GENDER";
+    else if(missing_param == "MortalityDistributionMale"  ) ss << "Death_Rate_Dependence set to NONDISEASE_MORTALITY_BY_YEAR_AND_AGE_FOR_EACH_GENDER";
+    else if(missing_param == "MortalityDistributionFemale") ss << "Death_Rate_Dependence set to NONDISEASE_MORTALITY_BY_YEAR_AND_AGE_FOR_EACH_GENDER";
     else   ss << "some config.json parameter changed";
 
     ss << " without the demographics layer(s) specified containing the necessary parameters?";
@@ -1301,6 +1294,12 @@ NodeDemographicsDistribution* NodeDemographicsDistribution::CreateDistribution( 
 
             result_values.resize(dist_values[0].size());
             applyResultScaleFactor(result_values_orig, result_values, result_scale_factor, 1, 0);
+
+            if( num_pop_groups.size() == 0 )
+            {
+                CheckIsArrayOfValues( demographics.GetJsonKey(), demographics.GetNodeID(), "ResultValues",       result_values_orig );
+                CheckIsArrayOfValues( demographics.GetJsonKey(), demographics.GetNodeID(), "DistributionValues", dist_values_orig   );
+            }
         }
         else if( num_pop_groups.size() > 0 )
         {
@@ -1329,6 +1328,42 @@ NodeDemographicsDistribution* NodeDemographicsDistribution::CreateDistribution( 
         std::stringstream s ;
         s << "An exception occurred while parsing '" << demographics.GetJsonKey() << "'. Error: " << e.what() ;
         throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, s.str().c_str() );
+    }
+}
+
+void NodeDemographicsDistribution::CheckIsArrayOfValues( const std::string& rDistributionName,
+                                                         ExternalNodeId_t nodeId,
+                                                         const char* parameterName,
+                                                         const JsonObjectDemog& rArray )
+{
+    // ----------------------------------------------------------------------------------------------
+    // --- This is to check for the case where the user has the array of values inside another array.
+    // --- If both the DistributionValues and ResultValues are like this, the previous logic would
+    // --- would say they each had a length of one.  This can be ok if the both arrays have the same
+    // --- number of values, however, if they don't bad, inconsisent things happen because we can
+    // --- start accessing data outside the array memory.
+    // ----------------------------------------------------------------------------------------------
+    IndexType zero = 0;
+    release_assert( rArray.size() > 0 );
+    if( rArray[ zero ].IsArray() || rArray[ zero ].IsObject() || rArray[ zero ].IsNull() )
+    {
+        std::stringstream ss;
+        ss << "ERROR:  Unexpected type while parsing '" << parameterName << "'\n";
+        ss << "in distribution '" << rDistributionName << "' for nodeID = " << nodeId << ".\n";
+        ss << "Expected an array of floats but detected ";
+        if( rArray[ zero ].IsArray() )
+        {
+            ss << " an array.";
+        }
+        else if( rArray[ zero ].IsObject() )
+        {
+            ss << " an object/dictionary.";
+        }
+        else
+        {
+            ss << " unknown";
+        }
+        throw NodeDemographicsFormatErrorException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
     }
 }
 

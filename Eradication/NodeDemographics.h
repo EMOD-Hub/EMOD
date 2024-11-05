@@ -290,6 +290,11 @@ namespace Kernel
         static std::string CreateListOfNames( const JsonObjectDemog& rAxisNames ) ;
         static std::string CreateListOfNames( const std::vector<std::string>& rAxisNames );
 
+        static void CheckIsArrayOfValues( const std::string& rDistributionName,
+                                          ExternalNodeId_t nodeId,
+                                          const char* parameterName,
+                                          const JsonObjectDemog& rArray );
+
         // Check that the given rJsonArray has the dimensions that is expected.
         // This is used to verify that ResultValues and DistributionValues have the
         // the correct number of dimensions.

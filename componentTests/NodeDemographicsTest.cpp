@@ -621,6 +621,13 @@ SUITE(NodeDemographicsTest)
                                                            "AgeDistribution for NodeID=1 has invalid 'DistributionValues' array.  DistributionValues has 15 elements when it should have 20." );
     }
 
+    TEST_FIXTURE(NodeDemographicsFactoryFixture, demographics_TestDistAgeDisttNumResultValuesNotMatchDistValuesC_DoubleArray)
+    {
+        std::vector<std::string> axis_names ;
+        TestHelper_DistributionFormatException( __LINE__, "demographics_TestDistAgeDisttNumResultValuesNotMatchDistValuesC_DoubleArray.json", "AgeDistribution", axis_names,
+                                                "ERROR:  Unexpected type while parsing 'ResultValues'\nin distribution 'AgeDistribution' for nodeID = 1.\nExpected an array of floats but detected  an array.)" );
+    }
+
     TEST_FIXTURE(NodeDemographicsFactoryFixture, TestDistFertDistInvalidNumAxisNames)
     {
         std::vector<std::string> axis_names ;

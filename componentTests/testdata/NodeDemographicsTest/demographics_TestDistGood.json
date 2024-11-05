@@ -39,9 +39,9 @@
                 ]
             },
             "SusceptibilityDistribution": {
-                "DistributionValues": [[0,364.999,365,729.999,730,1825,7300]],
+                "DistributionValues": [0,364.999,365,729.999,730,1825,7300],
                 "ResultScaleFactor": 1,
-                "ResultValues": [[0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.5]]
+                "ResultValues": [0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.5]
             },
             "FertilityDistribution": {
                 "NumDistributionAxes": 2, 

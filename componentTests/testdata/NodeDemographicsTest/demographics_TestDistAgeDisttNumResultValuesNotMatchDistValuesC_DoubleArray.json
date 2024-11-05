@@ -1,0 +1,43 @@
+{
+    "Metadata": {
+        "DateCreated": "Sun Sep 25 23:19:55 2011", 
+        "Tool": "convertdemog.py", 
+        "Author": "dmb", 
+        "IdReference": "Gridded world grump2.5arcmin", 
+        "NodeCount": 1
+    }, 
+    "Nodes": [
+    {
+        "NodeID": 1, 
+        "NodeAttributes": {
+            "Latitude": -8.5, 
+            "Longitude": 36.5, 
+            "Altitude": 0, 
+            "Airport": 0, 
+            "Region": 1, 
+            "Seaport": 0, 
+            "InitialPopulation": 1000, 
+            "BirthRate": 0.0001
+        }, 
+        "IndividualAttributes": {
+            "AgeDistribution": {
+                "NumDistributionAxes": 0, 
+                "ResultUnits": "years", 
+                "ResultScaleFactor": 365, 
+                "AxisScaleFactors": 1, 
+                "COMMENT1": "Put both ResultValues and DistributionValues inside an array",
+                "COMMENT2": "but have the number of values not the same.  The double array",
+                "COMMENT3": "will fool the logic because both are of length one.",
+                "ResultValues": [[
+                    0,            5,          10,          15,          20
+                ]], 
+                "DistributionValues": [[
+                    0.126557473, 0.247418168, 0.369949006, 0.491780413, 0.604582313, 
+                    0.685827384, 0.745198481, 0.797740421, 0.844955868, 0.892155905, 
+                    0.928229304, 0.951367227, 0.965247393, 0.974635993, 0.986382539, 
+                    0.993266795, 0.997785983, 0.999493636, 0.999883695, 1
+                ]]
+            }
+        }
+    }]
+}
