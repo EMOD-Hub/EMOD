@@ -1348,7 +1348,7 @@ void NodeDemographicsDistribution::CheckIsArrayOfValues( const std::string& rDis
     if( rArray[ zero ].IsArray() || rArray[ zero ].IsObject() || rArray[ zero ].IsNull() )
     {
         std::stringstream ss;
-        ss << "ERROR:  Unexpected type while parsing '" << parameterName << "'\n";
+        ss << "\nERROR:  Unexpected type while parsing '" << parameterName << "'\n";
         ss << "in distribution '" << rDistributionName << "' for nodeID = " << nodeId << ".\n";
         ss << "Expected an array of floats but detected ";
         if( rArray[ zero ].IsArray() )
