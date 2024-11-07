@@ -386,8 +386,8 @@ def drop_dataframe_as_csv(temp_df: object, filename: object) -> object:
 
 
 def validate_complex_initialization_numpy(individual_dataframe, susceptibility_distribution, outfile, debug=False):
-    distribution_ages = susceptibility_distribution['DistributionValues'][0]
-    distribution_probabilities = susceptibility_distribution['ResultValues'][0]
+    distribution_ages = susceptibility_distribution['DistributionValues']
+    distribution_probabilities = susceptibility_distribution['ResultValues']
 
     if debug:
         print("distribution_ages: {0}\n".format(distribution_ages))
