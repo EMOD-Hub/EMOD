@@ -8,9 +8,28 @@
 
 namespace Kernel
 {
-    class TargetingLogic : public IAdditionalRestrictions
-                         , public JsonConfigurable
-                         , public IComplexJsonConfigurable
+    class OrAndCollection : public IComplexJsonConfigurable
+    {
+    public:
+        OrAndCollection();
+        ~OrAndCollection();
+
+        //IComplexJsonConfigurable
+        virtual void ConfigureFromJsonAndKey( const Configuration* inputJson, const std::string& key );
+        virtual json::QuickBuilder GetSchema();
+        virtual bool  HasValidDefault() const;
+
+        void CheckConfiguration( const char* parameterName );
+
+    protected:
+        friend class TargetingLogic;
+
+        std::vector<std::vector<IAdditionalRestrictions*>> m_Restrictions;
+        json::Object m_JsonSchemaBase;
+    };
+
+    class TargetingLogic : public JsonConfigurable
+                         , public IAdditionalRestrictions
     {
         IMPLEMENT_NO_REFERENCE_COUNTING()
         DECLARE_FACTORY_REGISTERED(AdditionalRestrictionsFactory,
@@ -24,12 +43,10 @@ namespace Kernel
         virtual ~TargetingLogic();
 
         virtual bool Configure(const Configuration* config) override;
-        virtual void ConfigureFromJsonAndKey(const Configuration* inputJson, const std::string& key) override;
         virtual bool IsQualified(IIndividualHumanEventContext* pContext) const override;
-        virtual json::QuickBuilder GetSchema() override;
-        virtual bool  HasValidDefault() const override;
 
     private:
-        std::vector<std::vector<IAdditionalRestrictions*>> m_Restrictions;
+        bool m_CompareTo;
+        OrAndCollection m_OrAndLogic;
     };
 }

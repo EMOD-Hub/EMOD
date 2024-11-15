@@ -6,20 +6,17 @@
 
 namespace Kernel
 {
-    BEGIN_QUERY_INTERFACE_BODY(TargetingLogic)
-        HANDLE_INTERFACE(IConfigurable)
-        HANDLE_INTERFACE(IAdditionalRestrictions)
-    END_QUERY_INTERFACE_BODY(TargetingLogic)
+    // ------------------------------------------------------------------------
+    // --- OrAndCollection
+    // ------------------------------------------------------------------------
 
-    IMPLEMENT_FACTORY_REGISTERED(TargetingLogic)
-    REGISTER_SERIALIZABLE(TargetingLogic)
-
-    TargetingLogic::TargetingLogic()
+    OrAndCollection::OrAndCollection()
+        : m_Restrictions()
+        , m_JsonSchemaBase()
     {
-        initSimTypes( 1, "*");
     }
 
-    TargetingLogic::~TargetingLogic()
+    OrAndCollection::~OrAndCollection()
     {
         for( auto& r_outer : m_Restrictions )
         {
@@ -31,31 +28,7 @@ namespace Kernel
         m_Restrictions.clear();
     }
 
-    bool TargetingLogic::Configure(const Configuration* config)
-    {
-        initConfigComplexType( "Logic", this, AR_Logic_DESC_TEXT );
-
-        bool configured = JsonConfigurable::Configure(config);
-        if( configured && !JsonConfigurable::_dryrun )
-        {
-            if( m_Restrictions.size() == 0 )
-            {
-                throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__,
-                                                     "'Logic' cannot be an empty array.  The user must define restrictions in this 2D array." );
-            }
-            for( auto& r_outer : m_Restrictions )
-            {
-                if( r_outer.size() == 0 )
-                {
-                    throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__,
-                                                         "'Logic' cannot have an empty inner array.  This is a 2D array and each inner array must not be empty." );
-                }
-            }
-        }
-        return configured;
-    }
-    
-    void TargetingLogic::ConfigureFromJsonAndKey(const Configuration* inputJson, const std::string& key)
+    void OrAndCollection::ConfigureFromJsonAndKey(const Configuration* inputJson, const std::string& key)
     {
         json::QuickInterpreter qi_2d( (*inputJson)[ key ] );
         if( qi_2d.operator const json::Element &().Type() != json::ARRAY_ELEMENT )
@@ -100,44 +73,103 @@ namespace Kernel
         }
     }
 
+    void OrAndCollection::CheckConfiguration( const char* parameterName )
+    {
+        if( m_Restrictions.size() == 0 )
+        {
+            std::stringstream ss;
+            ss << "'" << parameterName << "' cannot be an empty array.\n";
+            ss << "The user must define restrictions in this 2D array.";
+            throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
+        }
+        for( auto& r_outer : m_Restrictions )
+        {
+            if( r_outer.size() == 0 )
+            {
+                std::stringstream ss;
+                ss << "'" << parameterName << "' cannot have an empty inner array.\n";
+                ss << "This is a 2D array and each inner array must not be empty.";
+                throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
+            }
+        }
+    }
+
+    json::QuickBuilder OrAndCollection::GetSchema()
+    {
+        json::QuickBuilder schema = json::QuickBuilder( m_JsonSchemaBase );
+        auto tn = "type_name";// JsonConfigurable::_typename_label();
+        auto ts = "type_schema"; // JsonConfigurable::_typeschema_label();
+        schema[ tn ] = json::String( "Vector2d idmType:AdditionalRestrictions" );
+        schema[ ts ] = json::Array();
+        schema[ ts ][0] = json::Object();
+        schema[ ts ][0]["type"] = json::String( "Vector idmType:AdditionalRestrictions" );
+        schema[ ts ][0]["description"] = json::String( "Two dimensional array of AdditionalRestrictions objects." );
+        schema[ ts ][0]["default"] = json::Array();
+        return schema;
+    }
+
+    bool OrAndCollection::HasValidDefault() const
+    {
+        return false;
+    }
+
+    // ------------------------------------------------------------------------
+    // --- TargetingLogic
+    // ------------------------------------------------------------------------
+
+    BEGIN_QUERY_INTERFACE_BODY(TargetingLogic)
+        HANDLE_INTERFACE(IConfigurable)
+        HANDLE_INTERFACE(IAdditionalRestrictions)
+    END_QUERY_INTERFACE_BODY(TargetingLogic)
+
+    IMPLEMENT_FACTORY_REGISTERED(TargetingLogic)
+    REGISTER_SERIALIZABLE(TargetingLogic)
+
+    TargetingLogic::TargetingLogic()
+        : JsonConfigurable()
+        , m_CompareTo(true)
+        , m_OrAndLogic()
+    {
+        initSimTypes( 1, "*");
+    }
+
+    TargetingLogic::~TargetingLogic()
+    {
+    }
+
+    bool TargetingLogic::Configure(const Configuration* config)
+    {
+        initConfigTypeMap( "Is_Equal_To", &m_CompareTo, AR_Is_Equal_To_DESC_TEXT, true );
+        initConfigComplexType( "Logic", &m_OrAndLogic, AR_Logic_DESC_TEXT );
+
+        bool configured = JsonConfigurable::Configure(config);
+        if( configured && !JsonConfigurable::_dryrun )
+        {
+            m_OrAndLogic.CheckConfiguration( "Logic" );
+        }
+        return configured;
+    }
+    
     bool TargetingLogic::IsQualified(IIndividualHumanEventContext* pContext) const
     {
         bool result = false;
 
-        for (auto& outer : m_Restrictions)
+        for (auto& outer : m_OrAndLogic.m_Restrictions)
         {
             bool result_inner = true;
             for (auto inner : outer)
             {
-                result_inner &= inner->IsQualified(pContext);
+                result_inner &= inner->IsQualified( pContext );
             }
             result |= result_inner;
         }
 
-        return result;
+        return (result == m_CompareTo);
     }
 
     void TargetingLogic::serialize(IArchive& ar, TargetingLogic* obj)
     {
         // TODO: implement me
         release_assert( false );
-    }
-
-    json::QuickBuilder TargetingLogic::GetSchema()
-    {
-        // TODO: do this right
-        json::QuickBuilder schema(GetSchemaBase());
-        auto tn = JsonConfigurable::_typename_label();
-        auto ts = JsonConfigurable::_typeschema_label();
-
-        schema[tn] = json::String("idmType:Vector2d idmType:AdditionalRestrictions");
-        schema[ts] = json::String( "idmType:AdditionalRestrictions" );
-
-        return schema;
-    }
-
-    bool TargetingLogic::HasValidDefault() const
-    {
-        return false;
     }
 }

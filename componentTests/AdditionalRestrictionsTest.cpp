@@ -85,16 +85,106 @@ SUITE(AdditionalRestrictionsTest)
     };
 
 #if 1
+    TEST_FIXTURE( AdditionalRestrictionsFixture, TestTargetingLogic )
+    {
+        unique_ptr<IAdditionalRestrictions>     rm_and_circ( GetAR( "TL_RiskMedium_And_Circumcised"     ) );
+        unique_ptr<IAdditionalRestrictions> not_rm_and_circ( GetAR( "TL_Not_RiskMedium_And_Circumcised" ) );
+        unique_ptr<IAdditionalRestrictions>     rm_or_circ(  GetAR( "TL_RiskMedium_Or_Circumcised"      ) );
+        unique_ptr<IAdditionalRestrictions> not_rm_or_circ(  GetAR( "TL_Not_RiskMedium_Or_Circumcised"  ) );
+        unique_ptr<IAdditionalRestrictions> nested( GetAR( "TL_Nested" ) );
+
+        // ------------------------------------
+        // --- Test AND
+        // ------------------------------------
+        m_pHuman->GetProperties()->Set( IPKeyValue( "Risk:MEDIUM" ) );
+        m_pHuman->SetIsCircumcised( true );
+        CHECK_EQUAL( true,      rm_and_circ->IsQualified( m_pHuman ) );
+        CHECK_EQUAL( false, not_rm_and_circ->IsQualified( m_pHuman ) );
+
+        m_pHuman->GetProperties()->Set( IPKeyValue( "Risk:HIGH" ) );
+        m_pHuman->SetIsCircumcised( true );
+        CHECK_EQUAL( false,     rm_and_circ->IsQualified( m_pHuman ) );
+        CHECK_EQUAL( true,  not_rm_and_circ->IsQualified( m_pHuman ) );
+
+        m_pHuman->GetProperties()->Set( IPKeyValue( "Risk:MEDIUM" ) );
+        m_pHuman->SetIsCircumcised( false );
+        CHECK_EQUAL( false,     rm_and_circ->IsQualified( m_pHuman ) );
+        CHECK_EQUAL( true,  not_rm_and_circ->IsQualified( m_pHuman ) );
+
+        m_pHuman->GetProperties()->Set( IPKeyValue( "Risk:HIGH" ) );
+        m_pHuman->SetIsCircumcised( false );
+        CHECK_EQUAL( false,     rm_and_circ->IsQualified( m_pHuman ) );
+        CHECK_EQUAL( true,  not_rm_and_circ->IsQualified( m_pHuman ) );
+
+        // ------------------------------------
+        // --- Test OR
+        // ------------------------------------
+        m_pHuman->GetProperties()->Set( IPKeyValue( "Risk:MEDIUM" ) );
+        m_pHuman->SetIsCircumcised( true );
+        CHECK_EQUAL( true,      rm_or_circ->IsQualified( m_pHuman ) );
+        CHECK_EQUAL( false, not_rm_or_circ->IsQualified( m_pHuman ) );
+
+        m_pHuman->GetProperties()->Set( IPKeyValue( "Risk:HIGH" ) );
+        m_pHuman->SetIsCircumcised( true );
+        CHECK_EQUAL( true,      rm_or_circ->IsQualified( m_pHuman ) );
+        CHECK_EQUAL( false, not_rm_or_circ->IsQualified( m_pHuman ) );
+
+        m_pHuman->GetProperties()->Set( IPKeyValue( "Risk:MEDIUM" ) );
+        m_pHuman->SetIsCircumcised( false );
+        CHECK_EQUAL( true,      rm_or_circ->IsQualified( m_pHuman ) );
+        CHECK_EQUAL( false, not_rm_or_circ->IsQualified( m_pHuman ) );
+
+        m_pHuman->GetProperties()->Set( IPKeyValue( "Risk:HIGH" ) );
+        m_pHuman->SetIsCircumcised( false );
+        CHECK_EQUAL( false,     rm_or_circ->IsQualified( m_pHuman ) );
+        CHECK_EQUAL( true,  not_rm_or_circ->IsQualified( m_pHuman ) );
+
+        // ------------------------------------
+        // --- Test Nested
+        // ------------------------------------
+        HIVInterventionsContainerFake hiv_container;
+        m_pHuman->SetHIVInterventionsContainer( &hiv_container );
+        hiv_container.SetArtStatus( ARTStatus::UNDEFINED );
+        hiv_container.SetEverTested( false );
+        hiv_container.SetEverTestedPositive( false );
+        hiv_container.SetReceivedResults( ReceivedTestResultsType::UNKNOWN );
+        m_pHuman->GetProperties()->Set( IPKeyValue( "Risk:HIGH" ) );
+        m_pHuman->SetIsCircumcised( false );
+        m_pHuman->SetHasHIV( false );
+
+        // both parts of outer OR are FALSE
+        CHECK_EQUAL( false, nested->IsQualified( m_pHuman ) );
+
+        // make second part of outer OR to be TRUE
+        m_pHuman->GetProperties()->Set( IPKeyValue( "Risk:MEDIUM" ) );
+        m_pHuman->SetHasHIV( true );
+        hiv_container.SetEverTested( true );
+        hiv_container.SetArtStatus( ARTStatus::ON_VL_SUPPRESSED );
+
+        CHECK_EQUAL( true, nested->IsQualified( m_pHuman ) );
+
+        // make second part of outer OR to be FALSE
+        hiv_container.SetArtStatus( ARTStatus::UNDEFINED );
+
+        CHECK_EQUAL( false, nested->IsQualified( m_pHuman ) );
+
+        // make first part of outer OR to be TRUE
+        m_pHuman->SetIsCircumcised( true );
+        m_pHuman->SetHasHIV( false );
+
+        CHECK_EQUAL( true, nested->IsQualified( m_pHuman ) );
+    }
+
     TEST_FIXTURE(AdditionalRestrictionsFixture, TestHasIP)
     {
         unique_ptr<IAdditionalRestrictions> has_ip( GetAR( "HasIP" ) );
         unique_ptr<IAdditionalRestrictions> not_has_ip( GetAR( "NotHasIP" ) );
 
-        m_pHuman->GetProperties()->Add( IPKeyValue( "Risk:HIGH" ) );
+        m_pHuman->GetProperties()->Set( IPKeyValue( "Risk:HIGH" ) );
         CHECK_EQUAL( false, has_ip->IsQualified( m_pHuman ) );
         CHECK_EQUAL( true, not_has_ip->IsQualified( m_pHuman ) );
 
-        m_pHuman->GetProperties()->Add( IPKeyValue( "Risk:MEDIUM" ) );
+        m_pHuman->GetProperties()->Set( IPKeyValue( "Risk:MEDIUM" ) );
         CHECK_EQUAL( true, has_ip->IsQualified( m_pHuman ) );
         CHECK_EQUAL( false, not_has_ip->IsQualified( m_pHuman ) );
     }

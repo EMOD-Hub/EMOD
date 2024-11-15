@@ -1,5 +1,144 @@
 {
     "Simulation_Type": "HIV_SIM",
+    "TL_RiskMedium_And_Circumcised":
+    {
+        "class": "TargetingLogic",
+        "Is_Equal_To": 1,
+        "Logic":
+        [
+            [
+                {
+                    "class" : "HasIP",
+                    "Is_Equal_To": 1,
+                    "IP_Key_Value": "Risk:MEDIUM"
+                },
+                {
+                    "class" : "IsCircumcised",
+                    "Is_Equal_To": 1
+                }
+            ]
+        ]
+    },
+    "TL_Not_RiskMedium_And_Circumcised":
+    {
+        "class": "TargetingLogic",
+        "Is_Equal_To": 0,
+        "Logic":
+        [
+            [
+                {
+                    "class" : "HasIP",
+                    "Is_Equal_To": 1,
+                    "IP_Key_Value": "Risk:MEDIUM"
+                },
+                {
+                    "class" : "IsCircumcised",
+                    "Is_Equal_To": 1
+                }
+            ]
+        ]
+    },
+    "TL_RiskMedium_Or_Circumcised":
+    {
+        "class": "TargetingLogic",
+        "Is_Equal_To": 1,
+        "Logic":
+        [
+            [
+                {
+                    "class" : "HasIP",
+                    "Is_Equal_To": 1,
+                    "IP_Key_Value": "Risk:MEDIUM"
+                }
+            ],
+            [
+                {
+                    "class" : "IsCircumcised",
+                    "Is_Equal_To": 1
+                }
+            ]
+        ]
+    },
+    "TL_Not_RiskMedium_Or_Circumcised":
+    {
+        "class": "TargetingLogic",
+        "Is_Equal_To": 0,
+        "Logic":
+        [
+            [
+                {
+                    "class" : "HasIP",
+                    "Is_Equal_To": 1,
+                    "IP_Key_Value": "Risk:MEDIUM"
+                }
+            ],
+            [
+                {
+                    "class" : "IsCircumcised",
+                    "Is_Equal_To": 1
+                }
+            ]
+        ]
+    },
+    "TL_Nested":
+    {
+        "class": "TargetingLogic",
+        "Is_Equal_To": 1,
+        "Logic":
+        [
+            [
+                {
+                    "class" : "HasIP",
+                    "Is_Equal_To": 1,
+                    "IP_Key_Value": "Risk:MEDIUM"
+                },
+                {
+                    "class" : "IsCircumcised",
+                    "Is_Equal_To": 1
+                },
+                {
+                    "class" : "IsHivPositive",
+                    "Is_Equal_To": 0,
+                    "And_Has_Ever_Been_Tested": "YES",
+                    "And_Has_Ever_Tested_Positive": "NO",
+                    "And_Has_Received_Positive_Results": "NO"
+                }
+            ],
+            [
+                {
+                    "class": "TargetingLogic",
+                    "Is_Equal_To": 0,
+                    "Logic":
+                    [
+                        [
+                            {
+                                "class" : "HasIP",
+                                "Is_Equal_To": 1,
+                                "IP_Key_Value": "Risk:HIGH"
+                            },
+                            {
+                                "class" : "IsCircumcised",
+                                "Is_Equal_To": 0
+                            }
+                        ],
+                        [
+                            {
+                                "class" : "IsHivPositive",
+                                "Is_Equal_To": 1,
+                                "And_Has_Ever_Been_Tested": "YES",
+                                "And_Has_Ever_Tested_Positive": "NA",
+                                "And_Has_Received_Positive_Results": "NA"
+                            },
+                            {
+                                "class" : "IsOnART",
+                                "Is_Equal_To": 0
+                            }
+                        ]
+                    ]
+                }
+            ]
+        ]
+    },
     "IsCircumcised" : 
     {
         "class" : "IsCircumcised"
@@ -239,6 +378,7 @@
         "That_Recently":  "STARTED",
         "With_Partner_Who" : {
             "class": "TargetingLogic",
+            "Is_Equal_To": 1,
             "Logic":
             [
                 [
