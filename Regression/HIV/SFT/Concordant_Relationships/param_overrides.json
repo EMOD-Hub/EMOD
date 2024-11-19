@@ -43,6 +43,7 @@
         "Report_HIV_ByAgeAndGender_Collect_HIV_Stage_Data": 0,
         "Report_HIV_ByAgeAndGender_Collect_IP_Data": [],
         "Report_HIV_ByAgeAndGender_Collect_Intervention_Data": [],
+        "Report_HIV_ByAgeAndGender_Collect_Targeting_Config_Data": [],
         "Report_HIV_ByAgeAndGender_Collect_On_Art_Data": 0,
         "Report_HIV_ByAgeAndGender_Event_Counter_List": [],
         "Report_HIV_ByAgeAndGender_Has_Intervention_With_Name": "",

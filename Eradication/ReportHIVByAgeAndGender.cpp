@@ -17,6 +17,7 @@
 #include "ReportUtilitiesSTI.h"
 #include "Properties.h"
 #include "INodeContext.h"
+#include "AdditionalRestrictionsFactory.h"
 
 SETUP_LOGGING( "ReportHIVByAgeAndGender" )
 
@@ -32,6 +33,7 @@ std::string DIM_HIV    = "HasHIV";
 std::string DIM_STAGE  = "HIV_Stage";
 std::string DIM_ART    = "On_Art_Dim";
 std::string DIM_AGE    = "Age";
+std::string DIM_TC     = "MeetsTargetingConfig_";
 
 namespace Kernel
 {
@@ -50,6 +52,9 @@ namespace Kernel
         , dim_on_art( false )
         , dim_ip_key_list()
         , dim_intervention_name_list()
+        , dim_has_tc_list()
+        , targeting_config()
+        , additional_restrictions_list()
         , data_has_transmitters(false)
         , data_stratify_infected_by_CD4(false)
         , data_name_of_intervention_to_count()
@@ -130,6 +135,13 @@ namespace Kernel
                            &tmp_intervention_name_list,
                            Report_HIV_ByAgeAndGender_Collect_Intervention_Data_DESC_TEXT );
 
+        if (JsonConfigurable::_dryrun || inputJson->Exist("Report_HIV_ByAgeAndGender_Collect_Targeting_Config_Data"))
+        {
+            initConfigComplexType("Report_HIV_ByAgeAndGender_Collect_Targeting_Config_Data",
+                                   &targeting_config,
+                                   Report_HIV_ByAgeAndGender_Collect_Targeting_Config_Data_DESC_TEXT);
+        }
+
         // -------------------------
         // --- Data column controls
         // -------------------------
@@ -163,7 +175,7 @@ namespace Kernel
 
         bool ret = JsonConfigurable::Configure( inputJson );
 
-        if( ret )
+        if( ret && !JsonConfigurable::_dryrun )
         {
             if( !tmp_intervention_name.empty() )
             {
@@ -237,6 +249,21 @@ namespace Kernel
                 eventTriggerList.push_back( ev );
             }
 
+            // ---------------------------------------------------------------------------
+            // --- Read the Targeting_Config / AdditionalRestrictions array and configure
+            // --- how many Targeting_Config stratification columns there will be.
+            // ---------------------------------------------------------------------------
+            CreateAdditionalRestrictionsList( targeting_config._json,
+                                              "config.json",
+                                              "Report_HIV_ByAgeAndGender_Collect_Targeting_Config_Data",
+                                              additional_restrictions_list );
+            for( int i = 0; i < additional_restrictions_list.size(); ++i )
+            {
+                std::stringstream ss;
+                ss << DIM_TC << (i + 1);
+                dim_has_tc_list.push_back( ss.str() );
+            }
+
             // ----------------------------------------------------------------------------------------------------------------------------
             // --- dim_ip_key_list - entries cannot be validated until Initialize() because we have not read the demographics at this point
             // --- dim_intervention_name_list - currently, we don't have a way to validate these
@@ -244,6 +271,58 @@ namespace Kernel
         }
 
         return ret;
+    }
+
+    void ReportHIVByAgeAndGender::CreateAdditionalRestrictionsList( const json::Element& rJsonElement,
+                                                                    const std::string& rDataLocation,
+                                                                    const char* parameterName,
+                                                                    std::vector<IAdditionalRestrictions*>& arList )
+    {
+        if( rJsonElement.Type() == json::NULL_ELEMENT )
+        {
+            std::stringstream ss;
+            ss << "'ReportHIVByAgeAndGender' found the element to be NULL for '" << parameterName << "' in <" << rDataLocation << ">.";
+            throw FactoryCreateFromJsonException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
+        }
+
+        if( rJsonElement.Type() != json::ARRAY_ELEMENT )
+        {
+            std::stringstream ss;
+            ss << "'ReportHIVByAgeAndGender' found the element specified by '" << parameterName << "'\n"
+                << "to NOT be a JSON ARRAY in <" << rDataLocation << ">.";
+            throw FactoryCreateFromJsonException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
+        }
+        const json::Array& ar_array = json::QuickInterpreter(rJsonElement).As<json::Array>();
+
+        if( ar_array.Size() == 0 )
+        {
+            std::stringstream ss;
+            ss << "'ReportHIVByAgeAndGender' found zero elements in JSON for '" << parameterName << "' in <" << rDataLocation << ">.";
+            throw FactoryCreateFromJsonException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
+        }
+
+        for( int idx = 0; idx < ar_array.Size(); ++idx )
+        {
+            std::stringstream param_name;
+            param_name << parameterName << "[" << idx << "]";
+
+            const json::Element& r_array_element = ar_array[ idx ];
+            if( r_array_element.Type() != json::OBJECT_ELEMENT )
+            {
+                std::stringstream ss;
+                ss << "'ReportHIVByAgeAndGender' found the element specified by '" << param_name.str() << "'\n"
+                    << "to NOT be a JSON OBJECT in <" << rDataLocation << ">.";
+                throw FactoryCreateFromJsonException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
+            }
+
+            const json::Object& json_obj = json_cast<const json::Object&>(ar_array[idx]);
+
+            IAdditionalRestrictions* p_ar = AdditionalRestrictionsFactory::getInstance()->CreateInstance( json_obj,
+                                                                                                          rDataLocation,
+                                                                                                          param_name.str().c_str(),
+                                                                                                          true );
+            arList.push_back( p_ar );
+        }
     }
 
     void ReportHIVByAgeAndGender::UpdateEventRegistration( float currentTime,
@@ -380,6 +459,11 @@ namespace Kernel
         for( int i = 0; i < dim_intervention_name_list.size(); ++i )
         {
             AddDimension( DIM_INTV+dim_intervention_name_list[i].ToString(), true, true_false_values, &num_dimensions);
+        }
+
+        for( int i = 0; i < dim_has_tc_list.size(); ++i )
+        {
+            AddDimension( dim_has_tc_list[i], true, true_false_values, &num_dimensions);
         }
 
         AddDimension( DIM_CIRC,   dim_is_circumcised,       true_false_values,         &num_dimensions );
@@ -991,6 +1075,16 @@ namespace Kernel
             intervention_index_list.push_back( index );
         }
 
+        // ----------------------------------------------------------------------------------------
+        // --- Based on whether the individual meets the targeting profile of the Targeting_Config
+        // ----------------------------------------------------------------------------------------
+        std::vector<int> tc_index_list;
+        for( auto p_ar : additional_restrictions_list )
+        {
+            int index = p_ar->IsQualified( context ) ? 1 : 0;
+            tc_index_list.push_back( index );
+        }
+
         uint64_t map_key = GetDataMapKey( index_node,
                                           index_gender,
                                           index_age,
@@ -999,7 +1093,8 @@ namespace Kernel
                                           index_stage,
                                           index_art,
                                           ip_value_index_list,
-                                          intervention_index_list);
+                                          intervention_index_list,
+                                          tc_index_list );
         return map_key;
     }
 
@@ -1027,6 +1122,13 @@ namespace Kernel
             intervention_index_list.push_back( index );
         }
 
+        std::vector<int> tc_index_list;
+        for( auto key : dim_has_tc_list )
+        {
+            int index = dimension_map.at( key )->index;
+            tc_index_list.push_back( index );
+        }
+
         uint64_t map_key = GetDataMapKey( index_node,
                                           index_gender,
                                           index_age,
@@ -1035,7 +1137,8 @@ namespace Kernel
                                           index_stage,
                                           index_art,
                                           ip_value_index_list,
-                                          intervention_index_list);
+                                          intervention_index_list,
+                                          tc_index_list );
         return map_key;
     }
 
@@ -1048,7 +1151,8 @@ namespace Kernel
         int indexStage,
         int indexArt,
         const std::vector<int>& rIPValueIndexList,
-        const std::vector<int>& rInterventionIndexList )
+        const std::vector<int>& rInterventionIndexList,
+        const std::vector<int>& rTargetingConfigIndexList )
     {
         // ------------------------------------------------------------------------------
         // --- I used factors of MAX_VALUES_PER_BIN=100 in the map_key_constant so that
@@ -1082,6 +1186,12 @@ namespace Kernel
         {
             const std::string& name = dim_intervention_name_list[ index ].ToString();
             map_key += dimension_map.at( DIM_INTV+name )->map_key_constant * rInterventionIndexList[ index ];
+        }
+
+        for( int tc_index = 0; tc_index < rTargetingConfigIndexList.size(); tc_index++ )
+        {
+            const std::string& key = dim_has_tc_list[ tc_index ];
+            map_key += dimension_map[ key ]->map_key_constant * rTargetingConfigIndexList[ tc_index ];
         }
 
         return map_key;

@@ -6,6 +6,7 @@
 #include "BaseTextReportEvents.h"
 #include "IRelationship.h"
 #include "InterventionName.h"
+#include "IAdditionalRestrictions.h"
 
 #define MAX_AGE (100)
 
@@ -42,6 +43,10 @@ namespace Kernel
     protected:
 
     private:
+        void CreateAdditionalRestrictionsList( const json::Element& rJsonElement,
+                                               const std::string& rDataLocation,
+                                               const char* parameterName,
+                                               std::vector<IAdditionalRestrictions*>& arList );
 
         void AddTransmittedData( IIndividualHumanEventContext* context );
 
@@ -57,7 +62,8 @@ namespace Kernel
                                 int indexStage,
                                 int indexArt,
                                 const std::vector<int>& rIPValueIndexList,
-                                const std::vector<int>& rInterventionIndexList );
+                                const std::vector<int>& rInterventionIndexList,
+                                const std::vector<int>& rTargetingConfigIndexList );
 
         void AddDimension( const std::string& rName, bool isIncluded, const std::vector<std::string>& rValueList, int* pNumDimensions );
         bool IncrementIndexes();
@@ -169,6 +175,10 @@ namespace Kernel
         bool                          dim_on_art;
         std::vector<std::string>      dim_ip_key_list ;
         std::vector<InterventionName> dim_intervention_name_list;
+        std::vector<std::string>      dim_has_tc_list;
+
+        AdditionalTargetingConfig              targeting_config; // JSON array of targeting configs
+        std::vector<IAdditionalRestrictions*>  additional_restrictions_list;
 
         // controls for data columns
         bool                      data_has_transmitters;

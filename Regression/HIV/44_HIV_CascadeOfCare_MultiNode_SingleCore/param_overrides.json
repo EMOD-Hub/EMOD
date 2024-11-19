@@ -74,6 +74,7 @@
         "Report_HIV_ByAgeAndGender_Collect_Circumcision_Data"  : 0,
         "Report_HIV_ByAgeAndGender_Collect_IP_Data"            : ["Accessibility"],
         "Report_HIV_ByAgeAndGender_Collect_Intervention_Data"  : ["Delayed_Intervention_Test_On_ANC"],
+        "Report_HIV_ByAgeAndGender_Collect_Targeting_Config_Data": [],
         "Report_HIV_ByAgeAndGender_Add_Transmitters"           : 1,
         "Report_HIV_ByAgeAndGender_Add_Relationships"          : 0,
         "Report_HIV_ByAgeAndGender_Add_Concordant_Relationships" : 0,

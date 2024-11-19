@@ -32,6 +32,58 @@
         "Report_HIV_ByAgeAndGender_Collect_Circumcision_Data"    : 0,
         "Report_HIV_ByAgeAndGender_Collect_IP_Data"              : [],
         "Report_HIV_ByAgeAndGender_Collect_Intervention_Data"    : [],
+        "Report_HIV_ByAgeAndGender_Collect_Targeting_Config_Data": [
+            {
+                "class": "TargetingLogic",
+                "Is_Equal_To": 1,
+                "Logic": [
+                    [
+                        {
+                            "class": "IsHivPositive",
+                            "Is_Equal_To": 0,
+                            "And_Has_Ever_Been_Tested": "NA",
+                            "And_Has_Ever_Tested_Positive": "NA",
+                            "And_Has_Received_Positive_Results": "NA"
+                        },
+                        {
+                            "class": "HasRelationship",
+                            "Is_Equal_To": 1,
+                            "Of_Relationship_Type": "MARITAL",
+                            "That_Recently": "NA",
+                            "With_Partner_Who": {
+                                "class": "IsHivPositive",
+                                "Is_Equal_To": 1,
+                                "And_Has_Ever_Been_Tested": "NA",
+                                "And_Has_Ever_Tested_Positive": "NA",
+                                "And_Has_Received_Positive_Results": "NA"
+                            }
+                        }
+                    ],
+                    [
+                        {
+                            "class": "IsHivPositive",
+                            "Is_Equal_To": 1,
+                            "And_Has_Ever_Been_Tested": "NA",
+                            "And_Has_Ever_Tested_Positive": "NA",
+                            "And_Has_Received_Positive_Results": "NA"
+                        },
+                        {
+                            "class": "HasRelationship",
+                            "Is_Equal_To": 1,
+                            "Of_Relationship_Type": "MARITAL",
+                            "That_Recently": "NA",
+                            "With_Partner_Who": {
+                                "class": "IsHivPositive",
+                                "Is_Equal_To": 0,
+                                "And_Has_Ever_Been_Tested": "NA",
+                                "And_Has_Ever_Tested_Positive": "NA",
+                                "And_Has_Received_Positive_Results": "NA"
+                            }
+                        }
+                    ]
+                ]
+            }
+        ],
         "Report_HIV_ByAgeAndGender_Add_Transmitters"             : 0,
         "Report_HIV_ByAgeAndGender_Add_Relationships"            : 0,
         "Report_HIV_ByAgeAndGender_Add_Concordant_Relationships" : 1,
