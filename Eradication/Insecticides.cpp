@@ -74,7 +74,7 @@ namespace Kernel
         float modifier_blocking = 1.0f;
         float modifier_killing = 1.0f;
 
-        initConfigTypeMap( "Allele_Combinations", &combo_strings, Insecticide_Allele_Combinations_DESC_TEXT, constraint_schema, allowed_values );
+        initConfigTypeMap( "Allele_Combinations",     &combo_strings,      Insecticide_Allele_Combinations_DESC_TEXT,     constraint_schema, allowed_values );
         initConfigTypeMap( "Larval_Killing_Modifier", &modifier_larval,    Insecticide_Larval_Killing_Modifier_DESC_TEXT, 0.0f, FLT_MAX, 1.0f );
         initConfigTypeMap( "Repelling_Modifier",      &modifier_repelling, Insecticide_Repelling_Modifier_DESC_TEXT,      0.0f, FLT_MAX, 1.0f );
         initConfigTypeMap( "Blocking_Modifier",       &modifier_blocking,  Insecticide_Blocking_Modifier_DESC_TEXT,       0.0f, FLT_MAX, 1.0f );

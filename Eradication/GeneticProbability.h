@@ -63,6 +63,7 @@ namespace Kernel
 
         bool operator==( const AlleleCombo& rThat ) const;
         bool operator!=( const AlleleCombo& rThat ) const;
+        static bool Compare( const AlleleCombo& rLeft, const AlleleCombo& rRight );
 
         bool IsNull() const;
         int GetSpeciesIndex() const;
@@ -84,7 +85,7 @@ namespace Kernel
     };
 
     // AlleleComboProbability is the combination of an AlleleCombo and a single probability value.
-    // This is basically the collction of genomes with this specific probability.
+    // This is basically the collection of genomes with this specific probability.
     class AlleleComboProbability
     {
     public:
