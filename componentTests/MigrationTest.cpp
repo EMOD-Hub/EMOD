@@ -259,7 +259,6 @@ SUITE(MigrationTest)
             msg << "Duration PickMigrationStep (seconds) = " << seconds << endl;
             PrintDebug( msg.str() );
 
-            
             const std::vector<suids::suid>& r_reachable_nodes = p_mi_5->GetReachableNodes(Gender::FEMALE );
             const std::vector<float              >&     r_cdf = p_mi_5->GetCumulativeDistributionFunction( Gender::FEMALE );
             float total_rate = p_mi_5->GetTotalRate(Gender::FEMALE);
@@ -332,7 +331,7 @@ SUITE(MigrationTest)
             unique_ptr<IMigrationInfo> p_mi_1( p_mf->CreateMigrationInfo( &nc_1, nodeid_suid_map ) );
 
             CHECK( p_mi_1->IsHeterogeneityEnabled() );
-
+   
             const std::vector<suids::suid>& reachable_nodes_1 = p_mi_1->GetReachableNodes();
             CHECK_EQUAL( 3, reachable_nodes_1.size() );
             CHECK_EQUAL( 2, reachable_nodes_1[ 0].data );
@@ -1040,7 +1039,6 @@ SUITE(MigrationTest)
             INodeContextFake nc_2(nodeid_suid_map.left.at(2));
             unique_ptr<IMigrationInfoVector> p_mi_2(vsp.p_migration_factory->CreateMigrationInfoVector(idreference, &nc_2, nodeid_suid_map));
 
-
             const std::vector<suids::suid>& reachable_nodes_2 = p_mi_2->GetReachableNodes();
             CHECK_EQUAL(3, reachable_nodes_2.size());
             CHECK_EQUAL(1, reachable_nodes_2[0].data);
@@ -1190,7 +1188,6 @@ SUITE(MigrationTest)
             INodeContextFake nc_2(nodeid_suid_map.left.at(2));
             unique_ptr<IMigrationInfoVector> p_mi_2(vsp.p_migration_factory->CreateMigrationInfoVector(idreference, &nc_2, nodeid_suid_map));
 
-
             const std::vector<suids::suid>& reachable_nodes_2 = p_mi_2->GetReachableNodes();
             CHECK_EQUAL(6, reachable_nodes_2.size());
             CHECK_EQUAL(4, reachable_nodes_2[0].data);
@@ -1253,7 +1250,6 @@ SUITE(MigrationTest)
             // ---------------
             INodeContextFake nc_9(nodeid_suid_map.left.at(9));
             unique_ptr<IMigrationInfoVector> p_mi_9(vsp.p_migration_factory->CreateMigrationInfoVector(idreference, &nc_9, nodeid_suid_map));
-
 
             const std::vector<suids::suid>& reachable_nodes_9 = p_mi_9->GetReachableNodes();
             CHECK_EQUAL(6, reachable_nodes_9.size());
