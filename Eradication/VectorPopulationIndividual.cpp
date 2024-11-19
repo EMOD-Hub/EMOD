@@ -21,6 +21,7 @@
 #include "VectorToHumanAdapter.h"
 #include "NodeEventContext.h"
 #include "BroadcasterObserver.h"
+#include "MigrationInfoVector.h"
 
 SETUP_LOGGING("VectorPopulationIndividual")
 
@@ -832,7 +833,12 @@ namespace Kernel
     {
         release_assert(m_pMigrationInfoVector);
         release_assert(pMigratingQueue);
-
+        if( dynamic_cast<MigrationInfoNullVector*>( m_pMigrationInfoVector ) )
+        {
+            return;
+        }
+        
+        // migrating males only 
         VectorPopulation::Vector_Migration(dt, pMigratingQueue, true);
         
         // updating migration rates and migrating females
@@ -843,20 +849,19 @@ namespace Kernel
         }
         suids::suid current_node = m_context->GetSuid();
         m_pMigrationInfoVector->UpdateRates( current_node, get_SpeciesID(), p_vsc );
-
-        Gender::Enum human_gender_equivalent = m_pMigrationInfoVector->ConvertVectorGender( VectorGender::VECTOR_FEMALE );
-        float                     total_rate = m_pMigrationInfoVector->GetTotalRate( human_gender_equivalent );
-        const std::vector<float>& r_cdf      = m_pMigrationInfoVector->GetCumulativeDistributionFunction( human_gender_equivalent );
-
-        if( ( r_cdf.size() == 0 ) || ( total_rate == 0.0 ) )
+        m_pMigrationInfoVector->SetIndFemaleRates( 0 ); // updating m_TotalRateFemale and m_RateCDFFemale for generic migration
+        if( m_pMigrationInfoVector->GetMigrationAlleleCombinationsSize() == 1 )
         {
-            return; // no female vector migration
+            // if this is generic vector migration and total rate is 0, be done
+            if( m_pMigrationInfoVector->GetTotalRate( m_pMigrationInfoVector->ConvertVectorGender( VectorGender::VECTOR_FEMALE ) ) == 0 )
+            {
+                return;
+            }
         }
 
-        // vectors always female, updating ID inside loop just in case
+        // initializing these outside the loop to be updated inside
         VectorToHumanAdapter adapter( m_context, 0 ); 
 
-        // initializing these outside the loop, they are re-initialized just to be updated inside PickMigrationStep every time
         suids::suid         destination = suids::nil_suid();
         MigrationType::Enum mig_type    = MigrationType::NO_MIGRATION;
         float               time        = 0.0;
@@ -865,6 +870,18 @@ namespace Kernel
         for( auto it = pAdultQueues->begin(); it != pAdultQueues->end(); ++it )
         {
             adapter.SetVectorID( ( *it )->GetID() );
+            if( m_pMigrationInfoVector->GetMigrationAlleleCombinationsSize() > 1 )
+            {
+                // only do this if we actually have by gene migration happening
+                VectorGenome vc_genome = ( *it )->GetGenome();
+                int migration_data_index = GetMigrationDataIndex( vc_genome );
+                m_pMigrationInfoVector->SetIndFemaleRates( migration_data_index ); // updating m_TotalRateFemale and m_RateCDFFemale for these genes
+                if( m_pMigrationInfoVector->GetTotalRate( m_pMigrationInfoVector->ConvertVectorGender( vc_genome.GetGender() ) ) == 0 )
+                {
+                    continue;
+                }
+            }
+
             m_pMigrationInfoVector->PickMigrationStep( m_context->GetRng(), &adapter, 1.0, destination, mig_type, time, dt );
 
             // test if vector will migrate: no destination = no migration, also don't migrate to node you're already in

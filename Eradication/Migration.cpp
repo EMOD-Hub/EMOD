@@ -75,7 +75,7 @@ namespace Kernel
         // --- Ages that are outside the range given in the metadata file are capped
         // --- at either the first or last value regardless if it is interpolation or piecewise
         // ------------------------------------------------------------------------------------
-        float rate; // = 0.0;
+        float rate = 0; // = 0.0;
         if( ageYears <= first_age_years )
         {
             rate = first_rate;
@@ -541,7 +541,7 @@ namespace Kernel
                                 rRateData[ ig ].push_back( mrd );
                             }
                             else if( (rRateData[ ig ][ node_index ].GetToNodeSuid()      != to_node_id_suid) ||
-                                     (rRateData[ ig ][ node_index ].GetMigrationType() != m_MigrationType) )
+                                     (rRateData[ ig ][ node_index ].GetMigrationType()   != m_MigrationType) )
                             {
                                 std::stringstream ss;
                                 ss << "In file '" << m_Filename << "', the 'To' Node IDs are not the same for the Age Data sections for fromNodeId = " << fromNodeID;
@@ -642,7 +642,8 @@ static const char* NODE_OFFSETS          = "NodeOffsets";            // required
                     std::stringstream ss;
                     ss << metadata_filepath << "[" << METADATA << "][" << MD_MIGRATION_TYPE << "]";
                     throw IncoherentConfigurationException( __FILE__, __LINE__, __FUNCTION__, 
-                                                            "m_MigrationType", exp_mig_type_str.c_str(),
+                                                            "m_MigrationType", 
+                                                            exp_mig_type_str.c_str(),
                                                             ss.str().c_str(),
                                                             file_mig_type_str.c_str() );
                 }
@@ -659,6 +660,16 @@ static const char* NODE_OFFSETS          = "NodeOffsets";            // required
                 if( m_GenderDataType == -1 )
                 {
                     THROW_ENUM_EXCEPTION( GenderDataType, metadata_filepath, MD_GENDER_DATA_TYPE, gd_str )
+                }
+                else if( m_GenderDataType == GenderDataType::VECTOR_MIGRATION_BY_GENETICS )
+                {
+                    std::stringstream ss;
+                    ss << metadata_filepath << "[" << METADATA << "][" << MD_GENDER_DATA_TYPE << "] ";
+                    throw IncoherentConfigurationException( __FILE__, __LINE__, __FUNCTION__,
+                                                            "GenderDataType",
+                                                            gd_str.c_str(),
+                                                            ss.str().c_str(),
+                                                            " cannot use 'VECTOR_MIGRATION_BY_GENETICS' for human migration.");
                 }
             }
 
@@ -810,7 +821,7 @@ static const char* NODE_OFFSETS          = "NodeOffsets";            // required
     uint32_t MigrationInfoFile::GetNumGenderDataChunks() const
     {
         uint32_t num_gender_data_chunks; // = 1;
-        if( m_GenderDataType == GenderDataType::SAME_FOR_BOTH_GENDERS )
+        if( m_GenderDataType != GenderDataType::ONE_FOR_EACH_GENDER )
         {
             num_gender_data_chunks = 1; // genders use same data
         }

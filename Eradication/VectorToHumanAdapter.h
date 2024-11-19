@@ -18,12 +18,11 @@ namespace Kernel
         VectorToHumanAdapter( INodeContext* pNodeContext, uint32_t vectorID );
         virtual ~VectorToHumanAdapter();
 
-        virtual suids::suid GetSuid() const;
+        virtual suids::suid GetSuid()   const;
+        virtual double      GetAge()    const;
+        virtual int         GetGender() const;
         virtual void        SetVectorID( uint32_t new_id );
-        virtual INodeEventContext *GetNodeEventContext();
-        virtual double GetAge()              const;
-        virtual int    GetGender()           const;
-
+        virtual INodeEventContext* GetNodeEventContext();
 
         // The following throw an exception if used
         virtual const IIndividualHuman* GetIndividualHumanConst() const override;

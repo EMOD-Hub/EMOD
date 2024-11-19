@@ -303,7 +303,7 @@ namespace Kernel
         if( inputJson->Exist( "Spray_Kill_Target" ) )
         {
             throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__,
-                                             "'Spray_Kill_Target' is no longer supported.  Use 'InsecticideResistance'." );
+                                             "'Spray_Kill_Target' is no longer supported.  Use 'Insecticide.Resistances'." );
         }
         initConfigTypeMap("Spray_Coverage", &m_Coverage, Spray_Coverage_DESC_TEXT, 0.0f, 1.0f, 1.0f);
 
