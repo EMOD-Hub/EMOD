@@ -30,7 +30,6 @@ namespace Kernel
 
     MigrationInfoFileVector::~MigrationInfoFileVector()
     {
-        MigrationInfoFile::~MigrationInfoFile();
     }
 
    
