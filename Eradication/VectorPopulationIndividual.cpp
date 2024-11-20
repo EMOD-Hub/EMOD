@@ -849,6 +849,7 @@ namespace Kernel
         }
         suids::suid current_node = m_context->GetSuid();
         m_pMigrationInfoVector->UpdateRates( current_node, get_SpeciesID(), p_vsc );
+        m_pMigrationInfoVector->SetIndFemaleRates( 0 ); // setting for generic migration use
         if( m_pMigrationInfoVector->GetMigrationAlleleCombinationsSize() == 1 )
         {
             // if this is generic vector migration and total rate is 0, be done
