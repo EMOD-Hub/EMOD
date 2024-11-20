@@ -54,10 +54,34 @@ def CheckAgeArray( ages_years ):
         prev = age
 
 # -----------------------------------------------------------------------------
+# CheckAlleleCombinationsArray
+# -----------------------------------------------------------------------------
+def CheckAlleleCombinationsArray( allele_combinations ):
+    if len(allele_combinations) > 0:
+        if not allele_combinations[0] == []:
+            errmsg = JSON_AlleleCombinations + " must have [] as first entree when defined."
+            print(errmsg)
+            exit(-1)
+        for i in range(1, len(allele_combinations)):
+            errmsg = JSON_AlleleCombinations + f" expect an array or arrays in index {i} slot."
+            if not isinstance(allele_combinations[i], list):
+                print(errmsg)
+                exit(-1)
+            else:
+                for combo in allele_combinations[i]:
+                    if not isinstance(combo, list):
+                        print(errmsg)
+                        exit(-1)
+        print(f"Looks like we're doing {GDT_VECTOR_MIGRATION_BY_GENETICS}")
+
+
+
+# -----------------------------------------------------------------------------
 # GenderDataTypes
 # -----------------------------------------------------------------------------
-GDT_SAME_FOR_BOTH_GENDERS = "SAME_FOR_BOTH_GENDERS"
-GDT_ONE_FOR_EACH_GENDER   = "ONE_FOR_EACH_GENDER"
+GDT_SAME_FOR_BOTH_GENDERS    = "SAME_FOR_BOTH_GENDERS"
+GDT_ONE_FOR_EACH_GENDER      = "ONE_FOR_EACH_GENDER"
+GDT_VECTOR_MIGRATION_BY_GENETICS = "VECTOR_MIGRATION_BY_GENETICS"
 
 GenderDataTypes = []
 GenderDataTypes.append( GDT_SAME_FOR_BOTH_GENDERS )
@@ -120,17 +144,19 @@ def CheckMigrationType( mig_type ):
 # -----------------------------------------------------------------------------
 # NOTE: The indention below indicates where the tag is used in the JSON
 
-JSON_IdRef          = "IdReference"
-JSON_InterpType     = "Interpolation_Type"
-JSON_GenderDataType = "Gender_Data_Type"
-JSON_AgesYears      = "Ages_Years"
-JSON_NodeData       = "Node_Data"
+JSON_IdRef              = "IdReference"
+JSON_InterpType         = "Interpolation_Type"
+JSON_GenderDataType     = "Gender_Data_Type"
+JSON_AgesYears          = "Ages_Years"
+JSON_AlleleCombinations = "Allele_Combinations"
+JSON_NodeData           = "Node_Data"
 JSON_ND_FromNodeId      = "From_Node_ID"
 JSON_ND_RateData        = "Rate_Data"
 JSON_RD_ToNodeId            = "To_Node_ID"
 JSON_RD_RatesBoth           = "Avg_Num_Trips_Per_Day_Both"
 JSON_RD_RatesMale           = "Avg_Num_Trips_Per_Day_Male"
 JSON_RD_RatesFemale         = "Avg_Num_Trips_Per_Day_Female"
+
 
 # -----------------------------------------------------------------------------
 # CheckInJson
@@ -164,13 +190,30 @@ def ReadJson( json_fn ):
 
     CheckInterpolationType( json_data[ JSON_InterpType     ] )
     CheckGenderDataType(    json_data[ JSON_GenderDataType ] )
-    CheckAgeArray( json_data[ JSON_AgesYears ] )
+    CheckAgeArray(          json_data[ JSON_AgesYears ] )
+
 
     if( len( json_data[ JSON_NodeData ] ) == 0 ):
         print(f"{JSON_NodeData} has no elements so there would be no migration data.")
         exit(-1)
 
     num_ages = len( json_data[ JSON_AgesYears ] )
+    if JSON_AlleleCombinations in json_data and len(json_data[ JSON_AlleleCombinations ]) > 0:
+        CheckAlleleCombinationsArray(json_data[ JSON_AlleleCombinations ] )
+        num_alleles = len(json_data[ JSON_AlleleCombinations ])
+        if num_ages > 1 or json_data[ JSON_AgesYears ][0] < AGE_Max:
+            print(f"{JSON_AgesYears} is going to be ignored because {JSON_AlleleCombinations} is defined and valid. "
+                  f"This means this file will be for vector migration which does not have an age component.")
+        if json_data[ JSON_GenderDataType ] == GDT_ONE_FOR_EACH_GENDER:
+            print(f"{JSON_GenderDataType} with value {json_data[ JSON_GenderDataType ] } is not compatible with  "
+                  f" {GDT_VECTOR_MIGRATION_BY_GENETICS} which we are inferring because {JSON_AlleleCombinations} is "
+                  f"defined and valid.")
+            exit(-1)
+        else:
+            json_data[JSON_GenderDataType] = GDT_VECTOR_MIGRATION_BY_GENETICS
+        print(f" Replacing {JSON_AgesYears} with value {JSON_AlleleCombinations} for binary writing.")
+        json_data[JSON_AgesYears] = range(num_alleles)
+        num_ages = num_alleles # using the ages parameter as proxy
 
     for nd_data in json_data[ JSON_NodeData ]:
         CheckInJson( json_fn, nd_data, JSON_ND_FromNodeId )
@@ -191,7 +234,6 @@ def ReadJson( json_fn ):
                 CheckRatesSize( num_ages, rd_data, JSON_RD_RatesFemale )
             else:
                 CheckInJson( json_fn, rd_data, JSON_RD_RatesBoth )
-
                 CheckRatesSize( num_ages, rd_data, JSON_RD_RatesBoth )
 
     return json_data
@@ -297,7 +339,11 @@ def WriteMetadataFile( metadata_fn, mig_type, json_data, rate_data ):
     output_json["Metadata"]["MigrationType"      ] = mig_type
     output_json["Metadata"]["GenderDataType"     ] = json_data[ JSON_GenderDataType ]
     output_json["Metadata"]["InterpolationType"  ] = json_data[ JSON_InterpType ]
-    output_json["Metadata"]["AgesYears"          ] = json_data[ JSON_AgesYears ]
+    if JSON_AlleleCombinations in json_data and len(json_data[JSON_AlleleCombinations]) > 0:
+        output_json["Metadata"]["AlleleCombinations"] = json_data[ JSON_AlleleCombinations ]
+        output_json["Metadata"]["GenderDataType"]  = "VECTOR_MIGRATION_BY_GENETICS"
+    else:
+        output_json["Metadata"]["AgesYears"       ] = json_data[ JSON_AgesYears ]
     output_json["Metadata"]["NodeCount"          ] = rate_data.num_nodes
     output_json["NodeOffsets"] = rate_data.offset_str
 

@@ -1,0 +1,91 @@
+{
+    "Comment"            : "This migration file puts the females in the even nodes and the males in the odd nodes.",
+    "IdReference"        : "9-nodes", 
+    "Interpolation_Type" : "PIECEWISE_CONSTANT",
+    "Gender_Data_Type"   : "SAME_FOR_BOTH_GENDERS",
+    "Ages_Years"         : [ 125],
+    "Allele_Combinations":[
+            [],
+            [
+                [
+                    "X1",
+                    "Y2"
+                ]
+            ],
+            [
+                [
+                    "a1",
+                    "a1"
+                ],
+                [
+                    "b1",
+                    "b0"
+                ],
+                [
+                    "X1",
+                    "X1"
+                ]
+            ],
+            [
+                [
+                    "*",
+                    "a0"
+                ],
+                [
+                    "Y1",
+                    "X1"
+                ]
+            ],
+            [
+                [
+                    "a1",
+                    "a1"
+                ],
+                [
+                    "b1",
+                    "b1"
+                ]
+            ]
+        ],
+    "Node_Data" :
+    [
+        {
+            "From_Node_ID" : 5,
+            "Rate_Data" :
+            [
+                {
+                    "To_Node_ID"            : 1,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.1, 0.0, 0.00, 0.00, 0.00]
+                },
+                {
+                    "To_Node_ID"            : 2,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.1, 0.00, 0.00, 0.00]
+                },
+                                {
+                    "To_Node_ID"            : 3,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.00, 0.1, 0.0, 0.0]
+                },
+                {
+                    "To_Node_ID"            : 4,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.0, 0.0, 0.1, 0.0]
+                },
+                                {
+                    "To_Node_ID"            : 6,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.0, 0.0, 0.0, 0.1]
+                },
+                {
+                    "To_Node_ID"            : 7,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.1, 0.1, 0.0, 0.00, 0.00]
+                },
+                {
+                    "To_Node_ID"            : 8,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.1, 0.0, 0.1, 0.05, 0.01]
+                },
+                {
+                    "To_Node_ID"            : 9,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0, 0.1, 0, 0, 0.1]
+                }
+            ]
+        }
+    ]
+}
