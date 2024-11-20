@@ -375,7 +375,6 @@ namespace Kernel
                 }
             }
         }
-        SetIndFemaleRates( 0 ); // setting for generic migration use
     }
 
     const int MigrationInfoAgeAndGenderVector::GetMigrationAlleleCombinationsSize() const
@@ -634,7 +633,6 @@ namespace Kernel
                 m_fraction_traveling_female[index].push_back( prob * total_fraction_traveling );
             }
         }
-        SetIndFemaleRates( 0 ); // setting rates for generic migration use
     }
 
     float MigrationInfoAgeAndGenderVector::CalculateModifiedRate( const suids::suid& rNodeId,

@@ -233,7 +233,7 @@ SUITE(MigrationTest)
             // ---------------
             INodeContextFake nc_5( nodeid_suid_map.left.at( 5 ) );
             unique_ptr<IMigrationInfoVector> p_mi_5( vsp.p_migration_factory->CreateMigrationInfoVector( idreference, &nc_5, nodeid_suid_map ) );
-
+            p_mi_5->SetIndFemaleRates( 0 );
 
             //m_RandomFake.SetUL( 2576980377 ); // 0.6
             IndividualHumanContextFake traveler( nullptr, &nc_5, nullptr, nullptr );
@@ -956,6 +956,7 @@ SUITE(MigrationTest)
 
             INodeContextFake nc_1( nodeid_suid_map.left.at(1) ) ;
             unique_ptr<IMigrationInfoVector> p_mi( vsp.p_migration_factory->CreateMigrationInfoVector( idreference, &nc_1, nodeid_suid_map ) );
+            p_mi->SetIndFemaleRates( 0 );
 
             const std::vector<suids::suid>& reachable_nodes = p_mi->GetReachableNodes();
             CHECK_EQUAL( 2, reachable_nodes.size() );
@@ -971,6 +972,7 @@ SUITE(MigrationTest)
 
             INodeContextFake nc_9( nodeid_suid_map.left.at(9) ) ;
             unique_ptr<IMigrationInfoVector> p_mi_9( vsp.p_migration_factory->CreateMigrationInfoVector( idreference, &nc_9, nodeid_suid_map ) );
+            p_mi_9->SetIndFemaleRates( 0 );
 
             const std::vector<suids::suid>& reachable_nodes_9 = p_mi_9->GetReachableNodes();
             CHECK_EQUAL( 7, reachable_nodes_9.size() );
@@ -997,6 +999,8 @@ SUITE(MigrationTest)
 
              INodeContextFake nc_26( nodeid_suid_map.left.at(26) ) ;
             unique_ptr<IMigrationInfoVector> p_mi_26( vsp.p_migration_factory->CreateMigrationInfoVector( idreference, &nc_26, nodeid_suid_map ) );
+            p_mi_26->SetIndFemaleRates( 0 );
+
             CHECK( p_mi_26->GetReachableNodes().size() == 0 );
         }
         catch( DetailedException& re )
@@ -1036,6 +1040,7 @@ SUITE(MigrationTest)
             // ---------------
             INodeContextFake nc_5( nodeid_suid_map.left.at( 5 ) );
             unique_ptr<IMigrationInfoVector> p_mi_5( vsp.p_migration_factory->CreateMigrationInfoVector( idreference, &nc_5, nodeid_suid_map ) );
+            p_mi_5->SetIndFemaleRates( 0 );
 
             const std::vector<suids::suid>& reachable_nodes_5 = p_mi_5->GetReachableNodes();
             CHECK_EQUAL( 8, reachable_nodes_5.size() );
@@ -1188,6 +1193,7 @@ SUITE(MigrationTest)
             // ---------------
             INodeContextFake nc_2(nodeid_suid_map.left.at(2));
             unique_ptr<IMigrationInfoVector> p_mi_2(vsp.p_migration_factory->CreateMigrationInfoVector(idreference, &nc_2, nodeid_suid_map));
+            p_mi_2->SetIndFemaleRates( 0 );
 
             const std::vector<suids::suid>& reachable_nodes_2 = p_mi_2->GetReachableNodes();
             CHECK_EQUAL(3, reachable_nodes_2.size());
@@ -1256,6 +1262,7 @@ SUITE(MigrationTest)
             // ---------------
             INodeContextFake nc_9(nodeid_suid_map.left.at(9));
             unique_ptr<IMigrationInfoVector> p_mi_9(vsp.p_migration_factory->CreateMigrationInfoVector(idreference, &nc_9, nodeid_suid_map));
+            p_mi_9->SetIndFemaleRates( 0 );
 
             const std::vector<suids::suid>& reachable_nodes_9 = p_mi_9->GetReachableNodes();
             CHECK_EQUAL(2, reachable_nodes_9.size());
@@ -1358,6 +1365,7 @@ SUITE(MigrationTest)
             // ---------------
             INodeContextFake nc_2(nodeid_suid_map.left.at(2));
             unique_ptr<IMigrationInfoVector> p_mi_2(vsp.p_migration_factory->CreateMigrationInfoVector(idreference, &nc_2, nodeid_suid_map));
+            p_mi_2->SetIndFemaleRates( 0 );
 
             const std::vector<suids::suid>& reachable_nodes_2 = p_mi_2->GetReachableNodes();
             CHECK_EQUAL(6, reachable_nodes_2.size());
@@ -1421,6 +1429,7 @@ SUITE(MigrationTest)
             // ---------------
             INodeContextFake nc_9(nodeid_suid_map.left.at(9));
             unique_ptr<IMigrationInfoVector> p_mi_9(vsp.p_migration_factory->CreateMigrationInfoVector(idreference, &nc_9, nodeid_suid_map));
+            p_mi_9->SetIndFemaleRates( 0 );
 
             const std::vector<suids::suid>& reachable_nodes_9 = p_mi_9->GetReachableNodes();
             CHECK_EQUAL(6, reachable_nodes_9.size());
@@ -1520,7 +1529,7 @@ SUITE(MigrationTest)
             // ---------------
             INodeContextFake nc_2(nodeid_suid_map.left.at(2));
             unique_ptr<IMigrationInfoVector> p_mi_2(vsp.p_migration_factory->CreateMigrationInfoVector(idreference, &nc_2, nodeid_suid_map));
-
+            p_mi_2->SetIndFemaleRates( 0 );
 
             const std::vector<suids::suid>& reachable_nodes_2 = p_mi_2->GetReachableNodes();
             CHECK_EQUAL(6, reachable_nodes_2.size());
@@ -1584,7 +1593,7 @@ SUITE(MigrationTest)
             // ---------------
             INodeContextFake nc_9(nodeid_suid_map.left.at(9));
             unique_ptr<IMigrationInfoVector> p_mi_9(vsp.p_migration_factory->CreateMigrationInfoVector(idreference, &nc_9, nodeid_suid_map));
-
+            p_mi_9->SetIndFemaleRates( 0 );
 
             const std::vector<suids::suid>& reachable_nodes_9 = p_mi_9->GetReachableNodes();
             CHECK_EQUAL(6, reachable_nodes_9.size());
@@ -1818,6 +1827,17 @@ SUITE(MigrationTest)
             26,
             1,
             "testdata/MigrationTest/TestInvalidGenderDataType.bin.json[Metadata][GenderDataType] = 'XXX' is not a valid GenderDataType.  Valid values are: 'SAME_FOR_BOTH_GENDERS', 'ONE_FOR_EACH_GENDER'" );
+    }
+
+    TEST_FIXTURE( MigrationFixture, TestInvalidGenderDataTypeVectorOnly )
+    {
+        TestHelper_FactoryConfigureException(
+            __LINE__,
+            "testdata/MigrationTest/TestInvalidGenderDataTypeVectorOnly_config.json",
+            "Household-Scenario-Small",
+            26,
+            1,
+            "Variable or parameter 'GenderDataType' with value VECTOR_MIGRATION_BY_GENETICS is incompatible with variable or parameter 'testdata/MigrationTest/TestInvalidGenderDataTypeVectorOnly.bin.json[Metadata][GenderDataType] ' with value cannot use for human migration." );
     }
 
     TEST_FIXTURE(MigrationFixture, TestInvalidAgesYearsNotArray)
@@ -2078,27 +2098,6 @@ SUITE(MigrationTest)
             "Variable 'testdata/MigrationTest/TestDatavalueCountTooBig.bin.json[Metadata][DatavalueCount]' had value 999 which was inconsistent with range limit 100");
     }
 
-    TEST_FIXTURE(MigrationFixture, TestInvalidMigrationTypeAVector)
-    {
-        TestHelper_FactoryConfigureVectorException(
-            __LINE__,
-            "testdata/MigrationTest/TestInvalidMigrationTypeAVector_config.json",
-            "Household-Scenario-Small",
-            26,
-            1,
-            "Variable or parameter 'm_MigrationType' with value LOCAL_MIGRATION is incompatible with variable or parameter 'testdata/MigrationTest/TestInvalidMigrationTypeA.bin.json[Metadata][MigrationType]' with value SEA_MIGRATION. ");
-    }
-
-    TEST_FIXTURE(MigrationFixture, TestInvalidMigrationTypeBVector)
-    {
-        TestHelper_FactoryConfigureVectorException(
-            __LINE__,
-            "testdata/MigrationTest/TestInvalidMigrationTypeBVector_config.json",
-            "Household-Scenario-Small",
-            26,
-            1,
-            "testdata/MigrationTest/TestInvalidMigrationTypeB.bin.json[Metadata][MigrationType] = 'XXX' is not a valid MigrationType.  Valid values are: 'NO_MIGRATION', 'LOCAL_MIGRATION', 'AIR_MIGRATION', 'REGIONAL_MIGRATION', 'SEA_MIGRATION'");
-    }
 
     TEST_FIXTURE(MigrationFixture, TestInvalidGenderDataTypeVector)
     {
@@ -2111,60 +2110,6 @@ SUITE(MigrationTest)
             "testdata/MigrationTest/TestInvalidGenderDataType.bin.json[Metadata][GenderDataType] = 'XXX' is not a valid GenderDataType.  Valid values are: 'SAME_FOR_BOTH_GENDERS', 'ONE_FOR_EACH_GENDER'");
     }
 
-    TEST_FIXTURE(MigrationFixture, TestInvalidAgesYearsNotArrayVector)
-    {
-        TestHelper_FactoryConfigureVectorException(
-            __LINE__,
-            "testdata/MigrationTest/TestInvalidAgesYearsNotArrayVector_config.json",
-            "Household-Scenario-Small",
-            26,
-            1,
-            "testdata/MigrationTest/TestInvalidAgesYearsNotArray.bin.json[Metadata][AgesYears] must be an array of ages in years between 0 and 125 and must be in increasing order.");
-    }
-
-    TEST_FIXTURE(MigrationFixture, TestInvalidAgesYearsLessThanZeroVector)
-    {
-        TestHelper_FactoryConfigureVectorException(
-            __LINE__,
-            "testdata/MigrationTest/TestInvalidAgesYearsLessThanZeroVector_config.json",
-            "Household-Scenario-Small",
-            26,
-            1,
-            "testdata/MigrationTest/TestInvalidAgesYearsLessThanZero.bin.json[Metadata][AgesYears][0] = -1.  testdata/MigrationTest/TestInvalidAgesYearsLessThanZero.bin.json[Metadata][AgesYears] must be an array of ages in years between 0 and 125 and must be in increasing order.");
-    }
-
-    TEST_FIXTURE(MigrationFixture, TestInvalidAgesYearsGreaterThanMaxVector)
-    {
-        TestHelper_FactoryConfigureVectorException(
-            __LINE__,
-            "testdata/MigrationTest/TestInvalidAgesYearsGreaterThanMaxVector_config.json",
-            "Household-Scenario-Small",
-            26,
-            1,
-            "testdata/MigrationTest/TestInvalidAgesYearsGreaterThanMax.bin.json[Metadata][AgesYears][1] = 999.  testdata/MigrationTest/TestInvalidAgesYearsGreaterThanMax.bin.json[Metadata][AgesYears] must be an array of ages in years between 0 and 125 and must be in increasing order.");
-    }
-
-    TEST_FIXTURE(MigrationFixture, TestInvalidAgesYearsOrderVector)
-    {
-        TestHelper_FactoryConfigureVectorException(
-            __LINE__,
-            "testdata/MigrationTest/TestInvalidAgesYearsOrderVector_config.json",
-            "Household-Scenario-Small",
-            26,
-            1,
-            "testdata/MigrationTest/TestInvalidAgesYearsOrder.bin.json[Metadata][AgesYears] must be an array of ages in years between 0 and 125 and must be in increasing order.");
-    }
-
-    TEST_FIXTURE(MigrationFixture, TestInvalidInterpolationTypeVector)
-    {
-        TestHelper_FactoryConfigureVectorException(
-            __LINE__,
-            "testdata/MigrationTest/TestInvalidInterpolationTypeVector_config.json",
-            "Household-Scenario-Small",
-            26,
-            1,
-            "testdata/MigrationTest/TestInvalidInterpolationType.bin.json[Metadata][InterpolationType] = 'XXX' is not a valid InterpolationType.  Valid values are: 'LINEAR_INTERPOLATION', 'PIECEWISE_CONSTANT'");
-    }
 
     TEST_FIXTURE(MigrationFixture, TestInvalidOffsetVector)
     {
@@ -2188,16 +2133,6 @@ SUITE(MigrationTest)
             "testdata/MigrationTest/TestMetadataBadJsonA.bin.json: Failed to parse incoming text. Name of an object member must be a string");
     }
 
-    TEST_FIXTURE(MigrationFixture, TestMetadataBadJsonBVector)
-    {
-        TestHelper_FactoryConfigureVectorException(
-            __LINE__,
-            "testdata/MigrationTest/TestMetadataBadJsonBVector_config.json",
-            "Household-Scenario-Small",
-            26,
-            1,
-            "testdata/MigrationTest/TestMetadataBadJsonB.bin.json: The 'InterpolationType' element is not a 'String'.");
-    }
 
     TEST_FIXTURE(MigrationFixture, TestMetadataBadJsonCVector)
     {
@@ -2243,17 +2178,6 @@ SUITE(MigrationTest)
             "NodeId, 6, found in Local_Vector_Migration.bin, is not a node in the simulation.");
     }
 
-    TEST_FIXTURE(MigrationFixture, TestInvalidAgeDataSectionVector)
-    {
-        TestHelper_FactoryConfigureVectorException(
-            __LINE__,
-            "testdata/MigrationTest/TestInvalidAgeDataSectionVector_config.json",
-            "ABC",
-            4,
-            2,
-            "In file 'TestInvalidAgeDataSection.bin', the 'To' Node IDs are not the same for the Age Data sections for fromNodeId = 2");
-    }
-
     TEST_FIXTURE(MigrationFixture, TestInvalidOffsetValuesVector)
     {
         TestHelper_FactoryConfigureVectorException(
@@ -2263,16 +2187,5 @@ SUITE(MigrationTest)
             26,
             26,
             "I/O error while reading/writing. File name =  TestInvalidOffsetValues.bin.  \nInvalid 'NodeOffsets' in testdata/MigrationTest/TestInvalidOffsetValues.bin.json.\nNode ID=26 has an offset of 0xbadbeef but the '.bin' file size is expected to be 2496(0x9c0).");
-    }
-
-    TEST_FIXTURE(MigrationFixture, TestMultipleAgesVector)
-    {
-        TestHelper_FactoryConfigureVectorException(
-            __LINE__,
-            "testdata/MigrationTest/TestMultipleAgesVector_config.json",
-            "MigrationTest",
-            9,
-            1,
-            "Vector_Migration_Filename 3x3_Age_Local.bin contains more than one age bin for migration. Age-based migration is not implemented for vectors.");
     }
 }

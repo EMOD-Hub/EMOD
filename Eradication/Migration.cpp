@@ -669,7 +669,7 @@ static const char* NODE_OFFSETS          = "NodeOffsets";            // required
                                                             "GenderDataType",
                                                             gd_str.c_str(),
                                                             ss.str().c_str(),
-                                                            " cannot use 'VECTOR_MIGRATION_BY_GENETICS' for human migration.");
+                                                            "cannot use for human migration");
                 }
             }
 
