@@ -358,4 +358,3 @@ Time,ID,FromNodeID,ToNodeID,State,Species,Age,Population
 28,4137,5,6,STATE_ADULT,SillySkeeter,29,1
 28,4173,5,9,STATE_ADULT,SillySkeeter,29,1
 28,4191,5,3,STATE_ADULT,SillySkeeter,29,1
-30,4299,5,4,STATE_MALE,SillySkeeter,31,1

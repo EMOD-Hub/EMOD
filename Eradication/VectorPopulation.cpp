@@ -2748,7 +2748,7 @@ namespace Kernel
         {
             std::vector<std::vector<std::vector<std::string>>> allele_combinations = m_species_params->p_migration_factory->GetVMAlleleCombinations();
 
-            VectorGameteBitPair_t bit_mask;
+            VectorGameteBitPair_t              bit_mask;
             std::vector<VectorGameteBitPair_t> possible_genomes;
 
             // i (index) 0 is the "[]" in the file and is the default rate
@@ -2756,9 +2756,9 @@ namespace Kernel
             {
                 auto combo_strings = allele_combinations[i];
                 m_species_params->genes.ConvertAlleleCombinationsStrings( "Allele_Combinations",
-                    combo_strings,
-                    &bit_mask,
-                    &possible_genomes );
+                                                                          combo_strings,
+                                                                          &bit_mask,
+                                                                          &possible_genomes );
 
                 AlleleCombo new_ac( m_SpeciesIndex, bit_mask, possible_genomes );
                 std::pair<AlleleCombo, int> ac_pair( new_ac, i );
