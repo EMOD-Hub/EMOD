@@ -5,6 +5,7 @@
 #include "VectorContexts.h"
 #include "SimulationEnums.h"
 #include "IdmString.h"
+#include "NoCrtWarnings.h"
 
 SETUP_LOGGING( "MigrationInfoVector" )
 
