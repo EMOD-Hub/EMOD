@@ -1,5 +1,8 @@
 
 #include "stdafx.h"
+#ifndef WIN32
+#include <cxxabi.h>
+#endif
 
 #include "ReferenceTrackingEventCoordinatorTrackingConfig.h"
 #include "SimulationConfig.h"
