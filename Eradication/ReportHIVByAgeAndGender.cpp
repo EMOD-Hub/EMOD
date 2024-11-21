@@ -253,15 +253,18 @@ namespace Kernel
             // --- Read the Targeting_Config / AdditionalRestrictions array and configure
             // --- how many Targeting_Config stratification columns there will be.
             // ---------------------------------------------------------------------------
-            CreateAdditionalRestrictionsList( targeting_config._json,
-                                              "config.json",
-                                              "Report_HIV_ByAgeAndGender_Collect_Targeting_Config_Data",
-                                              additional_restrictions_list );
-            for( int i = 0; i < additional_restrictions_list.size(); ++i )
+            if( inputJson->Exist("Report_HIV_ByAgeAndGender_Collect_Targeting_Config_Data") )
             {
-                std::stringstream ss;
-                ss << DIM_TC << (i + 1);
-                dim_has_tc_list.push_back( ss.str() );
+                CreateAdditionalRestrictionsList( targeting_config._json,
+                                                  "config.json",
+                                                  "Report_HIV_ByAgeAndGender_Collect_Targeting_Config_Data",
+                                                  additional_restrictions_list );
+                for( int i = 0; i < additional_restrictions_list.size(); ++i )
+                {
+                    std::stringstream ss;
+                    ss << DIM_TC << (i + 1);
+                    dim_has_tc_list.push_back( ss.str() );
+                }
             }
 
             // ----------------------------------------------------------------------------------------------------------------------------
@@ -293,13 +296,6 @@ namespace Kernel
             throw FactoryCreateFromJsonException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }
         const json::Array& ar_array = json::QuickInterpreter(rJsonElement).As<json::Array>();
-
-        if( ar_array.Size() == 0 )
-        {
-            std::stringstream ss;
-            ss << "'ReportHIVByAgeAndGender' found zero elements in JSON for '" << parameterName << "' in <" << rDataLocation << ">.";
-            throw FactoryCreateFromJsonException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
-        }
 
         for( int idx = 0; idx < ar_array.Size(); ++idx )
         {
