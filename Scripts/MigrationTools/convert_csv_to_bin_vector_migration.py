@@ -75,7 +75,7 @@ def WriteMetadataFile(metadata):
     output_json = collections.OrderedDict([])
 
     output_json["Metadata"] = {}
-    output_json["Metadata"]["IdReference"] = id_ref
+    output_json["Metadata"]["IdReference"] = "temp_ref_id"
     output_json["Metadata"]["DateCreated"] = datetime.datetime.now().ctime()
     output_json["Metadata"]["Tool"] = os.path.basename(sys.argv[0])
     output_json["Metadata"]["DatavalueCount"] = metadata.max_destinations_per_node
@@ -207,12 +207,11 @@ def WriteBinFile(metadata):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
+    if len(sys.argv) != 2:
         ShowUsage()
         exit(0)
 
     filename_in = sys.argv[1]
-    id_ref = sys.argv[2]
 
     meta_data = MetaData()
 
