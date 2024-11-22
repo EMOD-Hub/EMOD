@@ -472,8 +472,8 @@
 #define Vector_Species_Params_DESC_TEXT "A list of JSON object where each object contains the parameters for a specific species of vectors."
 
 // mask reading/writing from/to serialized population file
-#define SerializationMask_Node_Read_DESC_TEXT   "A control that determines what data is read from the serialized file. If the control is set, the configuration file is used. For example, a value of 0 implies that the Larval Habitat data is read from the serialized file while a value of 16 implies that the habitats are configured using the data from the configuration file (i.e. config.json)."
-#define SerializationMask_Node_Write_DESC_TEXT  "A control that determines what data is written to the serialized file letting the user reduce the file size.  If the mask is set, the data of the masked module is not written to the file. For example, a value of 0 implies that the Larval Habitat data is written to the serialized file while a value of 16 implies that the habitats are not saved."
+#define SerializationMask_Node_Read_DESC_TEXT   "Currently not implemented. Please leave at 0."
+#define SerializationMask_Node_Write_DESC_TEXT  "Currently not implemented. Please leave at 0."
 #define Serialized_Population_Reading_Type_DESC_TEXT "Set to READ to enable reading from a serialized population file, set to NONE otherwise."
 #define Serialized_Population_Writing_Type_DESC_TEXT "The type of serialization to perform. NONE for no serialization, TIME to use definition from Serialization_Times, and TIMESTEP to use definition from Serialization_Time_Steps."
 
