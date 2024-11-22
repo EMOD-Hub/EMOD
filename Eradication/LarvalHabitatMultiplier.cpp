@@ -82,7 +82,7 @@ namespace Kernel
 
         if( !m_Multiplier.at( vht ).count( species ) )
         {
-            return 1.0f;
+            release_assert( false );
         }
         else
         {
