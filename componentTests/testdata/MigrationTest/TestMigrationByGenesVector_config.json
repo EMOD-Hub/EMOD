@@ -31,11 +31,11 @@
     "Transmission_Rate": 0.5,
     "Vector_Sugar_Feeding_Frequency": "VECTOR_SUGAR_FEEDING_NONE",
     
-    "Vector_Migration_Filename" : "3x3_Age_Local.bin",
+    "Vector_Migration_Filename" : "9_nodes_by_alleles.bin",
     "x_Vector_Migration" : 1,
 
     "Vector_Migration_Modifier_Equation" : "EXPONENTIAL",
-    "Vector_Migration_Food_Modifier" : 1.0,
-    "Vector_Migration_Habitat_Modifier" : 1.0,
-    "Vector_Migration_Stay_Put_Modifier" : 1.0
+    "Vector_Migration_Food_Modifier" : 0,
+    "Vector_Migration_Habitat_Modifier" : 0,
+    "Vector_Migration_Stay_Put_Modifier" : 0
 }

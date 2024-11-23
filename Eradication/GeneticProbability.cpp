@@ -242,6 +242,32 @@ namespace Kernel
         return !operator==( rThat );
     }
 
+    bool AlleleCombo::Compare( const AlleleCombo& rLeft, const AlleleCombo& rRight )
+    {
+        if( rLeft.GetNumLoci() < rRight.GetNumLoci() )
+        {
+            return true;
+        }
+        else if( rLeft.GetNumLoci() > rRight.GetNumLoci() )
+        {
+            return false;
+        }
+        else
+        {
+            if( rLeft.GetNumPossibleGenomes() == rRight.GetNumPossibleGenomes() )
+            {
+                // If they have the same number of possible genomes, we need some way to sort them so that the order
+                // is more consistent.  For example, we always want (a1,*) to come after (a0,*).
+                return ( rLeft.GetPossibleGenome( 0 ) < rRight.GetPossibleGenome( 0 ) );
+            }
+            else
+            {
+                // more possible genomes means more options so less specificity
+                return ( rLeft.GetNumPossibleGenomes() > rRight.GetNumPossibleGenomes() );
+            }
+        }
+    }
+
     bool AlleleCombo::IsNull() const
     {
         return (m_pAlleleCombo == nullptr);
@@ -1216,28 +1242,7 @@ namespace Kernel
 
     bool GeneticProbability::compareACP( const AlleleComboProbability& rLeft, const AlleleComboProbability& rRight )
     {
-        if( rLeft.GetAlleleCombo().GetNumLoci() < rRight.GetAlleleCombo().GetNumLoci() )
-        {
-            return true;
-        }
-        else if( rLeft.GetAlleleCombo().GetNumLoci() > rRight.GetAlleleCombo().GetNumLoci() )
-        {
-            return false;
-        }
-        else
-        {
-            if( rLeft.GetAlleleCombo().GetNumPossibleGenomes() == rRight.GetAlleleCombo().GetNumPossibleGenomes() )
-            {
-                // If they have the same number of possible genomes, we need some way to sort them so that the orde
-                // is more consistent.  For example, we always want (a1,*) to come after (a0,*).
-                return (rLeft.GetAlleleCombo().GetPossibleGenome( 0 ) < rRight.GetAlleleCombo().GetPossibleGenome( 0 ));
-            }
-            else
-            {
-                // more possible genomes means more options so less specificity
-                return (rLeft.GetAlleleCombo().GetNumPossibleGenomes() > rRight.GetAlleleCombo().GetNumPossibleGenomes());
-            }
-        }
+        return rLeft.GetAlleleCombo().Compare( rLeft.GetAlleleCombo(), rRight.GetAlleleCombo());
     }
 
     float GeneticProbability::AdditionOperation( float lhs, float rhs )

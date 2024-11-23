@@ -1,0 +1,130 @@
+{
+    "Default_Config_Path": "../../defaults/vector_default_config.json",
+    "parameters": {
+        "PRIMARY": {
+            "Config_Name": "139_Vector_Migration_By_Allele_Combinations_track_all",
+            "Geography": "MigrationTest",
+            "Custom_Individual_Events": [],
+            "Node_Grid_Size": 0.005,
+            "Custom_Reports_Filename": "custom_reports.json",
+            "Python_Script_Path": "SHARED",
+            "Run_Number": 1,
+            "Simulation_Timestep": 1,
+            "Simulation_Duration": 100,
+            "Enable_Vital_Dynamics": 0
+        },
+        "CLIMATE": {
+            "Base_Air_Temperature": 25.0,
+            "Climate_Model": "CLIMATE_CONSTANT",
+            "Enable_Climate_Stochasticity": 0
+        },
+        "DEMOGRAPHICS": {
+            "Enable_Demographics_Reporting": 0,
+            "Enable_Demographics_Initial": 1,
+            "Demographics_Filenames": [
+                "demographics_9_nodes.json"
+            ]
+        },
+        "HUMAN_MIGRATION": {
+            "Migration_Model": "NO_MIGRATION"
+        },
+        "VECTOR_PARAMS": {
+            "Enable_Vector_Aging": 0,
+            "Enable_Vector_Mortality": 1,
+            "Wolbachia_Mortality_Modification": 0.0,
+            "Human_Feeding_Mortality": 0.0,
+            "Vector_Sampling_Type": "TRACK_ALL_VECTORS",
+            "Vector_Species_Params": [
+                {
+                    "Name": "SillySkeeter",
+                    "Acquire_Modifier": 0.2,
+                    "Adult_Life_Expectancy": 10,
+                    "Male_Life_Expectancy": 10,
+                    "Anthropophily": 0.1,
+                    "Aquatic_Arrhenius_1": 84200000000,
+                    "Aquatic_Arrhenius_2": 8328,
+                    "Aquatic_Mortality_Rate": 0.1,
+                    "Days_Between_Feeds": 3,
+                    "Egg_Batch_Size": 100,
+                    "Genes": [
+                        {
+                            "Alleles": [
+                                {
+                                    "Initial_Allele_Frequency": 0.6,
+                                    "Is_Y_Chromosome": 0,
+                                    "Name": "X1"
+                                },
+                                {
+                                    "Initial_Allele_Frequency": 0.2,
+                                    "Is_Y_Chromosome": 1,
+                                    "Name": "Y1"
+                                },
+                                {
+                                    "Initial_Allele_Frequency": 0.2,
+                                    "Is_Y_Chromosome": 1,
+                                    "Name": "Y2"
+                                }
+                            ],
+                            "Is_Gender_Gene": 1,
+                            "Mutations": []
+                        },
+                        {
+                            "Alleles": [
+                                {
+                                    "Initial_Allele_Frequency": 0.4,
+                                    "Is_Y_Chromosome": 0,
+                                    "Name": "a0"
+                                },
+                                {
+                                    "Initial_Allele_Frequency": 0.6,
+                                    "Is_Y_Chromosome": 0,
+                                    "Name": "a1"
+                                }
+                            ],
+                            "Is_Gender_Gene": 0,
+                            "Mutations": []
+                        },
+                        {
+                            "Alleles": [
+                                {
+                                    "Initial_Allele_Frequency": 0.9,
+                                    "Is_Y_Chromosome": 0,
+                                    "Name": "b0"
+                                },
+                                {
+                                    "Initial_Allele_Frequency": 0.1,
+                                    "Is_Y_Chromosome": 0,
+                                    "Name": "b1"
+                                }
+                            ],
+                            "Is_Gender_Gene": 0,
+                            "Mutations": []
+                        }
+                    ],
+                    "Immature_Duration": 4,
+                    "Indoor_Feeding_Fraction": 0.5,
+                    "Infected_Arrhenius_1": 117000000000,
+                    "Infected_Arrhenius_2": 8336,
+                    "Infected_Egg_Batch_Factor": 0.8,
+                    "Infectious_Human_Feed_Mortality_Factor": 1.5,
+                    "Habitats": [
+                        {
+                            "Habitat_Type": "TEMPORARY_RAINFALL",
+                            "Max_Larval_Capacity": 11250000000.0
+                        }
+                    ],
+                    "Microsporidia": [],
+                    "Temperature_Dependent_Feeding_Cycle": "NO_TEMPERATURE_DEPENDENCE",
+                    "Transmission_Rate": 0.5,
+                    "Vector_Sugar_Feeding_Frequency": "VECTOR_SUGAR_FEEDING_NONE",
+                    "Vector_Migration_Filename": "9_nodes_by_alleles.bin",
+                    "x_Vector_Migration": 0.5,
+                    "Vector_Migration_Modifier_Equation": "LINEAR",
+                    "Vector_Migration_Food_Modifier": 0,
+                    "Vector_Migration_Habitat_Modifier": 0,
+                    "Vector_Migration_Stay_Put_Modifier": 0
+                }
+            ]
+        }
+    }
+}
