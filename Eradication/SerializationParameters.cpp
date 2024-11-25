@@ -148,15 +148,26 @@ std::deque<int32_t> SerializationParameters::ProcessConfig( std::vector<int32_t>
 
 void SerializationParameters::CheckSupportedFlags( SerializationBitMask_t serialization_mask, std::string& parameter ) const
 {
+    // Commenting it out for now so can be used later when we re-implement the bitmasking
+    // https://github.com/EMOD-Hub/EMOD/issues/65
+    // 
     // If a bit is set in serialization_mask and not in m_supportedFlags then this flag is not supported
-    const SerializationBitMask_t unsupported_flags = serialization_mask & ~m_supportedFlags;
+    //const SerializationBitMask_t unsupported_flags = serialization_mask & ~m_supportedFlags;
 
-    if( unsupported_flags != 0 )
+    //if( unsupported_flags != 0 )
+    //{
+    //    std::stringstream ss;
+    //    ss << "The flag " << unsupported_flags << " set with parameter '" << parameter << "' with value " << ( uint32_t )serialization_mask.to_ulong()
+    //        << "( " << serialization_mask << " ) is not supported. Currently only flags "
+    //        << m_supportedFlags << " ( " << m_supportedFlags.to_ulong() << " ) are supported.";
+    //    throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
+    //}
+
+    if( serialization_mask != 0 )
     {
         std::stringstream ss;
-        ss << "The flag " << unsupported_flags << " set with parameter '" << parameter << "' with value " << ( uint32_t )serialization_mask.to_ulong()
-            << "( " << serialization_mask << " ) is not supported. Currently only flags "
-            << m_supportedFlags << " ( " << m_supportedFlags.to_ulong() << " ) are supported.";
+        ss << "Currently, no flags are supported for 'Serialization_Mask_Node_Read' or 'Serialization_Mask_Node_Write' parameters."
+            << " Please leave these parameters set to 0.";
         throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
     }
 }
