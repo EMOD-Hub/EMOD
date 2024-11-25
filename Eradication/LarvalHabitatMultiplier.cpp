@@ -75,19 +75,9 @@ namespace Kernel
 
     float LarvalHabitatMultiplier::GetMultiplier( VectorHabitatType::Enum vht, const std::string& species ) const
     {
-        if( !m_Multiplier.count( vht ) )
-        {
-            release_assert( false );
-        }
-
-        if( !m_Multiplier.at( vht ).count( species ) )
-        {
-            release_assert( false );
-        }
-        else
-        {
-            return m_Multiplier.at( vht ).at( species );
-        }
+        release_assert( m_Multiplier.count( vht ) > 0 );
+        release_assert( m_Multiplier.at( vht ).count( species ) > 0 );
+        return m_Multiplier.at( vht ).at( species );
     }
 
     void LarvalHabitatMultiplier::SetMultiplier( VectorHabitatType::Enum vht, float multiplier )

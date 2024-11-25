@@ -285,7 +285,7 @@ SUITE(SerializationParametersTest)
     TEST_FIXTURE( SerializationParametersFixture, TestErrorUnsupportedWriteMask )
     {
         TestHelper_ConfigureException( __LINE__, "testdata/SerializationParametersTest/TestErrorUnsupportedWriteMask.json",
-            "InvalidInputDataException", "'Serialization_Mask_Node_Write' with value" );
+            "InvalidInputDataException", "Currently, no flags are supported for 'Serialization_Mask_Node_Read' or 'Serialization_Mask_Node_Write' parameters. Please leave these parameters set to 0." );
     }
 
     TEST_FIXTURE( SerializationParametersFixture, TestErrorMsgMPINumTasks )
@@ -304,6 +304,6 @@ SUITE(SerializationParametersTest)
     TEST_FIXTURE( SerializationParametersFixture, TestErrorUnsupportedReadMask )
     {
         TestHelper_ConfigureException( __LINE__, "testdata/SerializationParametersTest/TestErrorUnsupportedReadMask.json",
-            "InvalidInputDataException", "'Serialization_Mask_Node_Read' with value" );
+            "InvalidInputDataException", "Currently, no flags are supported for 'Serialization_Mask_Node_Read' or 'Serialization_Mask_Node_Write' parameters. Please leave these parameters set to 0." );
     }
 }

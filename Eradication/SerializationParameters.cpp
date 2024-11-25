@@ -149,6 +149,8 @@ std::deque<int32_t> SerializationParameters::ProcessConfig( std::vector<int32_t>
 void SerializationParameters::CheckSupportedFlags( SerializationBitMask_t serialization_mask, std::string& parameter ) const
 {
     // Commenting it out for now so can be used later when we re-implement the bitmasking
+    // https://github.com/EMOD-Hub/EMOD/issues/65
+    // 
     // If a bit is set in serialization_mask and not in m_supportedFlags then this flag is not supported
     //const SerializationBitMask_t unsupported_flags = serialization_mask & ~m_supportedFlags;
 
