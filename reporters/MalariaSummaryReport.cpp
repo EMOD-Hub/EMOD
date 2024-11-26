@@ -342,6 +342,7 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
 // ----------------------------------------
 
     BEGIN_QUERY_INTERFACE_BODY( MalariaSummaryReport )
+        HANDLE_INTERFACE( IReportMalariaDiagnostics )
         HANDLE_INTERFACE( IConfigurable )
         HANDLE_INTERFACE( IReport )
         HANDLE_ISUPPORTS_VIA( IReport )
@@ -358,6 +359,9 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
                                          new ReportIntervalData(),
                                          false, //use Age_Bins and not Min/Max ages
                                          true ) //use IP and Intervetion filters
+        , use_true_density(false)
+        , gametocyte_detection_threshold(0.0)
+        , detection_thresholds()
         , ages()
         , m_pReportData(nullptr)
         , annual_EIRs()
@@ -406,6 +410,9 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
 
     bool MalariaSummaryReport::Configure( const Configuration * inputJson )
     {
+        initConfigTypeMap("Use_True_Density_Vs_Threshold", &use_true_density, MSR_Use_True_Density_Vs_Threshold_DESC_TEXT, false );
+        initConfigTypeMap("Detection_Threshold_True_Gametocyte_Density", &gametocyte_detection_threshold, MSR_Detection_Threshold_True_Gametocyte_Density_DESC_TEXT, 0.0f, FLT_MAX, 0.0f, "Use_True_Density_Vs_Threshold" );
+
         initConfigTypeMap("Age_Bins",            &ages,          Report_Age_Bins_DESC_TEXT,             0.0f, MAX_HUMAN_AGE, true );
         initConfigTypeMap("Parasitemia_Bins",    &PfPRbins,      MSR_Parasitemia_Bins_DESC_TEXT,    -FLT_MAX,       FLT_MAX, true );
         initConfigTypeMap("Infectiousness_Bins", &Infectionbins, MSR_Infectiousness_Bins_DESC_TEXT,     0.0f,         100.0, true );
@@ -473,6 +480,11 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
         // fix the event to EveryUpdate instead of letting the user specify it.
         eventTriggerList.push_back( EventTrigger::EveryUpdate );
         eventTriggerList.push_back( EventTrigger::NewInfectionEvent );
+    }
+
+    void MalariaSummaryReport::SetDetectionThresholds( const std::vector<float>& rDetectionThresholds )
+    {
+        detection_thresholds = rDetectionThresholds;
     }
 
     void MalariaSummaryReport::Initialize( unsigned int nrmSize )
@@ -582,16 +594,29 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
         // push back today's disease variables for infected individuals
         if ( context->IsInfected() )
         {
-            float parasite_count = individual_malaria->GetDiagnosticMeasurementForReports( MalariaDiagnosticType::BLOOD_SMEAR_PARASITES );
-            if (parasite_count > 0)
+            float measured_parasite_count = individual_malaria->GetDiagnosticMeasurementForReports( MalariaDiagnosticType::BLOOD_SMEAR_PARASITES );
+            float true_parasite_density   = susceptibility_malaria->get_parasite_density();
+            float true_gametocyte_density = individual_malaria->GetGametocyteDensity();
+
+            release_assert( detection_thresholds.size() == MalariaDiagnosticType::pairs::count() );
+
+            if( ( use_true_density && (true_parasite_density   > detection_thresholds[ MalariaDiagnosticType::TRUE_PARASITE_DENSITY ] )) ||
+                (!use_true_density && (measured_parasite_count > 0.0)) )
             {
+                float parasite_density = true_parasite_density;
+                if( !use_true_density && (measured_parasite_count > 0.0) )
+                {
+                    parasite_density = measured_parasite_count;
+                }
+
+
                 if(is2to10)
                 {
                     m_pReportData->sum_parasite_positive_2to10 += mc_weight;
                 }
                 m_pReportData->sum_parasite_positive_by_agebin.at(agebin) += mc_weight;
 
-                float log10_parasite_count = log10(parasite_count);
+                float log10_parasite_count = log10(parasite_density);
 #if defined(_WIN32)
                 if( !( _isnanf ( log10_parasite_count ) ) && _finitef( log10_parasite_count ) )
 #else
@@ -602,26 +627,24 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
                 }
             }
 
-            int PfPRbin = ReportUtilities::GetBinIndex( susceptibility_malaria->get_parasite_density(), PfPRbins );
+            int PfPRbin = ReportUtilities::GetBinIndex( true_parasite_density, PfPRbins );
             m_pReportData->sum_binned_PfPR_by_agebin.at(PfPRbin).at(agebin) += mc_weight;
 
-            float gametocyte_count = individual_malaria->GetGametocyteDensity();
-            int PfgamPRbin = ReportUtilities::GetBinIndex( gametocyte_count, PfPRbins );
+            int PfgamPRbin = ReportUtilities::GetBinIndex( true_gametocyte_density, PfPRbins );
             m_pReportData->sum_binned_PfgamPR_by_agebin.at(PfgamPRbin).at(agebin) += mc_weight;
 
-            gametocyte_count = individual_malaria->GetDiagnosticMeasurementForReports( MalariaDiagnosticType::BLOOD_SMEAR_GAMETOCYTES );
-            if (gametocyte_count > 0.02)
+            float measured_gametocyte_count = individual_malaria->GetDiagnosticMeasurementForReports( MalariaDiagnosticType::BLOOD_SMEAR_GAMETOCYTES );
+            if( ( use_true_density && (true_gametocyte_density   > gametocyte_detection_threshold)) ||
+                (!use_true_density && (measured_gametocyte_count > 0.02                          )) )
             {
                 m_pReportData->sum_gametocyte_positive_by_agebin.at(agebin) += mc_weight;
             }
 
             // Log-normal smearing from True density
-            float true_asexual_density = susceptibility_malaria->get_parasite_density();
-            float true_asexual_density_smeared = ReportUtilitiesMalaria::NASBADensityWithUncertainty( m_pRNG, true_asexual_density );
+            float true_asexual_density_smeared = ReportUtilitiesMalaria::NASBADensityWithUncertainty( m_pRNG, true_parasite_density );
             int PfPRbin_true_smeared = ReportUtilities::GetBinIndex( true_asexual_density_smeared, PfPRbins );
             m_pReportData->sum_binned_PfPR_by_agebin_true_smeared.at(PfPRbin_true_smeared).at(agebin) += mc_weight;
 
-            float true_gametocyte_density = individual_malaria->GetGametocyteDensity();
             float true_gametocyte_density_smeared = ReportUtilitiesMalaria::NASBADensityWithUncertainty( m_pRNG, true_gametocyte_density );
             int PfgamPRbin_true_smeared = ReportUtilities::GetBinIndex( true_gametocyte_density_smeared, PfPRbins );
             m_pReportData->sum_binned_PfgamPR_by_agebin_true_smeared.at(PfgamPRbin_true_smeared).at(agebin) += mc_weight;
@@ -629,12 +652,10 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
 
             // Smearing from fields of view
             int positive_asexual_fields = 0;
-            float parasite_density = susceptibility_malaria->get_parasite_density();
-            ReportUtilitiesMalaria::CountPositiveSlideFields( m_pRNG, parasite_density, 200, 1.0f / 400, positive_asexual_fields );
+            ReportUtilitiesMalaria::CountPositiveSlideFields( m_pRNG, true_parasite_density, 200, 1.0f / 400, positive_asexual_fields );
 
             int positive_gametocyte_fields = 0;
-            float gametocyte_density = individual_malaria->GetGametocyteDensity();
-            ReportUtilitiesMalaria::CountPositiveSlideFields( m_pRNG, gametocyte_density, 200, 1.0f / 400, positive_gametocyte_fields );
+            ReportUtilitiesMalaria::CountPositiveSlideFields( m_pRNG, true_gametocyte_density, 200, 1.0f / 400, positive_gametocyte_fields );
 
             float uL_per_field = float(0.5) / float(200.0);
 

@@ -72,6 +72,33 @@
             ]
         },
         {
+            "class": "MalariaSummaryReport",
+            "Filename_Suffix": "GH-66",
+            "Start_Day": 0,
+            "End_Day": 10000,
+            "Node_IDs_Of_Interest": [],
+            "Must_Have_IP_Key_Value": "",
+            "Must_Have_Intervention": "",
+            "Pretty_Format": 1,
+            "Max_Number_Reports": 15,
+            "Reporting_Interval": 73,
+            "Use_True_Density_Vs_Threshold": 1,
+            "Detection_Threshold_True_Gametocyte_Density": 1.0,
+            "Age_Bins": [
+                10,
+                20,
+                30,
+                40,
+                50,
+                60,
+                70,
+                80,
+                90,
+                100,
+                125
+            ]
+        },
+        {
             "class": "MalariaSurveyJSONAnalyzer",
             "Filename_Suffix": "Day0",
             "Start_Day": 0,

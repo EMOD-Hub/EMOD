@@ -6,6 +6,7 @@
 #include <string>
 
 #include "BaseEventReportIntervalOutput.h"
+#include "IReportMalariaDiagnostics.h"
 
 #ifndef _REPORT_DLL
 #include "ReportFactory.h"
@@ -71,6 +72,7 @@ namespace Kernel
 
 
     class MalariaSummaryReport : public BaseEventReportIntervalOutput
+                               , public IReportMalariaDiagnostics
     {
 #ifndef _REPORT_DLL
         DECLARE_FACTORY_REGISTERED( ReportFactory, MalariaSummaryReport, IReport )
@@ -90,12 +92,18 @@ namespace Kernel
         virtual bool notifyOnEvent(IIndividualHumanEventContext *context, const EventTrigger& trigger) override;
         virtual void EndTimestep(float currentTime, float dt) override;
 
+        // IReportMalariaDiagnostics
+        virtual void SetDetectionThresholds( const std::vector<float>& rDetectionThresholds ) override;
+
     protected:
         // BaseEventReportIntervalOutput
         virtual void ConfigureEvents( const Configuration* ) override;
         virtual void AccumulateOutput() override;
         virtual void SerializeOutput(float currentTime, IJsonObjectAdapter& output, JSerializer& js) override;
 
+        bool use_true_density;
+        float gametocyte_detection_threshold;
+        std::vector<float> detection_thresholds;
         std::vector<float> ages;
         std::vector<float> PfPRbins;
         std::vector<float> Infectionbins;
