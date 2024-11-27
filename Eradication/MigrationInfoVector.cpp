@@ -667,7 +667,7 @@ namespace Kernel
             // avoiding dealing with cdf back-calculations that introduce float issues
             // because NormalizeRates forces last value = 1 to avoid float issues in cdf
             m_FractionTravelingFemaleByIndex[index].clear();
-
+            // m_TotalRateFemaleByIndex[index] never 0 here, because returns if = 0 earlier
             float total_fraction_traveling = 1.0 - exp( -1.0 * m_TotalRateFemaleByIndex[index] );  // preserve absolute fraction traveling
             for( float rawRate : m_RateCDFFemaleByIndex[index] )
             {
