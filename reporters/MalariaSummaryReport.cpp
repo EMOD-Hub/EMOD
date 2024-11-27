@@ -751,15 +751,21 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
 
     void MalariaSummaryReport::AccumulateOutput()
     {
-        LOG_INFO_F("Aggregating output on reporting interval of %d days\n", (int)m_reporting_interval);
+        LOG_INFO_F("Aggregating output on reporting interval of %d days\n", (int)m_interval_timer);
         time_of_report.push_back( m_current_time );
 
         // ---------------------------------------------------------------------------------------------
         // --- sum_EIR is sum of EIR at each time step of the reporting interval.
         // --- Dividing by the reporting interval gets us the average EIR per time step (i.e. per day).
         // --- Multiplying by 365 (days/year) gives us the average EIR per year.
+        // ---
+        // --- m_interval_timer = m_reporting_interval if we collected data each data of the reporting
+        // --- interval.  If we have not, m_interval_timer will be the actual number of days that the
+        // --- report collected data for.  For example, if we did 12 reports of 30 days (reporting interval)
+        // --- and stopped collectiong data at 365, we'd have one more report of 5 days and the data would
+        // --- be divided by 30 instead of 5.  Hence, use m_interval_timer.
         // ---------------------------------------------------------------------------------------------
-        annual_EIRs.push_back( 365.0 * m_pReportData->sum_EIR / m_reporting_interval );
+        annual_EIRs.push_back( 365.0 * m_pReportData->sum_EIR / m_interval_timer );
 
         if( m_pReportData->sum_population_2to10 > 0 )
         {
@@ -820,7 +826,7 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
 
         for(int i = 0; i<ages.size(); i++)
         {
-            average_population.push_back(m_pReportData->sum_population_by_agebin.at(i) * 1.0/m_reporting_interval);
+            average_population.push_back(m_pReportData->sum_population_by_agebin.at(i) * 1.0/m_interval_timer);
             new_infections.push_back( m_pReportData->sum_new_infection_by_agebin.at( i ) );
             if( m_pReportData->sum_population_by_agebin.at(i) > 0)
             {
@@ -955,7 +961,7 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
             }
         }
 
-        fraction_under_1pct_infected.push_back( sum_days_under_1pct_infected / m_reporting_interval );
+        fraction_under_1pct_infected.push_back( sum_days_under_1pct_infected / m_interval_timer );
     }
 
     void MalariaSummaryReport::SerializeOutput( float currentTime, IJsonObjectAdapter& output, JSerializer& js )
