@@ -97,7 +97,7 @@
 #define RISM_Include_Data_Threshold_Gametocytes_DESC_TEXT "If the column is included and the number of gametocytes related to this infection are greater than or equal to this value, then the row of data will be included."
 
 #define RVM_Must_Be_In_State_DESC_TEXT "A list of vector states for which you want to record the migration. Only STATE_MALE, STATE_ADULT, STATE_INFECTED, STATE_INFECTIOUS migrate."
-#define RVM_Must_Be_From_Node_DESC_TEXT "A list of node IDs. A vector must be travelling FROM one of these nodes to be recorded into the report. Empty list means vectors traveling from any/all nodes will be recorded."
-#define RVM_Must_Be_To_Node_DESC_TEXT "A list of node IDs. A vector must be travelling TO one of these nodes to be recorded into the report. Empty list means vectors traveling to any/all nodes will be recorded."
+#define RVM_Must_Be_From_Node_DESC_TEXT "A list of node IDs. A vector must be traveling FROM one of these nodes to be recorded into the report. Empty list means vectors traveling from any/all nodes will be recorded."
+#define RVM_Must_Be_To_Node_DESC_TEXT "A list of node IDs. A vector must be traveling TO one of these nodes to be recorded into the report. Empty list means vectors traveling to any/all nodes will be recorded."
 #define RVM_Include_Genome_Data_DESC_TEXT "If set to true (1), adds a Genome column for migrating vectors. Vectors with no custom alleles will still have their sex alleles listed."
 
