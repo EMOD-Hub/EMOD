@@ -75,7 +75,7 @@ namespace Kernel
         // --- Ages that are outside the range given in the metadata file are capped
         // --- at either the first or last value regardless if it is interpolation or piecewise
         // ------------------------------------------------------------------------------------
-        float rate = 0; // = 0.0;
+        float rate = 0; 
         if( ageYears <= first_age_years )
         {
             rate = first_rate;
@@ -817,7 +817,7 @@ static const char* NODE_OFFSETS          = "NodeOffsets";            // required
     uint32_t MigrationInfoFile::GetNumGenderDataChunks() const
     {
         uint32_t num_gender_data_chunks; // = 1;
-        if( m_GenderDataType != GenderDataType::ONE_FOR_EACH_GENDER )
+        if( m_GenderDataType == GenderDataType::SAME_FOR_BOTH_GENDERS )
         {
             num_gender_data_chunks = 1; // genders use same data
         }

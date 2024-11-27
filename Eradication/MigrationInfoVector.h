@@ -32,7 +32,7 @@ namespace Kernel
                                  int defaultDestinationsPerNode );
         virtual ~MigrationInfoFileVector();
 
-        std::vector<std::pair<AlleleCombo, int>>& GetAlleleComboMapList() { return m_allele_combos_index_map_list; }
+        const std::vector<std::pair<AlleleCombo, int>>& GetAlleleComboMapList() { return m_allele_combos_index_map_list; }
         void SetSpeciesParameters( const VectorSpeciesParameters* pSpeciesParameters ){ m_pSpeciesParameters = pSpeciesParameters; }
 
 
@@ -67,6 +67,7 @@ namespace Kernel
         };
         virtual const std::vector<float>& GetFractionTraveling( VectorGender::Enum vector_gender, int by_genome_index ) 
         {  
+            static std::vector<float> fraction_traveling;
             return fraction_traveling;
         };
         virtual bool                     CanTravel() { return false; }
@@ -82,7 +83,6 @@ namespace Kernel
 
         MigrationInfoNullVector();
         virtual ~MigrationInfoNullVector();
-        std::vector<float> fraction_traveling;
     };
 
     // ----------------------------------

@@ -315,7 +315,6 @@ namespace Kernel
 
     MigrationInfoNullVector::MigrationInfoNullVector()
     : MigrationInfoNull()
-    , fraction_traveling()
     {
     }
 
