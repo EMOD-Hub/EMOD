@@ -823,9 +823,9 @@ static const char* NODE_OFFSETS          = "NodeOffsets";            // required
     uint32_t MigrationInfoFile::GetNumGenderDataChunks() const
     {
         uint32_t num_gender_data_chunks; // = 1;
-        if( m_GenderDataType == GenderDataType::SAME_FOR_BOTH_GENDERS )
+        if( m_GenderDataType != GenderDataType::ONE_FOR_EACH_GENDER )
         {
-            num_gender_data_chunks = 1; // genders use same data
+            num_gender_data_chunks = 1; // genders use same data, including VECTOR_MIGRATION_BY_GENETICS
         }
         else
         {
