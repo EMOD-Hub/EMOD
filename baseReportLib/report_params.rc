@@ -101,3 +101,6 @@
 #define RVM_Must_Be_To_Node_DESC_TEXT "A list of node IDs. A vector must be travelling TO one of these nodes to be recorded into the report. Empty list means vectors traveling to any/all nodes will be recorded."
 #define RVM_Include_Genome_Data_DESC_TEXT "If set to true (1), adds a Genome column for migrating vectors. Vectors with no custom alleles will still have their sex alleles listed."
 
+#define MSR_Use_True_Density_Vs_Threshold_DESC_TEXT "If set to true, the true parasite/gametocyte density will be used instead of the microscopy measurement for the following channels: 'PfPR_2to10', 'PfPR by Age Bin', 'Pf Gametocyte Prevalence by Age Bin', and 'Mean Log Parasite Density by Age Bin'.  The true density will be compared to thresholds: config.Report_Detection_Threshold_True_Parasite_Density and MalariaSummaryReport.Detection_Threshold_True_Gametocyte_Density.  If false, then BLOOD_SMEAR_PARASITES/BLOOD_SMEAR_GAMETOCYTES measurements are used (have uncertainty in the measurement).  The parsite measurement is compared against a threshold of zero and the gametocyte measurement a threshold of 0.02."
+#define MSR_Detection_Threshold_True_Gametocyte_Density_DESC_TEXT "Used when 'Use_True_Density_Vs_Threshold' is true.  The true gametocyte density is compared against this threshold.  It impacts the 'Pf Gametocyte Prevalence by Age Bin' channel."
+

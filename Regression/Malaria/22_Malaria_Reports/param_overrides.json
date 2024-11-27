@@ -105,7 +105,8 @@
             "Adult_Vectors",
             "PCR_Parasite_Prevalence", 
             "New_Clinical_Cases"
-        ]
+        ],
+        "Report_Detection_Threshold_True_Parasite_Density": 40.0
     },
     "PRIMARY": {
         "Config_Name": "22_Malaria_Reports",
