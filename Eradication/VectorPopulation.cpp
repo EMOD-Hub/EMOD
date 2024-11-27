@@ -16,7 +16,6 @@
 #include "VectorCohort.h"
 #include "StrainIdentity.h"
 #include "IMigrationInfoVector.h"
-#include "MigrationInfoVector.h"
 #include "RANDOM.h"
 #include <numeric>
 
@@ -2734,62 +2733,12 @@ namespace Kernel
         return selected_indexes;
     }
 
-    bool VectorPopulation::AlleleComboIntCompare( const std::pair<AlleleCombo, int>& rLeft, const std::pair<AlleleCombo, int>& rRight )
-    {
-        return rLeft.first.Compare( rLeft.first, rRight.first );
-    }
+
 
     void VectorPopulation::SetupMigration( const std::string& idreference, 
                                            const boost::bimap<ExternalNodeId_t, suids::suid>& rNodeIdSuidMap )
     {
-        m_pMigrationInfoVector = m_species_params->p_migration_factory->CreateMigrationInfoVector( idreference, m_context, rNodeIdSuidMap );
-
-        if( m_pMigrationInfoVector->GetMigrationAlleleCombinationsSize() > 1 )
-        {
-            std::vector<std::vector<std::vector<std::string>>> allele_combinations = m_species_params->p_migration_factory->GetVMAlleleCombinations();
-
-            VectorGameteBitPair_t              bit_mask;
-            std::vector<VectorGameteBitPair_t> possible_genomes;
-
-            // i (index) 0 is the "[]" in the file and is the default rate
-            for( int i = 1; i < allele_combinations.size(); i++ )
-            {
-                auto combo_strings = allele_combinations[i];
-                m_species_params->genes.ConvertAlleleCombinationsStrings( "Allele_Combinations",
-                                                                          combo_strings,
-                                                                          &bit_mask,
-                                                                          &possible_genomes );
-
-                AlleleCombo new_ac( m_SpeciesIndex, bit_mask, possible_genomes );
-                std::pair<AlleleCombo, int> ac_pair( new_ac, i );
-                m_allele_combos_index_map_list.push_back( ac_pair );
-            }
-
-            std::sort( m_allele_combos_index_map_list.begin(), m_allele_combos_index_map_list.end(), AlleleComboIntCompare );
-        }
-
-    }
-
-    int VectorPopulation::GetMigrationDataIndex( VectorGenome vc_genome )
-    {       
-        // -----------------------------------------------------------------------------
-        // --- This assumes that the combos are sorted such that the most specific
-        // --- combos are at the end of the list.  We try the more specific ones first
-        // --- so that if the combos have stuff in common, we'll take those first and
-        // --- the combos with less in common later.
-        // --- If the genome does not match any of these, defaut rate at index = 0 is used
-        // -----------------------------------------------------------------------------
-        int migration_data_index = 0;
-        for( int i = m_allele_combos_index_map_list.size() - 1; i >= 0; --i )
-        {
-            const std::pair<AlleleCombo, int> ac_pair = m_allele_combos_index_map_list[i];
-            if( ac_pair.first.HasAlleles( m_SpeciesIndex, vc_genome ) )
-            {
-                migration_data_index = ac_pair.second;
-                break;
-            }
-        }
-        return migration_data_index;
+        m_pMigrationInfoVector = m_species_params->p_migration_factory->CreateMigrationInfoVector( idreference, m_context, rNodeIdSuidMap, m_species_params );
     }
 
 
@@ -2797,7 +2746,7 @@ namespace Kernel
     {
         release_assert( m_pMigrationInfoVector );
         release_assert( pMigratingQueue );
-        if( dynamic_cast<MigrationInfoNullVector*>( m_pMigrationInfoVector ) )
+        if( !m_pMigrationInfoVector->CanTravel() )
         {
             return;
         }
@@ -2846,48 +2795,38 @@ namespace Kernel
                                                    VectorCohortVector_t* pMigratingQueue,
                                                    VectorCohortCollectionAbstract& rQueue )
     {
-        Gender::Enum             human_gender_equivalent = m_pMigrationInfoVector->ConvertVectorGender( vector_gender );
-        const std::vector<suids::suid>& reacheable_nodes = m_pMigrationInfoVector->GetReachableNodes( human_gender_equivalent );
-        std::vector<float>            fraction_traveling = m_pMigrationInfoVector->GetFractionTraveling( vector_gender, 0 );
-        // we could use FractionTraveling to also set the GetTotalFemale and Male, but for that we'd have to keep track of male totals with a new parameter
 
-        if( m_pMigrationInfoVector->GetMigrationAlleleCombinationsSize() == 1 )
+        Gender::Enum             human_gender_equivalent = m_pMigrationInfoVector->ConvertVectorGender( vector_gender );
+        const std::vector<suids::suid>  reacheable_nodes = m_pMigrationInfoVector->GetReachableNodes( human_gender_equivalent );
+        std::vector<float>            fraction_traveling = m_pMigrationInfoVector->GetFractionTraveling( vector_gender, 0 ); // index = 0 is the rate for non-allele travel
+
+        if( !m_pMigrationInfoVector->TravelByAlleles() )
         {
-            // if this is generic vector migration and total rate is 0, be done
-            float total_traveling = 0;
-            for( float fraction : fraction_traveling ) {
-                total_traveling += fraction;
-            }
-            if( total_traveling == 0 ) // should we also kick out at tiny numbers ?
+            if( m_pMigrationInfoVector->GetTotalRate(human_gender_equivalent) == 0)
             {
                 return;
             }
         }
 
+
         for( auto it = rQueue.begin(); it != rQueue.end(); ++it )
         {
-            IVectorCohort* p_vc = *it; 
-            if( m_pMigrationInfoVector->GetMigrationAlleleCombinationsSize() > 1 )
-            {
+            if( m_pMigrationInfoVector->TravelByAlleles() )
+            {                
                 // only do this if we actually have travel by allele combinations
-                VectorGenome vc_genome   = p_vc->GetGenome();
-                int migration_data_index = GetMigrationDataIndex( vc_genome );
+                VectorGenome genome   = ( *it )->GetGenome();
+                int migration_data_index = m_pMigrationInfoVector->GetMigrationDataIndex( m_SpeciesIndex, genome );
                 fraction_traveling       = m_pMigrationInfoVector->GetFractionTraveling( vector_gender, migration_data_index );
 
-                // we could use FractionTraveling to also set the GetTotalFemale and Male, but for that we'd have to keep track of male totals with a new parameter
-                float total_traveling = 0;
-                for( float fraction : fraction_traveling ) {
-                    total_traveling += fraction;
-                }
-                if( total_traveling == 0 ) // should we also kick out at tiny numbers?
+                if( m_pMigrationInfoVector->GetTotalRate( human_gender_equivalent ) == 0 )
                 {
                     continue;
                 }
             }
 
-            std::vector<uint32_t> random_indexes = GetRandomIndexes( m_context->GetRng(), reacheable_nodes.size() );
-
             release_assert( fraction_traveling.size() == reacheable_nodes.size() );
+
+            std::vector<uint32_t> random_indexes = GetRandomIndexes( m_context->GetRng(), reacheable_nodes.size() );
 
             for( uint32_t index : random_indexes )
             {
@@ -2899,9 +2838,9 @@ namespace Kernel
                 float percent_traveling = fraction_traveling[ index ];
                 if( percent_traveling > 0.0f )
                 {
-                    IVectorCohort* p_traveling_vc = p_vc->SplitPercent( m_context->GetRng(),
-                                                                        m_pNodeVector->GetNextVectorSuid().data,
-                                                                        percent_traveling );
+                    IVectorCohort* p_traveling_vc = ( *it )->SplitPercent( m_context->GetRng(),
+                                                                           m_pNodeVector->GetNextVectorSuid().data,
+                                                                           percent_traveling );
                     if( p_traveling_vc == nullptr )
                     {
                         continue;

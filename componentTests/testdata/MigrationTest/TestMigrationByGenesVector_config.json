@@ -1,6 +1,60 @@
 {
-    "Name" : "species_1",
-    "Genes": [],
+    "Name": "species_1",
+    "Genes": [
+        {
+            "Alleles": [
+                {
+                    "Initial_Allele_Frequency": 0.6,
+                    "Is_Y_Chromosome": 0,
+                    "Name": "X1"
+                },
+                {
+                    "Initial_Allele_Frequency": 0.2,
+                    "Is_Y_Chromosome": 1,
+                    "Name": "Y1"
+                },
+                {
+                    "Initial_Allele_Frequency": 0.2,
+                    "Is_Y_Chromosome": 1,
+                    "Name": "Y2"
+                }
+            ],
+            "Is_Gender_Gene": 1,
+            "Mutations": []
+        },
+        {
+            "Alleles": [
+                {
+                    "Initial_Allele_Frequency": 0.4,
+                    "Is_Y_Chromosome": 0,
+                    "Name": "a0"
+                },
+                {
+                    "Initial_Allele_Frequency": 0.6,
+                    "Is_Y_Chromosome": 0,
+                    "Name": "a1"
+                }
+            ],
+            "Is_Gender_Gene": 0,
+            "Mutations": []
+        },
+        {
+            "Alleles": [
+                {
+                    "Initial_Allele_Frequency": 0.9,
+                    "Is_Y_Chromosome": 0,
+                    "Name": "b0"
+                },
+                {
+                    "Initial_Allele_Frequency": 0.1,
+                    "Is_Y_Chromosome": 0,
+                    "Name": "b1"
+                }
+            ],
+            "Is_Gender_Gene": 0,
+            "Mutations": []
+        }
+    ],
     "Acquire_Modifier": 0.2,
     "Adult_Life_Expectancy": 10,
     "Male_Life_Expectancy": 10,
@@ -21,21 +75,18 @@
     "Infectious_Human_Feed_Mortality_Factor": 1.5,
     "Habitats": [
         {
-            "Habitat_Type" : "TEMPORARY_RAINFALL",
-            "Max_Larval_Capacity" : 11250000000
+            "Habitat_Type": "TEMPORARY_RAINFALL",
+            "Max_Larval_Capacity": 11250000000
         }
     ],
-    "Microsporidia":[],
-    
+    "Microsporidia": [],
     "Temperature_Dependent_Feeding_Cycle": "NO_TEMPERATURE_DEPENDENCE",
     "Transmission_Rate": 0.5,
     "Vector_Sugar_Feeding_Frequency": "VECTOR_SUGAR_FEEDING_NONE",
-    
-    "Vector_Migration_Filename" : "9_nodes_by_alleles.bin",
-    "x_Vector_Migration" : 1,
-
-    "Vector_Migration_Modifier_Equation" : "EXPONENTIAL",
-    "Vector_Migration_Food_Modifier" : 0,
-    "Vector_Migration_Habitat_Modifier" : 0,
-    "Vector_Migration_Stay_Put_Modifier" : 0
+    "Vector_Migration_Filename": "9_nodes_by_alleles.bin",
+    "x_Vector_Migration": 1,
+    "Vector_Migration_Modifier_Equation": "EXPONENTIAL",
+    "Vector_Migration_Food_Modifier": 0,
+    "Vector_Migration_Habitat_Modifier": 0,
+    "Vector_Migration_Stay_Put_Modifier": 0
 }

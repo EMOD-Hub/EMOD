@@ -21,7 +21,6 @@
 #include "VectorToHumanAdapter.h"
 #include "NodeEventContext.h"
 #include "BroadcasterObserver.h"
-#include "MigrationInfoVector.h"
 
 SETUP_LOGGING("VectorPopulationIndividual")
 
@@ -833,7 +832,7 @@ namespace Kernel
     {
         release_assert(m_pMigrationInfoVector);
         release_assert(pMigratingQueue);
-        if( dynamic_cast<MigrationInfoNullVector*>( m_pMigrationInfoVector ) )
+        if( !m_pMigrationInfoVector->CanTravel() )
         {
             return;
         }
@@ -847,13 +846,18 @@ namespace Kernel
         {
             throw QueryInterfaceException( __FILE__, __LINE__, __FUNCTION__, "m_context->GetParent()", "IVectorSimulationContext", "ISimulationContext" );
         }
-        suids::suid current_node = m_context->GetSuid();
+        VectorGender::Enum     vector_gender = VectorGender::VECTOR_FEMALE;
+        Gender::Enum human_gender_equivalent = m_pMigrationInfoVector->ConvertVectorGender( vector_gender );
+        suids::suid             current_node = m_context->GetSuid();
         m_pMigrationInfoVector->UpdateRates( current_node, get_SpeciesID(), p_vsc );
-        m_pMigrationInfoVector->SetIndFemaleRates( 0 ); // setting for generic migration use
-        if( m_pMigrationInfoVector->GetMigrationAlleleCombinationsSize() == 1 )
+
+        // we don't need the actual fraction traveling, just the setting of totals etc functionality
+        m_pMigrationInfoVector->GetFractionTraveling( vector_gender, 0 ); 
+
+        if( !m_pMigrationInfoVector->TravelByAlleles() )
         {
             // if this is generic vector migration and total rate is 0, be done
-            if( m_pMigrationInfoVector->GetTotalRate( m_pMigrationInfoVector->ConvertVectorGender( VectorGender::VECTOR_FEMALE ) ) == 0 )
+            if( m_pMigrationInfoVector->GetTotalRate( human_gender_equivalent ) == 0 )
             {
                 return;
             }
@@ -870,13 +874,15 @@ namespace Kernel
         for( auto it = pAdultQueues->begin(); it != pAdultQueues->end(); ++it )
         {
             adapter.SetVectorID( ( *it )->GetID() );
-            if( m_pMigrationInfoVector->GetMigrationAlleleCombinationsSize() > 1 )
+            if( m_pMigrationInfoVector->TravelByAlleles() )
             {
                 // only do this if we actually have by gene migration happening
-                VectorGenome vc_genome = ( *it )->GetGenome();
-                int migration_data_index = GetMigrationDataIndex( vc_genome );
-                m_pMigrationInfoVector->SetIndFemaleRates( migration_data_index ); // updating m_TotalRateFemale and m_RateCDFFemale for these genes
-                if( m_pMigrationInfoVector->GetTotalRate( m_pMigrationInfoVector->ConvertVectorGender( vc_genome.GetGender() ) ) == 0 )
+
+                VectorGenome genome = ( *it )->GetGenome();
+                int migration_data_index = m_pMigrationInfoVector->GetMigrationDataIndex( m_SpeciesIndex, genome );
+                // we don't need the actual fraction traveling, just the setting of totals etc functionality
+                m_pMigrationInfoVector->GetFractionTraveling( vector_gender, migration_data_index ); 
+                if( m_pMigrationInfoVector->GetTotalRate( human_gender_equivalent ) == 0 )
                 {
                     continue;
                 }
@@ -891,8 +897,7 @@ namespace Kernel
                 pAdultQueues->remove( it );
                 // Used to use dynamic_cast here which is _very_ slow.
                 IMigrate* emigre = tempentry->GetIMigrate();
-                release_assert( mig_type == MigrationType::LOCAL_MIGRATION ); 
-                emigre->SetMigrating( destination, mig_type, 0.0, 0.0, false );
+                emigre->SetMigrating( destination, MigrationType::LOCAL_MIGRATION, 0.0, 0.0, false );
                 pMigratingQueue->push_back( tempentry );
             }
         }   

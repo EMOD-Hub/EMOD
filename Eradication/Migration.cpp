@@ -179,6 +179,7 @@ namespace Kernel
     void MigrationInfoFixedRate::Initialize( const std::vector<std::vector<MigrationRateData>>& rRateData )
     {
         m_RateCDF.clear();
+        m_TotalRate = 0.0;
         if( rRateData.size() > 0 )
         {
             for( auto& mrd : rRateData[0] )
@@ -189,6 +190,7 @@ namespace Kernel
                 release_assert( mrd.GetNumRates() == 1 );
 
                 m_RateCDF.push_back( mrd.GetRate( 0.0 ) );
+                m_TotalRate += mrd.GetRate( 0.0 );
             }
             NormalizeRates( m_RateCDF, m_TotalRate );
         }
@@ -265,13 +267,6 @@ namespace Kernel
 
     void MigrationInfoFixedRate::NormalizeRates( std::vector<float>& r_rate_cdf, float& r_total_rate )
     {
-        //  Calculate total migration rate
-        r_total_rate = 0.0;
-        for( int i = 0; i < r_rate_cdf.size(); i++)
-        {
-            r_total_rate += r_rate_cdf[i];
-        }
-
         if( (r_rate_cdf.size() > 0) && (r_total_rate > 0.0) )
         {
             //  Set probability of each location
@@ -355,6 +350,7 @@ namespace Kernel
         {
             float rate = mrd.GetRate( ageYears );
             m_RateCDF.push_back( rate );
+            m_TotalRate += rate;
         }
 
         SaveRawRates(m_RateCDF, gender);

@@ -160,7 +160,6 @@ namespace Kernel
         virtual void UpdateGestatingCount( const IVectorCohort* pvc );
 
         bool SimilarGenomes( uint8_t numGenes, const VectorGenome& rLeft, const VectorGenome& rRight ) const;
-        int  GetMigrationDataIndex( VectorGenome vc_genome );
 
         const VectorParameters        *params()  const { return m_vector_params; }
         const VectorSpeciesParameters *species() const { return m_species_params; }
@@ -577,9 +576,6 @@ namespace Kernel
         void DepositContagionHelper( TransmissionRoute::Enum route,
                                      std::map<StrainGenomeId, 
                                      float>& rContagionToDeposit );
-
-        static bool AlleleComboIntCompare( const std::pair<AlleleCombo, int>& rLeft, const std::pair<AlleleCombo, int>& rRight );
-        std::vector<std::pair<AlleleCombo, int>> m_allele_combos_index_map_list;
 
         DECLARE_SERIALIZABLE(VectorPopulation);
     };

@@ -32,15 +32,17 @@ namespace Kernel
                                  int defaultDestinationsPerNode );
         virtual ~MigrationInfoFileVector();
 
-        std::vector<std::vector<std::vector<std::string>>> GetVMAlleleCombinations() const { return m_VM_Allele_Combinations; }
-        int GetAgesYearsSize() const { return m_AgesYears.size(); }
+        std::vector<std::pair<AlleleCombo, int>>& GetAlleleComboMapList() { return m_allele_combos_index_map_list; }
+        void SetSpeciesParameters( const VectorSpeciesParameters* pSpeciesParameters ){ m_pSpeciesParameters = pSpeciesParameters; }
 
 
     protected:
         // Returns the expected size of the binary file
-        virtual uint32_t ParseMetadataForFile( const std::string& data_filepath, const std::string& idreference );
+        virtual uint32_t ParseMetadataForFile( const std::string& data_filepath, const std::string& idreference);
 
-        std::vector<std::vector<std::vector<std::string>>> m_VM_Allele_Combinations;
+        static bool AlleleComboIntCompare( const std::pair<AlleleCombo, int>& rLeft, const std::pair<AlleleCombo, int>& rRight );
+        std::vector<std::pair<AlleleCombo, int>> m_allele_combos_index_map_list;
+        const VectorSpeciesParameters* m_pSpeciesParameters;
     };
 
 
@@ -56,23 +58,22 @@ namespace Kernel
     public:
         //IMigrationInfoVector
         virtual void UpdateRates( const suids::suid& rThisNodeId,
-            const std::string& rSpeciesID,
-            IVectorSimulationContext* pivsc ) {};
+                                  const std::string& rSpeciesID,
+                                  IVectorSimulationContext* pivsc ) {};
 
         virtual Gender::Enum             ConvertVectorGender( VectorGender::Enum vector_gender ) const
         {
             return ( vector_gender == VectorGender::VECTOR_FEMALE ? Gender::FEMALE : Gender::MALE );
         };
-        virtual const std::vector<float> GetFractionTraveling( VectorGender::Enum vector_gender, int by_genome_index ) 
-        {
-            std::vector<float> fraction_traveling;
+        virtual const std::vector<float>& GetFractionTraveling( VectorGender::Enum vector_gender, int by_genome_index ) 
+        {  
             return fraction_traveling;
         };
-        virtual void                     SetIndFemaleRates( int by_genome_index ){};
-        virtual const int                GetMigrationAlleleCombinationsSize() const
-        {
-            return 0;
-        }
+        virtual bool                     CanTravel() { return false; }
+        virtual bool                     TravelByAlleles() { return false; }
+        virtual int                      GetMigrationDataIndex( int species_index, VectorGenome& rGenome ) { return 0; }
+
+
 
 
     protected:
@@ -81,6 +82,7 @@ namespace Kernel
 
         MigrationInfoNullVector();
         virtual ~MigrationInfoNullVector();
+        std::vector<float> fraction_traveling;
     };
 
     // ----------------------------------
@@ -105,9 +107,10 @@ namespace Kernel
         virtual float                     GetTotalRate( Gender::Enum gender = Gender::MALE ) const override;
         virtual const std::vector<float>& GetCumulativeDistributionFunction( Gender::Enum gender = Gender::MALE ) const override;
         const std::vector<suids::suid>&   GetReachableNodes( Gender::Enum gender = Gender::MALE ) const override;
-        const std::vector<float>          GetFractionTraveling( VectorGender::Enum vector_gender, int by_genome_index ) override;
-        virtual void                      SetIndFemaleRates( int by_genome_index ) override;
-        virtual const int                 GetMigrationAlleleCombinationsSize() const override;
+        const std::vector<float>&         GetFractionTraveling( VectorGender::Enum vector_gender, int by_genome_index ) override;
+        virtual bool                      CanTravel() { return true; }
+        bool                              TravelByAlleles() { return (m_allele_combos_index_map_list.size() > 0  ?  true: false); }
+        virtual int                       GetMigrationDataIndex( int species_index, VectorGenome& rGenome ) override;
 
 
     protected:
@@ -139,11 +142,12 @@ namespace Kernel
 
 
     private:
-        int                             m_MigrationAlleleCombinationsSize;
-        std::vector<std::vector<float>> m_RawMigrationRateFemale;
-        std::vector<std::vector<float>> m_fraction_traveling_male;
-        std::vector<std::vector<float>> m_fraction_traveling_female;
+        std::vector<std::pair<AlleleCombo, int>> m_allele_combos_index_map_list;
+        std::vector<std::vector<float>> m_RawMigrationRateFemaleByIndex;
+        std::vector<std::vector<float>> m_FractionTravelingMaleByIndex;
+        std::vector<std::vector<float>> m_FractionTravelingFemaleByIndex;
         std::vector<float>              m_TotalRateFemaleByIndex;
+        std::vector<float>              m_TotalRateMaleByIndex;
         std::vector<std::vector<float>> m_RateCDFFemaleByIndex;
         float                       m_TotalRateFemale;
         std::vector<float>          m_RateCDFFemale;
@@ -170,8 +174,8 @@ namespace Kernel
         virtual void                  ReadConfiguration( JsonConfigurable* pParent, const ::Configuration* config ) override;
         virtual IMigrationInfoVector* CreateMigrationInfoVector( const std::string& idreference,
                                                                  INodeContext *parent_node, 
-                                                                 const boost::bimap<ExternalNodeId_t, suids::suid>& rNodeIdSuidMap ) override;
-        virtual std::vector<std::vector<std::vector<std::string>>> GetVMAlleleCombinations() const override { return m_InfoFileVector.GetVMAlleleCombinations(); }
+                                                                 const boost::bimap<ExternalNodeId_t, suids::suid>& rNodeIdSuidMap,
+                                                                 const VectorSpeciesParameters* m_species_params ) override;
 
     private:
         MigrationInfoFileVector    m_InfoFileVector;
@@ -195,12 +199,8 @@ namespace Kernel
         virtual void                  ReadConfiguration( JsonConfigurable* pParent, const ::Configuration* config ) {};
         virtual IMigrationInfoVector* CreateMigrationInfoVector( const std::string& idreference,
                                                                  INodeContext *parent_node, 
-                                                                 const boost::bimap<ExternalNodeId_t, suids::suid>& rNodeIdSuidMap ) override;
-        virtual std::vector<std::vector<std::vector<std::string>>> GetVMAlleleCombinations() const override 
-        { 
-            std::vector<std::vector<std::vector<std::string>>> empty3DVector;
-            return empty3DVector; 
-        }
+                                                                 const boost::bimap<ExternalNodeId_t, suids::suid>& rNodeIdSuidMap,
+                                                                 const VectorSpeciesParameters* m_species_params ) override;
 
     protected: 
 
