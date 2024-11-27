@@ -63,6 +63,7 @@ class MetaData:
         self.num_columns = 0
         self.allele_combinations = []
         self.data_df = None
+        self.ref_id = None
 
 def ShowUsage():
     print('\nUsage: %s [input-migration-csv] [idreference]' % os.path.basename(sys.argv[0]))
@@ -75,7 +76,7 @@ def WriteMetadataFile(metadata):
     output_json = collections.OrderedDict([])
 
     output_json["Metadata"] = {}
-    output_json["Metadata"]["IdReference"] = "temp_ref_id"
+    output_json["Metadata"]["IdReference"] = metadata.ref_id
     output_json["Metadata"]["DateCreated"] = datetime.datetime.now().ctime()
     output_json["Metadata"]["Tool"] = os.path.basename(sys.argv[0])
     output_json["Metadata"]["DatavalueCount"] = metadata.max_destinations_per_node
@@ -207,14 +208,17 @@ def WriteBinFile(metadata):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
+    if not (len(sys.argv) == 2 or len(sys.argv) == 3):
         ShowUsage()
         exit(0)
 
     filename_in = sys.argv[1]
+    id_ref = "temp_ref_id"
+    if len(sys.argv) == 3:
+        id_ref = sys.argv[1]
 
     meta_data = MetaData()
-
+    meta_data.ref_id = id_ref
     meta_data.data_df = pd.read_csv(filename_in)
     headers = meta_data.data_df.columns.tolist()
     if is_number(headers[0]):  # no headers
@@ -229,3 +233,6 @@ if __name__ == "__main__":
 
     print(f"max_destinations_per_node = {meta_data.max_destinations_per_node}")
     print(f"Finished converting {filename_in} to {meta_data.filename_out} and +.json metadata file.")
+    if len(sys.argv) == 2:
+        print(f"IdReference in {meta_data.filename_out}.json file is set to a temporary value, please update it"
+              f" to match your demographics.")
