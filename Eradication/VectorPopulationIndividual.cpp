@@ -832,7 +832,12 @@ namespace Kernel
     {
         release_assert(m_pMigrationInfoVector);
         release_assert(pMigratingQueue);
-
+        if( !m_pMigrationInfoVector->CanTravel() )
+        {
+            return;
+        }
+        
+        // migrating males only 
         VectorPopulation::Vector_Migration(dt, pMigratingQueue, true);
         
         // updating migration rates and migrating females
@@ -841,22 +846,26 @@ namespace Kernel
         {
             throw QueryInterfaceException( __FILE__, __LINE__, __FUNCTION__, "m_context->GetParent()", "IVectorSimulationContext", "ISimulationContext" );
         }
-        suids::suid current_node = m_context->GetSuid();
+        VectorGender::Enum     vector_gender = VectorGender::VECTOR_FEMALE;
+        Gender::Enum human_gender_equivalent = m_pMigrationInfoVector->ConvertVectorGender( vector_gender );
+        suids::suid             current_node = m_context->GetSuid();
         m_pMigrationInfoVector->UpdateRates( current_node, get_SpeciesID(), p_vsc );
 
-        Gender::Enum human_gender_equivalent = m_pMigrationInfoVector->ConvertVectorGender( VectorGender::VECTOR_FEMALE );
-        float                     total_rate = m_pMigrationInfoVector->GetTotalRate( human_gender_equivalent );
-        const std::vector<float>& r_cdf      = m_pMigrationInfoVector->GetCumulativeDistributionFunction( human_gender_equivalent );
+        // we don't need the actual fraction traveling, just the setting of totals etc functionality
+        m_pMigrationInfoVector->GetFractionTraveling( vector_gender, 0 ); 
 
-        if( ( r_cdf.size() == 0 ) || ( total_rate == 0.0 ) )
+        if( !m_pMigrationInfoVector->TravelByAlleles() )
         {
-            return; // no female vector migration
+            // if this is generic vector migration and total rate is 0, be done
+            if( m_pMigrationInfoVector->GetTotalRate( human_gender_equivalent ) == 0 )
+            {
+                return;
+            }
         }
 
-        // vectors always female, updating ID inside loop just in case
+        // initializing these outside the loop to be updated inside
         VectorToHumanAdapter adapter( m_context, 0 ); 
 
-        // initializing these outside the loop, they are re-initialized just to be updated inside PickMigrationStep every time
         suids::suid         destination = suids::nil_suid();
         MigrationType::Enum mig_type    = MigrationType::NO_MIGRATION;
         float               time        = 0.0;
@@ -865,6 +874,20 @@ namespace Kernel
         for( auto it = pAdultQueues->begin(); it != pAdultQueues->end(); ++it )
         {
             adapter.SetVectorID( ( *it )->GetID() );
+            if( m_pMigrationInfoVector->TravelByAlleles() )
+            {
+                // only do this if we actually have by gene migration happening
+
+                VectorGenome genome = ( *it )->GetGenome();
+                int migration_data_index = m_pMigrationInfoVector->GetMigrationDataIndex( m_SpeciesIndex, genome );
+                // we don't need the actual fraction traveling, just the setting of totals etc functionality
+                m_pMigrationInfoVector->GetFractionTraveling( vector_gender, migration_data_index ); 
+                if( m_pMigrationInfoVector->GetTotalRate( human_gender_equivalent ) == 0 )
+                {
+                    continue;
+                }
+            }
+
             m_pMigrationInfoVector->PickMigrationStep( m_context->GetRng(), &adapter, 1.0, destination, mig_type, time, dt );
 
             // test if vector will migrate: no destination = no migration, also don't migrate to node you're already in
@@ -874,8 +897,7 @@ namespace Kernel
                 pAdultQueues->remove( it );
                 // Used to use dynamic_cast here which is _very_ slow.
                 IMigrate* emigre = tempentry->GetIMigrate();
-                release_assert( mig_type == MigrationType::LOCAL_MIGRATION ); 
-                emigre->SetMigrating( destination, mig_type, 0.0, 0.0, false );
+                emigre->SetMigrating( destination, MigrationType::LOCAL_MIGRATION, 0.0, 0.0, false );
                 pMigratingQueue->push_back( tempentry );
             }
         }   

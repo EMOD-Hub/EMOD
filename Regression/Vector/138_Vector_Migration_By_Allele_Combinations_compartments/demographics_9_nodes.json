@@ -1,0 +1,135 @@
+{
+    "Metadata": {
+        "DateCreated": "Thu Sep 15 07:19:55 2016",
+        "Tool": "notepad",
+        "Author": "bridenbecker",
+        "IdReference": "9-nodes",
+        "NodeCount": 9
+    },
+    "Defaults": {
+        "NodeAttributes": {
+            "InitialPopulation": 1,
+            "InitialVectorsPerSpecies": {
+                "SillySkeeter": 0
+            },
+            "BirthRate": 0.0000548,
+            "Latitude": 0,
+            "Longitude": 0,
+            "Altitude": 0,
+            "Airport": 0,
+            "Region": 1,
+            "Seaport": 0
+        },
+        "IndividualAttributes": {
+            "AgeDistributionFlag": 0,
+            "AgeDistribution1": 3650,
+            "AgeDistribution2": 0,
+            "PrevalenceDistributionFlag": 0,
+            "PrevalenceDistribution1": 0.0,
+            "PrevalenceDistribution2": 0.0,
+            "SusceptibilityDistributionFlag": 0,
+            "SusceptibilityDistribution1": 1,
+            "SusceptibilityDistribution2": 0,
+            "RiskDistributionFlag": 0,
+            "RiskDistribution1": 1,
+            "RiskDistribution2": 0,
+            "MigrationHeterogeneityDistributionFlag": 0,
+            "MigrationHeterogeneityDistribution1": 1,
+            "MigrationHeterogeneityDistribution2": 0,
+            "MortalityDistribution": {
+                "NumDistributionAxes": 2,
+                "AxisNames": [
+                    "gender",
+                    "age"
+                ],
+                "AxisUnits": [
+                    "male=0,female=1",
+                    "years"
+                ],
+                "AxisScaleFactors": [
+                    1,
+                    365
+                ],
+                "NumPopulationGroups": [
+                    2,
+                    1
+                ],
+                "PopulationGroups": [
+                    [
+                        0,
+                        1
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "ResultUnits": "deaths per day",
+                "ResultScaleFactor": 1,
+                "ResultValues": [
+                    [
+                        0.0000548
+                    ],
+                    [
+                        0.0000548
+                    ]
+                ]
+            }
+        }
+    },
+    "Nodes": [
+        {
+            "NodeID": 1,
+            "NodeAttributes": {
+                "InitialPopulation": 0
+            }
+        },
+        {
+            "NodeID": 2,
+            "NodeAttributes": {
+                "InitialPopulation": 0,                
+                "LarvalHabitatMultiplier": [
+                    {
+                        "Factor": 0,
+                        "Habitat": "TEMPORARY_RAINFALL",
+                        "Species": "SillySkeeter"
+                    }
+                ]
+            }
+        },
+        {
+            "NodeID": 3,
+            "NodeAttributes": {           
+                "LarvalHabitatMultiplier": [
+                    {
+                        "Factor": 0,
+                        "Habitat": "TEMPORARY_RAINFALL",
+                        "Species": "SillySkeeter"
+                    }
+                ]
+            }
+        },
+        {
+            "NodeID": 4
+        },
+        {
+            "NodeID": 5,
+            "NodeAttributes": {
+                "InitialVectorsPerSpecies": {
+                    "SillySkeeter": 100000
+                }
+            }
+        },
+        {
+            "NodeID": 6
+        },
+        {
+            "NodeID": 7
+        },
+        {
+            "NodeID": 8
+        },
+        {
+            "NodeID": 9
+        }
+    ]
+}
