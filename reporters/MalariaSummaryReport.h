@@ -107,6 +107,8 @@ namespace Kernel
         virtual void AccumulateOutput() override;
         virtual void SerializeOutput(float currentTime, IJsonObjectAdapter& output, JSerializer& js) override;
 
+        bool include_pfpr_bins_by_age_bins;
+        bool include_infectious_bins_by_pfpr_bins_by_age_bins;
         bool add_true_density;
         bool add_hrp2;
         float detection_threshold_true_parasite;

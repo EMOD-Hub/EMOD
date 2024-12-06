@@ -393,6 +393,8 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
                                          new ReportIntervalData(),
                                          false, //use Age_Bins and not Min/Max ages
                                          true ) //use IP and Intervetion filters
+        , include_pfpr_bins_by_age_bins(true)
+        , include_infectious_bins_by_pfpr_bins_by_age_bins(true)
         , add_true_density(false)
         , add_hrp2(false)
         , detection_threshold_true_parasite(0.0)
@@ -453,6 +455,9 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
 
     bool MalariaSummaryReport::Configure( const Configuration * inputJson )
     {
+        initConfigTypeMap("Include_DataByTimeAndPfPRBinsAndAgeBins",                       &include_pfpr_bins_by_age_bins,                    MSR_Include_DataByTimeAndPfPRBinsAndAgeBins_DESC_TEXT,                      true );
+        initConfigTypeMap("Include_DataByTimeAndInfectiousnessBinsAndPfPRBinsAndAgeBins",  &include_infectious_bins_by_pfpr_bins_by_age_bins, MSR_Include_DataByTimeAndInfectiousnessBinsAndPfPRBinsAndAgeBins_DESC_TEXT, true );
+
         initConfigTypeMap("Add_True_Density_Vs_Threshold",               &add_true_density,                    MSR_Add_True_Density_Vs_Threshold_DESC_TEXT, false );
         initConfigTypeMap("Detection_Threshold_True_Parasite_Density",   &detection_threshold_true_parasite,   MSR_Detection_Threshold_True_Parasite_Density_DESC_TEXT,   0.0f, FLT_MAX, 0.0f, "Add_True_Density_Vs_Threshold" );
         initConfigTypeMap("Detection_Threshold_True_Gametocyte_Density", &detection_threshold_true_gametocyte, MSR_Detection_Threshold_True_Gametocyte_Density_DESC_TEXT, 0.0f, FLT_MAX, 0.0f, "Add_True_Density_Vs_Threshold" );
@@ -1116,23 +1121,29 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
         ReportUtilities::SerializeVector( output, js, "Annual Mild Anemia by Age Bin"                   , annual_mild_anemia_by_agebin                    );
         output.EndObject();
 
-        output.Insert( "DataByTimeAndPfPRBinsAndAgeBins" );
-        output.BeginObject();
-        ReportUtilities::SerializeVector( output, js, "PfPR by Parasitemia and Age Bin"   ,             binned_PfPRs_by_agebin                 );
-        ReportUtilities::SerializeVector( output, js, "PfPR by Gametocytemia and Age Bin" ,             binned_PfgamPRs_by_agebin              );
-        ReportUtilities::SerializeVector( output, js, "Smeared PfPR by Parasitemia and Age Bin",        binned_PfPRs_by_agebin_smeared         );
-        ReportUtilities::SerializeVector( output, js, "Smeared PfPR by Gametocytemia and Age Bin",      binned_PfgamPRs_by_agebin_smeared      );
-        ReportUtilities::SerializeVector( output, js, "Smeared True PfPR by Parasitemia and Age Bin",   binned_PfPRs_by_agebin_true_smeared    );
-        ReportUtilities::SerializeVector( output, js, "Smeared True PfPR by Gametocytemia and Age Bin", binned_PfgamPRs_by_agebin_true_smeared );
-        output.EndObject();
+        if( include_pfpr_bins_by_age_bins )
+        {
+            output.Insert( "DataByTimeAndPfPRBinsAndAgeBins" );
+            output.BeginObject();
+            ReportUtilities::SerializeVector( output, js, "PfPR by Parasitemia and Age Bin"   ,             binned_PfPRs_by_agebin                 );
+            ReportUtilities::SerializeVector( output, js, "PfPR by Gametocytemia and Age Bin" ,             binned_PfgamPRs_by_agebin              );
+            ReportUtilities::SerializeVector( output, js, "Smeared PfPR by Parasitemia and Age Bin",        binned_PfPRs_by_agebin_smeared         );
+            ReportUtilities::SerializeVector( output, js, "Smeared PfPR by Gametocytemia and Age Bin",      binned_PfgamPRs_by_agebin_smeared      );
+            ReportUtilities::SerializeVector( output, js, "Smeared True PfPR by Parasitemia and Age Bin",   binned_PfPRs_by_agebin_true_smeared    );
+            ReportUtilities::SerializeVector( output, js, "Smeared True PfPR by Gametocytemia and Age Bin", binned_PfgamPRs_by_agebin_true_smeared );
+            output.EndObject();
+        }
 
-        output.Insert("DataByTimeAndInfectiousnessBinsAndPfPRBinsAndAgeBins");
-        output.BeginObject();
-        ReportUtilities::SerializeVector(output, js, "Infectiousness by Gametocytemia and Age Bin",                            binned_Infectiousness                                );
-        ReportUtilities::SerializeVector(output, js, "Age scaled Infectiousness by Gametocytemia and Age Bin",                 binned_Infectiousness_age_scaled                     );
-        ReportUtilities::SerializeVector(output, js, "Infectiousness by smeared Gametocytemia and Age Bin",                    binned_Infectiousness_smeared                        );
-        ReportUtilities::SerializeVector(output, js, "Smeared Infectiousness by smeared Gametocytemia and Age Bin",            binned_Infectiousness_smeared_inf_and_gam            );
-        ReportUtilities::SerializeVector(output, js, "Age scaled Smeared Infectiousness by smeared Gametocytemia and Age Bin", binned_Infectiousness_smeared_inf_and_gam_age_scaled );
-        output.EndObject();
+        if( include_infectious_bins_by_pfpr_bins_by_age_bins )
+        {
+            output.Insert("DataByTimeAndInfectiousnessBinsAndPfPRBinsAndAgeBins");
+            output.BeginObject();
+            ReportUtilities::SerializeVector(output, js, "Infectiousness by Gametocytemia and Age Bin",                            binned_Infectiousness                                );
+            ReportUtilities::SerializeVector(output, js, "Age scaled Infectiousness by Gametocytemia and Age Bin",                 binned_Infectiousness_age_scaled                     );
+            ReportUtilities::SerializeVector(output, js, "Infectiousness by smeared Gametocytemia and Age Bin",                    binned_Infectiousness_smeared                        );
+            ReportUtilities::SerializeVector(output, js, "Smeared Infectiousness by smeared Gametocytemia and Age Bin",            binned_Infectiousness_smeared_inf_and_gam            );
+            ReportUtilities::SerializeVector(output, js, "Age scaled Smeared Infectiousness by smeared Gametocytemia and Age Bin", binned_Infectiousness_smeared_inf_and_gam_age_scaled );
+            output.EndObject();
+        }
     }
 }

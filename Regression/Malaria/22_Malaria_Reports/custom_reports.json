@@ -82,8 +82,13 @@
             "Pretty_Format": 1,
             "Max_Number_Reports": 15,
             "Reporting_Interval": 73,
-            "Use_True_Density_Vs_Threshold": 1,
+            "Include_DataByTimeAndPfPRBinsAndAgeBins": 0,
+            "Include_DataByTimeAndInfectiousnessBinsAndPfPRBinsAndAgeBins": 0,
+            "Add_True_Density_Vs_Threshold": 1,
+            "Detection_Threshold_True_Parasite_Density": 40.0,
             "Detection_Threshold_True_Gametocyte_Density": 1.0,
+            "Add_Prevalence_By_HRP2": 1,
+            "Detection_Threshold_True_HRP2": 100000000.0,
             "Age_Bins": [
                 10,
                 20,
@@ -109,7 +114,7 @@
             "Pretty_Format": 1,
             "Max_Number_Reports": 13,
             "Reporting_Interval": 30,
-            "Use_True_Density_Vs_Threshold": 0,
+            "Add_True_Density_Vs_Threshold": 0,
             "Age_Bins": [
                 10,
                 20,
