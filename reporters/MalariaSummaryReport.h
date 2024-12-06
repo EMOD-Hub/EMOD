@@ -42,11 +42,17 @@ namespace Kernel
         double sum_EIR;
         double sum_population_2to10;
         double sum_parasite_positive_2to10;
+        double sum_true_2to10;
+        double sum_hrp2_2to10;
         agebinned_t sum_population_by_agebin;
         agebinned_t sum_new_infection_by_agebin;
         agebinned_t sum_parasite_positive_by_agebin;
+        agebinned_t sum_true_parasite_by_agebin;
+        agebinned_t sum_hrp2_by_agebin;
         agebinned_t sum_gametocyte_positive_by_agebin;
+        agebinned_t sum_true_gametocyte_by_agebin;
         agebinned_t sum_log_parasite_density_by_agebin;
+        agebinned_t sum_log_true_parasite_density_by_agebin;
         agebinned_t sum_clinical_cases_by_agebin;
         agebinned_t sum_severe_cases_by_agebin;
         agebinned_t sum_severe_anemia_by_agebin;
@@ -101,8 +107,11 @@ namespace Kernel
         virtual void AccumulateOutput() override;
         virtual void SerializeOutput(float currentTime, IJsonObjectAdapter& output, JSerializer& js) override;
 
-        bool use_true_density;
-        float gametocyte_detection_threshold;
+        bool add_true_density;
+        bool add_hrp2;
+        float detection_threshold_true_parasite;
+        float detection_threshold_true_gametocyte;
+        float detection_threshold_true_hrp2;
         std::vector<float> detection_thresholds;
         std::vector<float> ages;
         std::vector<float> PfPRbins;
@@ -115,9 +124,15 @@ namespace Kernel
         std::vector<float> time_of_report;
         std::vector<double> annual_EIRs;
         std::vector<double> PfPRs_2to10;
+        std::vector<double> PfPRs_2to10_true;
+        std::vector<double> PfPRs_2to10_HRP2;
         std::vector<agebinned_t> PfPRs_by_agebin;
+        std::vector<agebinned_t> PfPRs_by_agebin_true;
+        std::vector<agebinned_t> PfPRs_by_agebin_HRP2;
         std::vector<agebinned_t> PfgamPRs_by_agebin;
+        std::vector<agebinned_t> PfgamPRs_by_agebin_true;
         std::vector<agebinned_t> mean_log_parasite_density_by_agebin;
+        std::vector<agebinned_t> mean_log_parasite_density_by_agebin_true;
         std::vector<agebinned_t> new_infections_by_agebin;
         std::vector<PfPRbinned_t> binned_PfPRs_by_agebin;
         std::vector<PfPRbinned_t> binned_PfgamPRs_by_agebin;
