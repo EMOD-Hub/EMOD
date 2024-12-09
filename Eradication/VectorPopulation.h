@@ -211,8 +211,7 @@ namespace Kernel
 
         static std::vector<uint32_t> GetRandomIndexes( RANDOMBASE* pRNG, uint32_t N );
 
-        void Vector_Migration_Queue( VectorGender::Enum vector_gender,
-                                     INodeVector* pINV,
+        void Vector_Migration_Queue( const std::vector<suids::suid>& rReacheableNodes,
                                      VectorCohortVector_t* pMigratingQueue,
                                      VectorCohortCollectionAbstract& rQueue );
 

@@ -337,6 +337,7 @@ namespace Kernel
                                                                       float stayPutModifier)
     : MigrationInfoAgeAndGender(_parent, false)
     , m_allele_combos_index_map_list()
+    , m_MigrationByAlleles(false)
     , m_RawMigrationRateFemaleByIndex()
     , m_FractionTravelingMaleByIndex()
     , m_FractionTravelingFemaleByIndex()
@@ -366,38 +367,57 @@ namespace Kernel
         // ---------------------------------------------------------
         MigrationInfoAgeAndGender::Initialize( rRateData );
 
-        // even if we're not using migration by genetics, we are still using array of arrays structure to store our data
-        // using the AgesYears structucte, starting with index 0.
-        // m_allele_combos_index_map_list will always be -1 of actual number of indicies used since the default index = 0 does not have
-        // an allele_combo associated with it (it's either used for default migration when using genetics or regular migration rate when 
-        // not using genetics), num_rate_indicies makes sure all the rates slots
+        // ---------------------------------------------------------
+        // --- even if we're not using migration by genetics, we are still using array of arrays structure 
+        // --- to store our data using the AgesYears structucte, starting with index 0.
+        // --- m_allele_combos_index_map_list will always be -1 of actual number of indicies used since the 
+        // --- default index = 0 does not have an allele_combo associated with it (it's either used for default
+        // --- migration when using genetics or regular migration rate when not using genetics),
+        // --- num_rate_indicies makes sure all the rates slots
+        // ---------------------------------------------------------
         int num_rate_indicies = m_allele_combos_index_map_list.size() + 1;
+        if( m_allele_combos_index_map_list.size() > 0 ){ m_MigrationByAlleles = true; } // easy-access-flag
 
         std::vector<VectorGender::Enum> female_male = {VectorGender::VECTOR_MALE, VectorGender::VECTOR_FEMALE};
-        for( VectorGender::Enum sex: female_male)  // vectorgender female = 0
+        for( VectorGender::Enum sex: female_male) 
         {
-            // adding 1 because
             for( int index = 0; index < num_rate_indicies ; index++ )
             {
-                // AgeYears accesses the data by using Interpolated Piecewise Map for vector migration
-                // to avoid float issues where index = 2 may be interpreted as  1.999999999999 and return the wrong
-                // rate belonging to the previous index, we are adding 0.1 to make sure we are looking up the rate 
-                // belonging to index = 2 which is in [2,3) in our interpolated map
+                // ---------------------------------------------------------
+                // --- AgeYears accesses the data by using Interpolated Piecewise Map for vector migration
+                // --- to avoid float issues where index = 2 may be interpreted as  1.999999999999 and return the wrong
+                // --- rate belonging to the previous index, we are adding 0.1 to make sure we are looking up the rate 
+                // --- belonging to index = 2 which is in [2,3) in our interpolated map
+                // ---------------------------------------------------------
                 float fake_age_years = index + 0.1;
                 MigrationInfoAgeAndGender::CalculateRates( ConvertVectorGender( sex ), fake_age_years );
                
-                if( sex == VectorGender::VECTOR_FEMALE) //female
+                if( sex == VectorGender::VECTOR_FEMALE) //update female m_RateCDF after normalization within CalculateRates
                 {
                     m_RateCDFFemaleByIndex.push_back( m_RateCDF );
                 }
+            }
 
+            if( sex == VectorGender::VECTOR_FEMALE )
+            {
+                m_TotalRateFemale = m_TotalRateFemaleByIndex[0];
+                m_RateCDFFemale = m_RateCDFFemaleByIndex[0];
+            }
+            else
+            {
+                m_TotalRate = m_TotalRateMaleByIndex[0];
             }
         }
     }
 
 
-    int MigrationInfoAgeAndGenderVector::GetMigrationDataIndex( int species_index, VectorGenome& genome )
+    std::vector<float>* MigrationInfoAgeAndGenderVector::GetFractionTraveling( const IVectorCohort* this_vector )
     {
+        // -----------------------------------------------------------------------------
+        // --- Returns reference to the fractions traveling array to be used by vector cohort migration
+        // --- also sets m_TotalRate and m_TotalRateFemale and m_RateCDFFemale to be used by GetTotalRate and other functions
+        // -----------------------------------------------------------------------------
+
         // -----------------------------------------------------------------------------
         // --- This assumes that the combos are sorted such that the most specific
         // --- combos are at the end of the list.  We try the more specific ones first
@@ -406,35 +426,51 @@ namespace Kernel
         // --- If the genome does not match any of these, defaut rate at index = 0 is used
         // -----------------------------------------------------------------------------
         int migration_data_index = 0;
+        const VectorGenome& genome = this_vector->GetGenome();
         for( int i = m_allele_combos_index_map_list.size() - 1; i >= 0; --i )
         {
-            const std::pair<AlleleCombo, int> ac_pair = m_allele_combos_index_map_list[i];
-            if( ac_pair.first.HasAlleles( species_index, genome ) )
+            const std::pair<AlleleCombo, int>& ac_pair = m_allele_combos_index_map_list[i];
+            if( ac_pair.first.HasAlleles( this_vector->GetSpeciesIndex(), genome) )
             {
                 migration_data_index = ac_pair.second;
                 break;
             }
         }
-        return migration_data_index;
-    }
 
-    const std::vector<float>& MigrationInfoAgeAndGenderVector::GetFractionTraveling( VectorGender::Enum vector_gender, int by_genome_index)
-    {
-        // returns reference to the fractions traveling array to be used by vector cohort migration
-        // also sets m_TotalRate and m_TotalRateFemale and m_RateCDFFemale to be used by GetTotalRate and other functions
-
-        if( vector_gender == VectorGender::VECTOR_MALE )
+        if( genome.GetGender() == VectorGender::VECTOR_FEMALE )
         {
-            m_TotalRate = m_TotalRateMaleByIndex[by_genome_index];
-            return m_FractionTravelingMaleByIndex[by_genome_index];
-
+            m_TotalRateFemale = m_TotalRateFemaleByIndex[migration_data_index];
+            if( m_TotalRateFemale == 0 )
+            {
+                return nullptr;
+            }
+            m_RateCDFFemale = m_RateCDFFemaleByIndex[migration_data_index];
+            return &m_FractionTravelingFemaleByIndex[migration_data_index];
         }
         else
         {
-            m_TotalRateFemale = m_TotalRateFemaleByIndex[by_genome_index];
-            m_RateCDFFemale   = m_RateCDFFemaleByIndex[by_genome_index];
-            return m_FractionTravelingFemaleByIndex[by_genome_index];
+            m_TotalRate = m_TotalRateMaleByIndex[migration_data_index];
+            if( m_TotalRate == 0 )
+            {
+                return nullptr;
+            }
+            return &m_FractionTravelingMaleByIndex[migration_data_index];
         }
+    }
+
+    bool MigrationInfoAgeAndGenderVector::IsMigrationByAlleles()
+    {
+        return m_MigrationByAlleles;
+    }
+
+    bool MigrationInfoAgeAndGenderVector::MightTravel( VectorGender::Enum vector_gender )
+    {
+        if( !IsMigrationByAlleles() ) // if regular (non-genetics) migration
+        {
+            if( GetTotalRate( ConvertVectorGender( vector_gender ) ) == 0 )
+                return false;
+        }
+        return true;
     }
 
     void MigrationInfoAgeAndGenderVector::CalculateRates( Gender::Enum gender, float ageYears )
@@ -459,11 +495,11 @@ namespace Kernel
         // --- vectors, because male vector rates do not get modified
         // ----------------------------------------------------------
 
-       
-        // Using raw migration rates to calculate fraction traveling instead of 
-        // back-calculating from the normalized r_cdf and dealing with float issues
-        // caused by last r_cdf parameter hard-coded to 1 (to avoid float point issues)
-
+        // ----------------------------------------------------------
+        // --- Using raw migration rates to calculate fraction traveling instead of 
+        // --- back-calculating from the normalized r_cdf and dealing with float issues
+        // --- caused by last r_cdf parameter hard-coded to 1 (to avoid float point issues)
+        // ----------------------------------------------------------
         std::vector<float> fraction_traveling;
         if( m_TotalRate > 0 )
         {
@@ -494,6 +530,7 @@ namespace Kernel
 
     Gender::Enum MigrationInfoAgeAndGenderVector::ConvertVectorGender( VectorGender::Enum vector_gender ) const
     {
+        release_assert( vector_gender != VectorGender::VECTOR_BOTH_GENDERS );
         return (vector_gender == VectorGender::VECTOR_FEMALE ? Gender::FEMALE : Gender::MALE );
     }
 
@@ -593,8 +630,30 @@ namespace Kernel
                                                        const std::string& rSpeciesID,
                                                        IVectorSimulationContext* pivsc )
     {
+        // ---------------------------------------------------------------------------------
+        //  --- This function does not change total migration rate, but rather redistributes
+        //  --- where the vectors go based on presence or absense or people and presence and
+        //  --- absense of habitat (it does not consider different proprotions of people or 
+        //  --- habitat, only if there are or are not people and is and is not habitat). 
+        // ---------------------------------------------------------------------------------
+
+        // ---------------------------------------------------------------------------------
+        //  --- if Food and Habitat are both 0, CalculateModifiedRate doesn't change anything, skip updating
+        // ---------------------------------------------------------------------------------
+        if( m_ModifierFood == 0 && m_ModifierHabitat == 0 )
+        {
+            return;
+        }
         for( int index = 0; index < m_RawMigrationRateFemaleByIndex.size(); index++ )
         {
+
+            // ---------------------------------------------------------------------------------
+            // --- If the total rate was 0, it will remain 0, so it doesn't make sense to try to recalculate
+            // ---------------------------------------------------------------------------------
+            if( m_TotalRateFemaleByIndex[index] == 0 )
+            {
+                continue;
+            }
 
             // ---------------------------------------------------------------------------------
             // --- If we want to factor in the likelihood that a vector will decide that
@@ -626,16 +685,6 @@ namespace Kernel
             }
 
             // ---------------------------------------------------------------------------------
-            //  --- Even if m_ModifierStayPut > 0 and we need to add the current node to ReacheableNodes, 
-            //  --- if Food and Habitat are both 0, CalculateModifiedRate doesn't do anything, skip updating
-            //  --- If the total rate was 0, it will remain 0, so it doesn't make sense to try to recalculate
-            // ---------------------------------------------------------------------------------
-            if( m_ModifierFood == 0 && m_ModifierHabitat == 0 || m_TotalRateFemaleByIndex[index] == 0)
-            {
-                return;
-            }
-
-            // ---------------------------------------------------------------------------------
             // --- Find the ratios of population and larval habitat (i.e. things
             // --- that influence the vectors migration).  These ratios will be used
             // --- in the equations that influence which node the vectors go to.
@@ -647,11 +696,11 @@ namespace Kernel
             // --- Determine the new rates by adding the rates from the files times
             // --- to the food and habitat adjusted rates.
             // ---------------------------------------------------------------------------------
-            release_assert( m_RawMigrationRateFemaleByIndex[index].size() == m_ReachableNodesFemale.size() );
-            release_assert(        m_MigrationTypesFemale.size() == m_ReachableNodesFemale.size() );
-            release_assert( m_RateCDFFemaleByIndex[index].size() == m_ReachableNodesFemale.size() );
-            release_assert( m_RateCDFFemaleByIndex[index].size() == pop_ratios.size() );
-            release_assert( m_RateCDFFemaleByIndex[index].size() == habitat_ratios.size() );
+            release_assert( m_ReachableNodesFemale.size() == m_RawMigrationRateFemaleByIndex[index].size() );
+            release_assert( m_ReachableNodesFemale.size() == m_MigrationTypesFemale.size() );
+            release_assert( m_ReachableNodesFemale.size() == m_RateCDFFemaleByIndex[index].size() );
+            release_assert(             pop_ratios.size() == m_RateCDFFemaleByIndex[index].size() );
+            release_assert(         habitat_ratios.size() == m_RateCDFFemaleByIndex[index].size() );
 
             // using this for fraction_traveling calculations to get proportions of rate/total_rate for new rates
             float throwaway_new_totalrate = 0.0; 
@@ -682,8 +731,10 @@ namespace Kernel
             // -----------------------------------------------------------------------------------
 
             NormalizeRates( m_RateCDFFemaleByIndex[index], throwaway_new_totalrate );
-            
         }
+        // update default rates
+        m_TotalRateFemale = m_TotalRateFemaleByIndex[0];
+        m_RateCDFFemale   = m_RateCDFFemaleByIndex[0];
     }
 
     float MigrationInfoAgeAndGenderVector::CalculateModifiedRate( const suids::suid& rNodeId,
@@ -857,7 +908,7 @@ namespace Kernel
     IMigrationInfoVector* MigrationInfoFactoryVectorDefault::CreateMigrationInfoVector( const std::string& idreference,
                                                                                         INodeContext *pParentNode, 
                                                                                         const boost::bimap<ExternalNodeId_t, suids::suid>& rNodeIdSuidMap,
-                                                                                        const VectorSpeciesParameters* m_species_params )
+                                                                                        const VectorSpeciesParameters* pSpeciesParameters )
     {
         if( m_IsVectorMigrationEnabled )
         {
