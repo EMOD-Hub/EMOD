@@ -411,7 +411,7 @@ namespace Kernel
     }
 
 
-    std::vector<float>* MigrationInfoAgeAndGenderVector::GetFractionTraveling( const IVectorCohort* this_vector )
+    const std::vector<float>* MigrationInfoAgeAndGenderVector::GetFractionTraveling( const IVectorCohort* this_vector )
     {
         // -----------------------------------------------------------------------------
         // --- Returns reference to the fractions traveling array to be used by vector cohort migration

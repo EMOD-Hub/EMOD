@@ -23,7 +23,7 @@ namespace Kernel
                                                        const std::string& rSpeciesID,
                                                        IVectorSimulationContext* pivsc ) = 0;
         virtual Gender::Enum              ConvertVectorGender( VectorGender::Enum vector_gender ) const = 0;
-        virtual std::vector<float>*       GetFractionTraveling( const IVectorCohort* this_vector ) = 0;
+        virtual const std::vector<float>* GetFractionTraveling( const IVectorCohort* this_vector ) = 0;
         virtual bool                      MightTravel( VectorGender::Enum vector_gender ) = 0;
         virtual bool                      IsMigrationByAlleles() = 0; 
     };

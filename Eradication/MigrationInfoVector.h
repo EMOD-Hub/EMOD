@@ -65,7 +65,7 @@ namespace Kernel
         {
             return ( vector_gender == VectorGender::VECTOR_FEMALE ? Gender::FEMALE : Gender::MALE );
         };
-        std::vector<float>*               GetFractionTraveling( const IVectorCohort* this_vector )
+        const std::vector<float>*         GetFractionTraveling( const IVectorCohort* this_vector )
         {  
             return nullptr;
         };
@@ -102,7 +102,7 @@ namespace Kernel
         virtual float                     GetTotalRate( Gender::Enum gender = Gender::MALE ) const override;
         virtual const std::vector<float>& GetCumulativeDistributionFunction( Gender::Enum gender = Gender::MALE ) const override;
         const std::vector<suids::suid>&   GetReachableNodes( Gender::Enum gender = Gender::MALE ) const override;
-        std::vector<float>*               GetFractionTraveling( const IVectorCohort* this_vector ) override;
+        const std::vector<float>*         GetFractionTraveling( const IVectorCohort* this_vector ) override;
         virtual bool                      MightTravel( VectorGender::Enum vector_gender ) override;
         virtual bool                      IsMigrationByAlleles() override;
 
@@ -142,8 +142,6 @@ namespace Kernel
         std::vector<float>              m_TotalRateFemaleByIndex;
         std::vector<float>              m_TotalRateMaleByIndex;
         std::vector<std::vector<float>> m_RateCDFFemaleByIndex;
-        std::vector<float>          m_FractionTravelingMale;
-        std::vector<float>          m_FractionTravelingFemale;
         float                       m_TotalRateFemale;
         std::vector<float>          m_RateCDFFemale;
         suids::suid                 m_ThisNodeId;
