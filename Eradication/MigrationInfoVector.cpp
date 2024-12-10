@@ -6,6 +6,7 @@
 #include "SimulationEnums.h"
 #include "IdmString.h"
 #include "NoCrtWarnings.h"
+#include "VectorGene.h"
 
 SETUP_LOGGING( "MigrationInfoVector" )
 
@@ -15,296 +16,117 @@ namespace Kernel
 #define MODIFIER_EQUATION_NAME "Vector_Migration_Modifier_Equation"
 #define MAX_DESTINATIONS (100) // maximum number of destinations per node in migration file
 
-
+#define MMV_AlleleCombinations_DESC_TEXT "An array of allele combinations (pairs of alleles) to use for mapping migration rates to in the migration binary file. Depends on GenderDataType=VECTOR_MIGRATION_BY_GENETICS."
 
     // ------------------------------------------------------------------------
-    // --- MigrationInfoFileVector
+    // --- MigrationMetadataVector
     // ------------------------------------------------------------------------
-
-    MigrationInfoFileVector::MigrationInfoFileVector( MigrationType::Enum migType,
+    BEGIN_QUERY_INTERFACE_DERIVED(MigrationMetadataVector,MigrationMetadata)
+    END_QUERY_INTERFACE_DERIVED(MigrationMetadataVector,MigrationMetadata)
+      
+    MigrationMetadataVector::MigrationMetadataVector( int speciesIndex,
+                                                      const VectorGeneCollection* pGenes,
+                                                      MigrationType::Enum expectedMigType,
                                                       int defaultDestinationsPerNode )
-        :MigrationInfoFile( migType,
-                            defaultDestinationsPerNode )
-        , m_allele_combos_index_map_list()
+        : MigrationMetadata( expectedMigType, defaultDestinationsPerNode )
+        , m_SpeciesIndex( speciesIndex )
+        , m_pGenes( pGenes )
+        , m_AlleleCombosIndexMapList()
     {
     }
 
-    MigrationInfoFileVector::~MigrationInfoFileVector()
+    MigrationMetadataVector::~MigrationMetadataVector()
     {
     }
 
-    bool MigrationInfoFileVector::AlleleComboIntCompare( const std::pair<AlleleCombo, int>& rLeft, const std::pair<AlleleCombo, int>& rRight )
+    bool MigrationMetadataVector::Configure( const Configuration* config )
     {
-        return rLeft.first.Compare( rLeft.first, rRight.first );
-    }
+        const char* constraint_schema = "<configuration>:Vector_Species_Params.Genes.*";
+        std::set<std::string> allowed_values = m_pGenes->GetDefinedAlleleNames();
+        allowed_values.insert( "*" );
 
-    // json keys in the metadata file
-    static const char* METADATA = "Metadata";                       // required - Element containing information about the file
-    static const char* MD_ID_REFERENCE = "IdReference";             // required - Must equal value from demographics file
-    static const char* MD_NODE_COUNT = "NodeCount";                 // required - Used to verify size NodeOffsets - 16*NodeCount = # chars in NodeOffsets
-    static const char* MD_DATA_VALUE_COUNT = "DatavalueCount";      // optional - Default depends on MigrationType (i.e. MaxDestinationsPerNode)
-    static const char* MD_GENDER_DATA_TYPE = "GenderDataType";      // optional - Default is BOTH
-    static const char* NODE_OFFSETS = "NodeOffsets";                // required - a map of External Node ID to an address location in the binary file
-    static const char* MD_ALLELE_COMBINATIONS = "AlleleCombinations";  // optional - an array of Allele_Combination to use for mapping migration rates to in a file
+        std::vector<std::vector<std::vector<std::string>>> combo_strings_list;
+        initConfigTypeMap( "AlleleCombinations",
+                           &combo_strings_list,
+                           MMV_AlleleCombinations_DESC_TEXT,
+                           constraint_schema, allowed_values,
+                           "GenderDataType", "VECTOR_MIGRATION_BY_GENETICS" );
 
-    // Macro that creates a message with the bad input string and a list of possible values.
-#define THROW_ENUM_EXCEPTION( EnumName, dataFile, key, inputValue )\
-        std::stringstream ss;\
-        ss << dataFile << "[" << METADATA << "][" << key << "] = '" << inputValue << "' is not a valid " << key << ".  Valid values are: ";\
-        for( int i = 0; i < EnumName::pairs::count(); i++ )\
-        {\
-            ss << "'" << EnumName::pairs::get_keys()[i] << "', ";\
-        }\
-        std::string msg = ss.str();\
-        msg = msg.substr( 0, msg.length()-2 );\
-        throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, msg.c_str() );
-
-    uint32_t MigrationInfoFileVector::ParseMetadataForFile( const std::string& data_filepath, const std::string& idreference )
-    {
-        string metadata_filepath = data_filepath + ".json";
-
-        JsonObjectDemog json;
-        json.ParseFile( metadata_filepath.c_str() );
-
-        try // try-catch to catch JsonObjectDemog errors like wrong type
+        bool is_configured = MigrationMetadata::Configure( config );
+        if( is_configured && !JsonConfigurable::_dryrun )
         {
-            // -------------------------------------
-            // --- Check idreference - Must be equal
-            // -------------------------------------
-            string file_id_reference = json[METADATA][MD_ID_REFERENCE].AsString();
-            string file_idreference_lower( file_id_reference );
-            string idreference_lower( idreference );  // Make a copy to transform so we do not modify the original.
-            std::transform( idreference_lower.begin(), idreference_lower.end(), idreference_lower.begin(), ::tolower );
-            std::transform( file_idreference_lower.begin(), file_idreference_lower.end(), file_idreference_lower.begin(), ::tolower );
-            if( file_idreference_lower != idreference_lower )
-            {
-                std::stringstream ss;
-                ss << metadata_filepath << "[" << METADATA << "][" << MD_ID_REFERENCE << "]";
-                throw IncoherentConfigurationException( __FILE__, __LINE__, __FUNCTION__,
-                                                        "idreference", idreference.c_str(),
-                                                        ss.str().c_str(),
-                                                        file_id_reference.c_str() );
-            }
-
-            // -------------------------------------------------
-            // --- Read the DestinationsPerNode if it exists
-            // --- This tells us how much data there is per node
-            // -------------------------------------------------
-            if( json[METADATA].Contains( MD_DATA_VALUE_COUNT ) )
-            {
-                m_DestinationsPerNode = json[METADATA][MD_DATA_VALUE_COUNT].AsInt();
-                if( ( 0 >= m_DestinationsPerNode ) || ( m_DestinationsPerNode > MAX_DESTINATIONS ) )
-                {
-                    int violated_limit = ( 0 >= m_DestinationsPerNode ) ? 0 : MAX_DESTINATIONS;
-                    std::stringstream ss;
-                    ss << metadata_filepath << "[" << METADATA << "][" << MD_DATA_VALUE_COUNT << "]";
-                    throw OutOfRangeException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str(), m_DestinationsPerNode, violated_limit );
-                }
-            }
-
-            // ------------------------
-            // --- Read GenderDataType
-            // ------------------------
-            m_GenderDataType = GenderDataType::SAME_FOR_BOTH_GENDERS;
-            if( json[METADATA].Contains( MD_GENDER_DATA_TYPE ) )
-            {
-                std::string gd_str = json[METADATA][MD_GENDER_DATA_TYPE].AsString();
-                m_GenderDataType = GenderDataType::Enum( GenderDataType::pairs::lookup_value( gd_str.c_str() ) );
-                if( m_GenderDataType == -1 )
-                {
-                    THROW_ENUM_EXCEPTION( GenderDataType, metadata_filepath, MD_GENDER_DATA_TYPE, gd_str )
-                }
-            }
-
             // -------------------------
             // --- Do not read AgesYears
             // -------------------------
+            m_AgesYears.clear();
             m_AgesYears.push_back( MAX_HUMAN_AGE );
-
-            // ---------------------------
-            // --- Read AlleleCombinations
-            // ---------------------------
-
-            if( m_GenderDataType == GenderDataType::VECTOR_MIGRATION_BY_GENETICS && json[METADATA].Contains( MD_ALLELE_COMBINATIONS ) )
-            {
-                std::stringstream errmsg;
-                errmsg << metadata_filepath << "[" << METADATA << "][" << MD_ALLELE_COMBINATIONS << "] must be an array of Allele_Combinations ";
-                errmsg << "with the first entry (index = 0) being an emtpy array, which will be used for a catch-all default rate when the given vector's ";
-                errmsg << "genetics do not fit any of the listed Allele_Combinations.";
-
-                JsonObjectDemog allele_combinations_array = json[METADATA][MD_ALLELE_COMBINATIONS];
-                if( !allele_combinations_array.IsArray() )
-                {
-                    throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, errmsg.str().c_str() );
-                }
-
-                // initializing outside of the loop to use in the loop
-                std::vector<std::vector<std::string>> combo_strings;
-                VectorGameteBitPair_t                 bit_mask;
-                std::vector<VectorGameteBitPair_t>    possible_genomes;
-
-                int i = 0; // first entry should be an empty array
-                if( !allele_combinations_array[i].IsArray() || allele_combinations_array[i].size() > 0 )
-                {
-                    throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, errmsg.str().c_str() );
-                }
-                m_AgesYears.clear();
-                m_AgesYears.push_back( i ); // using m_AgesYears and a reference index for migration rates when VECTOR_MIGRATION_BY_GENETICS
-
-                // we are assuming allele_combinations is at most a vector<vector<string>>>
-                for( i = 1; i < allele_combinations_array.size(); i++ )
-                {
-                    combo_strings.clear();
-                    m_AgesYears.push_back( i ); // we just need as many entries in m_AgesYears as there are allele_combinations (including the default), limit MAX_HUMAN_AGE
-                    if( allele_combinations_array[i].IsArray() && allele_combinations_array[i].size() > 0 )
-                    {
-                        for( int j = 0; j < allele_combinations_array[i].size(); j++ )
-                        {
-                            if( allele_combinations_array[i][j].IsArray() && allele_combinations_array[i][j].size() == 2 )
-                            {
-                                std::vector<std::string> combo;
-                                combo.push_back( allele_combinations_array[i][j][IndexType( 0 )].AsString() );
-                                combo.push_back( allele_combinations_array[i][j][IndexType( 1 )].AsString() );
-                                combo_strings.push_back( combo );
-                            }
-                            else
-                            {
-                                std::stringstream errmsg;
-                                errmsg << metadata_filepath << "[" << METADATA << "][" << MD_ALLELE_COMBINATIONS << "][" << i << "][" << j << "] must be an array of two alleles.";
-                                throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, errmsg.str().c_str() );
-                            }
-                        }
-                    }
-                    else
-                    {
-                        std::stringstream errmsg;
-                        errmsg << metadata_filepath << "[" << METADATA << "][" << MD_ALLELE_COMBINATIONS << "][" << i << "] needs to be an array of arrays of strings (Allele_Combinations)." ;
-                        throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, errmsg.str().c_str() );
-                    }
-
-                    m_pSpeciesParameters->genes.ConvertAlleleCombinationsStrings( "Allele_Combinations",
-                                                                                  combo_strings,
-                                                                                  &bit_mask,
-                                                                                  &possible_genomes );
-
-                    AlleleCombo new_ac( m_pSpeciesParameters->index, bit_mask, possible_genomes );
-                    std::pair<AlleleCombo, int> ac_pair( new_ac, i );
-                    m_allele_combos_index_map_list.push_back( ac_pair );
-                }
-                
-                if( m_allele_combos_index_map_list.size() > 1 )
-                {
-                    std::sort( m_allele_combos_index_map_list.begin(), m_allele_combos_index_map_list.end(), AlleleComboIntCompare );
-                }
-            }
-            else if( m_GenderDataType == GenderDataType::VECTOR_MIGRATION_BY_GENETICS && !json[METADATA].Contains( MD_ALLELE_COMBINATIONS ) )
-            {
-                std::string gen_type_str = GenderDataType::pairs::lookup_key( m_GenderDataType );
-                std::stringstream ss;
-                ss << metadata_filepath << "[" << METADATA << "][" << MD_ALLELE_COMBINATIONS << "] must be defined when ";
-                ss << "[" << METADATA << "][" << MD_GENDER_DATA_TYPE << "] is set to " << gen_type_str;
-                throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
-            }
-            else if( json[METADATA].Contains( MD_ALLELE_COMBINATIONS ) ) // AlleleCombinations even though not GenderDataType::VECTOR_MIGRATION_BY_GENETICS
-            {
-                std::string gen_type_str = GenderDataType::pairs::lookup_key( m_GenderDataType );
-                std::stringstream ss;
-                ss << metadata_filepath << "[" << METADATA << "][" << MD_ALLELE_COMBINATIONS << "] exists, but ";
-                ss << "[" << METADATA << "][" << MD_GENDER_DATA_TYPE << "] is set to " << gen_type_str;
-                LOG_WARN_F( "( %s ) \n", ss.str().c_str() );
-            }
-
-
-
 
             // ------------------------------------------------------------
             // --- Do not read InterpolationType, we use PIECEWISE_CONSTANT
             // ------------------------------------------------------------
+            if( m_InterpolationType != InterpolationType::PIECEWISE_CONSTANT )
+            {
+                //WARNING
+            }
             m_InterpolationType = InterpolationType::PIECEWISE_CONSTANT;
 
-            // ------------------------------------------------------------------------
-            // --- Read the NodeCount and the NodeOffsets and verify size is as expected.
-            // --- There should be 16 characters for each node.  The first 8 characters
-            // --- are for the External Node ID (i.e the node id used in the demographics)
-            // --- and the second 8 characters are the offset in the file.
-            // --- The node ids in the offset_str are the "from" nodes - the nodes that
-            // --- individuals are trying migrate from.
-            // ------------------------------------------------------------------------
-            int num_nodes = json[METADATA][MD_NODE_COUNT].AsInt();
-
-            std::string offsets_str = json[NODE_OFFSETS].AsString();
-            if( offsets_str.length() / 16 != num_nodes )
+            // -------------------------------
+            // --- Process AlleleCombinations
+            // -------------------------------
+            if( (m_GenderDataType == GenderDataType::VECTOR_MIGRATION_BY_GENETICS) &&
+                (combo_strings_list.size() > 0) )
             {
-                throw IncoherentConfigurationException( __FILE__, __LINE__, __FUNCTION__,
-                    "offsets_str.length() / 16", int( offsets_str.length() / 16 ),
-                    "num_nodes", num_nodes );
+                m_AgesYears.clear();
+                m_AgesYears.push_back( 0 ); // using m_AgesYears and a reference index for migration rates when VECTOR_MIGRATION_BY_GENETICS
+                for( int i = 0; i < combo_strings_list.size(); ++i )
+                {
+                    std::vector<std::vector<std::string>>& r_combo_strings = combo_strings_list[ i ];
+                    if( r_combo_strings.size() == 0 )
+                    {
+                        if( i != 0 )
+                        {
+                            std::stringstream ss;
+                            ss << "In " << config->GetDataLocation() << "'AlleleCombinations[ " << i << " ] has zero elements.\n";
+                            ss << "You must define allele combinations.";
+                            throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
+                        }
+                        continue;
+                    }
+                    VectorGameteBitPair_t              bit_mask = 0;
+                    std::vector<VectorGameteBitPair_t> possible_genomes;
+
+                    m_pGenes->ConvertAlleleCombinationsStrings( "AlleleCombinations",
+                                                                r_combo_strings,
+                                                                &bit_mask,
+                                                                &possible_genomes );
+
+                    m_AgesYears.push_back( i ); // we just need as many entries in m_AgesYears as there are allele_combinations (including the default), limit MAX_HUMAN_AGE
+                    AlleleCombo new_ac( m_SpeciesIndex, bit_mask, possible_genomes );
+                    std::pair<AlleleCombo, int> ac_pair( new_ac, i );
+                    m_AlleleCombosIndexMapList.push_back( ac_pair );
+                }
+                if( m_AlleleCombosIndexMapList.size() > 1 )
+                {
+                    std::sort( m_AlleleCombosIndexMapList.begin(), m_AlleleCombosIndexMapList.end(), AlleleComboIntCompare );
+                }
             }
-
-            // -----------------------------------------------
-            // --- Extract data from string and place into map
-            // -----------------------------------------------
-            for( int n = 0; n < num_nodes; n++ )
+            else if( (m_GenderDataType == GenderDataType::VECTOR_MIGRATION_BY_GENETICS) &&
+                     (combo_strings_list.size() == 0) )
             {
-                ExternalNodeId_t nodeid = 0;
-                uint32_t offset = 0;
-
-                sscanf_s( offsets_str.substr( ( n * 16 ), 8 ).c_str(), "%x", &nodeid );
-                sscanf_s( offsets_str.substr( ( n * 16 ) + 8, 8 ).c_str(), "%x", &offset );
-
-                m_Offsets[nodeid] = offset;
-            }
-        }
-        catch( SerializationException& re )
-        {
-            // ------------------------------------------------------------------------------
-            // --- This "catch" is meant to report errors detered in JsonObjectDemog.
-            // --- These can consist of missing keys, wrong types, etc.
-            // ---
-            // --- Pull out the message about what is wrong and pre-pend the filename to it
-            // ------------------------------------------------------------------------------
-            std::stringstream msg;
-            IdmString msg_str = re.GetMsg();
-            std::vector<IdmString> splits = msg_str.split( '\n' );
-            release_assert( splits.size() == 4 );
-            msg << metadata_filepath << ": " << splits[2];
-            throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, msg.str().c_str() );
-        }
-
-        // -------------------------------------------
-        // --- Calculate the expected binary file size
-        // -------------------------------------------
-        uint32_t num_gender_data_chunks = GetNumGenderDataChunks();
-        uint32_t num_age_data_chunks = m_AgesYears.size();
-        m_AgeDataSize = m_Offsets.size() * m_DestinationsPerNode * ( sizeof( uint32_t ) + sizeof( double ) );
-        m_GenderDataSize = num_age_data_chunks * m_AgeDataSize;
-        uint32_t exp_binary_file_size = num_gender_data_chunks * m_GenderDataSize;
-
-        // ------------------------------------------------------
-        // --- Check Offset values to ensure that they are valid
-        // ------------------------------------------------------
-        for( auto entry : m_Offsets )
-        {
-            if( entry.second >= exp_binary_file_size )
-            {
-                char offset_buff[20];
-                sprintf_s( offset_buff, 19, "0x%x", entry.second );
-                char filesize_buff[20];
-                sprintf_s( filesize_buff, 19, "0x%x", exp_binary_file_size );
+                std::string gen_type_str = GenderDataType::pairs::lookup_key( m_GenderDataType );
                 std::stringstream ss;
-                ss << std::endl;
-                ss << "Invalid '" << NODE_OFFSETS << "' in " << metadata_filepath << "." << std::endl;
-                ss << "Node ID=" << entry.first << " has an offset of " << offset_buff;
-                ss << " but the '.bin' file size is expected to be " << exp_binary_file_size << "(" << filesize_buff << ")." << std::endl;
-                throw FileIOException( __FILE__, __LINE__, __FUNCTION__, m_Filename.c_str(), ss.str().c_str() );
+                ss << "In " << config->GetDataLocation() << "'AlleleCombinations' must be defined when\n";
+                ss << "'GenderDataType' is set to " << gen_type_str;
+                throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
             }
         }
-
-        return exp_binary_file_size;
+        return is_configured;
     }
 
-
-
-
+    bool MigrationMetadataVector::AlleleComboIntCompare( const std::pair<AlleleCombo, int>& rLeft, const std::pair<AlleleCombo, int>& rRight )
+    {
+        return rLeft.first.Compare( rLeft.first, rRight.first );
+    }
 
     // ------------------------------------------------------------------------
     // --- MigrationInfoVector
@@ -334,9 +156,10 @@ namespace Kernel
                                                                       ModifierEquationType::Enum equation,
                                                                       float habitatModifier,
                                                                       float foodModifier,
-                                                                      float stayPutModifier)
+                                                                      float stayPutModifier,
+                                                                      const std::vector<std::pair<AlleleCombo, int>>& rAlleleComboIndexList)
     : MigrationInfoAgeAndGender(_parent, false)
-    , m_allele_combos_index_map_list()
+    , m_allele_combos_index_map_list(rAlleleComboIndexList)
     , m_MigrationByAlleles(false)
     , m_RawMigrationRateFemaleByIndex()
     , m_FractionTravelingMaleByIndex()
@@ -375,6 +198,7 @@ namespace Kernel
         // --- migration when using genetics or regular migration rate when not using genetics),
         // --- num_rate_indicies makes sure all the rates slots
         // ---------------------------------------------------------
+
         int num_rate_indicies = m_allele_combos_index_map_list.size() + 1;
         if( m_allele_combos_index_map_list.size() > 0 ){ m_MigrationByAlleles = true; } // easy-access-flag
 
@@ -798,18 +622,22 @@ namespace Kernel
     // ------------------------------------------------------------------------
     // --- MigrationInfoFactoryVector
     // ------------------------------------------------------------------------
-    MigrationInfoFactoryVector::MigrationInfoFactoryVector( bool enableVectorMigration )
-    : m_InfoFileVector( MigrationType::LOCAL_MIGRATION, MAX_LOCAL_MIGRATION_DESTINATIONS )
-    , m_ModifierEquation( ModifierEquationType::EXPONENTIAL )
-    , m_ModifierHabitat(0.0)
-    , m_ModifierFood(0.0)
-    , m_ModifierStayPut(0.0)
+    MigrationInfoFactoryVector::MigrationInfoFactoryVector()
+        : m_pMetaData( nullptr )
+        , m_pInfoFile( nullptr )
+        , m_ModifierEquation( ModifierEquationType::EXPONENTIAL )
+        , m_ModifierHabitat(0.0)
+        , m_ModifierFood(0.0)
+        , m_ModifierStayPut(0.0)
+        , m_Filename()
+        , m_xModifier(1.0)
     {
-        m_InfoFileVector.m_IsEnabled = enableVectorMigration;
     }
 
     MigrationInfoFactoryVector::~MigrationInfoFactoryVector()
     {
+        // m_pInfoFile owns m_pMetaData
+        delete m_pInfoFile;
     }
 
     void MigrationInfoFactoryVector::ReadConfiguration( JsonConfigurable* pParent, const ::Configuration* config )
@@ -821,37 +649,42 @@ namespace Kernel
                                                        Vector_Migration_Modifier_Equation_DESC_TEXT,
                                                        MDD_ENUM_ARGS(ModifierEquationType))); 
 
-        pParent->initConfigTypeMap( "Vector_Migration_Filename",          &(m_InfoFileVector.m_Filename),  Vector_Migration_Filename_DESC_TEXT, "");
-        pParent->initConfigTypeMap( "x_Vector_Migration"       ,          &(m_InfoFileVector.m_xModifier), x_Vector_Migration_DESC_TEXT,                 0.0f, FLT_MAX, 1.0f);
-        pParent->initConfigTypeMap( "Vector_Migration_Habitat_Modifier",  &m_ModifierHabitat,              Vector_Migration_Habitat_Modifier_DESC_TEXT,  0.0f, FLT_MAX, 0.0f );
-        pParent->initConfigTypeMap( "Vector_Migration_Food_Modifier",     &m_ModifierFood,                 Vector_Migration_Food_Modifier_DESC_TEXT,     0.0f, FLT_MAX, 0.0f );
-        pParent->initConfigTypeMap( "Vector_Migration_Stay_Put_Modifier", &m_ModifierStayPut,              Vector_Migration_Stay_Put_Modifier_DESC_TEXT, 0.0f, FLT_MAX, 0.0f );
+        pParent->initConfigTypeMap( "Vector_Migration_Filename",          &m_Filename,        Vector_Migration_Filename_DESC_TEXT, "");
+        pParent->initConfigTypeMap( "x_Vector_Migration"       ,          &m_xModifier,       x_Vector_Migration_DESC_TEXT,                 0.0f, FLT_MAX, 1.0f);
+        pParent->initConfigTypeMap( "Vector_Migration_Habitat_Modifier",  &m_ModifierHabitat, Vector_Migration_Habitat_Modifier_DESC_TEXT,  0.0f, FLT_MAX, 0.0f );
+        pParent->initConfigTypeMap( "Vector_Migration_Food_Modifier",     &m_ModifierFood,    Vector_Migration_Food_Modifier_DESC_TEXT,     0.0f, FLT_MAX, 0.0f );
+        pParent->initConfigTypeMap( "Vector_Migration_Stay_Put_Modifier", &m_ModifierStayPut, Vector_Migration_Stay_Put_Modifier_DESC_TEXT, 0.0f, FLT_MAX, 0.0f );
 
     }
-
 
     IMigrationInfoVector* MigrationInfoFactoryVector::CreateMigrationInfoVector( const std::string& idreference,
                                                                                  INodeContext *pParentNode, 
                                                                                  const boost::bimap<ExternalNodeId_t, suids::suid>& rNodeIdSuidMap,
-                                                                                 const VectorSpeciesParameters* pSpeciesParameters )
+                                                                                 int speciesIndex,
+                                                                                 const VectorGeneCollection* pGenes )
     {
-        IMigrationInfoVector* p_new_migration_info; // = nullptr;
-        m_InfoFileVector.SetSpeciesParameters( pSpeciesParameters );
 
-        if (m_InfoFileVector.m_Filename.empty() || (m_InfoFileVector.m_Filename == "UNINITIALIZED STRING"))
+        if( m_pInfoFile == nullptr )
         {
-            m_InfoFileVector.m_IsEnabled = false;
-        }
-        if (!m_InfoFileVector.IsInitialized())
+            m_pMetaData = new MigrationMetadataVector( speciesIndex,
+                                                       pGenes,
+                                                       MigrationType::LOCAL_MIGRATION,
+                                                       MAX_LOCAL_MIGRATION_DESTINATIONS );
+            m_pInfoFile = new MigrationInfoFile( m_pMetaData, m_Filename, m_xModifier );
+            m_pInfoFile->m_IsEnabled = !m_Filename.empty() && (m_Filename != "UNINITIALIZED STRING");
+        }        
+
+        if( !m_pInfoFile->IsInitialized() )
         {
-            m_InfoFileVector.Initialize(idreference);
+            m_pInfoFile->Initialize(idreference);
         }
+
         std::vector<MigrationInfoFile*> info_file_list;
-        info_file_list.push_back(&m_InfoFileVector);
-        info_file_list.push_back(nullptr);
-        info_file_list.push_back(nullptr);
-        info_file_list.push_back(nullptr);
-        info_file_list.push_back(nullptr);
+        info_file_list.push_back( m_pInfoFile );
+        info_file_list.push_back( nullptr );
+        info_file_list.push_back( nullptr );
+        info_file_list.push_back( nullptr );
+        info_file_list.push_back( nullptr );
         
         // ------------------------------------------------------------------------------
         // --- is_fixed_rate not used, we always have male and female migration because female 
@@ -863,21 +696,23 @@ namespace Kernel
                                                                                                        rNodeIdSuidMap,
                                                                                                        info_file_list,
                                                                                                        &is_fixed_rate );
+
+        IMigrationInfoVector* p_new_migration_info = nullptr;
         if( rate_data.size() > 0 && rate_data[0].size() > 0 )
         {
-            if ( rate_data[0][0].GetNumRates() > 1 && m_InfoFileVector.GetGenderDataType() != GenderDataType::VECTOR_MIGRATION_BY_GENETICS)
+            if ( rate_data[0][0].GetNumRates() > 1 && m_pMetaData->GetGenderDataType() != GenderDataType::VECTOR_MIGRATION_BY_GENETICS)
             {
                 std::ostringstream msg;
-                msg << "Vector_Migration_Filename " << m_InfoFileVector.m_Filename << " contains more than one age bin for migration. Age-based migration is not implemented for vectors." << std::endl;
+                msg << "Vector_Migration_Filename " << m_Filename << " contains more than one age bin for migration. Age-based migration is not implemented for vectors." << std::endl;
                 throw InvalidInputDataException(__FILE__, __LINE__, __FUNCTION__, msg.str().c_str());
             }
             MigrationInfoAgeAndGenderVector* new_migration_info = _new_ MigrationInfoAgeAndGenderVector( pParentNode,
                                                                                                          m_ModifierEquation,
                                                                                                          m_ModifierHabitat,
                                                                                                          m_ModifierFood,
-                                                                                                         m_ModifierStayPut);
-            new_migration_info->m_allele_combos_index_map_list = m_InfoFileVector.GetAlleleComboMapList();
-            new_migration_info->Initialize(rate_data);           
+                                                                                                         m_ModifierStayPut,
+                                                                                                         m_pMetaData->GetAlleleComboMapList() );
+            new_migration_info->Initialize( rate_data );
             p_new_migration_info = new_migration_info;
             
         }
@@ -908,7 +743,10 @@ namespace Kernel
     IMigrationInfoVector* MigrationInfoFactoryVectorDefault::CreateMigrationInfoVector( const std::string& idreference,
                                                                                         INodeContext *pParentNode, 
                                                                                         const boost::bimap<ExternalNodeId_t, suids::suid>& rNodeIdSuidMap,
-                                                                                        const VectorSpeciesParameters* pSpeciesParameters )
+                                                                                        int speciesIndex,
+                                                                                        const VectorGeneCollection* pGenes )
+=======
+
     {
         if( m_IsVectorMigrationEnabled )
         {
@@ -927,7 +765,8 @@ namespace Kernel
                                                                                                          ModifierEquationType::LINEAR,
                                                                                                          1.0,
                                                                                                          1.0,
-                                                                                                         1.0 );
+                                                                                                         1.0,
+                                                                                                         std::vector<std::pair<AlleleCombo, int>>() );
             new_migration_info->Initialize( rate_data );
             return new_migration_info;
         }

@@ -5,12 +5,13 @@
 #include "IMigrationInfo.h"
 #include "SimulationEnums.h"
 #include "VectorEnums.h"
-#include "VectorSpeciesParameters.h"
+#include "VectorGenome.h"
 
 
 namespace Kernel
 {
     struct IVectorSimulationContext;
+    class VectorGeneCollection;
 
     // Extend the IMigrationInfo interface to support migrating vectors
     struct IMigrationInfoVector : virtual IMigrationInfo
@@ -37,6 +38,7 @@ namespace Kernel
         virtual IMigrationInfoVector* CreateMigrationInfoVector( const std::string& idreference,
                                                                  INodeContext *parent_node, 
                                                                  const boost::bimap<ExternalNodeId_t, suids::suid>& rNodeIdSuidMap,
-                                                                 const VectorSpeciesParameters* pSpeciesParameters ) = 0;
+                                                                 int speciesIndex,
+                                                                 const VectorGeneCollection* pGenes ) = 0;
     };
 }

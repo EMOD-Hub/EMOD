@@ -17,6 +17,21 @@ SETUP_LOGGING( "Migration" )
 
 #define MAX_DESTINATIONS (100) // maximum number of destinations per node in migration file
 
+
+// not sure where to put these
+#define MigrationMetadata_IdReference_DESC_TEXT "The reference ID used to synchronize the migration data with the demographics data. Required."
+#define MigrationMetadata_NodeCount_DESC_TEXT "The number of 'from' nodes in the data. Used to verify size NodeOffsets - 16*NodeCount = # chars in NodeOffsets. Required."
+#define MigrationMetadata_DatavalueCount_DESC_TEXT "The number of rates/'to' nodes for each 'from' node. Default depends on MigrationType (i.e. MaxDestinationsPerNode). Max of 100. Optional."
+#define MigrationMetadata_MigrationType_DESC_TEXT "The type of migration for which the file is intended.  Must match the type where it is used. Required"
+#define MigrationMetadata_GenderDataType_DESC_TEXT "The type of gender data used in the binary file (i.e. one chunk of data or two). Optional"
+#define MigrationMetadata_InterpolationType_DESC_TEXT "Determines if linear interpolation is used on rates between ages. Optional"
+#define MigrationMetadata_AgesYears_DESC_TEXT "Array of ages in years and in increasing order.  All ages must be between 0 - 125. Optional."
+
+#define MigrationOffsetsData_NodeOffsets_DESC_TEXT "A map of External Node ID to an address location in the binary file. Required"
+#define MigrationOffsetsData_Metadata_DESC_TEXT "Element containing information about the binary file.  Required."
+
+
+
 namespace Kernel
 {
     // ------------------------------------------------------------------------
@@ -224,16 +239,16 @@ namespace Kernel
                                                     float &time, 
                                                     float dt )
     {
-        float        age_years = 0.0;
-        Gender::Enum gender    = Gender::MALE;
         destination    = suids::nil_suid();
         migration_type = MigrationType::NO_MIGRATION;
         time           = 0.0;
 
+        float        age_years = 0.0;
+        Gender::Enum gender    = Gender::MALE;
         if( traveler != nullptr )
         {
             age_years = traveler->GetAge() / DAYSPERYEAR;
-            gender = Gender::Enum(traveler->GetGender());
+            gender = Gender::Enum( traveler->GetGender() );
         }
 
         CalculateRates( gender, age_years );
@@ -256,7 +271,7 @@ namespace Kernel
 
         int index = 0;
         float desttemp = pRNG->e();
-        while( desttemp > r_cdf[index] )
+        while( (desttemp > r_cdf[ index ]) && ((index+1) < r_cdf.size()) )
         {
             index++;
         }
@@ -388,26 +403,328 @@ namespace Kernel
     }
 
     // ------------------------------------------------------------------------
-    // --- MigrationInfoFile
+    // --- MigrationMetadata
     // ------------------------------------------------------------------------
+    BEGIN_QUERY_INTERFACE_BODY(MigrationMetadata)
+    END_QUERY_INTERFACE_BODY(MigrationMetadata)
 
-    MigrationInfoFile::MigrationInfoFile( MigrationType::Enum migType, 
+    MigrationMetadata::MigrationMetadata( MigrationType::Enum expectedMigType,
                                           int defaultDestinationsPerNode )
-        : m_Filename( UNINITIALIZED_STRING ) 
-        , m_IsEnabled(false)
-        , m_xModifier(0.0)
-        , m_ParameterNameEnable( UNINITIALIZED_STRING )
-        , m_ParameterNameFilename( UNINITIALIZED_STRING )
+        : m_ExpectedIdReference()
+        , m_ExpectedMigrationType( expectedMigType )
         , m_DestinationsPerNode( defaultDestinationsPerNode )
-        , m_MigrationType( migType )
+        , m_NumNodes( 0 )
         , m_GenderDataType( GenderDataType::SAME_FOR_BOTH_GENDERS )
         , m_InterpolationType( InterpolationType::LINEAR_INTERPOLATION )
         , m_AgesYears()
-        , m_GenderDataSize(0)
-        , m_AgeDataSize(0)
-        , m_FileStream()
+        , m_GenderDataSize( 0 )
+        , m_AgeDataSize( 0 )
+    {
+    }
+
+    MigrationMetadata::~MigrationMetadata()
+    {
+    }
+
+    bool MigrationMetadata::Configure( const Configuration* config )
+    {
+        MigrationType::Enum file_migration_type = MigrationType::NO_MIGRATION;
+        initConfig( "MigrationType",     file_migration_type, config, MetadataDescriptor::Enum( "MigrationType",     MigrationMetadata_MigrationType_DESC_TEXT,     MDD_ENUM_ARGS( MigrationType     ) ) );
+        initConfig( "GenderDataType",    m_GenderDataType,    config, MetadataDescriptor::Enum( "GenderDataType",    MigrationMetadata_GenderDataType_DESC_TEXT,    MDD_ENUM_ARGS( GenderDataType    ) ) );
+        initConfig( "InterpolationType", m_InterpolationType, config, MetadataDescriptor::Enum( "InterpolationType", MigrationMetadata_InterpolationType_DESC_TEXT, MDD_ENUM_ARGS( InterpolationType ) ) );
+
+        std::string file_id_reference;
+        initConfigTypeMap( "IdReference",    &file_id_reference,     MigrationMetadata_IdReference_DESC_TEXT                            );
+        initConfigTypeMap( "NodeCount",      &m_NumNodes,            MigrationMetadata_NodeCount_DESC_TEXT,      1, INT_MAX,          1 );
+        initConfigTypeMap( "DatavalueCount", &m_DestinationsPerNode, MigrationMetadata_DatavalueCount_DESC_TEXT, 1, MAX_DESTINATIONS, 8 );
+
+        initConfigTypeMap( "AgesYears", &m_AgesYears, MigrationMetadata_AgesYears_DESC_TEXT, 0.0, MAX_HUMAN_AGE, true );
+
+        bool is_configured = JsonConfigurable::Configure( config );
+        if( is_configured && !JsonConfigurable::_dryrun )
+        {
+            // -------------------------------------
+            // --- Check idreference - Must be equal
+            // -------------------------------------
+            std::string file_idreference_lower( file_id_reference );
+            std::string idreference_lower( m_ExpectedIdReference );  // Make a copy to transform so we do not modify the original.
+            std::transform( idreference_lower.begin(), idreference_lower.end(), idreference_lower.begin(), ::tolower );
+            std::transform( file_idreference_lower.begin(), file_idreference_lower.end(), file_idreference_lower.begin(), ::tolower );
+            if( file_idreference_lower != idreference_lower )
+            {
+                std::stringstream ss;
+                ss << config->GetDataLocation() << "[Metadata][IdReference]";
+                throw IncoherentConfigurationException( __FILE__, __LINE__, __FUNCTION__,
+                                                        "Expected IdReference", m_ExpectedIdReference.c_str(),
+                                                        ss.str().c_str(), file_id_reference.c_str());
+            }
+
+            // ----------------------------------------------------------
+            // --- MigrationType - Verify that it is what we expect
+            // ----------------------------------------------------------
+            if( file_migration_type != m_ExpectedMigrationType )
+            {
+                std::string exp_mig_type_str = MigrationType::pairs::lookup_key( m_ExpectedMigrationType );
+                std::string file_mig_type_str = MigrationType::pairs::lookup_key( file_migration_type );
+                std::stringstream ss;
+                ss << config->GetDataLocation() << "[Metadata][MigrationType]";
+                throw IncoherentConfigurationException( __FILE__, __LINE__, __FUNCTION__,
+                                                        "Expected MigrationType", exp_mig_type_str.c_str(),
+                                                        ss.str().c_str(), file_mig_type_str.c_str());
+            }
+
+            // ----------------------------------------------
+            // --- GenderDataType - must be human stuff here
+            // ----------------------------------------------
+            CheckGenderDataType( config );
+
+            // -----------------------------------------------
+            // --- AgeYears - Make sure has at least one value
+            // -----------------------------------------------
+            if( m_AgesYears.size() == 0 )
+            {
+                // Look up logic depends on the default value being the max age
+                m_AgesYears.push_back( MAX_HUMAN_AGE );
+            }
+
+            // -----------------------------------------------------------------
+            // --- NodeCount - Verify that it was defined and greater than zero
+            // -----------------------------------------------------------------
+            if( !config->Exist( "NodeCount" ) )
+            {
+                std::stringstream ss;
+                ss << config->GetDataLocation() << "[Metadata][NodeCount] must be defined.\n";
+                ss << "It must indicate the number of 'from' nodes in the data.";
+                throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
+
+            }
+            else if( m_NumNodes <= 0 )
+            {
+                std::stringstream ss;
+                ss << config->GetDataLocation() << "[Metadata][NodeCount] cannot be zero.\n";
+                ss << "It must indicate the number of 'from' nodes in the data.";
+                throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
+            }
+        }
+        return is_configured;
+    }
+
+    void MigrationMetadata::SetExpectedIdReference( const std::string& rExpectedIdReference )
+    {
+        m_ExpectedIdReference = rExpectedIdReference;
+    }
+
+    void MigrationMetadata::CheckGenderDataType( const Configuration* config )
+    {
+        if( m_GenderDataType == GenderDataType::VECTOR_MIGRATION_BY_GENETICS )
+        {
+            std::stringstream ss;
+            ss << config->GetDataLocation() << "[Metadata][GenderDataType] cannot be 'VECTOR_MIGRATION_BY_GENETICS' for humans.";
+            throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
+        }
+    }
+
+    uint32_t MigrationMetadata::GetNumGenderDataChunks() const
+    {
+        uint32_t num_gender_data_chunks= 1;
+        if( m_GenderDataType == GenderDataType::ONE_FOR_EACH_GENDER )
+        {
+            num_gender_data_chunks = 2; // the first chuck is for males, the second is for females
+        }
+        else
+        {
+            num_gender_data_chunks = 1; // genders use same data, including VECTOR_MIGRATION_BY_GENETICS
+        }
+        return num_gender_data_chunks;
+    }
+
+    uint32_t MigrationMetadata::CalculateExpectedBinaryFileSize()
+    {
+        uint32_t num_gender_data_chunks = GetNumGenderDataChunks();
+        uint32_t num_age_data_chunks    = m_AgesYears.size();
+
+        m_AgeDataSize    = m_NumNodes * m_DestinationsPerNode * (sizeof(uint32_t) + sizeof(double));
+        m_GenderDataSize = num_age_data_chunks * m_AgeDataSize;
+
+        uint32_t exp_binary_file_size = num_gender_data_chunks * m_GenderDataSize;
+
+        return exp_binary_file_size;
+    }
+
+    bool MigrationMetadata::IsFixedRate() const
+    {
+        uint32_t num_gender_data_chunks = GetNumGenderDataChunks();
+
+        // data is fixed if one gender and one age and age is max
+        bool is_fixed_rate = (num_gender_data_chunks == 1) &&
+                             (m_AgesYears.size()     == 1) &&
+                             (m_AgesYears[ 0 ]       == MAX_HUMAN_AGE);
+        return is_fixed_rate;
+    }
+
+    // ------------------------------------------------------------------------
+    // --- MigrationOffsetsData
+    // ------------------------------------------------------------------------
+    BEGIN_QUERY_INTERFACE_BODY(MigrationOffsetsData)
+    END_QUERY_INTERFACE_BODY(MigrationOffsetsData)
+
+    MigrationOffsetsData::MigrationOffsetsData( MigrationType::Enum expectedMigType,
+                                                int defaultDestinationsPerNode )
+        : m_pMetadata( new MigrationMetadata( expectedMigType, defaultDestinationsPerNode ) )
         , m_Offsets()
-        , m_IsInitialized(false)
+    {
+    }
+
+    MigrationOffsetsData::MigrationOffsetsData( MigrationMetadata* pMetadata )
+        : m_pMetadata( pMetadata )
+        , m_Offsets()
+    {
+    }
+
+    MigrationOffsetsData::~MigrationOffsetsData()
+    {
+        delete m_pMetadata;
+    }
+
+    bool MigrationOffsetsData::Configure( const Configuration* config )
+    {
+        std::string offsets_str;
+        initConfigTypeMap( "NodeOffsets", &offsets_str, MigrationOffsetsData_NodeOffsets_DESC_TEXT );
+        initConfigTypeMap( "Metadata", m_pMetadata, MigrationOffsetsData_Metadata_DESC_TEXT );
+
+        bool is_configured = JsonConfigurable::Configure( config );
+        if( is_configured && !JsonConfigurable::_dryrun )
+        {
+            // ------------------------------------------------------------------------
+            // --- Verify NodeOffests is the right length given the number of nodes.
+            // --- There should be 16 characters for each node.  The first 8 characters
+            // --- are for the External Node ID (i.e the node id used in the demographics)
+            // --- and the second 8 characters are the offset in the file.
+            // --- The node ids in the offset_str are the "from" nodes - the nodes that
+            // --- individuals are trying migrate from.
+            // ------------------------------------------------------------------------
+            if( offsets_str.length() / 16 != m_pMetadata->GetNumNodes() )
+            {
+                throw IncoherentConfigurationException( __FILE__, __LINE__, __FUNCTION__,
+                                                        "offsets_str.length() / 16", int( offsets_str.length() / 16 ),
+                                                        "num_nodes", m_pMetadata->GetNumNodes() );
+            }
+
+            // -------------------------------------------
+            // --- Calculate the expected binary file size
+            // -------------------------------------------
+            uint32_t exp_binary_file_size = m_pMetadata->CalculateExpectedBinaryFileSize();
+
+            // -----------------------------------------------
+            // --- Extract data from string and place into map
+            // -----------------------------------------------
+            for( int n = 0; n < m_pMetadata->GetNumNodes(); n++ )
+            {
+                ExternalNodeId_t nodeid = 0;
+                uint32_t offset = 0;
+
+                sscanf_s( offsets_str.substr( (n * 16), 8 ).c_str(), "%x", &nodeid );
+                sscanf_s( offsets_str.substr( (n * 16) + 8, 8 ).c_str(), "%x", &offset );
+
+                if( offset >= exp_binary_file_size )
+                {
+                    char offset_buff[ 20 ];
+                    sprintf_s( offset_buff, 19, "0x%x", offset );
+                    char filesize_buff[ 20 ];
+                    sprintf_s( filesize_buff, 19, "0x%x", exp_binary_file_size );
+                    std::stringstream ss;
+                    ss << std::endl;
+                    ss << "Invalid 'NodeOffsets' in " << config->GetDataLocation() << "." << std::endl;
+                    ss << "Node ID=" << nodeid << " has an offset of " << offset_buff;
+                    ss << " but the '.bin' file size is expected to be " << exp_binary_file_size << "(" << filesize_buff << ")." << std::endl;
+                    throw FileIOException( __FILE__, __LINE__, __FUNCTION__, config->GetDataLocation().c_str(), ss.str().c_str() );
+                }
+
+                m_Offsets[ nodeid ] = offset;
+            }
+        }
+        return is_configured;
+    }
+
+    void MigrationOffsetsData::SetExpectedIdReference( const std::string& rExpectedIdReference )
+    {
+        m_pMetadata->SetExpectedIdReference( rExpectedIdReference );
+    }
+
+    const std::vector<float>& MigrationOffsetsData::GetAgesYears() const
+    {
+        return m_pMetadata->GetAgesYears();
+    }
+
+    int MigrationOffsetsData::GetDestinationsPerNode() const
+    {
+        return m_pMetadata->GetDestinationsPerNode();
+    }
+
+    MigrationType::Enum MigrationOffsetsData::GetMigrationType() const
+    {
+        return m_pMetadata->GetMigrationType();
+    }
+
+    InterpolationType::Enum MigrationOffsetsData::GetInterpolationType() const
+    {
+        return m_pMetadata->GetInterpolationType();
+    }
+
+    uint32_t MigrationOffsetsData::CalculateExpectedBinaryFileSize()
+    {
+        return m_pMetadata->CalculateExpectedBinaryFileSize();
+    }
+
+    bool MigrationOffsetsData::IsFixedRate() const
+    {
+        return m_pMetadata->IsFixedRate();
+    }
+
+    bool MigrationOffsetsData::HasDataFor( uint32_t nodeID ) const
+    {
+        return (m_Offsets.count( nodeID ) > 0);
+    }
+
+    std::streamoff MigrationOffsetsData::GetOffset( int indexGender, int indexAge, uint32_t nodeID ) const
+    {
+        if( (m_pMetadata->GetGenderDataType() != GenderDataType::ONE_FOR_EACH_GENDER) && (indexGender == 1) )
+        {
+            // -----------------------------------------------------
+            // --- The data has one set of rates for both genders 
+            // --- so read the same data into the female parameters.
+            // -----------------------------------------------------
+            indexGender = 0;
+        }
+
+        uint32_t gender_size = m_pMetadata->GetGenderDataSize();
+        uint32_t age_size    = m_pMetadata->GetAgeDataSize();
+
+        std::streamoff offset = (indexGender * gender_size) + (indexAge * age_size) + m_Offsets.at( nodeID );
+        return offset;
+    }
+
+    // ------------------------------------------------------------------------
+    // --- MigrationInfoFile
+    // ------------------------------------------------------------------------
+
+    MigrationInfoFile::MigrationInfoFile( MigrationMetadata* pMetaData,
+                                          const std::string& rFilename,
+                                          float xModifier )
+        : m_Filename( rFilename )
+        , m_IsEnabled( false )
+        , m_xModifier( xModifier )
+        , m_ParameterNameEnable( UNINITIALIZED_STRING )
+        , m_ParameterNameFilename( UNINITIALIZED_STRING )
+        , m_FileStream()
+        , m_IsInitialized( false )
+        , m_pOffsetsData( new MigrationOffsetsData( pMetaData ) )
+    {
+    }
+
+    MigrationInfoFile::MigrationInfoFile( MigrationType::Enum expectedMigType, 
+                                          int defaultDestinationsPerNode )
+        : MigrationInfoFile( new MigrationMetadata( expectedMigType, defaultDestinationsPerNode ), "", 0.0 )
     {
     }
 
@@ -460,7 +777,7 @@ namespace Kernel
                                       std::vector<std::vector<MigrationRateData>>& rRateData )
     {
         bool is_fixed_rate = true;
-        if( m_IsEnabled && (m_Offsets.count( fromNodeID ) > 0) )
+        if( m_IsEnabled && m_pOffsetsData->HasDataFor( fromNodeID ) )
         {
             if( rRateData.size() != 2 )
             {
@@ -471,39 +788,30 @@ namespace Kernel
                 }
             }
 
-            uint32_t num_gender_data_chunks = GetNumGenderDataChunks();
+            is_fixed_rate = m_pOffsetsData->IsFixedRate();
 
-            // data is fixed if one gender and one age and age is max
-            is_fixed_rate = (num_gender_data_chunks == 1) && 
-                            (m_AgesYears.size() == 1) && 
-                            (m_AgesYears[0] == MAX_HUMAN_AGE);
+            int destinations_per_node           = m_pOffsetsData->GetDestinationsPerNode();
+            MigrationType::Enum mig_type        = m_pOffsetsData->GetMigrationType();
+            InterpolationType::Enum interp_type = m_pOffsetsData->GetInterpolationType();
 
-            int gender_file_index = 0;
             for( uint32_t ig = 0; ig < 2; ig++ )
             {
-                if( (num_gender_data_chunks == 1) && (ig == 1) )
-                {
-                    // -----------------------------------------------------
-                    // --- The data has one set of rates for both genders 
-                    // --- so read the same data into the female parameters.
-                    // -----------------------------------------------------
-                    gender_file_index = 0;
-                }
-
                 int initial_node_data_size = rRateData[ ig ].size();
-                for( uint32_t ja = 0; ja < m_AgesYears.size(); ja++ )
+
+                const std::vector<float>& r_ages_years = m_pOffsetsData->GetAgesYears();
+                for( uint32_t ja = 0; ja < r_ages_years.size(); ja++ )
                 {
-                    float age_years = m_AgesYears[ja];
+                    float age_years = r_ages_years[ja];
 
                     uint32_t array_id[MAX_DESTINATIONS] = {0};
                     double   array_rt[MAX_DESTINATIONS] = {0};
 
-                    std::streamoff offset = gender_file_index*m_GenderDataSize + ja*m_AgeDataSize + m_Offsets[ fromNodeID ];
+                    std::streamoff offset = m_pOffsetsData->GetOffset( ig, ja, fromNodeID );
 
                     m_FileStream.seekg( offset, std::ios::beg );
 
-                    m_FileStream.read( reinterpret_cast<char*>(array_id), m_DestinationsPerNode * sizeof(uint32_t) );
-                    m_FileStream.read( reinterpret_cast<char*>(array_rt), m_DestinationsPerNode * sizeof(double)   );
+                    m_FileStream.read( reinterpret_cast<char*>(array_id), destinations_per_node * sizeof(uint32_t) );
+                    m_FileStream.read( reinterpret_cast<char*>(array_rt), destinations_per_node * sizeof(double)   );
 
                     if( m_FileStream.fail() )
                     {
@@ -519,7 +827,7 @@ namespace Kernel
                     // --- we use node_index to keep track of what node we are on.
                     // ---------------------------------------------------------------------------------
                     int node_index = initial_node_data_size;
-                    for( int i = 0; i < m_DestinationsPerNode; i++ )
+                    for( int i = 0; i < destinations_per_node; i++ )
                     {
                         if( array_id[ i ] > 0 )
                         {
@@ -539,11 +847,11 @@ namespace Kernel
 
                             if( rRateData[ ig ].size() <= node_index )
                             {
-                                MigrationRateData mrd( to_node_id_suid, m_MigrationType, m_InterpolationType );
+                                MigrationRateData mrd( to_node_id_suid, mig_type, interp_type );
                                 rRateData[ ig ].push_back( mrd );
                             }
                             else if( (rRateData[ ig ][ node_index ].GetToNodeSuid()      != to_node_id_suid) ||
-                                     (rRateData[ ig ][ node_index ].GetMigrationType()   != m_MigrationType) )
+                                     (rRateData[ ig ][ node_index ].GetMigrationType()   != mig_type       ) )
                             {
                                 std::stringstream ss;
                                 ss << "In file '" << m_Filename << "', the 'To' Node IDs are not the same for the Age Data sections for fromNodeId = " << fromNodeID;
@@ -554,253 +862,26 @@ namespace Kernel
                         }
                     }
                 }
-                gender_file_index++;
             }
         }
         return is_fixed_rate;
     }
 
-// json keys in the metadata file
-static const char* METADATA              = "Metadata";               // required - Element containing information about the file
-static const char* MD_ID_REFERENCE       = "IdReference";            // required - Must equal value from demographics file
-static const char* MD_NODE_COUNT         = "NodeCount";              // required - Used to verify size NodeOffsets - 16*NodeCount = # chars in NodeOffsets
-static const char* MD_DATA_VALUE_COUNT   = "DatavalueCount";         // optional - Default depends on MigrationType (i.e. MaxDestinationsPerNode)
-static const char* MD_MIGRATION_TYPE     = "MigrationType";          // optional - Assume as expected
-static const char* MD_GENDER_DATA_TYPE   = "GenderDataType";         // optional - Default is BOTH
-static const char* MD_AGES_YEARS         = "AgesYears";              // optional - Array of ages in increasing order - Default all ages - 0 - 125
-static const char* MD_INTERPOLATION_TYPE = "InterpolationType";      // optional - Default is LINEAR_INTERPOLATION
-static const char* NODE_OFFSETS          = "NodeOffsets";            // required - a map of External Node ID to an address location in the binary file
-
-// Macro that creates a message with the bad input string and a list of possible values.
-#define THROW_ENUM_EXCEPTION( EnumName, dataFile, key, inputValue )\
-        std::stringstream ss;\
-        ss << dataFile << "[" << METADATA << "][" << key << "] = '" << inputValue << "' is not a valid " << key << ".  Valid values are: ";\
-        for( int i = 0; i < EnumName::pairs::count(); i++ )\
-        {\
-            ss << "'" << EnumName::pairs::get_keys()[i] << "', ";\
-        }\
-        std::string msg = ss.str();\
-        msg = msg.substr( 0, msg.length()-2 );\
-        throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, msg.c_str() );
-
-
     uint32_t MigrationInfoFile::ParseMetadataForFile( const std::string& data_filepath, const std::string& idreference )
     {
         string metadata_filepath = data_filepath + ".json";
+        Configuration* p_config = Environment::LoadConfigurationFile( metadata_filepath );
 
-        JsonObjectDemog json;
-        json.ParseFile( metadata_filepath.c_str() );
+        // we assume in the metadata that not all parameters are required
+        bool prev_use_defalts = JsonConfigurable::_useDefaults;
+        JsonConfigurable::_useDefaults = true;
 
-        try // try-catch to catch JsonObjectDemog errors like wrong type
-        {
-            // -------------------------------------
-            // --- Check idreference - Must be equal
-            // -------------------------------------
-            string file_id_reference = json[ METADATA ][ MD_ID_REFERENCE ].AsString();
-            string file_idreference_lower(file_id_reference);
-            string idreference_lower(idreference);  // Make a copy to transform so we do not modify the original.
-            std::transform(idreference_lower.begin(), idreference_lower.end(), idreference_lower.begin(), ::tolower);
-            std::transform(file_idreference_lower.begin(), file_idreference_lower.end(), file_idreference_lower.begin(), ::tolower);
-            if(file_idreference_lower != idreference_lower )
-            {
-                std::stringstream ss;
-                ss << metadata_filepath << "[" << METADATA << "][" << MD_ID_REFERENCE << "]";
-                throw IncoherentConfigurationException( __FILE__, __LINE__, __FUNCTION__, 
-                                                        "idreference", idreference.c_str(),
-                                                        ss.str().c_str(),
-                                                        file_id_reference.c_str() );
-            }
+        m_pOffsetsData->SetExpectedIdReference( idreference );
+        m_pOffsetsData->Configure( p_config );
 
-            // -------------------------------------------------
-            // --- Read the DestinationsPerNode if it exists
-            // --- This tells us how much data there is per node
-            // -------------------------------------------------
-            if( json[ METADATA ].Contains( MD_DATA_VALUE_COUNT ) )
-            {
-                m_DestinationsPerNode = json[ METADATA ][ MD_DATA_VALUE_COUNT ].AsInt();
-                if( ( 0 >= m_DestinationsPerNode) || (m_DestinationsPerNode > MAX_DESTINATIONS) )
-                {
-                    int violated_limit = (0 >= m_DestinationsPerNode) ? 0 : MAX_DESTINATIONS;
-                    std::stringstream ss;
-                    ss << metadata_filepath << "[" << METADATA << "][" << MD_DATA_VALUE_COUNT << "]";
-                    throw OutOfRangeException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str(), m_DestinationsPerNode, violated_limit );
-                }
-            }
+        JsonConfigurable::_useDefaults = prev_use_defalts;
 
-            // ----------------------------------------------------------
-            // --- Read MigrationType - Verify that it is what we expect
-            // ----------------------------------------------------------
-            if( json[ METADATA ].Contains( MD_MIGRATION_TYPE ) )
-            {
-                std::string file_mig_type_str = json[ METADATA ][ MD_MIGRATION_TYPE ].AsString();
-                MigrationType::Enum file_mig_type = MigrationType::Enum(MigrationType::pairs::lookup_value( file_mig_type_str.c_str() ));
-                if( file_mig_type == -1 )
-                {
-                    THROW_ENUM_EXCEPTION( MigrationType, metadata_filepath, MD_MIGRATION_TYPE, file_mig_type_str )
-                }
-                else if( file_mig_type != m_MigrationType )
-                {
-                    std::string exp_mig_type_str = MigrationType::pairs::lookup_key( m_MigrationType );
-                    std::stringstream ss;
-                    ss << metadata_filepath << "[" << METADATA << "][" << MD_MIGRATION_TYPE << "]";
-                    throw IncoherentConfigurationException( __FILE__, __LINE__, __FUNCTION__, 
-                                                            "m_MigrationType", 
-                                                            exp_mig_type_str.c_str(),
-                                                            ss.str().c_str(),
-                                                            file_mig_type_str.c_str() );
-                }
-            }
-
-            // ------------------------
-            // --- Read GenderDataType
-            // ------------------------
-            m_GenderDataType = GenderDataType::SAME_FOR_BOTH_GENDERS;
-            if( json[ METADATA ].Contains( MD_GENDER_DATA_TYPE ) )
-            {
-                std::string gd_str = json[ METADATA ][ MD_GENDER_DATA_TYPE ].AsString();
-                m_GenderDataType = GenderDataType::Enum(GenderDataType::pairs::lookup_value( gd_str.c_str() ));
-                if( m_GenderDataType == -1 )
-                {
-                    THROW_ENUM_EXCEPTION( GenderDataType, metadata_filepath, MD_GENDER_DATA_TYPE, gd_str )
-                }
-                else if( m_GenderDataType == GenderDataType::VECTOR_MIGRATION_BY_GENETICS )
-                {
-                    std::stringstream ss;
-                    ss << metadata_filepath << "[" << METADATA << "][" << MD_GENDER_DATA_TYPE << "] ";
-                    throw IncoherentConfigurationException( __FILE__, __LINE__, __FUNCTION__,
-                                                            "GenderDataType",
-                                                            gd_str.c_str(),
-                                                            ss.str().c_str(),
-                                                            "cannot use for human migration");
-                }
-            }
-
-            // ---------------------------------------------------------------------------------
-            // --- Read AgesYears - In an array of ages in years with values in increasing order
-            // ---------------------------------------------------------------------------------
-            if( json[ METADATA ].Contains( MD_AGES_YEARS ) )
-            {
-                std::stringstream errmsg;
-                errmsg << metadata_filepath << "[" << METADATA << "][" << MD_AGES_YEARS << "] must be an array of ages"
-                       << " in years between 0 and " << MAX_HUMAN_AGE << " and must be in increasing order.";
-
-                JsonObjectDemog ages_array = json[ METADATA ][ MD_AGES_YEARS ];
-                if( !ages_array.IsArray() )
-                {
-                    throw GeneralConfigurationException(  __FILE__, __LINE__, __FUNCTION__, errmsg.str().c_str() );
-                }
-                float prev = 0.0;
-                for( int i = 0; i < ages_array.size(); i++ )
-                {
-                    float age = ages_array[i].AsFloat();
-                    if( (age < 0.0) || (MAX_HUMAN_AGE < age) || (age < prev) )
-                    {
-                        std::stringstream ss;
-                        ss << metadata_filepath << "[" << METADATA << "][" << MD_AGES_YEARS << "][" << i << "] = " << age << ".  " << errmsg.str();
-                        throw GeneralConfigurationException(  __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
-                    }
-                    m_AgesYears.push_back( age );
-                    prev = age;
-                }
-            }
-            else
-            {
-                // Look up logic depends on the default value being the max age
-                m_AgesYears.push_back( MAX_HUMAN_AGE );
-            }
-
-            // ---------------------------
-            // --- Read InterpolationType
-            // ---------------------------
-            m_InterpolationType = InterpolationType::LINEAR_INTERPOLATION;
-            if( json[ METADATA ].Contains( MD_INTERPOLATION_TYPE ) )
-            {
-                std::string interp_str = json[ METADATA ][ MD_INTERPOLATION_TYPE ].AsString();
-                m_InterpolationType = InterpolationType::Enum(InterpolationType::pairs::lookup_value( interp_str.c_str() ));
-                if( m_InterpolationType == -1 )
-                {
-                    THROW_ENUM_EXCEPTION( InterpolationType, metadata_filepath, MD_INTERPOLATION_TYPE, interp_str )
-                }
-            }
-
-            // ------------------------------------------------------------------------
-            // --- Read the NodeCount and the NodeOffsets and verify size is as expected.
-            // --- There should be 16 characters for each node.  The first 8 characters
-            // --- are for the External Node ID (i.e the node id used in the demographics)
-            // --- and the second 8 characters are the offset in the file.
-            // --- The node ids in the offset_str are the "from" nodes - the nodes that
-            // --- individuals are trying migrate from.
-            // ------------------------------------------------------------------------
-            int num_nodes = json[ METADATA ][ MD_NODE_COUNT ].AsInt();
-
-            std::string offsets_str = json[ NODE_OFFSETS ].AsString();
-            if( offsets_str.length() / 16 != num_nodes )
-            {
-                throw IncoherentConfigurationException( __FILE__, __LINE__, __FUNCTION__, 
-                    "offsets_str.length() / 16", int( offsets_str.length() / 16 ), 
-                    "num_nodes", num_nodes );
-            }
-
-            // -----------------------------------------------
-            // --- Extract data from string and place into map
-            // -----------------------------------------------
-            for( int n = 0; n < num_nodes; n++ )
-            {
-                ExternalNodeId_t nodeid = 0;
-                uint32_t offset = 0;
-
-                sscanf_s(offsets_str.substr((n * 16)    , 8).c_str(), "%x", &nodeid);
-                sscanf_s(offsets_str.substr((n * 16) + 8, 8).c_str(), "%x", &offset);
-
-                m_Offsets[ nodeid ] = offset;
-            }
-        }
-        catch( SerializationException& re )
-        {
-            // ------------------------------------------------------------------------------
-            // --- This "catch" is meant to report errors detered in JsonObjectDemog.
-            // --- These can consist of missing keys, wrong types, etc.
-            // ---
-            // --- Pull out the message about what is wrong and pre-pend the filename to it
-            // ------------------------------------------------------------------------------
-            std::stringstream msg;
-            IdmString msg_str = re.GetMsg();
-            std::vector<IdmString> splits = msg_str.split('\n');
-            release_assert( splits.size() == 4 );
-            msg << metadata_filepath << ": " << splits[2];
-            throw GeneralConfigurationException(  __FILE__, __LINE__, __FUNCTION__, msg.str().c_str() );
-        }
-
-        // -------------------------------------------
-        // --- Calculate the expected binary file size
-        // -------------------------------------------
-        uint32_t num_gender_data_chunks = GetNumGenderDataChunks();
-        uint32_t num_age_data_chunks    = m_AgesYears.size();
-        m_AgeDataSize                   = m_Offsets.size() * m_DestinationsPerNode * (sizeof(uint32_t) + sizeof(double));
-        m_GenderDataSize                = num_age_data_chunks * m_AgeDataSize;
-        uint32_t exp_binary_file_size   = num_gender_data_chunks * m_GenderDataSize;
-
-        // ------------------------------------------------------
-        // --- Check Offset values to ensure that they are valid
-        // ------------------------------------------------------
-        for( auto entry : m_Offsets )
-        {
-            if( entry.second >= exp_binary_file_size )
-            {
-                char offset_buff[20];
-                sprintf_s( offset_buff, 19, "0x%x", entry.second);
-                char filesize_buff[ 20 ];
-                sprintf_s( filesize_buff, 19, "0x%x", exp_binary_file_size );
-                std::stringstream ss;
-                ss << std::endl;
-                ss << "Invalid '" << NODE_OFFSETS << "' in " << metadata_filepath << "." << std::endl;
-                ss << "Node ID=" << entry.first << " has an offset of " << offset_buff;
-                ss << " but the '.bin' file size is expected to be " << exp_binary_file_size << "(" << filesize_buff << ")." << std::endl;
-                throw FileIOException( __FILE__, __LINE__, __FUNCTION__, m_Filename.c_str(), ss.str().c_str() );
-            }
-        }
-
-        return exp_binary_file_size;
+        return m_pOffsetsData->CalculateExpectedBinaryFileSize();
     }
 
     void MigrationInfoFile::OpenMigrationFile( const std::string& filepath, uint32_t expected_binary_file_size )
@@ -818,20 +899,6 @@ static const char* NODE_OFFSETS          = "NodeOffsets";            // required
         }
 
         m_FileStream.seekg( 0, ios::beg );
-    }
-
-    uint32_t MigrationInfoFile::GetNumGenderDataChunks() const
-    {
-        uint32_t num_gender_data_chunks; // = 1;
-        if( m_GenderDataType != GenderDataType::ONE_FOR_EACH_GENDER )
-        {
-            num_gender_data_chunks = 1; // genders use same data, including VECTOR_MIGRATION_BY_GENETICS
-        }
-        else
-        {
-            num_gender_data_chunks = 2; // the first chuck is for males, the second is for females
-        }
-        return num_gender_data_chunks;
     }
 
     // ------------------------------------------------------------------------

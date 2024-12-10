@@ -2738,7 +2738,11 @@ namespace Kernel
     void VectorPopulation::SetupMigration( const std::string& idreference, 
                                            const boost::bimap<ExternalNodeId_t, suids::suid>& rNodeIdSuidMap )
     {
-        m_pMigrationInfoVector = m_species_params->p_migration_factory->CreateMigrationInfoVector( idreference, m_context, rNodeIdSuidMap, m_species_params );
+        m_pMigrationInfoVector = m_species_params->p_migration_factory->CreateMigrationInfoVector( idreference, 
+                                                                                                   m_context, 
+                                                                                                   rNodeIdSuidMap, 
+                                                                                                   m_SpeciesIndex,
+                                                                                                   &(m_species_params->genes) );
     }
 
 
