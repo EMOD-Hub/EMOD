@@ -16,6 +16,36 @@ namespace Kernel
         ENUM_VALUE_SPEC(LINEAR       , 1)
         ENUM_VALUE_SPEC(EXPONENTIAL  , 2))
 
+     // ---------------------------
+     // --- MigrationInfoFileVector
+     // ---------------------------
+
+     // MigrationInfoFileVector is responsible for reading the vector-specific migration data from files.
+     // This object assumes that for one file name there is one binary file containing the
+     // "to-node" and rate data while json-formatted metadata file contains extra information
+     // about the data in the binary file. The factory uses this object to create
+     // the IMigrationInfo objects.
+        class MigrationInfoFileVector : public MigrationInfoFile
+    {
+    public:
+        MigrationInfoFileVector( MigrationType::Enum migType,
+                                 int defaultDestinationsPerNode );
+        virtual ~MigrationInfoFileVector();
+
+        const std::vector<std::pair<AlleleCombo, int>>& GetAlleleComboMapList() { return m_allele_combos_index_map_list; }
+        void SetSpeciesParameters( const VectorSpeciesParameters* pSpeciesParameters ){ m_pSpeciesParameters = pSpeciesParameters; }
+
+
+    protected:
+        // Returns the expected size of the binary file
+        virtual uint32_t ParseMetadataForFile( const std::string& data_filepath, const std::string& idreference);
+
+        static bool AlleleComboIntCompare( const std::pair<AlleleCombo, int>& rLeft, const std::pair<AlleleCombo, int>& rRight );
+        std::vector<std::pair<AlleleCombo, int>> m_allele_combos_index_map_list;
+        const VectorSpeciesParameters* m_pSpeciesParameters;
+    };
+
+
     // ----------------------------------
     // --- MigrationInfoNullVector
     // ----------------------------------
@@ -23,7 +53,7 @@ namespace Kernel
     {
     public:
         IMPLEMENT_NO_REFERENCE_COUNTING()
-        DECLARE_QUERY_INTERFACE()
+            DECLARE_QUERY_INTERFACE()
 
     public:
         //IMigrationInfoVector
@@ -31,11 +61,16 @@ namespace Kernel
                                   const std::string& rSpeciesID,
                                   IVectorSimulationContext* pivsc ) {};
 
-        virtual Gender::Enum ConvertVectorGender (VectorGender::Enum vector_gender ) const
+        virtual Gender::Enum              ConvertVectorGender( VectorGender::Enum vector_gender ) const
         {
             return ( vector_gender == VectorGender::VECTOR_FEMALE ? Gender::FEMALE : Gender::MALE );
         };
-
+        std::vector<float>*               GetFractionTraveling( const IVectorCohort* this_vector )
+        {  
+            return nullptr;
+        };
+        virtual bool                      MightTravel( VectorGender::Enum vector_gender ) { return false; }
+        virtual bool                      IsMigrationByAlleles() { return false; }
 
     protected:
         friend class MigrationInfoFactoryVector;
@@ -67,7 +102,9 @@ namespace Kernel
         virtual float                     GetTotalRate( Gender::Enum gender = Gender::MALE ) const override;
         virtual const std::vector<float>& GetCumulativeDistributionFunction( Gender::Enum gender = Gender::MALE ) const override;
         const std::vector<suids::suid>&   GetReachableNodes( Gender::Enum gender = Gender::MALE ) const override;
-
+        std::vector<float>*               GetFractionTraveling( const IVectorCohort* this_vector ) override;
+        virtual bool                      MightTravel( VectorGender::Enum vector_gender ) override;
+        virtual bool                      IsMigrationByAlleles() override;
 
     protected:
         friend class MigrationInfoFactoryVector;
@@ -98,7 +135,15 @@ namespace Kernel
 
 
     private:
-        std::vector<float>          m_RawMigrationRateFemale;
+        std::vector<std::pair<AlleleCombo, int>> m_allele_combos_index_map_list;
+        std::vector<std::vector<float>> m_RawMigrationRateFemaleByIndex;
+        std::vector<std::vector<float>> m_FractionTravelingMaleByIndex;
+        std::vector<std::vector<float>> m_FractionTravelingFemaleByIndex;
+        std::vector<float>              m_TotalRateFemaleByIndex;
+        std::vector<float>              m_TotalRateMaleByIndex;
+        std::vector<std::vector<float>> m_RateCDFFemaleByIndex;
+        std::vector<float>          m_FractionTravelingMale;
+        std::vector<float>          m_FractionTravelingFemale;
         float                       m_TotalRateFemale;
         std::vector<float>          m_RateCDFFemale;
         suids::suid                 m_ThisNodeId;
@@ -106,6 +151,8 @@ namespace Kernel
         float                       m_ModifierHabitat;
         float                       m_ModifierFood;
         float                       m_ModifierStayPut;
+        bool                        m_MigrationByAlleles;
+        bool                        m_DoingMigration;
     };
 
 
@@ -124,10 +171,11 @@ namespace Kernel
         virtual void                  ReadConfiguration( JsonConfigurable* pParent, const ::Configuration* config ) override;
         virtual IMigrationInfoVector* CreateMigrationInfoVector( const std::string& idreference,
                                                                  INodeContext *parent_node, 
-                                                                 const boost::bimap<ExternalNodeId_t, suids::suid>& rNodeIdSuidMap ) override;
+                                                                 const boost::bimap<ExternalNodeId_t, suids::suid>& rNodeIdSuidMap,
+                                                                 const VectorSpeciesParameters* pSpeciesParameters ) override;
 
     private:
-        MigrationInfoFile          m_InfoFileVector;
+        MigrationInfoFileVector    m_InfoFileVector;
         ModifierEquationType::Enum m_ModifierEquation;
         float                      m_ModifierHabitat;
         float                      m_ModifierFood;
@@ -148,7 +196,8 @@ namespace Kernel
         virtual void                  ReadConfiguration( JsonConfigurable* pParent, const ::Configuration* config ) {};
         virtual IMigrationInfoVector* CreateMigrationInfoVector( const std::string& idreference,
                                                                  INodeContext *parent_node, 
-                                                                 const boost::bimap<ExternalNodeId_t, suids::suid>& rNodeIdSuidMap ) override;
+                                                                 const boost::bimap<ExternalNodeId_t, suids::suid>& rNodeIdSuidMap,
+                                                                 const VectorSpeciesParameters* pSpeciesParameters ) override;
 
     protected: 
 

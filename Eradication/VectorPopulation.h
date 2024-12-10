@@ -161,7 +161,6 @@ namespace Kernel
 
         bool SimilarGenomes( uint8_t numGenes, const VectorGenome& rLeft, const VectorGenome& rRight ) const;
 
-
         const VectorParameters        *params()  const { return m_vector_params; }
         const VectorSpeciesParameters *species() const { return m_species_params; }
         VectorProbabilities           *probs()         { return m_probabilities; }
@@ -212,11 +211,7 @@ namespace Kernel
 
         static std::vector<uint32_t> GetRandomIndexes( RANDOMBASE* pRNG, uint32_t N );
 
-        void Vector_Migration_Helper(VectorCohortVector_t* pMigratingQueue, VectorGender::Enum vector_gender);
-        void Vector_Migration_Queue( const std::vector<uint32_t>& rRandomIndexes,
-                                     const std::vector<suids::suid>& rReachableNodes,
-                                     const std::vector<float>& rRates,
-                                     INodeVector* pINV,
+        void Vector_Migration_Queue( const std::vector<suids::suid>& rReacheableNodes,
                                      VectorCohortVector_t* pMigratingQueue,
                                      VectorCohortCollectionAbstract& rQueue );
 
@@ -562,7 +557,7 @@ namespace Kernel
 
         int m_SpeciesIndex;
 
-        uint32_t                    m_UnmatedMaleTotal;
+        uint32_t                       m_UnmatedMaleTotal;
         std::vector<VectorCohortMale*> m_MaleMatingCDF;
 
         bool m_IsSortingVectors;
@@ -580,7 +575,6 @@ namespace Kernel
         void DepositContagionHelper( TransmissionRoute::Enum route,
                                      std::map<StrainGenomeId, 
                                      float>& rContagionToDeposit );
-
 
         DECLARE_SERIALIZABLE(VectorPopulation);
     };

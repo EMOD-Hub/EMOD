@@ -28,8 +28,10 @@ namespace std
 namespace Kernel
 {
     ENUM_DEFINE(GenderDataType,
-        ENUM_VALUE_SPEC(SAME_FOR_BOTH_GENDERS , 0)  // The one set of the data is used for both genders
-        ENUM_VALUE_SPEC(ONE_FOR_EACH_GENDER   , 1)) // There are two sets of data - one for each gender
+        ENUM_VALUE_SPEC( SAME_FOR_BOTH_GENDERS       , 0)   // The one set of the data is used for both genders
+        ENUM_VALUE_SPEC( ONE_FOR_EACH_GENDER         , 1)   // There are two sets of data - one for each gender
+        ENUM_VALUE_SPEC( VECTOR_MIGRATION_BY_GENETICS, 2 )) // Only for vector migration: we will be using 
+                                                            // vector genetics (which accounts for gender) for migration
 
     ENUM_DEFINE(InterpolationType,
         ENUM_VALUE_SPEC(LINEAR_INTERPOLATION , 0)  // Interpolate between ages - no extrapolation
@@ -84,10 +86,10 @@ namespace Kernel
                                         MigrationType::Enum &migration_type,
                                         float &time, 
                                         float dt = FLT_MAX ) override; // FLT_MAX for humans, dt for vectors
-        virtual void SetContextTo( INodeContext* _parent ) override;
+        virtual void  SetContextTo( INodeContext* _parent ) override;
         virtual float GetTotalRate( Gender::Enum gender = Gender::MALE ) const override;
-        virtual const std::vector<float>& GetCumulativeDistributionFunction( Gender::Enum gender = Gender::MALE ) const override;
-        virtual const std::vector<suids::suid>& GetReachableNodes( Gender::Enum gender = Gender::MALE ) const override;
+        virtual const std::vector<float>&               GetCumulativeDistributionFunction( Gender::Enum gender = Gender::MALE ) const override;
+        virtual const std::vector<suids::suid>&         GetReachableNodes( Gender::Enum gender = Gender::MALE ) const override;
         virtual const std::vector<MigrationType::Enum>& GetMigrationTypes( Gender::Enum gender = Gender::MALE ) const override;
 
         virtual bool IsHeterogeneityEnabled() const override;
@@ -215,7 +217,9 @@ namespace Kernel
                                const boost::bimap<ExternalNodeId_t, suids::suid>& rNodeidSuidMap,
                                std::vector<std::vector<MigrationRateData>>&       rRateData );
 
-        MigrationType::Enum GetMigrationType() const { return m_MigrationType; }
+        MigrationType::Enum  GetMigrationType()  const { return m_MigrationType; }
+        GenderDataType::Enum GetGenderDataType() const { return m_GenderDataType; }
+
 
     protected:
         // Returns the expected size of the binary file

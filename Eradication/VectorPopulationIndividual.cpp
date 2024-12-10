@@ -832,9 +832,18 @@ namespace Kernel
     {
         release_assert(m_pMigrationInfoVector);
         release_assert(pMigratingQueue);
-
+        
+        // migrating males only 
         VectorPopulation::Vector_Migration(dt, pMigratingQueue, true);
         
+        // checking if any of the vectors might travel at all if non-genetics migration
+        // we can do this before UpdateRates because if m_TotalRateFemale == 0 it will stay 0
+        // UpdateRates does not change total migration rate, but, rather re-distributes where the vectors go
+        if( !m_pMigrationInfoVector->MightTravel( VectorGender::VECTOR_FEMALE ) ) 
+        { 
+            return;
+        }
+
         // updating migration rates and migrating females
         IVectorSimulationContext* p_vsc = nullptr;
         if (s_OK != m_context->GetParent()->QueryInterface(GET_IID(IVectorSimulationContext), (void**)&p_vsc))
@@ -844,39 +853,37 @@ namespace Kernel
         suids::suid current_node = m_context->GetSuid();
         m_pMigrationInfoVector->UpdateRates( current_node, get_SpeciesID(), p_vsc );
 
-        Gender::Enum human_gender_equivalent = m_pMigrationInfoVector->ConvertVectorGender( VectorGender::VECTOR_FEMALE );
-        float                     total_rate = m_pMigrationInfoVector->GetTotalRate( human_gender_equivalent );
-        const std::vector<float>& r_cdf      = m_pMigrationInfoVector->GetCumulativeDistributionFunction( human_gender_equivalent );
-
-        if( ( r_cdf.size() == 0 ) || ( total_rate == 0.0 ) )
-        {
-            return; // no female vector migration
-        }
-
-        // vectors always female, updating ID inside loop just in case
+        // initializing these outside the loop to be updated inside
         VectorToHumanAdapter adapter( m_context, 0 ); 
 
-        // initializing these outside the loop, they are re-initialized just to be updated inside PickMigrationStep every time
-        suids::suid         destination = suids::nil_suid();
-        MigrationType::Enum mig_type    = MigrationType::NO_MIGRATION;
-        float               time        = 0.0;
+        suids::suid      destination = suids::nil_suid();
+        MigrationType::Enum mig_type = MigrationType::NO_MIGRATION;
+        float                   time = 0.0;
 
         // Use the verbose "for" construct here because we may be modifying the list and need to protect the iterator.
         for( auto it = pAdultQueues->begin(); it != pAdultQueues->end(); ++it )
         {
-            adapter.SetVectorID( ( *it )->GetID() );
+            IVectorCohort* this_vector = *it;
+            adapter.SetVectorID( ( this_vector )->GetID() );
+            // we don't need the actual fraction traveling (that's for cohorts), 
+            // it updates the total migration rate and migration rcd that's used by PickMigrationStep
+            // returns nullptr when total rate of travel = 0
+            if( m_pMigrationInfoVector->GetFractionTraveling( this_vector ) == nullptr ) 
+            {
+                continue;
+            }
+
+
             m_pMigrationInfoVector->PickMigrationStep( m_context->GetRng(), &adapter, 1.0, destination, mig_type, time, dt );
 
             // test if vector will migrate: no destination = no migration, also don't migrate to node you're already in
             if( !destination.is_nil() && ( destination != current_node ) ) 
             {
-                IVectorCohort* tempentry = *it;
                 pAdultQueues->remove( it );
                 // Used to use dynamic_cast here which is _very_ slow.
-                IMigrate* emigre = tempentry->GetIMigrate();
-                release_assert( mig_type == MigrationType::LOCAL_MIGRATION ); 
-                emigre->SetMigrating( destination, mig_type, 0.0, 0.0, false );
-                pMigratingQueue->push_back( tempentry );
+                IMigrate* emigre = this_vector->GetIMigrate();
+                emigre->SetMigrating( destination, MigrationType::LOCAL_MIGRATION, 0.0, 0.0, false );
+                pMigratingQueue->push_back( this_vector );
             }
         }   
     }

@@ -1,0 +1,38 @@
+{
+    "Reports": [
+        {
+            "Species_List": [
+                "SillySkeeter"
+            ],
+            "Stratify_By_Species": 1,
+            "class": "ReportVectorStats"
+        },
+        {
+            "class": "ReportVectorMigration",
+            "Start_Day": 0,
+            "End_Day": 300,
+            "Must_Be_In_State": [ "STATE_MALE"],
+            "Include_Genome_Data": 1,
+            "Must_Be_From_Node": [],
+            "Must_Be_To_Node": [],
+            "Species_List": [
+                "SillySkeeter"
+            ],
+            "Filename_Suffix": "male"
+        },
+                {
+            "class": "ReportVectorMigration",
+            "Start_Day": 0,
+            "End_Day": 300,
+            "Must_Be_In_State": [ "STATE_ADULT", "STATE_INFECTED", "STATE_INFECTIOUS"],
+            "Include_Genome_Data": 1,
+            "Must_Be_From_Node": [],
+            "Must_Be_To_Node": [],
+            "Species_List": [
+                "SillySkeeter"
+            ],
+            "Filename_Suffix": "female"
+        }
+    ],
+    "Use_Defaults": 1
+}

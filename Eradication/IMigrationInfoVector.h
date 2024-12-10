@@ -5,6 +5,7 @@
 #include "IMigrationInfo.h"
 #include "SimulationEnums.h"
 #include "VectorEnums.h"
+#include "VectorSpeciesParameters.h"
 
 
 namespace Kernel
@@ -22,6 +23,9 @@ namespace Kernel
                                                        const std::string& rSpeciesID,
                                                        IVectorSimulationContext* pivsc ) = 0;
         virtual Gender::Enum              ConvertVectorGender( VectorGender::Enum vector_gender ) const = 0;
+        virtual std::vector<float>*       GetFractionTraveling( const IVectorCohort* this_vector ) = 0;
+        virtual bool                      MightTravel( VectorGender::Enum vector_gender ) = 0;
+        virtual bool                      IsMigrationByAlleles() = 0; 
     };
 
     struct IMigrationInfoFactoryVector
@@ -32,6 +36,7 @@ namespace Kernel
                                                          const ::Configuration* config ) = 0;
         virtual IMigrationInfoVector* CreateMigrationInfoVector( const std::string& idreference,
                                                                  INodeContext *parent_node, 
-                                                                 const boost::bimap<ExternalNodeId_t, suids::suid>& rNodeIdSuidMap ) = 0;
+                                                                 const boost::bimap<ExternalNodeId_t, suids::suid>& rNodeIdSuidMap,
+                                                                 const VectorSpeciesParameters* pSpeciesParameters ) = 0;
     };
 }
