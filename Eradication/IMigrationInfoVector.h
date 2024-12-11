@@ -6,6 +6,7 @@
 #include "SimulationEnums.h"
 #include "VectorEnums.h"
 #include "VectorGenome.h"
+#include "IVectorCohort.h"
 
 
 namespace Kernel

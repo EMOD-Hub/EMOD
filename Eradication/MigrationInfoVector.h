@@ -28,7 +28,7 @@ namespace Kernel
     public:
         MigrationMetadataVector( int speciesIndex,
                                  const VectorGeneCollection* pGenes,
-                                 MigrationType::Enum expectedMigType, 
+                                 MigrationType::Enum expectedMigType,
                                  int defaultDestinationsPerNode );
         virtual ~MigrationMetadataVector();
 
@@ -41,7 +41,10 @@ namespace Kernel
 
     protected:
         virtual void CheckGenderDataType( const Configuration* config ) override { /* don't need to check it */ };
-
+        virtual void ConfigInterpolationType( const Configuration* config ) override { /* don't need to check it */ };
+        virtual void ConfigMigrationType( const Configuration* config, MigrationType::Enum& file_migration_type ) override { /* don't need to get it */ };
+        virtual void CheckMigrationType( const Configuration* config, const MigrationType::Enum file_migration_type ) override { /* don't need to check it */ };
+        virtual void ConfigDatavalueCount( const Configuration* config ) override;
         static bool AlleleComboIntCompare( const std::pair<AlleleCombo, int>& rLeft, const std::pair<AlleleCombo, int>& rRight );
 
         int m_SpeciesIndex;

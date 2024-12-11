@@ -10,27 +10,13 @@
 #include "IdmString.h"
 #include "RANDOM.h"
 #include "INodeContext.h"
+#include "config_params.rc"
 
 #define UNINITIALIZED_STRING "UNINITIALIZED STRING"
 
 SETUP_LOGGING( "Migration" )
 
 #define MAX_DESTINATIONS (100) // maximum number of destinations per node in migration file
-
-
-// not sure where to put these
-#define MigrationMetadata_IdReference_DESC_TEXT "The reference ID used to synchronize the migration data with the demographics data. Required."
-#define MigrationMetadata_NodeCount_DESC_TEXT "The number of 'from' nodes in the data. Used to verify size NodeOffsets - 16*NodeCount = # chars in NodeOffsets. Required."
-#define MigrationMetadata_DatavalueCount_DESC_TEXT "The number of rates/'to' nodes for each 'from' node. Default depends on MigrationType (i.e. MaxDestinationsPerNode). Max of 100. Optional."
-#define MigrationMetadata_MigrationType_DESC_TEXT "The type of migration for which the file is intended.  Must match the type where it is used. Required"
-#define MigrationMetadata_GenderDataType_DESC_TEXT "The type of gender data used in the binary file (i.e. one chunk of data or two). Optional"
-#define MigrationMetadata_InterpolationType_DESC_TEXT "Determines if linear interpolation is used on rates between ages. Optional"
-#define MigrationMetadata_AgesYears_DESC_TEXT "Array of ages in years and in increasing order.  All ages must be between 0 - 125. Optional."
-
-#define MigrationOffsetsData_NodeOffsets_DESC_TEXT "A map of External Node ID to an address location in the binary file. Required"
-#define MigrationOffsetsData_Metadata_DESC_TEXT "Element containing information about the binary file.  Required."
-
-
 
 namespace Kernel
 {
@@ -428,17 +414,16 @@ namespace Kernel
 
     bool MigrationMetadata::Configure( const Configuration* config )
     {
-        MigrationType::Enum file_migration_type = MigrationType::NO_MIGRATION;
-        initConfig( "MigrationType",     file_migration_type, config, MetadataDescriptor::Enum( "MigrationType",     MigrationMetadata_MigrationType_DESC_TEXT,     MDD_ENUM_ARGS( MigrationType     ) ) );
-        initConfig( "GenderDataType",    m_GenderDataType,    config, MetadataDescriptor::Enum( "GenderDataType",    MigrationMetadata_GenderDataType_DESC_TEXT,    MDD_ENUM_ARGS( GenderDataType    ) ) );
-        initConfig( "InterpolationType", m_InterpolationType, config, MetadataDescriptor::Enum( "InterpolationType", MigrationMetadata_InterpolationType_DESC_TEXT, MDD_ENUM_ARGS( InterpolationType ) ) );
+        MigrationType::Enum file_migration_type = MigrationType::NO_MIGRATION; // default because needs to default to something coherent
+        ConfigMigrationType( config, file_migration_type );
+        ConfigInterpolationType( config );
+        ConfigDatavalueCount( config );
+        initConfig( "GenderDataType", m_GenderDataType, config, MetadataDescriptor::Enum( "GenderDataType", MigrationMetadata_GenderDataType_DESC_TEXT, MDD_ENUM_ARGS( GenderDataType ) ) );
 
         std::string file_id_reference;
-        initConfigTypeMap( "IdReference",    &file_id_reference,     MigrationMetadata_IdReference_DESC_TEXT                            );
-        initConfigTypeMap( "NodeCount",      &m_NumNodes,            MigrationMetadata_NodeCount_DESC_TEXT,      1, INT_MAX,          1 );
-        initConfigTypeMap( "DatavalueCount", &m_DestinationsPerNode, MigrationMetadata_DatavalueCount_DESC_TEXT, 1, MAX_DESTINATIONS, 8 );
-
-        initConfigTypeMap( "AgesYears", &m_AgesYears, MigrationMetadata_AgesYears_DESC_TEXT, 0.0, MAX_HUMAN_AGE, true );
+        initConfigTypeMap( "IdReference", &file_id_reference, MigrationMetadata_IdReference_DESC_TEXT  );
+        initConfigTypeMap( "NodeCount",   &m_NumNodes,        MigrationMetadata_NodeCount_DESC_TEXT, 1,   INT_MAX,       1 );
+        initConfigTypeMap( "AgesYears",   &m_AgesYears,       MigrationMetadata_AgesYears_DESC_TEXT, 0.0, MAX_HUMAN_AGE, true );
 
         bool is_configured = JsonConfigurable::Configure( config );
         if( is_configured && !JsonConfigurable::_dryrun )
@@ -446,11 +431,11 @@ namespace Kernel
             // -------------------------------------
             // --- Check idreference - Must be equal
             // -------------------------------------
-            std::string file_idreference_lower( file_id_reference );
-            std::string idreference_lower( m_ExpectedIdReference );  // Make a copy to transform so we do not modify the original.
-            std::transform( idreference_lower.begin(), idreference_lower.end(), idreference_lower.begin(), ::tolower );
-            std::transform( file_idreference_lower.begin(), file_idreference_lower.end(), file_idreference_lower.begin(), ::tolower );
-            if( file_idreference_lower != idreference_lower )
+            //std::string file_idreference_lower( file_id_reference );
+            //std::string idreference_lower( m_ExpectedIdReference );  // Make a copy to transform so we do not modify the original.
+            //std::transform( idreference_lower.begin(), idreference_lower.end(), idreference_lower.begin(), ::tolower );
+            //std::transform( file_idreference_lower.begin(), file_idreference_lower.end(), file_idreference_lower.begin(), ::tolower );
+            if( file_id_reference != m_ExpectedIdReference )
             {
                 std::stringstream ss;
                 ss << config->GetDataLocation() << "[Metadata][IdReference]";
@@ -462,16 +447,7 @@ namespace Kernel
             // ----------------------------------------------------------
             // --- MigrationType - Verify that it is what we expect
             // ----------------------------------------------------------
-            if( file_migration_type != m_ExpectedMigrationType )
-            {
-                std::string exp_mig_type_str = MigrationType::pairs::lookup_key( m_ExpectedMigrationType );
-                std::string file_mig_type_str = MigrationType::pairs::lookup_key( file_migration_type );
-                std::stringstream ss;
-                ss << config->GetDataLocation() << "[Metadata][MigrationType]";
-                throw IncoherentConfigurationException( __FILE__, __LINE__, __FUNCTION__,
-                                                        "Expected MigrationType", exp_mig_type_str.c_str(),
-                                                        ss.str().c_str(), file_mig_type_str.c_str());
-            }
+            CheckMigrationType( config, file_migration_type );
 
             // ----------------------------------------------
             // --- GenderDataType - must be human stuff here
@@ -509,6 +485,21 @@ namespace Kernel
         return is_configured;
     }
 
+    void MigrationMetadata::ConfigMigrationType( const Configuration* config, MigrationType::Enum & file_migration_type )
+    {
+        initConfig( "MigrationType", file_migration_type, config, MetadataDescriptor::Enum( "MigrationType", MigrationMetadata_MigrationType_DESC_TEXT, MDD_ENUM_ARGS( MigrationType ) ) );
+    }
+
+    void MigrationMetadata::ConfigInterpolationType( const Configuration* config )
+    {
+        initConfig( "InterpolationType", m_InterpolationType, config, MetadataDescriptor::Enum( "InterpolationType", MigrationMetadata_InterpolationType_DESC_TEXT, MDD_ENUM_ARGS( InterpolationType ) ) );
+    }
+
+    void MigrationMetadata::ConfigDatavalueCount( const Configuration* config )
+    {
+        initConfigTypeMap( "DatavalueCount", &m_DestinationsPerNode, MigrationMetadata_DatavalueCount_DESC_TEXT, 1, MAX_DESTINATIONS, 8 );
+    }
+
     void MigrationMetadata::SetExpectedIdReference( const std::string& rExpectedIdReference )
     {
         m_ExpectedIdReference = rExpectedIdReference;
@@ -521,6 +512,20 @@ namespace Kernel
             std::stringstream ss;
             ss << config->GetDataLocation() << "[Metadata][GenderDataType] cannot be 'VECTOR_MIGRATION_BY_GENETICS' for humans.";
             throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
+        }
+    }
+
+    void MigrationMetadata::CheckMigrationType( const Configuration* config, const MigrationType::Enum file_migration_type )
+    {
+        if( file_migration_type != m_ExpectedMigrationType )
+        {
+            std::string exp_mig_type_str = MigrationType::pairs::lookup_key( m_ExpectedMigrationType );
+            std::string file_mig_type_str = MigrationType::pairs::lookup_key( file_migration_type );
+            std::stringstream ss;
+            ss << config->GetDataLocation() << "[Metadata][MigrationType]";
+            throw IncoherentConfigurationException( __FILE__, __LINE__, __FUNCTION__,
+                "Expected MigrationType", exp_mig_type_str.c_str(),
+                ss.str().c_str(), file_mig_type_str.c_str() );
         }
     }
 

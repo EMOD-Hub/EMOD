@@ -220,6 +220,10 @@ namespace Kernel
 
     protected:
         virtual void CheckGenderDataType( const Configuration* config );
+        virtual void ConfigDatavalueCount( const Configuration* config );
+        virtual void ConfigInterpolationType( const Configuration* config );
+        virtual void ConfigMigrationType( const Configuration* config, MigrationType::Enum& file_migration_type );
+        virtual void CheckMigrationType( const Configuration* config, const MigrationType::Enum file_migration_type );
         uint32_t GetNumGenderDataChunks() const;
 
         std::string             m_ExpectedIdReference;

@@ -7,6 +7,7 @@
 #include "IdmString.h"
 #include "NoCrtWarnings.h"
 #include "VectorGene.h"
+#include "config_params.rc"
 
 SETUP_LOGGING( "MigrationInfoVector" )
 
@@ -52,6 +53,7 @@ namespace Kernel
                            constraint_schema, allowed_values,
                            "GenderDataType", "VECTOR_MIGRATION_BY_GENETICS" );
 
+
         bool is_configured = MigrationMetadata::Configure( config );
         if( is_configured && !JsonConfigurable::_dryrun )
         {
@@ -64,12 +66,21 @@ namespace Kernel
             // ------------------------------------------------------------
             // --- Do not read InterpolationType, we use PIECEWISE_CONSTANT
             // ------------------------------------------------------------
-            if( m_InterpolationType != InterpolationType::PIECEWISE_CONSTANT )
-            {
-                //WARNING
-            }
             m_InterpolationType = InterpolationType::PIECEWISE_CONSTANT;
 
+            // -------------------------
+            // --- Check DatavaluesCount
+            // -------------------------
+            if( m_DestinationsPerNode == 0 )
+            {
+                {
+                    std::stringstream ss;
+                    ss << "In " << config->GetDataLocation() << " 'DatavalueCount' is not defined, but is required for vector migration files.\n";
+                    ss << "You must define DatavalueCount.";
+                    throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
+                }
+            }
+            
             // -------------------------------
             // --- Process AlleleCombinations
             // -------------------------------
@@ -78,19 +89,23 @@ namespace Kernel
             {
                 m_AgesYears.clear();
                 m_AgesYears.push_back( 0 ); // using m_AgesYears and a reference index for migration rates when VECTOR_MIGRATION_BY_GENETICS
-                for( int i = 0; i < combo_strings_list.size(); ++i )
+                std::vector<std::vector<std::string>>& r_combo_strings = combo_strings_list[0];
+                if( r_combo_strings.size() != 0 )
                 {
-                    std::vector<std::vector<std::string>>& r_combo_strings = combo_strings_list[ i ];
+                    std::stringstream ss;
+                    ss << "In " << config->GetDataLocation() << " AlleleCombinations[ " << 0 << " ] has to be an empty list.\n";
+                    ss << "Make sure your first AlleleCombinations entry is [].";
+                    throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
+                }
+                for( int i = 1; i < combo_strings_list.size(); ++i )
+                {
+                    r_combo_strings = combo_strings_list[ i ];
                     if( r_combo_strings.size() == 0 )
                     {
-                        if( i != 0 )
-                        {
-                            std::stringstream ss;
-                            ss << "In " << config->GetDataLocation() << "'AlleleCombinations[ " << i << " ] has zero elements.\n";
-                            ss << "You must define allele combinations.";
-                            throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
-                        }
-                        continue;
+                        std::stringstream ss;
+                        ss << "In " << config->GetDataLocation() << " AlleleCombinations[ " << i << " ] has zero elements.\n";
+                        ss << "You must define allele combinations.";
+                        throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
                     }
                     VectorGameteBitPair_t              bit_mask = 0;
                     std::vector<VectorGameteBitPair_t> possible_genomes;
@@ -121,6 +136,11 @@ namespace Kernel
             }
         }
         return is_configured;
+    }
+
+    void MigrationMetadataVector::ConfigDatavalueCount( const Configuration* config )
+    {
+        initConfigTypeMap( "DatavalueCount", &m_DestinationsPerNode, MigrationMetadata_DatavalueCount_DESC_TEXT, 1, MAX_DESTINATIONS, 0);
     }
 
     bool MigrationMetadataVector::AlleleComboIntCompare( const std::pair<AlleleCombo, int>& rLeft, const std::pair<AlleleCombo, int>& rRight )
@@ -745,8 +765,6 @@ namespace Kernel
                                                                                         const boost::bimap<ExternalNodeId_t, suids::suid>& rNodeIdSuidMap,
                                                                                         int speciesIndex,
                                                                                         const VectorGeneCollection* pGenes )
-=======
-
     {
         if( m_IsVectorMigrationEnabled )
         {
