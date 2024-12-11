@@ -17,6 +17,7 @@
 #include "StrainIdentity.h"
 #include "IMigrationInfoVector.h"
 #include "RANDOM.h"
+#include <numeric>
 
 SETUP_LOGGING( "VectorPopulation" )
 
@@ -2732,117 +2733,91 @@ namespace Kernel
         return selected_indexes;
     }
 
+
+
     void VectorPopulation::SetupMigration( const std::string& idreference, 
                                            const boost::bimap<ExternalNodeId_t, suids::suid>& rNodeIdSuidMap )
     {
-        m_pMigrationInfoVector = m_species_params->p_migration_factory->CreateMigrationInfoVector( idreference, m_context, rNodeIdSuidMap );
+        m_pMigrationInfoVector = m_species_params->p_migration_factory->CreateMigrationInfoVector( idreference, 
+                                                                                                   m_context, 
+                                                                                                   rNodeIdSuidMap, 
+                                                                                                   m_SpeciesIndex,
+                                                                                                   &(m_species_params->genes) );
     }
 
-    void VectorPopulation::Vector_Migration( float dt, VectorCohortVector_t* pMigratingQueue, bool migrate_males_only)
+
+    void VectorPopulation::Vector_Migration( float dt, VectorCohortVector_t* pMigratingQueue, bool migrate_males_only )
     {
         release_assert( m_pMigrationInfoVector );
         release_assert( pMigratingQueue );
 
-        Vector_Migration_Helper(pMigratingQueue, VectorGender::VECTOR_MALE);
-        
-        if (!migrate_males_only)
+        // setting up for male migration
+        m_NeedToRefreshTheMatingCDF = false; // reset the bool, we will check if we need to refresh m_MaleMatingCDF at beginning of next timestep
+        std::vector<suids::suid> reacheable_nodes; // could be different per gender
+        if( m_pMigrationInfoVector->MightTravel( VectorGender::VECTOR_MALE ) ) // checking if any of the queue might travel at all
         {
-            //updating rates for females with the modifiers
+            reacheable_nodes = m_pMigrationInfoVector->GetReachableNodes( Gender::MALE );
+            auto non_male_migrating = pMigratingQueue->size();
+            // Migrating males
+            Vector_Migration_Queue( reacheable_nodes, pMigratingQueue, MaleQueues );
+            // if males are emmigrating, we'll need to refresh m_MaleMatingCDF next timestep
+            if( pMigratingQueue->size() - non_male_migrating > 0 )
+            {
+                m_NeedToRefreshTheMatingCDF = true;
+            }
+        }
+        
+        // Migrating females
+        // checking if any of the vectors might travel at all if non-genetics migration
+        // we can do this before UpdateRates because if m_TotalRateFemale == 0 it will stay 0
+        // UpdateRates does not change total migration rate, but, rather re-distributes where the vectors go
+        //updating rates for females with the modifiers
+        if (!migrate_males_only && m_pMigrationInfoVector->MightTravel( VectorGender::VECTOR_FEMALE ))
+        {
+
             IVectorSimulationContext* p_vsc = nullptr;
             if( s_OK != m_context->GetParent()->QueryInterface( GET_IID( IVectorSimulationContext ), (void**)&p_vsc ) )
             {
                 throw QueryInterfaceException( __FILE__, __LINE__, __FUNCTION__, "m_context", "IVectorSimulationContext", "ISimulationContext" );
             }
             m_pMigrationInfoVector->UpdateRates( m_context->GetSuid(), get_SpeciesID(), p_vsc );
-            Vector_Migration_Helper(pMigratingQueue, VectorGender::VECTOR_FEMALE);
+            reacheable_nodes = m_pMigrationInfoVector->GetReachableNodes( Gender::FEMALE );
+            Vector_Migration_Queue( reacheable_nodes, pMigratingQueue, *pAdultQueues );
+            Vector_Migration_Queue( reacheable_nodes, pMigratingQueue, InfectedQueues );
+            Vector_Migration_Queue( reacheable_nodes, pMigratingQueue, InfectiousQueues );
         }
     }
 
 
-    void VectorPopulation::Vector_Migration_Helper(VectorCohortVector_t* pMigratingQueue, VectorGender::Enum vector_gender)
-    {
-
-        // -------------------------------------------------------------------
-        // --- NOTE: r_cdf is a probability cumulative distribution function.
-        // --- This means it is an array in ascending order such that
-        // --- the first value is >= zero and the last value is equal to one.
-        // --- The rates are converted to probabilities when calcualting the CDF.
-        // --- Here we convert them back to rates.
-        // -------------------------------------------------------------------
-
-        Gender::Enum                      human_gender_equivalent = m_pMigrationInfoVector->ConvertVectorGender( vector_gender );
-        float                                   total_rate        = m_pMigrationInfoVector->GetTotalRate( human_gender_equivalent );
-        const std::vector<float              >& r_cdf             = m_pMigrationInfoVector->GetCumulativeDistributionFunction( human_gender_equivalent );
-        const std::vector<suids::suid        >& r_reachable_nodes = m_pMigrationInfoVector->GetReachableNodes( human_gender_equivalent );
-
-        if ((r_cdf.size() == 0) || (total_rate == 0.0))
-        {
-            return;
-        }
-
-        float total_fraction_traveling = 1.0 - exp(-1.0 * total_rate);  // preserve absolute fraction travelling
-        std::vector<float> fraction_traveling;
-        fraction_traveling.push_back(r_cdf[0] * total_fraction_traveling);  // apportion fraction to destinations
-        for (int i = 1; i < r_cdf.size(); ++i)
-        {
-            float prob = r_cdf[i] - r_cdf[i - 1];
-            fraction_traveling.push_back(prob * total_fraction_traveling);
-        }
-        release_assert(fraction_traveling.size() == r_reachable_nodes.size());
-
-        std::vector<uint32_t> random_indexes = GetRandomIndexes(m_context->GetRng(), r_reachable_nodes.size());
-
-        INodeVector* p_inv = nullptr;
-        if (s_OK != m_context->QueryInterface(GET_IID(INodeVector), (void**)&p_inv))
-        {
-            throw QueryInterfaceException(__FILE__, __LINE__, __FUNCTION__, "m_context", "INodeVector", "INodeContext");
-        }
-
-        if (vector_gender == VectorGender::VECTOR_FEMALE)
-        {
-            Vector_Migration_Queue(random_indexes, r_reachable_nodes, fraction_traveling, p_inv, pMigratingQueue, *pAdultQueues);
-            Vector_Migration_Queue(random_indexes, r_reachable_nodes, fraction_traveling, p_inv, pMigratingQueue, InfectedQueues);
-            Vector_Migration_Queue(random_indexes, r_reachable_nodes, fraction_traveling, p_inv, pMigratingQueue, InfectiousQueues);
-        }
-        else
-        {
-            m_NeedToRefreshTheMatingCDF = false; // reset the bool, we will check if we need to refresh m_MaleMatingCDF at beginning of next timestep
-            auto non_male_migrating = pMigratingQueue->size();
-            Vector_Migration_Queue(random_indexes, r_reachable_nodes, fraction_traveling, p_inv, pMigratingQueue, MaleQueues);
-            if (pMigratingQueue->size() - non_male_migrating > 0)
-            {
-                // males are emmigrating, we'll need to refresh m_MaleMatingCDF next timestep
-                m_NeedToRefreshTheMatingCDF = true;
-            }
-        }
-
-
-    }
-
-    void VectorPopulation::Vector_Migration_Queue( const std::vector<uint32_t>& rRandomIndexes,
-                                                   const std::vector<suids::suid>& rReachableNodes,
-                                                   const std::vector<float>& rFractionTraveling,
-                                                   INodeVector* pINV,
+    void VectorPopulation::Vector_Migration_Queue( const std::vector<suids::suid>& rReacheableNodes,
                                                    VectorCohortVector_t* pMigratingQueue,
                                                    VectorCohortCollectionAbstract& rQueue )
     {
+
         for( auto it = rQueue.begin(); it != rQueue.end(); ++it )
         {
-            IVectorCohort* p_vc = *it;
-
-            for( uint32_t index : rRandomIndexes )
+            const std::vector<float>* fraction_traveling = m_pMigrationInfoVector->GetFractionTraveling( *it );
+            if( fraction_traveling == nullptr ) // returns nullptr when total rate of travel = 0
             {
-                suids::suid         to_node           = rReachableNodes[ index ];
+                continue;
+            }
+
+            release_assert( fraction_traveling->size()  == rReacheableNodes.size());
+            std::vector<uint32_t> random_indexes = GetRandomIndexes( m_context->GetRng(), rReacheableNodes.size() );
+
+            for( uint32_t index : random_indexes )
+            {
+                suids::suid to_node  = rReacheableNodes[ index ];
                 if( to_node == m_context->GetSuid() )
                 {
                     continue; // don't travel to the node you're already in
                 }
-                float               percent_traveling = rFractionTraveling[ index ];
+                float percent_traveling = fraction_traveling->at( index );
                 if( percent_traveling > 0.0f )
                 {
-                    IVectorCohort* p_traveling_vc = p_vc->SplitPercent( m_context->GetRng(),
-                                                                        m_pNodeVector->GetNextVectorSuid().data,
-                                                                        percent_traveling );
+                    IVectorCohort* p_traveling_vc = ( *it )->SplitPercent( m_context->GetRng(),
+                                                                           m_pNodeVector->GetNextVectorSuid().data,
+                                                                           percent_traveling );
                     if( p_traveling_vc == nullptr )
                     {
                         continue;

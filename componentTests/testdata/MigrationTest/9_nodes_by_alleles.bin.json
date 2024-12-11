@@ -1,0 +1,59 @@
+{
+    "Metadata": {
+        "IdReference": "9-nodes",
+        "DateCreated": "Thu Nov 14 14:34:47 2024",
+        "Tool": "convert_json_to_bin.py",
+        "DatavalueCount": 8,
+        "MigrationType": "LOCAL_MIGRATION",
+        "GenderDataType": "VECTOR_MIGRATION_BY_GENETICS",
+        "InterpolationType": "PIECEWISE_CONSTANT",
+        "AgesYears": [
+            125
+        ],
+        "AlleleCombinations": [
+            [],
+            [
+                [
+                    "X1",
+                    "Y2"
+                ]
+            ],
+            [
+                [
+                    "a1",
+                    "a1"
+                ],
+                [
+                    "b1",
+                    "b0"
+                ],
+                [
+                    "X1",
+                    "X1"
+                ]
+            ],
+            [
+                [
+                    "*",
+                    "a0"
+                ],
+                [
+                    "Y1",
+                    "X1"
+                ]
+            ],
+            [
+                [
+                    "a1",
+                    "a1"
+                ],
+                [
+                    "b1",
+                    "b1"
+                ]
+            ]
+        ],
+        "NodeCount": 1
+    },
+    "NodeOffsets": "0000000500000000"
+}

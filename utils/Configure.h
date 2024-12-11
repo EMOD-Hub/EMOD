@@ -164,6 +164,7 @@ namespace Kernel
         typedef std::map< std::string, std::set< std::string > * > tStringSetConfigTypeMapType;
         typedef std::map< std::string, std::vector< std::string > * > tVectorStringConfigTypeMapType;
         typedef std::map< std::string, std::vector< std::vector< std::string > > * > tVector2dStringConfigTypeMapType;
+        typedef std::map< std::string, std::vector< std::vector< std::vector< std::string > > > * > tVector3dStringConfigTypeMapType;
         typedef std::map< std::string, const std::set< std::string > * > tVectorStringConstraintsTypeMapType;
         typedef std::map< std::string, std::vector< float > * > tVectorFloatConfigTypeMapType;
         typedef std::map< std::string, std::vector< int > * > tVectorIntConfigTypeMapType;
@@ -229,8 +230,10 @@ namespace Kernel
             jsonConfigurable::tConStringConfigTypeMapType conStringConfigTypeMap;
             tVectorStringConfigTypeMapType vectorStringConfigTypeMap;
             tVector2dStringConfigTypeMapType vector2dStringConfigTypeMap;
+            tVector3dStringConfigTypeMapType vector3dStringConfigTypeMap;
             tVectorStringConstraintsTypeMapType vectorStringConstraintsTypeMap;
             tVectorStringConstraintsTypeMapType vector2dStringConstraintsTypeMap;
+            tVectorStringConstraintsTypeMapType vector3dStringConstraintsTypeMap;
             tVectorFloatConfigTypeMapType vectorFloatConfigTypeMap;
             tVectorIntConfigTypeMapType vectorIntConfigTypeMap;
             tVectorUint32ConfigTypeMapType vectorUint32ConfigTypeMap;
@@ -362,6 +365,15 @@ namespace Kernel
         void initConfigTypeMap(
             const char* paramName,
             std::vector< std::vector< std::string > > * pVariable,
+            const char* description = default_description,
+            const char* constraint_schema = nullptr,
+            const std::set< std::string > &constraint_variable = empty_set,
+            const char* condition_key = nullptr, const char* condition_value = nullptr
+        );
+
+        void initConfigTypeMap(
+            const char* paramName,
+            std::vector< std::vector< std::vector< std::string > > > * pVariable,
             const char* description = default_description,
             const char* constraint_schema = nullptr,
             const std::set< std::string > &constraint_variable = empty_set,

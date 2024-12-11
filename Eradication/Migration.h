@@ -28,8 +28,10 @@ namespace std
 namespace Kernel
 {
     ENUM_DEFINE(GenderDataType,
-        ENUM_VALUE_SPEC(SAME_FOR_BOTH_GENDERS , 0)  // The one set of the data is used for both genders
-        ENUM_VALUE_SPEC(ONE_FOR_EACH_GENDER   , 1)) // There are two sets of data - one for each gender
+        ENUM_VALUE_SPEC( SAME_FOR_BOTH_GENDERS       , 0)   // The one set of the data is used for both genders
+        ENUM_VALUE_SPEC( ONE_FOR_EACH_GENDER         , 1)   // There are two sets of data - one for each gender
+        ENUM_VALUE_SPEC( VECTOR_MIGRATION_BY_GENETICS, 2 )) // Only for vector migration: we will be using 
+                                                            // vector genetics (which accounts for gender) for migration
 
     ENUM_DEFINE(InterpolationType,
         ENUM_VALUE_SPEC(LINEAR_INTERPOLATION , 0)  // Interpolate between ages - no extrapolation
@@ -84,10 +86,10 @@ namespace Kernel
                                         MigrationType::Enum &migration_type,
                                         float &time, 
                                         float dt = FLT_MAX ) override; // FLT_MAX for humans, dt for vectors
-        virtual void SetContextTo( INodeContext* _parent ) override;
+        virtual void  SetContextTo( INodeContext* _parent ) override;
         virtual float GetTotalRate( Gender::Enum gender = Gender::MALE ) const override;
-        virtual const std::vector<float>& GetCumulativeDistributionFunction( Gender::Enum gender = Gender::MALE ) const override;
-        virtual const std::vector<suids::suid>& GetReachableNodes( Gender::Enum gender = Gender::MALE ) const override;
+        virtual const std::vector<float>&               GetCumulativeDistributionFunction( Gender::Enum gender = Gender::MALE ) const override;
+        virtual const std::vector<suids::suid>&         GetReachableNodes( Gender::Enum gender = Gender::MALE ) const override;
         virtual const std::vector<MigrationType::Enum>& GetMigrationTypes( Gender::Enum gender = Gender::MALE ) const override;
 
         virtual bool IsHeterogeneityEnabled() const override;
@@ -184,6 +186,91 @@ namespace Kernel
         std::vector<MigrationType::Enum>            m_MigrationTypesFemale;
     };
 
+    // -----------------------------
+    // --- MigrationMetadata
+    // -----------------------------
+
+    // MigrationInfoFileMetadata is the "Metadata" contained in the XXX.bin.json file.  This metadata is used
+    // to tell EMOD how to read and interpret the data in the XXX.bin file.
+    class MigrationMetadata : public JsonConfigurable
+    {
+    public:
+        MigrationMetadata( MigrationType::Enum expectedMigType, 
+                           int defaultDestinationsPerNode );
+        virtual ~MigrationMetadata();
+
+        IMPLEMENT_NO_REFERENCE_COUNTING()
+        DECLARE_QUERY_INTERFACE()
+
+        virtual bool Configure( const Configuration* config ) override;
+
+        void SetExpectedIdReference( const std::string& rExpectedIdReference );
+
+        int                       GetNumNodes()            const { return m_NumNodes;              }
+        MigrationType::Enum       GetMigrationType()       const { return m_ExpectedMigrationType; }
+        GenderDataType::Enum      GetGenderDataType()      const { return m_GenderDataType;        }
+        InterpolationType::Enum   GetInterpolationType()   const { return m_InterpolationType;     }
+        const std::vector<float>& GetAgesYears()           const { return m_AgesYears;             }
+        uint32_t                  GetGenderDataSize()      const { return m_GenderDataSize;        }
+        uint32_t                  GetAgeDataSize()         const { return m_AgeDataSize;           }
+        int                       GetDestinationsPerNode() const { return m_DestinationsPerNode;   }
+
+        uint32_t CalculateExpectedBinaryFileSize();
+        bool IsFixedRate() const;
+
+    protected:
+        virtual void CheckGenderDataType( const Configuration* config );
+        virtual void ConfigDatavalueCount( const Configuration* config );
+        virtual void ConfigInterpolationType( const Configuration* config );
+        virtual void ConfigMigrationType( const Configuration* config, MigrationType::Enum& file_migration_type );
+        virtual void CheckMigrationType( const Configuration* config, const MigrationType::Enum file_migration_type );
+        uint32_t GetNumGenderDataChunks() const;
+
+        std::string             m_ExpectedIdReference;
+        MigrationType::Enum     m_ExpectedMigrationType;
+        int                     m_DestinationsPerNode;
+        int                     m_NumNodes;
+        GenderDataType::Enum    m_GenderDataType;
+        InterpolationType::Enum m_InterpolationType;
+        std::vector<float>      m_AgesYears;
+        uint32_t                m_GenderDataSize;
+        uint32_t                m_AgeDataSize;
+    };
+
+    // -----------------------------
+    // --- MigrationOffsetsData
+    // -----------------------------
+    
+    class MigrationOffsetsData : public JsonConfigurable
+    {
+    public:
+        MigrationOffsetsData( MigrationMetadata* pMetadata );
+        MigrationOffsetsData( MigrationType::Enum expectedMigType, 
+                              int defaultDestinationsPerNode );
+        virtual ~MigrationOffsetsData();
+
+        IMPLEMENT_NO_REFERENCE_COUNTING()
+        DECLARE_QUERY_INTERFACE()
+
+        virtual bool Configure( const Configuration* config ) override;
+
+        void SetExpectedIdReference( const std::string& rExpectedIdReference );
+
+        const std::vector<float>& GetAgesYears()                const;
+        int                       GetDestinationsPerNode()      const;
+        MigrationType::Enum       GetMigrationType()            const;
+        InterpolationType::Enum   GetInterpolationType()        const;
+        bool                      IsFixedRate()                 const;
+        bool                      HasDataFor( uint32_t nodeID ) const;
+
+        uint32_t CalculateExpectedBinaryFileSize();
+        std::streamoff GetOffset( int indexGender, int indexAge, uint32_t nodeID ) const;
+
+    protected:
+        MigrationMetadata* m_pMetadata;
+        std::unordered_map< ExternalNodeId_t, uint32_t > m_Offsets;
+    };
+
     // ----------------------
     // --- MigrationInfoFile
     // ----------------------
@@ -201,6 +288,7 @@ namespace Kernel
         bool m_IsEnabled ;
         float m_xModifier ;
 
+        MigrationInfoFile( MigrationMetadata* pMetaData, const std::string& rFilename, float xModifier );
         MigrationInfoFile( MigrationType::Enum migType, 
                            int defaultDestinationsPerNode );
         virtual ~MigrationInfoFile();
@@ -215,27 +303,19 @@ namespace Kernel
                                const boost::bimap<ExternalNodeId_t, suids::suid>& rNodeidSuidMap,
                                std::vector<std::vector<MigrationRateData>>&       rRateData );
 
-        MigrationType::Enum GetMigrationType() const { return m_MigrationType; }
+        MigrationType::Enum  GetMigrationType()  const { return m_pOffsetsData->GetMigrationType(); }
+
 
     protected:
         // Returns the expected size of the binary file
-        virtual uint32_t ParseMetadataForFile( const std::string& data_filepath, const std::string& idreference );
-        virtual void     OpenMigrationFile( const std::string& filepath, uint32_t expected_binary_file_size );
-        virtual uint32_t GetNumGenderDataChunks() const;
+        uint32_t ParseMetadataForFile( const std::string& data_filepath, const std::string& idreference );
+        void     OpenMigrationFile( const std::string& filepath, uint32_t expected_binary_file_size );
 
-        std::string             m_ParameterNameEnable;
-        std::string             m_ParameterNameFilename;
-        int                     m_DestinationsPerNode;
-        MigrationType::Enum     m_MigrationType;
-        GenderDataType::Enum    m_GenderDataType;
-        InterpolationType::Enum m_InterpolationType;
-        std::vector<float>      m_AgesYears;
-        uint32_t                m_GenderDataSize;
-        uint32_t                m_AgeDataSize;
-        std::ifstream           m_FileStream;
-        bool                    m_IsInitialized;
-
-        std::unordered_map< ExternalNodeId_t, uint32_t > m_Offsets;
+        std::string               m_ParameterNameEnable;
+        std::string               m_ParameterNameFilename;
+        std::ifstream             m_FileStream;
+        bool                      m_IsInitialized;
+        MigrationOffsetsData*     m_pOffsetsData;
     };
 
     // ----------------------------------

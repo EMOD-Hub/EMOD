@@ -153,7 +153,11 @@ SUITE( VectorSpeciesParametersTest )
 
         INodeContextFake nc_1( nodeid_suid_map.left.at(1) ) ;
 
-        unique_ptr<IMigrationInfoVector> p_mi_species_1( collection[ 0 ]->p_migration_factory->CreateMigrationInfoVector( idreference, &nc_1, nodeid_suid_map ) );
+        unique_ptr<IMigrationInfoVector> p_mi_species_1( collection[ 0 ]->p_migration_factory->CreateMigrationInfoVector( idreference,
+                                                                                                                          &nc_1,
+                                                                                                                          nodeid_suid_map,
+                                                                                                                          collection[0]->index,
+                                                                                                                          &(collection[0]->genes)));
 
         const std::vector<suids::suid>& reachable_nodes = p_mi_species_1->GetReachableNodes();
         CHECK_EQUAL( 21, reachable_nodes.size() );
@@ -179,7 +183,11 @@ SUITE( VectorSpeciesParametersTest )
         CHECK_EQUAL( 24, reachable_nodes[19].data );
         CHECK_EQUAL( 25, reachable_nodes[20].data );
 
-        unique_ptr<IMigrationInfoVector> p_mi_species_2( collection[ 1 ]->p_migration_factory->CreateMigrationInfoVector( idreference, &nc_1, nodeid_suid_map ) );
+        unique_ptr<IMigrationInfoVector> p_mi_species_2( collection[ 1 ]->p_migration_factory->CreateMigrationInfoVector( idreference,
+                                                                                                                          &nc_1,
+                                                                                                                          nodeid_suid_map,
+                                                                                                                          collection[1]->index,
+                                                                                                                          &(collection[1]->genes) ) );
 
         const std::vector<suids::suid>& reachable_nodes2 = p_mi_species_2->GetReachableNodes();
         CHECK_EQUAL( 0, reachable_nodes2.size() );

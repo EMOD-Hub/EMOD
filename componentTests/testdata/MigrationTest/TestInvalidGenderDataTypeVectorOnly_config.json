@@ -6,7 +6,7 @@
         "Family_Migration_Type" : "NO_MIGRATION", "Migration_Model": "FIXED_RATE_MIGRATION",
 
         "Enable_Local_Migration": 1, 
-        "Local_Migration_Filename": "TestMetadataBadJsonA.bin", 
+        "Local_Migration_Filename": "TestInvalidGenderDataTypeVectorOnly.bin", 
         "x_Local_Migration": 1, 
 
         "Enable_Air_Migration": 0, 

@@ -564,3 +564,16 @@
 #define TM_Sporozoite_Barcode_String_DESC_TEXT "If the trait modifier is 'SPOROZOITE_MORTALITY', then you must define this parameter with a valid parasite barcode.  If the mosquito satisfies the vector genetics and has at least one sporozoite with this barcode, the modifier will be applied to the mortality of the mosquito's sporozoites with that barcode."
 #define TM_Gametocyte_A_Barcode_String_DESC_TEXT "If the trait modifier is 'OOCYST_PROGRESSION', then you must define this parameter with a valid parasite barcode.  If the mosquito satisfies the vector genetics and has at least one gametocyte that has the 'A' barcode and the 'B' barcode, then the modifier will be applied to the progression of the oocysts with the barcodes in the satisfying mosquito."
 #define TM_Gametocyte_B_Barcode_String_DESC_TEXT "If the trait modifier is 'OOCYST_PROGRESSION', then you must define this parameter with a valid parasite barcode.  If the mosquito satisfies the vector genetics and has at least one gametocyte that has the 'A' barcode and the 'B' barcode, then the modifier will be applied to the progression of the oocysts with the barcodes in the satisfying mosquito."
+
+
+// Migration File Metadata configuration
+#define MigrationMetadata_IdReference_DESC_TEXT "The reference ID used to synchronize the migration data with the demographics data. Required."
+#define MigrationMetadata_NodeCount_DESC_TEXT "The number of 'from' nodes in the data. Used to verify size NodeOffsets - 16*NodeCount = # chars in NodeOffsets. Required."
+#define MigrationMetadata_DatavalueCount_DESC_TEXT "The number of rates/'to' nodes for each 'from' node. Default depends on MigrationType (i.e. MaxDestinationsPerNode). Max of 100. Optional for humans, required for vectors."
+#define MigrationMetadata_MigrationType_DESC_TEXT "The type of migration for which the file is intended. Must match the type where it is used. Required for humans, not used by vectors."
+#define MigrationMetadata_GenderDataType_DESC_TEXT "The type of gender data used in the binary file (i.e. one chunk of data or two). Optional."
+#define MigrationMetadata_InterpolationType_DESC_TEXT "Determines if linear interpolation is used on rates between ages. Optional for humans, not used by vectors."
+#define MigrationMetadata_AgesYears_DESC_TEXT "Array of ages in years and in increasing order.  All ages must be between 0 - 125. Optional for humans, not used by vectors."
+#define MigrationOffsetsData_NodeOffsets_DESC_TEXT "A map of External Node ID to an address location in the binary file. Required."
+#define MigrationOffsetsData_Metadata_DESC_TEXT "Element containing information about the binary file. Required."
+

@@ -51,9 +51,8 @@ namespace Kernel
             // --- We have to get these via the global because we are now creating this
             // --- when we are creating VectorSpeciesParameters
             // -------------------------------------------------------------------------
-            bool use_default_demog       = false;
-            int default_torus_size       = 0;
-            bool enable_vector_migration = true; // true so we create the factor with the schema parameters
+            bool use_default_demog = false;
+            int default_torus_size = 0;
 
             if( GET_CONFIGURABLE( SimulationConfig ) != nullptr )
             {
@@ -65,11 +64,12 @@ namespace Kernel
             if( use_default_demog )
             {
                 release_assert( default_torus_size >= 3 ); // 3 is minimum allowabled Default_Geography_Torus_Size
+                bool enable_vector_migration = true; // true so we create the factor with the schema parameters
                 p_mifv = new MigrationInfoFactoryVectorDefault( enable_vector_migration, default_torus_size );
             }
             else
             {
-                p_mifv = new MigrationInfoFactoryVector( enable_vector_migration );
+                p_mifv = new MigrationInfoFactoryVector();
             }
             p_mifv->ReadConfiguration( pParent, config );
             return p_mifv;
