@@ -13,6 +13,8 @@
 #include "RandomFake.h"
 #include "IdmMpi.h"
 #include "Instrumentation.h"
+#include "VectorCohort.h"
+#include "VectorContexts.h"
 
 using namespace Kernel; 
 
@@ -213,6 +215,17 @@ SUITE(MigrationTest)
     {
         try
         {
+            VectorGenome genome;
+            genome.SetLocus( 0, 0, 0 );
+
+            IVectorCohort* p_vc1 = VectorCohort::CreateCohort( 1,
+                                                              VectorStateEnum::STATE_ADULT,
+                                                              0.0,
+                                                              0.0,
+                                                              0.0,
+                                                              1,
+                                                              genome,
+                                                              0 );
 
             std::string config_filename = "testdata/MigrationTest/TestBothGendersVectorPerf_config.json";
             unique_ptr<Configuration> p_config( Environment::LoadConfigurationFile( config_filename.c_str() ) );
@@ -237,7 +250,7 @@ SUITE(MigrationTest)
                                                                                                          nodeid_suid_map,
                                                                                                          vsp.index,
                                                                                                          &vsp.genes ) );
-            p_mi_5->GetFractionTraveling( VectorGender::VECTOR_FEMALE, 0 );
+            p_mi_5->GetFractionTraveling( p_vc1 );
 
             //m_RandomFake.SetUL( 2576980377 ); // 0.6
             IndividualHumanContextFake traveler( nullptr, &nc_5, nullptr, nullptr );
@@ -291,7 +304,6 @@ SUITE(MigrationTest)
             ostringstream msg2;
             msg2 << "Duration simplified (seconds) = " << seconds2 << endl;
             PrintDebug( msg2.str() );
-
 
         }
         catch( DetailedException& re )
@@ -943,6 +955,18 @@ SUITE(MigrationTest)
         {
             unique_ptr<Configuration> p_config( Environment::LoadConfigurationFile( "testdata/MigrationTest/TestVectorMigrationInfo.json"));
 
+            VectorGenome genome;
+            genome.SetLocus( 0, 0, 0 );
+
+            IVectorCohort* p_vc1 = VectorCohort::CreateCohort( 1,
+                VectorStateEnum::STATE_ADULT,
+                0.0,
+                0.0,
+                0.0,
+                1,
+                genome,
+                0 );
+
             // --------------------
             // --- Initialize test
             // --------------------
@@ -964,12 +988,12 @@ SUITE(MigrationTest)
                                                                                                        nodeid_suid_map,
                                                                                                        vsp.index,
                                                                                                        &vsp.genes ) );
-            p_mi->GetFractionTraveling( VectorGender::VECTOR_FEMALE, 0 );
+            p_mi->GetFractionTraveling( p_vc1 );
 
             const std::vector<suids::suid>& reachable_nodes = p_mi->GetReachableNodes();
             CHECK_EQUAL( 2, reachable_nodes.size() );
-            CHECK_EQUAL(  2, reachable_nodes[ 0].data );
-            CHECK_EQUAL(  6, reachable_nodes[ 1].data );
+            CHECK_EQUAL( 2, reachable_nodes[ 0].data );
+            CHECK_EQUAL( 6, reachable_nodes[ 1].data );
 
 
             const std::vector<MigrationType::Enum>& mig_type_list = p_mi->GetMigrationTypes();
@@ -984,7 +1008,7 @@ SUITE(MigrationTest)
                                                                                                          nodeid_suid_map,
                                                                                                          vsp.index,
                                                                                                          &vsp.genes ) );
-            p_mi_9->GetFractionTraveling( VectorGender::VECTOR_FEMALE, 0 );
+            p_mi_9->GetFractionTraveling( p_vc1 );
 
             const std::vector<suids::suid>& reachable_nodes_9 = p_mi_9->GetReachableNodes();
             CHECK_EQUAL( 7, reachable_nodes_9.size() );
@@ -1015,7 +1039,7 @@ SUITE(MigrationTest)
                                                                                                           nodeid_suid_map,
                                                                                                           vsp.index,
                                                                                                           &vsp.genes ) );
-            p_mi_26->GetFractionTraveling( VectorGender::VECTOR_FEMALE, 0 );
+            p_mi_26->GetFractionTraveling( p_vc1 );
 
             CHECK( p_mi_26->GetReachableNodes().size() == 0 );
         }
@@ -1029,6 +1053,8 @@ SUITE(MigrationTest)
     TEST_FIXTURE( MigrationFixture, TestMigrationByGenes )
     {
         std::string config_filename = "testdata/MigrationTest/TestMigrationByGenesVector_config.json";
+
+
         try
         {
             unique_ptr<Configuration> p_config( Environment::LoadConfigurationFile( config_filename.c_str() ) );
@@ -1044,6 +1070,31 @@ SUITE(MigrationTest)
                 nodeid_suid_map.insert( nodeid_suid_pair( node_id, node_suid ) );
             }
 
+            VectorGenome genome;  //index 0 female
+            genome.SetLocus( 0, 0, 0 );
+            genome.SetLocus( 1, 1, 0 );
+            genome.SetLocus( 2, 0, 1 );
+
+            IVectorCohort* p_female_vector_cohort = VectorCohort::CreateCohort( 1,
+                VectorStateEnum::STATE_ADULT,
+                0.0,
+                0.0,
+                0.0,
+                1,
+                genome,
+                0 );
+
+            genome.SetLocus( 0, 0, 4 ); // index 3 male
+            genome.SetLocus( 1, 1, 0 );
+            genome.SetLocus( 2, 0, 1 );
+
+            IVectorCohort* p_male_vector_cohort = VectorCohortMale::CreateCohort( 1,
+                0,
+                0,
+                0,
+                1,
+                genome,
+                0 );
 
             std::string idreference = "9-nodes";
             VectorSpeciesParameters vsp( 0 );
@@ -1058,7 +1109,6 @@ SUITE(MigrationTest)
                                                                                                          nodeid_suid_map,
                                                                                                          vsp.index,
                                                                                                          &vsp.genes ) );
-            p_mi_5->GetFractionTraveling( VectorGender::VECTOR_FEMALE, 0 );
 
             const std::vector<suids::suid>& reachable_nodes_5 = p_mi_5->GetReachableNodes();
             CHECK_EQUAL( 8, reachable_nodes_5.size() );
@@ -1086,45 +1136,71 @@ SUITE(MigrationTest)
             // === FROM NODE 5
             // ================
 
-            std::vector<float> fraction_traveling = p_mi_5->GetFractionTraveling( VectorGender::VECTOR_MALE, 0 );
-            CHECK_CLOSE( 0.086, fraction_traveling[0], 0.001 );
-            CHECK_CLOSE( 0.0,   fraction_traveling[1], 0.001 );
-            CHECK_CLOSE( 0.0,   fraction_traveling[2], 0.001 );
-            CHECK_CLOSE( 0.0,   fraction_traveling[3], 0.001 );
-            CHECK_CLOSE( 0.0,   fraction_traveling[4], 0.001 );
-            CHECK_CLOSE( 0.086, fraction_traveling[5], 0.001 );
-            CHECK_CLOSE( 0.086, fraction_traveling[6], 0.001 );
-            CHECK_CLOSE( 0.0,   fraction_traveling[7], 0.001 );
+            const std::vector<float>* fraction_traveling = p_mi_5->GetFractionTraveling( p_female_vector_cohort );
+            CHECK_CLOSE( 0.086, fraction_traveling->at( 0 ), 0.001 );
+            CHECK_CLOSE( 0.0,   fraction_traveling->at( 1 ), 0.001 );
+            CHECK_CLOSE( 0.0,   fraction_traveling->at( 2 ), 0.001 );
+            CHECK_CLOSE( 0.0,   fraction_traveling->at( 3 ), 0.001 );
+            CHECK_CLOSE( 0.0,   fraction_traveling->at( 4 ), 0.001 );
+            CHECK_CLOSE( 0.086, fraction_traveling->at( 5 ), 0.001 );
+            CHECK_CLOSE( 0.086, fraction_traveling->at( 6 ), 0.001 );
+            CHECK_CLOSE( 0.0,   fraction_traveling->at( 7 ), 0.001 );
 
-            fraction_traveling = p_mi_5->GetFractionTraveling( VectorGender::VECTOR_FEMALE, 0 );
-            CHECK_CLOSE( 0.086, fraction_traveling[0], 0.001 );
-            CHECK_CLOSE( 0.0,   fraction_traveling[1], 0.001 );
-            CHECK_CLOSE( 0.0,   fraction_traveling[2], 0.001 );
-            CHECK_CLOSE( 0.0,   fraction_traveling[3], 0.001 );
-            CHECK_CLOSE( 0.0,   fraction_traveling[4], 0.001 );
-            CHECK_CLOSE( 0.086, fraction_traveling[5], 0.001 );
-            CHECK_CLOSE( 0.086, fraction_traveling[6], 0.001 );
-            CHECK_CLOSE( 0.0,   fraction_traveling[7], 0.001 );
 
-             fraction_traveling = p_mi_5->GetFractionTraveling( VectorGender::VECTOR_FEMALE, 3 );
-             CHECK_CLOSE( 0.0,   fraction_traveling[0], 0.001 );
-             CHECK_CLOSE( 0.0,   fraction_traveling[1], 0.001 );
-             CHECK_CLOSE( 0.0,   fraction_traveling[2], 0.001 );
-             CHECK_CLOSE( 0.092, fraction_traveling[3], 0.001 );
-             CHECK_CLOSE( 0.0,   fraction_traveling[4], 0.001 );
-             CHECK_CLOSE( 0.0,   fraction_traveling[5], 0.001 );
-             CHECK_CLOSE( 0.046, fraction_traveling[6], 0.001 );
-             CHECK_CLOSE( 0.0,   fraction_traveling[7], 0.001 );
+            genome.SetLocus( 0, 0, 2 ); // index 0 female
+            genome.SetLocus( 1, 1, 0 );
+            genome.SetLocus( 2, 0, 1 );
 
-             fraction_traveling = p_mi_5->GetFractionTraveling( VectorGender::VECTOR_MALE, 4 );
-             CHECK_CLOSE( 0.0,   fraction_traveling[0], 0.001 );
-             CHECK_CLOSE( 0.0,   fraction_traveling[1], 0.001 );
-             CHECK_CLOSE( 0.0,   fraction_traveling[2], 0.001 );
-             CHECK_CLOSE( 0.0,   fraction_traveling[3], 0.001 );
-             CHECK_CLOSE( 0.090, fraction_traveling[4], 0.001 );
-             CHECK_CLOSE( 0.0,   fraction_traveling[5], 0.001 );
-             CHECK_CLOSE( 0.009, fraction_traveling[6], 0.001 );
-             CHECK_CLOSE( 0.090, fraction_traveling[7], 0.001 );
+            IVectorCohort* p_mvc1 = VectorCohortMale::CreateCohort( 1,
+                0,
+                0,
+                0,
+                1,
+                genome,
+                0 );
+
+            const std::vector<float>* fraction_traveling2 = p_mi_5->GetFractionTraveling( p_mvc1 );
+            CHECK_CLOSE( 0.086, fraction_traveling2->at( 0 ), 0.001 );
+            CHECK_CLOSE( 0.0,   fraction_traveling2->at( 1 ), 0.001 );
+            CHECK_CLOSE( 0.0,   fraction_traveling2->at( 2 ), 0.001 );
+            CHECK_CLOSE( 0.0,   fraction_traveling2->at( 3 ), 0.001 );
+            CHECK_CLOSE( 0.0,   fraction_traveling2->at( 4 ), 0.001 );
+            CHECK_CLOSE( 0.086, fraction_traveling2->at( 5 ), 0.001 );
+            CHECK_CLOSE( 0.086, fraction_traveling2->at( 6 ), 0.001 );
+            CHECK_CLOSE( 0.0,   fraction_traveling2->at( 7 ), 0.001 );
+
+            const std::vector<float>* fraction_traveling3 = p_mi_5->GetFractionTraveling( p_male_vector_cohort );
+             CHECK_CLOSE( 0.0,   fraction_traveling3->at( 0 ), 0.001 );
+             CHECK_CLOSE( 0.0,   fraction_traveling3->at( 1 ), 0.001 );
+             CHECK_CLOSE( 0.0,   fraction_traveling3->at( 2 ), 0.001 );
+             CHECK_CLOSE( 0.092, fraction_traveling3->at( 3 ), 0.001 );
+             CHECK_CLOSE( 0.0,   fraction_traveling3->at( 4 ), 0.001 );
+             CHECK_CLOSE( 0.0,   fraction_traveling3->at( 5 ), 0.001 );
+             CHECK_CLOSE( 0.046, fraction_traveling3->at( 6 ), 0.001 );
+             CHECK_CLOSE( 0.0,   fraction_traveling3->at( 7 ), 0.001 );
+            
+             // creates index 4 male
+             genome.SetLocus( 0, 0, 4 );
+             genome.SetLocus( 1, 1, 1 );
+             genome.SetLocus( 2, 1, 1 );
+
+             IVectorCohort* index_4_male = VectorCohortMale::CreateCohort( 1,
+                 0,
+                 0,
+                 0,
+                 1,
+                 genome,
+                 0 );
+
+             const std::vector<float>* fraction_traveling4 = p_mi_5->GetFractionTraveling( index_4_male );
+             CHECK_CLOSE( 0.0, fraction_traveling4->at( 0 ), 0.001 );
+             CHECK_CLOSE( 0.0, fraction_traveling4->at( 1 ), 0.001 );
+             CHECK_CLOSE( 0.0, fraction_traveling4->at( 2 ), 0.001 );
+             CHECK_CLOSE( 0.0, fraction_traveling4->at( 3 ), 0.001 );
+             CHECK_CLOSE( 0.090, fraction_traveling4->at( 4 ), 0.001 );
+             CHECK_CLOSE( 0.0, fraction_traveling4->at( 5 ), 0.001 );
+             CHECK_CLOSE( 0.009, fraction_traveling4->at( 6 ), 0.001 );
+             CHECK_CLOSE( 0.090, fraction_traveling4->at( 7 ), 0.001 );
 
             m_RandomFake.SetUL( 2576980377 ); // 0.6
 
@@ -1135,19 +1211,25 @@ SUITE(MigrationTest)
             // ------------------------------------------------------------------
             traveler.SetAge( 0 );
             traveler.SetGender( Gender::FEMALE );
-            p_mi_5->GetFractionTraveling( VectorGender::VECTOR_FEMALE, 3 );
 
             suids::suid destination = suids::nil_suid();
             MigrationType::Enum mig_type = MigrationType::NO_MIGRATION;
             float trip_time = -1.0;
 
-            p_mi_5->PickMigrationStep( &m_RandomFake, &traveler, 1.0, destination, mig_type, trip_time );
+            genome.SetLocus( 0, 0, 0 );  //index 4 female
+            genome.SetLocus( 1, 1, 1 );
+            genome.SetLocus( 2, 1, 1 );
 
-            CHECK_EQUAL( 4, destination.data );
-            CHECK_EQUAL( MigrationType::LOCAL_MIGRATION, mig_type );
-            CHECK_CLOSE( 3.405, trip_time, 0.001 );
+            IVectorCohort* index_4_female_cohort = VectorCohort::CreateCohort( 1,
+                VectorStateEnum::STATE_ADULT,
+                0.0,
+                0.0,
+                0.0,
+                1,
+                genome,
+                0 );
 
-            p_mi_5->GetFractionTraveling( VectorGender::VECTOR_FEMALE, 4 );
+            p_mi_5->GetFractionTraveling( index_4_female_cohort );
             p_mi_5->PickMigrationStep( &m_RandomFake, &traveler, 1.0, destination, mig_type, trip_time );
 
 
@@ -1155,7 +1237,20 @@ SUITE(MigrationTest)
             CHECK_EQUAL( MigrationType::LOCAL_MIGRATION, mig_type );
             CHECK_CLOSE( 2.432, trip_time, 0.001 );
 
-            p_mi_5->GetFractionTraveling( VectorGender::VECTOR_FEMALE, 1 );
+            genome.SetLocus( 0, 0, 0 );  //index 0 female
+            genome.SetLocus( 1, 0, 0 );
+            genome.SetLocus( 2, 0, 0 );
+
+            IVectorCohort* index_0_female_cohort = VectorCohort::CreateCohort( 1,
+                VectorStateEnum::STATE_ADULT,
+                0.0,
+                0.0,
+                0.0,
+                1,
+                genome,
+                0 );
+
+            p_mi_5->GetFractionTraveling( index_0_female_cohort );
 
             p_mi_5->PickMigrationStep( &m_RandomFake, &traveler, 1.0, destination, mig_type, trip_time );
 
@@ -1163,8 +1258,20 @@ SUITE(MigrationTest)
             CHECK_EQUAL( MigrationType::LOCAL_MIGRATION, mig_type );
             CHECK_CLOSE( 1.702, trip_time, 0.001 );
 
-            p_mi_5->GetFractionTraveling( VectorGender::VECTOR_FEMALE, 2 );
+            genome.SetLocus( 0, 0, 0 ); // index 2 female
+            genome.SetLocus( 1, 1, 1 );
+            genome.SetLocus( 2, 1, 0 );
 
+            IVectorCohort* index_2_female_cohort = VectorCohort::CreateCohort( 1,
+                VectorStateEnum::STATE_ADULT,
+                0.0,
+                0.0,
+                0.0,
+                1,
+                genome,
+                0 );
+
+            p_mi_5->GetFractionTraveling( index_2_female_cohort );
             p_mi_5->PickMigrationStep( &m_RandomFake, &traveler, 1.0, destination, mig_type, trip_time );
 
             CHECK_EQUAL( 8, destination.data );
@@ -1184,6 +1291,28 @@ SUITE(MigrationTest)
         std::string config_filename = "testdata/MigrationTest/TestEachGenderVector_config.json";
         try
         {
+            VectorGenome genome;
+            genome.SetLocus( 0, 0, 0 );
+
+            IVectorCohort* p_female_vector_cohort = VectorCohort::CreateCohort( 1,
+                VectorStateEnum::STATE_ADULT,
+                0.0,
+                0.0,
+                0.0,
+                1,
+                genome,
+                0 );
+
+            genome.SetLocus( 0, 0, 4 );
+
+            IVectorCohort* p_male_vector_cohort = VectorCohortMale::CreateCohort( 1,
+                0,
+                0,
+                0,
+                1,
+                genome,
+                0 );
+
             unique_ptr<Configuration> p_config(Environment::LoadConfigurationFile(config_filename.c_str()));
 
             // Female vectors migrate from odd nodes to even nodes, male vectors migrate from even nodes to odd nodes
@@ -1214,7 +1343,7 @@ SUITE(MigrationTest)
                                                                                                        nodeid_suid_map,
                                                                                                        vsp.index,
                                                                                                        &vsp.genes ) );
-            p_mi_2->GetFractionTraveling( VectorGender::VECTOR_FEMALE, 0 );
+            p_mi_2->GetFractionTraveling( p_female_vector_cohort );
 
             const std::vector<suids::suid>& reachable_nodes_2 = p_mi_2->GetReachableNodes();
             CHECK_EQUAL(3, reachable_nodes_2.size());
@@ -1231,16 +1360,17 @@ SUITE(MigrationTest)
             // ================
             // === FROM NODE 2
             // ================
-            std::vector<float> fraction_traveling = p_mi_2->GetFractionTraveling( VectorGender::VECTOR_MALE, 0 );
-            CHECK_CLOSE( 0.086, fraction_traveling[0], 0.001 );
-            CHECK_CLOSE( 0.086, fraction_traveling[1], 0.001 );
-            CHECK_CLOSE( 0.086, fraction_traveling[2], 0.001 );
 
-            fraction_traveling = p_mi_2->GetFractionTraveling( VectorGender::VECTOR_FEMALE, 0 );
-            CHECK_CLOSE( 0.0, fraction_traveling[0], 0.001 );
-            CHECK_CLOSE( 0.0, fraction_traveling[1], 0.001 );
-            CHECK_CLOSE( 0.0, fraction_traveling[2], 0.001 );
+            const std::vector<float>* fraction_traveling = p_mi_2->GetFractionTraveling( p_male_vector_cohort );
+            CHECK_CLOSE( 0.086, fraction_traveling->at( 0 ), 0.001 );
+            CHECK_CLOSE( 0.086, fraction_traveling->at( 1 ), 0.001 );
+            CHECK_CLOSE( 0.086, fraction_traveling->at( 2 ), 0.001 );
 
+            const std::vector<float>* fraction_traveling2 = p_mi_2->GetFractionTraveling( p_female_vector_cohort );
+            if( fraction_traveling2 != nullptr )
+            {
+                CHECK_EQUAL( true, false );
+            }
 
             m_RandomFake.SetUL(2576980377); // 0.6
 
@@ -1278,7 +1408,7 @@ SUITE(MigrationTest)
                                                                                                         nodeid_suid_map,
                                                                                                         vsp.index,
                                                                                                         &vsp.genes ) );
-            p_mi_9->GetFractionTraveling( VectorGender::VECTOR_FEMALE, 0 );
+            p_mi_9->GetFractionTraveling( p_female_vector_cohort );
 
             const std::vector<suids::suid>& reachable_nodes_9 = p_mi_9->GetReachableNodes();
             CHECK_EQUAL(2, reachable_nodes_9.size());
@@ -1291,14 +1421,16 @@ SUITE(MigrationTest)
             CHECK_EQUAL(MigrationType::LOCAL_MIGRATION, mig_type_list_9[0]);
             CHECK_EQUAL(MigrationType::LOCAL_MIGRATION, mig_type_list_9[1]);
 
-            fraction_traveling = p_mi_2->GetFractionTraveling( VectorGender::VECTOR_FEMALE, 0 );
-            CHECK_CLOSE( 0.0, fraction_traveling[0], 0.001 );
-            CHECK_CLOSE( 0.0, fraction_traveling[1], 0.001 );
+            const std::vector<float>* fraction_traveling1 = p_mi_9->GetFractionTraveling( p_male_vector_cohort );
+            if( fraction_traveling1 != nullptr )
+            {
+                CHECK_EQUAL( true, false );
+            }
 
 
-            fraction_traveling = p_mi_2->GetFractionTraveling( VectorGender::VECTOR_MALE, 0 );
-            CHECK_CLOSE( 0.086, fraction_traveling[0], 0.001 );
-            CHECK_CLOSE( 0.086, fraction_traveling[1], 0.001 );
+            const std::vector<float>* fraction_traveling33 = p_mi_9->GetFractionTraveling( p_female_vector_cohort );
+            CHECK_CLOSE( 0.090, fraction_traveling33->at( 0 ), 0.001 );
+            CHECK_CLOSE( 0.090, fraction_traveling33->at( 1 ), 0.001 );
 
 
 
@@ -1319,7 +1451,7 @@ SUITE(MigrationTest)
             // ------------------------------------------------------------------
             traveler9.SetAge(0);
             traveler9.SetGender(Gender::FEMALE);
-            p_mi_9->GetFractionTraveling( VectorGender::VECTOR_FEMALE, 0 );
+            p_mi_9->GetFractionTraveling( p_female_vector_cohort );
 
             destination = suids::nil_suid();
             mig_type = MigrationType::NO_MIGRATION;
@@ -1343,6 +1475,29 @@ SUITE(MigrationTest)
     TEST_FIXTURE(MigrationFixture, TestBothGendersVector)
     {
         std::string config_filename = "testdata/MigrationTest/TestBothGendersVector_config.json";
+
+        VectorGenome genome;
+        genome.SetLocus( 0, 0, 0 );
+
+        IVectorCohort* p_female_vector_cohort = VectorCohort::CreateCohort( 1,
+            VectorStateEnum::STATE_ADULT,
+            0.0,
+            0.0,
+            0.0,
+            1,
+            genome,
+            0 );
+
+        genome.SetLocus( 0, 0, 4 );
+
+        IVectorCohort* p_male_vector_cohort = VectorCohortMale::CreateCohort( 1,
+            0,
+            0,
+            0,
+            1,
+            genome,
+            0 );
+
         try
         {
             unique_ptr<Configuration> p_config(Environment::LoadConfigurationFile(config_filename.c_str()));
@@ -1375,7 +1530,7 @@ SUITE(MigrationTest)
                                                                                                         nodeid_suid_map,
                                                                                                         vsp.index,
                                                                                                         &vsp.genes ) );
-            p_mi_2->GetFractionTraveling( VectorGender::VECTOR_FEMALE, 0 );
+            p_mi_2->GetFractionTraveling( p_female_vector_cohort );
 
             const std::vector<suids::suid>& reachable_nodes_2 = p_mi_2->GetReachableNodes();
             CHECK_EQUAL(6, reachable_nodes_2.size());
@@ -1405,13 +1560,11 @@ SUITE(MigrationTest)
             // ------------------------------------------------------------------
             // --- Test that male vector (age 0) no migration from Node 2
             // ------------------------------------------------------------------
-            std::vector<float> fraction_traveling = p_mi_2->GetFractionTraveling( VectorGender::VECTOR_MALE, 0 );
-            CHECK_CLOSE( 0.0, fraction_traveling[0], 0.001 );
-            CHECK_CLOSE( 0.0, fraction_traveling[1], 0.001 );
-            CHECK_CLOSE( 0.0, fraction_traveling[2], 0.001 );
-            CHECK_CLOSE( 0.0, fraction_traveling[3], 0.001 );
-            CHECK_CLOSE( 0.0, fraction_traveling[4], 0.001 );
-            CHECK_CLOSE( 0.0, fraction_traveling[5], 0.001 );
+            const std::vector<float>* fraction_traveling = p_mi_2->GetFractionTraveling( p_female_vector_cohort );
+            if( fraction_traveling != nullptr )
+            {
+                CHECK_EQUAL( true, false );
+            }
 
             // ------------------------------------------------------------------
             // --- Test that female vector (age 0) no migration from Node 2
@@ -1438,7 +1591,6 @@ SUITE(MigrationTest)
                                                                                                         nodeid_suid_map,
                                                                                                         vsp.index,
                                                                                                         &vsp.genes ) );
-            p_mi_9->GetFractionTraveling( VectorGender::VECTOR_FEMALE, 0 );
 
             const std::vector<suids::suid>& reachable_nodes_9 = p_mi_9->GetReachableNodes();
             CHECK_EQUAL(6, reachable_nodes_9.size());
@@ -1469,20 +1621,19 @@ SUITE(MigrationTest)
             // ------------------------------------------------------------------
             // --- Test that male vector (age 0) will migrate from Node 9 to 1
             // ------------------------------------------------------------------
-            fraction_traveling = p_mi_9->GetFractionTraveling( VectorGender::VECTOR_MALE, 0 );
-            CHECK_CLOSE( 0.095, fraction_traveling[0], 0.001 );
-            CHECK_CLOSE( 0.0, fraction_traveling[1], 0.001 );
-            CHECK_CLOSE( 0.0, fraction_traveling[2], 0.001 );
-            CHECK_CLOSE( 0.0, fraction_traveling[3], 0.001 );
-            CHECK_CLOSE( 0.0, fraction_traveling[4], 0.001 );
-            CHECK_CLOSE( 0.0, fraction_traveling[5], 0.001 );
+            const std::vector<float>* fraction_traveling1 = p_mi_9->GetFractionTraveling( p_female_vector_cohort );
+            CHECK_CLOSE( 0.095, fraction_traveling1->at( 0 ), 0.001 );
+            CHECK_CLOSE( 0.0, fraction_traveling1->at( 1 ), 0.001 );
+            CHECK_CLOSE( 0.0, fraction_traveling1->at( 2 ), 0.001 );
+            CHECK_CLOSE( 0.0, fraction_traveling1->at( 3 ), 0.001 );
+            CHECK_CLOSE( 0.0, fraction_traveling1->at( 4 ), 0.001 );
+            CHECK_CLOSE( 0.0, fraction_traveling1->at( 5 ), 0.001 );
 
             // ------------------------------------------------------------------
             // --- Test that female vector (age 0) will migrate from Node 9 to node 1
             // ------------------------------------------------------------------
             traveler9.SetAge(0);
             traveler9.SetGender(Gender::FEMALE);
-            p_mi_9->GetFractionTraveling( VectorGender::VECTOR_FEMALE, 0 );
             destination = suids::nil_suid();
             mig_type = MigrationType::NO_MIGRATION;
             trip_time = -1.0;
@@ -1505,6 +1656,18 @@ SUITE(MigrationTest)
     TEST_FIXTURE(MigrationFixture, TestUpdateFemaleRateVector)
     {
         std::string config_filename = "testdata/MigrationTest/TestBothGendersVector_config.json";
+
+        VectorGenome genome;
+        genome.SetLocus( 0, 0, 0 );
+
+        IVectorCohort* p_vc1 = VectorCohort::CreateCohort( 1,
+            VectorStateEnum::STATE_ADULT,
+            0.0,
+            0.0,
+            0.0,
+            1,
+            genome,
+            0 );
         try
         {
             unique_ptr<Configuration> p_config(Environment::LoadConfigurationFile(config_filename.c_str()));
@@ -1537,8 +1700,8 @@ SUITE(MigrationTest)
                                                                                                         nodeid_suid_map,
                                                                                                         vsp.index,
                                                                                                         &vsp.genes ) );
-            p_mi_2->GetFractionTraveling( VectorGender::VECTOR_FEMALE, 0 );
-            p_mi_2->GetFractionTraveling( VectorGender::VECTOR_MALE, 0 );
+
+            p_mi_2->GetFractionTraveling( p_vc1 );
 
             const std::vector<suids::suid>& reachable_nodes_2 = p_mi_2->GetReachableNodes();
             CHECK_EQUAL(6, reachable_nodes_2.size());
@@ -1568,14 +1731,11 @@ SUITE(MigrationTest)
             // ------------------------------------------------------------------
             // --- Test that male vector (age 0) no migration from Node 2
             // ------------------------------------------------------------------
-            std::vector<float> fraction_traveling = p_mi_2->GetFractionTraveling( VectorGender::VECTOR_MALE, 0 );
-            CHECK_CLOSE( 0.0, fraction_traveling[0], 0.001 );
-            CHECK_CLOSE( 0.0, fraction_traveling[1], 0.001 );
-            CHECK_CLOSE( 0.0, fraction_traveling[2], 0.001 );
-            CHECK_CLOSE( 0.0, fraction_traveling[3], 0.001 );
-            CHECK_CLOSE( 0.0, fraction_traveling[4], 0.001 );
-            CHECK_CLOSE( 0.0, fraction_traveling[5], 0.001 );
-
+            const std::vector<float>* fraction_traveling = p_mi_2->GetFractionTraveling( p_vc1 );
+            if( fraction_traveling != nullptr )
+            {
+                CHECK_EQUAL( true, false );
+            }
             // ------------------------------------------------------------------
             // --- Test that female vector (age 0) no migration from Node 2
             // ------------------------------------------------------------------
@@ -1601,7 +1761,7 @@ SUITE(MigrationTest)
                                                                                                         nodeid_suid_map,
                                                                                                         vsp.index,
                                                                                                         &vsp.genes ) );
-            p_mi_9->GetFractionTraveling( VectorGender::VECTOR_FEMALE, 0 );
+            p_mi_9->GetFractionTraveling( p_vc1 );
 
             const std::vector<suids::suid>& reachable_nodes_9 = p_mi_9->GetReachableNodes();
             CHECK_EQUAL(6, reachable_nodes_9.size());
@@ -1632,13 +1792,13 @@ SUITE(MigrationTest)
             // ------------------------------------------------------------------
             // --- Test that male vector (age 0) will migrate from Node 9 to 1
             // ------------------------------------------------------------------
-            fraction_traveling = p_mi_9->GetFractionTraveling( VectorGender::VECTOR_MALE, 0 );
-            CHECK_CLOSE( 0.095, fraction_traveling[0], 0.001 );
-            CHECK_CLOSE( 0.0, fraction_traveling[1], 0.001 );
-            CHECK_CLOSE( 0.0, fraction_traveling[2], 0.001 );
-            CHECK_CLOSE( 0.0, fraction_traveling[3], 0.001 );
-            CHECK_CLOSE( 0.0, fraction_traveling[4], 0.001 );
-            CHECK_CLOSE( 0.0, fraction_traveling[5], 0.001 );
+            const std::vector<float>* fraction_traveling1 = p_mi_9->GetFractionTraveling( p_vc1 );
+            CHECK_CLOSE( 0.095, fraction_traveling1->at( 0 ), 0.001 );
+            CHECK_CLOSE( 0.0, fraction_traveling1->at( 1 ), 0.001 );
+            CHECK_CLOSE( 0.0, fraction_traveling1->at( 2 ), 0.001 );
+            CHECK_CLOSE( 0.0, fraction_traveling1->at( 3 ), 0.001 );
+            CHECK_CLOSE( 0.0, fraction_traveling1->at( 4 ), 0.001 );
+            CHECK_CLOSE( 0.0, fraction_traveling1->at( 5 ), 0.001 );
 
             // ------------------------------------------------------------------
             // --- Test that female vector (age 0) will migrate from Node 9 to node 1

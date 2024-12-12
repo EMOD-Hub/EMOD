@@ -258,8 +258,10 @@ namespace Kernel
     const std::vector<float>* MigrationInfoAgeAndGenderVector::GetFractionTraveling( const IVectorCohort* this_vector )
     {
         // -----------------------------------------------------------------------------
-        // --- Returns reference to the fractions traveling array to be used by vector cohort migration
-        // --- also sets m_TotalRate and m_TotalRateFemale and m_RateCDFFemale to be used by GetTotalRate and other functions
+        // --- Returns nullptr if migration rate is 0, returns reference to the fractions 
+        // --- traveling array to be used by vector cohort migration also sets m_TotalRate 
+        // --- and m_TotalRateFemale and m_RateCDFFemale to be used by GetTotalRate and 
+        // --- other functions
         // -----------------------------------------------------------------------------
 
         // -----------------------------------------------------------------------------
@@ -274,7 +276,7 @@ namespace Kernel
         for( int i = m_allele_combos_index_map_list.size() - 1; i >= 0; --i )
         {
             const std::pair<AlleleCombo, int>& ac_pair = m_allele_combos_index_map_list[i];
-            if( ac_pair.first.HasAlleles( this_vector->GetSpeciesIndex(), genome) )
+            if( ac_pair.first.HasAlleles( this_vector->GetSpeciesIndex(), genome ) )
             {
                 migration_data_index = ac_pair.second;
                 break;
