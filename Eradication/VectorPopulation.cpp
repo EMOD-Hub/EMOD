@@ -2753,13 +2753,13 @@ namespace Kernel
 
         // setting up for male migration
         m_NeedToRefreshTheMatingCDF = false; // reset the bool, we will check if we need to refresh m_MaleMatingCDF at beginning of next timestep
-        std::vector<suids::suid> reacheable_nodes; // could be different per gender
+        std::vector<suids::suid> reachable_nodes; // could be different per gender
         if( m_pMigrationInfoVector->MightTravel( VectorGender::VECTOR_MALE ) ) // checking if any of the queue might travel at all
         {
-            reacheable_nodes = m_pMigrationInfoVector->GetReachableNodes( Gender::MALE );
+            reachable_nodes = m_pMigrationInfoVector->GetReachableNodes( Gender::MALE );
             auto non_male_migrating = pMigratingQueue->size();
             // Migrating males
-            Vector_Migration_Queue( reacheable_nodes, pMigratingQueue, MaleQueues );
+            Vector_Migration_Queue( reachable_nodes, pMigratingQueue, MaleQueues );
             // if males are emmigrating, we'll need to refresh m_MaleMatingCDF next timestep
             if( pMigratingQueue->size() - non_male_migrating > 0 )
             {
@@ -2781,15 +2781,15 @@ namespace Kernel
                 throw QueryInterfaceException( __FILE__, __LINE__, __FUNCTION__, "m_context", "IVectorSimulationContext", "ISimulationContext" );
             }
             m_pMigrationInfoVector->UpdateRates( m_context->GetSuid(), get_SpeciesID(), p_vsc );
-            reacheable_nodes = m_pMigrationInfoVector->GetReachableNodes( Gender::FEMALE );
-            Vector_Migration_Queue( reacheable_nodes, pMigratingQueue, *pAdultQueues );
-            Vector_Migration_Queue( reacheable_nodes, pMigratingQueue, InfectedQueues );
-            Vector_Migration_Queue( reacheable_nodes, pMigratingQueue, InfectiousQueues );
+            reachable_nodes = m_pMigrationInfoVector->GetReachableNodes( Gender::FEMALE );
+            Vector_Migration_Queue( reachable_nodes, pMigratingQueue, *pAdultQueues );
+            Vector_Migration_Queue( reachable_nodes, pMigratingQueue, InfectedQueues );
+            Vector_Migration_Queue( reachable_nodes, pMigratingQueue, InfectiousQueues );
         }
     }
 
 
-    void VectorPopulation::Vector_Migration_Queue( const std::vector<suids::suid>& rReacheableNodes,
+    void VectorPopulation::Vector_Migration_Queue( const std::vector<suids::suid>& rReachableNodes,
                                                    VectorCohortVector_t* pMigratingQueue,
                                                    VectorCohortCollectionAbstract& rQueue )
     {
@@ -2802,12 +2802,12 @@ namespace Kernel
                 continue;
             }
 
-            release_assert( fraction_traveling->size()  == rReacheableNodes.size());
-            std::vector<uint32_t> random_indexes = GetRandomIndexes( m_context->GetRng(), rReacheableNodes.size() );
+            release_assert( fraction_traveling->size()  == rReachableNodes.size());
+            std::vector<uint32_t> random_indexes = GetRandomIndexes( m_context->GetRng(), rReachableNodes.size() );
 
             for( uint32_t index : random_indexes )
             {
-                suids::suid to_node  = rReacheableNodes[ index ];
+                suids::suid to_node  = rReachableNodes[ index ];
                 if( to_node == m_context->GetSuid() )
                 {
                     continue; // don't travel to the node you're already in

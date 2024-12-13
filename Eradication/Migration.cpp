@@ -487,7 +487,11 @@ namespace Kernel
 
     void MigrationMetadata::ConfigMigrationType( const Configuration* config, MigrationType::Enum & file_migration_type )
     {
-        initConfig( "MigrationType", file_migration_type, config, MetadataDescriptor::Enum( "MigrationType", MigrationMetadata_MigrationType_DESC_TEXT, MDD_ENUM_ARGS( MigrationType ) ) );
+       bool migration_type_found = initConfig( "MigrationType", file_migration_type, config, MetadataDescriptor::Enum( "MigrationType", MigrationMetadata_MigrationType_DESC_TEXT, MDD_ENUM_ARGS( MigrationType ) ) );
+       if( !migration_type_found ) // if parameter not found, use the expected migration
+       {
+           file_migration_type = m_ExpectedMigrationType;
+       }
     }
 
     void MigrationMetadata::ConfigInterpolationType( const Configuration* config )
