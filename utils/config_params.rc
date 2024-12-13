@@ -577,3 +577,5 @@
 #define MigrationOffsetsData_NodeOffsets_DESC_TEXT "A map of External Node ID to an address location in the binary file. Required."
 #define MigrationOffsetsData_Metadata_DESC_TEXT "Element containing information about the binary file. Required."
 
+#define MMV_AlleleCombinations_DESC_TEXT "An array of allele combinations (pairs of alleles) to use for mapping migration rates to in the migration binary file. Depends on GenderDataType=VECTOR_MIGRATION_BY_GENETICS."
+

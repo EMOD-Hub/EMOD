@@ -263,9 +263,10 @@ SUITE(MigrationTest)
             float trip_time = -1.0;
             RANDOMBASE* prng = new PSEUDO_DES( 42 );
 
+            int num_samples = 1000 * 365 * 5;
             Stopwatch watch;
             watch.Start();
-            for(int i = 0; i < 1000 * 365 * 5; i++ ) // 1k individual female vectors every day for five years
+            for(int i = 0; i < num_samples; i++ ) // 1k individual female vectors every day for five years
             {
                 p_mi_5->PickMigrationStep( prng, &traveler, 1.0, destination, mig_type, trip_time, 1 );
             }
@@ -281,7 +282,7 @@ SUITE(MigrationTest)
             float total_rate = p_mi_5->GetTotalRate(Gender::FEMALE);
 
             watch.Start();
-            for( int i = 0; i < 1000 * 365 * 5; i++ )
+            for( int i = 0; i < num_samples; i++ )
             {
                 // time in days until we leave
                 float time = float( prng->expdist( total_rate ) );
@@ -300,7 +301,8 @@ SUITE(MigrationTest)
             }
             watch.Stop();
             double seconds2 = watch.ResultNanoseconds() / 100000000.0;
-
+            delete prng;
+            prng = nullptr;
             ostringstream msg2;
             msg2 << "Duration simplified (seconds) = " << seconds2 << endl;
             PrintDebug( msg2.str() );

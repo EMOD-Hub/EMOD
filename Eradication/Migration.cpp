@@ -431,10 +431,6 @@ namespace Kernel
             // -------------------------------------
             // --- Check idreference - Must be equal
             // -------------------------------------
-            //std::string file_idreference_lower( file_id_reference );
-            //std::string idreference_lower( m_ExpectedIdReference );  // Make a copy to transform so we do not modify the original.
-            //std::transform( idreference_lower.begin(), idreference_lower.end(), idreference_lower.begin(), ::tolower );
-            //std::transform( file_idreference_lower.begin(), file_idreference_lower.end(), file_idreference_lower.begin(), ::tolower );
             if( file_id_reference != m_ExpectedIdReference )
             {
                 std::stringstream ss;
