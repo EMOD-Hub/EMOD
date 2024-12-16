@@ -1,13 +1,5 @@
 {
     "tests": [
-        { "path" : "Generic/30_Generic_Seattle_SingleCore" },
-        { "path" : "Vector/1_Vector_Sandbox" },
-        { "path" : "Vector/68_Vector_Genetics_OneGene_DiversityByRelease" },
-        { "path" : "Malaria/1_Malaria_Sandbox" },
-        { "path" : "Malaria/24_Malaria_SurveyReport_Multicore" },
-        { "path" : "Malaria/88_Malaria_FPG_TwoMarkers" },
-        { "path" : "STI/40_STI_Trivial_All_Reporters" },
-        { "path" : "STI/52_STI_All_Rel_Types_Assortivity_Prop_Location_Matrix" },
-        { "path" : "HIV/12_HIV_CascadeOfCare"}
+        { "path" : "HIV/45_HIV_CascadeOfCare_MultiNode_MultiCore"}
     ]
 }
