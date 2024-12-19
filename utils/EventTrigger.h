@@ -69,6 +69,9 @@ namespace Kernel
         static const EventTrigger& PFA_SeekingPartner;
         static const EventTrigger& PFA_FoundPartner;
         static const EventTrigger& PFA_NoPartnerFound;
+        static const EventTrigger & MaritalCondomlessSexAct;
+        static const EventTrigger & NonMaritalCondomlessSexAct;
+
 
     public:
         EventTrigger();

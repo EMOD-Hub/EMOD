@@ -366,6 +366,7 @@ namespace Kernel {
         // --- so that we can later determine which act had transmission.
         // ------------------------------------------------------------------------------
         ProbabilityNumber p_condom = getProbabilityUsingCondomThisAct();
+        bool any_condomless_sex = false;
         for( uint32_t iact = 0; iact < coital_acts_this_dt; ++iact )
         {
             male_partner->UpdateNumCoitalActs( 1 );
@@ -379,6 +380,11 @@ namespace Kernel {
                 act_risk *= (1.0 - IndividualHumanSTIConfig::condom_transmission_blocking_probability);
                 ++coital_acts_this_dt_using_condoms;
             }
+            else 
+            {
+                any_condomless_sex = true;
+            }
+
             CoitalAct act( pRelMan->GetNextCoitalActSuid(),
                            GetSuid(),
                            uninfected_individual->GetSuid(),
@@ -393,6 +399,17 @@ namespace Kernel {
             {
                 uninfected_individual->NotifyPotentialExposure();
                 infected_individual->UpdateInfectiousnessSTI( act );
+            }
+        }
+        if (any_condomless_sex) {
+            if (relationship_type == RelationshipType::MARITAL) {
+                male_partner->GetIndividualHuman()->BroadcastEvent(EventTrigger::MaritalCondomlessSexAct);
+                female_partner->GetIndividualHuman()->BroadcastEvent(EventTrigger::MaritalCondomlessSexAct);
+            }
+            else 
+            {
+                male_partner->GetIndividualHuman()->BroadcastEvent(EventTrigger::NonMaritalCondomlessSexAct);
+                female_partner->GetIndividualHuman()->BroadcastEvent(EventTrigger::NonMaritalCondomlessSexAct);
             }
         }
     }

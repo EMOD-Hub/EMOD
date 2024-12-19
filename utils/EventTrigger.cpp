@@ -73,6 +73,9 @@ namespace Kernel
     const EventTrigger& EventTrigger::PFA_SeekingPartner             = EventTriggerFactory::CreateBuiltInEventTrigger( "PFA_SeekingPartner"             );
     const EventTrigger& EventTrigger::PFA_FoundPartner               = EventTriggerFactory::CreateBuiltInEventTrigger( "PFA_FoundPartner"               );
     const EventTrigger& EventTrigger::PFA_NoPartnerFound             = EventTriggerFactory::CreateBuiltInEventTrigger( "PFA_NoPartnerFound"             );
+    const EventTrigger & EventTrigger::MaritalCondomlessSexAct       = EventTriggerFactory::CreateBuiltInEventTrigger( "MaritalCondomlessSexAct"        );
+    const EventTrigger & EventTrigger::NonMaritalCondomlessSexAct    = EventTriggerFactory::CreateBuiltInEventTrigger( "NonMaritalCondomlessSexAct"     );
+
 
     const EventType::Enum EventTriggerFactory::EVENT_TYPE = EventType::INDIVIDUAL;
     const char* EventTriggerFactory::CONSTRAINT_SCHEMA_STRING = "'<configuration>:Custom_Individual_Events.*' or Built-in";
