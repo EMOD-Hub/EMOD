@@ -625,7 +625,7 @@ SUITE(NodeDemographicsTest)
     {
         std::vector<std::string> axis_names ;
         TestHelper_DistributionFormatException( __LINE__, "demographics_TestDistAgeDisttNumResultValuesNotMatchDistValuesC_DoubleArray.json", "AgeDistribution", axis_names,
-                                                "ERROR:  Unexpected type while parsing 'ResultValues'\nin distribution 'AgeDistribution' for nodeID = 1.\nExpected an array of floats but detected  an array.)" );
+                                                "ERROR:  Unexpected type while parsing 'ResultValues'\nin distribution 'AgeDistribution' for nodeID = 1.\nExpected an array of floats but detected an array of arrays.)" );
     }
 
     TEST_FIXTURE(NodeDemographicsFactoryFixture, TestDistFertDistInvalidNumAxisNames)

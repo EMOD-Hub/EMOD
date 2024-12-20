@@ -1350,18 +1350,18 @@ void NodeDemographicsDistribution::CheckIsArrayOfValues( const std::string& rDis
         std::stringstream ss;
         ss << "\nERROR:  Unexpected type while parsing '" << parameterName << "'\n";
         ss << "in distribution '" << rDistributionName << "' for nodeID = " << nodeId << ".\n";
-        ss << "Expected an array of floats but detected ";
+        ss << "Expected an array of floats but detected an array of ";
         if( rArray[ zero ].IsArray() )
         {
-            ss << " an array.";
+            ss << "arrays.";
         }
         else if( rArray[ zero ].IsObject() )
         {
-            ss << " an object/dictionary.";
+            ss << "objects/dictionaries.";
         }
         else
         {
-            ss << " unknown";
+            ss << "unknown";
         }
         throw NodeDemographicsFormatErrorException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
     }
