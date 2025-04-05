@@ -84,23 +84,6 @@ void IDMAPI writeInputSchemas(
     }
     std::ostream &schema_ostream = ( ( szOutputPath == "stdout" ) ? std::cout : schema_ostream_file );
 
-    DllLoader dllLoader;
-    std::map< std::string, createSim > createSimFuncPtrMap;
-
-    if( dllLoader.LoadDiseaseDlls(createSimFuncPtrMap) )
-    {
-        //LOG_DEBUG( "Calling GetDiseaseDllSchemas\n" );
-        json::Object diseaseSchemas = dllLoader.GetDiseaseDllSchemas();
-        total_schema[ "config:emodules" ] = diseaseSchemas;
-    }
-
-    // Intervention dlls don't need any schema printing, just loading them
-    // through DllLoader causes them to all get registered with exe's Intervention
-    // Factory, which makes regular GetSchema pathway work. This still doesn't solve
-    // the problem of reporting in the schema output what dll they came from, if we
-    // even want to.
-    dllLoader.LoadInterventionDlls();
-
     Kernel::JsonConfigurable::_dryrun = true;
     std::ostringstream oss;
 
