@@ -2,7 +2,6 @@
 #include "stdafx.h"
 #include "AgeDiagnostic.h"
 #include "InterventionEnums.h"
-#include "InterventionFactory.h"
 #include "NodeEventContext.h"  // for INodeEventContext (ICampaignCostObserver)
 #include "IIndividualHumanHIV.h"
 #include "IIndividualHumanContext.h"

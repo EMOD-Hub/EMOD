@@ -2,7 +2,6 @@
 #include "stdafx.h"
 #include "RelationshipFormationRateChanger.h"
 
-#include "InterventionFactory.h"
 #include "INodeSTIInterventionEffectsApply.h"
 
 SETUP_LOGGING( "RelationshipFormationRateChanger" )

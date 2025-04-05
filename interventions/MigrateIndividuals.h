@@ -15,7 +15,7 @@ namespace Kernel
     class IDMAPI MigrateIndividuals :  public BaseIntervention
     {
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, MigrateIndividuals, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, MigrateIndividuals, IDistributableIntervention)
 
     public: 
         MigrateIndividuals();

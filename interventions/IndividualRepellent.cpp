@@ -4,7 +4,6 @@
 
 #include "IIndividualHumanContext.h"
 #include "InterventionEnums.h"
-#include "InterventionFactory.h"
 #include "VectorInterventionsContainerContexts.h"  // for IIndividualRepellentConsumer methods
 
 SETUP_LOGGING( "SimpleIndividualRepellent" )

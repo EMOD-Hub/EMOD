@@ -15,7 +15,7 @@ namespace Kernel
 
     class GenericDrug : public IDrug, public BaseIntervention
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, GenericDrug, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, GenericDrug, IDistributableIntervention)
 
     public:
         GenericDrug( const GenericDrug& rThat );

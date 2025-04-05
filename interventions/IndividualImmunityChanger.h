@@ -26,7 +26,7 @@ namespace Kernel
         public:
         bool Configure( const Configuration * config );
 
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, IndividualImmunityChanger, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, IndividualImmunityChanger, IDistributableIntervention)
 
     public:
         IndividualImmunityChanger();

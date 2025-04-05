@@ -5,7 +5,6 @@
 #include <typeinfo>
 
 #include "InterventionEnums.h"
-#include "InterventionFactory.h"
 #include "VectorInterventionsContainerContexts.h"
 #include "IIndividualHumanContext.h"
 

@@ -2,7 +2,6 @@
 #include "stdafx.h"
 #include "CoitalActRateChanger.h"
 
-#include "InterventionFactory.h"
 #include "INodeSTIInterventionEffectsApply.h"
 
 

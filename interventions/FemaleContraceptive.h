@@ -18,7 +18,7 @@ namespace Kernel
 
     class FemaleContraceptive : public BaseIntervention
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, FemaleContraceptive, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, FemaleContraceptive, IDistributableIntervention)
 
     public:
         FemaleContraceptive();

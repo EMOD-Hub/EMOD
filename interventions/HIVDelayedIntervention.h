@@ -11,7 +11,7 @@ namespace Kernel
 {
     class HIVDelayedIntervention: public DelayedIntervention
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, HIVDelayedIntervention, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, HIVDelayedIntervention, IDistributableIntervention)
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
 
     public:

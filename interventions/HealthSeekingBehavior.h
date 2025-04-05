@@ -18,7 +18,7 @@ namespace Kernel
 
     class SimpleHealthSeekingBehavior : public BaseIntervention //, public JsonConfigurable
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, SimpleHealthSeekingBehavior, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, SimpleHealthSeekingBehavior, IDistributableIntervention)
 
     public:
         SimpleHealthSeekingBehavior();

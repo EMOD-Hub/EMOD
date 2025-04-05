@@ -16,7 +16,7 @@ namespace Kernel
 {
     class IVCalendar : public BaseIntervention
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, IVCalendar, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, IVCalendar, IDistributableIntervention)
 
     public:
         // We inherit AddRef/Release abstractly through IHealthSeekBehavior,

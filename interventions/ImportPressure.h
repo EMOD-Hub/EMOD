@@ -19,7 +19,7 @@ namespace Kernel
     {
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
         DECLARE_CONFIGURED(Outbreak)
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, ImportPressure, INodeDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(NodeIVFactory, ImportPressure, INodeDistributableIntervention)
 
     public:
         ImportPressure();

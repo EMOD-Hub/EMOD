@@ -15,7 +15,7 @@ namespace Kernel
 
     class Ivermectin : public BaseIntervention
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, Ivermectin, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, Ivermectin, IDistributableIntervention)
 
     public:
         Ivermectin();

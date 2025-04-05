@@ -39,10 +39,7 @@ namespace Kernel
 
     void DelayedIntervention::InterventionValidate( const std::string& rDataLocation )
     {
-        InterventionFactory::getInstance()->CreateInterventionList( actual_intervention_config._json,
-                                                                    rDataLocation,
-                                                                    "Actual_IndividualIntervention_Configs",
-                                                                    m_Interventions );
+        InterventionFactory::CreateInterventionList( actual_intervention_config._json, rDataLocation, "Actual_IndividualIntervention_Configs", m_Interventions );
     }
 
     void DelayedIntervention::DelayValidate()

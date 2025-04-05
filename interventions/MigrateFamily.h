@@ -15,7 +15,7 @@ namespace Kernel
     class MigrateFamily :  public BaseNodeIntervention
     {
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, MigrateFamily, INodeDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(NodeIVFactory, MigrateFamily, INodeDistributableIntervention)
 
     public: 
         MigrateFamily();

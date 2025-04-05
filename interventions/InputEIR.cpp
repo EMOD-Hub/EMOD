@@ -3,7 +3,6 @@
 #include "InputEIR.h"
 
 #include "Exceptions.h"
-#include "InterventionFactory.h"
 #include "NodeMalariaEventContext.h"  // for ISporozoiteChallengeConsumer methods
 #include "SusceptibilityVector.h"     // for age-dependent biting risk static methods
 

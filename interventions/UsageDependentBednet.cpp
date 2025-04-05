@@ -1,7 +1,6 @@
 
 #include "stdafx.h"
 #include "UsageDependentBednet.h"
-#include "InterventionFactory.h"
 #include "Log.h"
 #include "IndividualEventContext.h"
 #include "IIndividualHumanContext.h"

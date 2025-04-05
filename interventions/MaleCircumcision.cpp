@@ -3,7 +3,6 @@
 #include "MaleCircumcision.h"
 
 #include "InterventionEnums.h"
-#include "InterventionFactory.h"
 #include "IndividualEventContext.h"
 #include "IIndividualHumanContext.h"
 #include "NodeEventContext.h"

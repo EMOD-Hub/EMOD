@@ -9,7 +9,7 @@ namespace Kernel
 
     class MultiPackComboDrug : public AntimalarialDrug
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, MultiPackComboDrug, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, MultiPackComboDrug, IDistributableIntervention)
 
     public:
         MultiPackComboDrug();

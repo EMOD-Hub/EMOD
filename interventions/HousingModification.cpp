@@ -6,7 +6,6 @@
 
 #include "IIndividualHumanContext.h"
 #include "InterventionEnums.h"
-#include "InterventionFactory.h"
 #include "VectorInterventionsContainerContexts.h"  // for IHousingModificationConsumer methods
 #include "Log.h"
 

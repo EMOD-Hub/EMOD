@@ -8,7 +8,6 @@
 #include "IndividualEventContext.h"
 #include "IIndividualHumanContext.h"
 #include "InterventionEnums.h"
-#include "InterventionFactory.h"
 #include "ISTIInterventionsContainer.h"
 #include "DistributionFactory.h"
 

@@ -26,7 +26,7 @@ namespace Kernel
                                , public INonPfaRelationshipStarter
     {
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, StartNewRelationship, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, StartNewRelationship, IDistributableIntervention)
     public:
         StartNewRelationship();
         StartNewRelationship( const StartNewRelationship& rMaster );

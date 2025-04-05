@@ -8,7 +8,7 @@ namespace Kernel
 
      class SimpleBoosterVaccine : public SimpleVaccine
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, SimpleBoosterVaccine, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, SimpleBoosterVaccine, IDistributableIntervention)
 
     public:
         SimpleBoosterVaccine();

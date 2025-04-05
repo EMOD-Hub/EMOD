@@ -3,7 +3,6 @@
 #include "BroadcastCoordinatorEventFromNode.h"
 
 #include "InterventionEnums.h"
-#include "InterventionFactory.h"
 #include "NodeEventContext.h"  // for INodeEventContext (ICampaignCostObserver)
 #include "IIndividualHumanContext.h"
 #include "INodeContext.h"

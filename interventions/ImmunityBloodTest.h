@@ -9,7 +9,7 @@ namespace Kernel
     {
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
         DECLARE_QUERY_INTERFACE()
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, ImmunityBloodTest, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, ImmunityBloodTest, IDistributableIntervention)
 
     public:
         ImmunityBloodTest();

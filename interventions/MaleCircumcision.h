@@ -26,7 +26,7 @@ namespace Kernel
     class MaleCircumcision : public BaseIntervention, public ICircumcision
     {
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, MaleCircumcision, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, MaleCircumcision, IDistributableIntervention)
 
     public:
         MaleCircumcision();

@@ -778,10 +778,7 @@ namespace Kernel
         {
             m_TargetedDistributionList.CheckConfiguration();
 
-            m_pIntervention = InterventionFactory::getInstance()->CreateIntervention( intervention_config._json,
-                                                                                     inputJson->GetDataLocation(),
-                                                                                     "Intervention_Config",
-                                                                                      true );
+            m_pIntervention = InterventionFactory::CreateIntervention( intervention_config._json, inputJson->GetDataLocation(), "Intervention_Config", true );
 
             m_InterventionName = std::string( json::QuickInterpreter(intervention_config._json)["class"].As<json::String>() );
         }

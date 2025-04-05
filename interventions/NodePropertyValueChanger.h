@@ -19,7 +19,7 @@ namespace Kernel
     {
     public:
 
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, NodePropertyValueChanger, INodeDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(NodeIVFactory, NodePropertyValueChanger, INodeDistributableIntervention)
 
     public:
         NodePropertyValueChanger();

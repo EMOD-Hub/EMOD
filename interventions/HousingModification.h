@@ -18,7 +18,7 @@ namespace Kernel
 
     class SimpleHousingModification : public BaseIntervention
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, SimpleHousingModification, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, SimpleHousingModification, IDistributableIntervention)
 
     public:
         SimpleHousingModification();
@@ -52,14 +52,14 @@ namespace Kernel
 
     class IRSHousingModification : public SimpleHousingModification
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, IRSHousingModification, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, IRSHousingModification, IDistributableIntervention)
 
         DECLARE_SERIALIZABLE(IRSHousingModification);
     };
 
     class MultiInsecticideIRSHousingModification : public SimpleHousingModification
     {
-        DECLARE_FACTORY_REGISTERED( InterventionFactory,
+        DECLARE_FACTORY_REGISTERED( IndividualIVFactory,
                                     MultiInsecticideIRSHousingModification,
                                     IDistributableIntervention )
 
@@ -73,14 +73,14 @@ namespace Kernel
 
     class ScreeningHousingModification : public SimpleHousingModification
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, ScreeningHousingModification, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, ScreeningHousingModification, IDistributableIntervention)
 
         DECLARE_SERIALIZABLE(ScreeningHousingModification);
     };
 
     class SpatialRepellentHousingModification : public SimpleHousingModification
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, SpatialRepellentHousingModification, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, SpatialRepellentHousingModification, IDistributableIntervention)
 
         DECLARE_SERIALIZABLE(SpatialRepellentHousingModification);
 

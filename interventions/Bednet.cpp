@@ -5,7 +5,6 @@
 #include <typeinfo>
 
 #include "IIndividualHumanContext.h"
-#include "InterventionFactory.h"
 #include "VectorInterventionsContainerContexts.h"  // for IBednetConsumer methods
 #include "Log.h"
 #include "IndividualEventContext.h"

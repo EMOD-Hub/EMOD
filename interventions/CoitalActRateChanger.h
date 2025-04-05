@@ -10,7 +10,7 @@ namespace Kernel
 
     class CoitalActRateChanger : public AbstractSocietyOverrideIntervention
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, CoitalActRateChanger, INodeDistributableIntervention) 
+        DECLARE_FACTORY_REGISTERED(NodeIVFactory, CoitalActRateChanger, INodeDistributableIntervention) 
 
     public:        
         CoitalActRateChanger();

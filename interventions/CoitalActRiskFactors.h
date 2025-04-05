@@ -17,7 +17,7 @@ namespace Kernel
 
     class CoitalActRiskFactors : public BaseIntervention
     {
-        DECLARE_FACTORY_REGISTERED( InterventionFactory, CoitalActRiskFactors, IDistributableIntervention )
+        DECLARE_FACTORY_REGISTERED( IndividualIVFactory, CoitalActRiskFactors, IDistributableIntervention )
 
     public:
         CoitalActRiskFactors();

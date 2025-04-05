@@ -2,7 +2,6 @@
 #include "stdafx.h"
 #include "AbstractSocietyOverrideIntervention.h"
 
-#include "InterventionFactory.h"
 #include "INodeSTIInterventionEffectsApply.h"
 #include "INodeContext.h"
 #include "NodeEventContext.h"

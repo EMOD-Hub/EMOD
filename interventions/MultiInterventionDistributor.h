@@ -8,7 +8,7 @@ namespace Kernel
 {
     class MultiInterventionDistributor : public BaseIntervention
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, MultiInterventionDistributor, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, MultiInterventionDistributor, IDistributableIntervention)
     
     public: 
         MultiInterventionDistributor();

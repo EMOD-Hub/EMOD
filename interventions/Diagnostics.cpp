@@ -3,7 +3,6 @@
 #include "Diagnostics.h"
 
 #include "InterventionEnums.h"
-#include "InterventionFactory.h"
 #include "NodeEventContext.h"  // for INodeEventContext (ICampaignCostObserver)
 #include "IIndividualHumanContext.h"
 #include "ISimulationContext.h"
@@ -124,10 +123,10 @@ namespace Kernel
                 }
                 if( config._json.Type() != ElementType::NULL_ELEMENT )
                 {
-                    p_intervention = InterventionFactory::getInstance()->CreateIntervention( config._json,
-                                                                                             inputJson->GetDataLocation(),
-                                                                                             configParameterName,
-                                                                                             isRequired ); // if required throw
+                    p_intervention = InterventionFactory::CreateIntervention( config._json,
+                                                                              inputJson->GetDataLocation(),
+                                                                              configParameterName,
+                                                                              isRequired ); // if required throw
                 }
             }
 

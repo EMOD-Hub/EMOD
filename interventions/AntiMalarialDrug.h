@@ -10,7 +10,7 @@ namespace Kernel
 
     class AntimalarialDrug : public GenericDrug, public IMalariaDrugEffects
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, AntimalarialDrug, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, AntimalarialDrug, IDistributableIntervention)
 
     public:
         AntimalarialDrug();

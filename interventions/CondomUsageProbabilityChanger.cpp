@@ -2,7 +2,6 @@
 #include "stdafx.h"
 #include "CondomUsageProbabilityChanger.h"
 
-#include "InterventionFactory.h"
 #include "INodeSTIInterventionEffectsApply.h"
 
 

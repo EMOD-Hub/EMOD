@@ -20,7 +20,7 @@ namespace Kernel
     class SetSexualDebutAge: public BaseIntervention
     {
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
-        DECLARE_FACTORY_REGISTERED( InterventionFactory, SetSexualDebutAge, IDistributableIntervention )
+        DECLARE_FACTORY_REGISTERED( IndividualIVFactory, SetSexualDebutAge, IDistributableIntervention )
 
     public:
         SetSexualDebutAge();

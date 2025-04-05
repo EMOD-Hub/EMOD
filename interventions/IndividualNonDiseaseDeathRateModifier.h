@@ -18,7 +18,7 @@ namespace Kernel
 
     class IndividualNonDiseaseDeathRateModifier : public BaseIntervention
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, IndividualNonDiseaseDeathRateModifier, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, IndividualNonDiseaseDeathRateModifier, IDistributableIntervention)
 
     public:
         IndividualNonDiseaseDeathRateModifier();

@@ -26,10 +26,7 @@ namespace Kernel
         bool ret = BaseIntervention::Configure( inputJson );
         if( ret && !JsonConfigurable::_dryrun )
         {
-            InterventionFactory::getInstance()->CreateInterventionList( intervention_list._json,
-                                                                        inputJson->GetDataLocation(),
-                                                                        "Intervention_List",
-                                                                        m_Interventions );
+            InterventionFactory::CreateInterventionList( intervention_list._json, inputJson->GetDataLocation(), "Intervention_List", m_Interventions );
         }
         return ret ;
     }

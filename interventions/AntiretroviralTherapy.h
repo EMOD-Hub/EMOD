@@ -10,7 +10,7 @@ namespace Kernel
 
     class AntiretroviralTherapy : public BaseIntervention
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, AntiretroviralTherapy, IDistributableIntervention);
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, AntiretroviralTherapy, IDistributableIntervention);
 
     public:
         AntiretroviralTherapy();

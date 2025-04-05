@@ -2,7 +2,6 @@
 #include "stdafx.h"
 #include "NodeLevelHealthTriggeredIVScaleUpSwitch.h"
 
-#include "InterventionFactory.h"
 #include "Log.h"
 #include "Debug.h"
 #include "NodeEventContext.h"  // for INodeEventContext (ICampaignCostObserver)

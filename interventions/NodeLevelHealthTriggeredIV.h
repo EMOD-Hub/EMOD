@@ -18,7 +18,7 @@ namespace Kernel
 {
     class NodeLevelHealthTriggeredIV : public IIndividualEventObserver, public BaseNodeIntervention
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, NodeLevelHealthTriggeredIV, INodeDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(NodeIVFactory, NodeLevelHealthTriggeredIV, INodeDistributableIntervention)
 
     public:
         NodeLevelHealthTriggeredIV();

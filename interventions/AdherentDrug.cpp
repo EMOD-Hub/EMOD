@@ -6,7 +6,6 @@
 
 #include "IWaningEffect.h"
 #include "InterventionEnums.h"
-#include "InterventionFactory.h"
 #include "IndividualEventContext.h"
 #include "NodeEventContext.h"
 #include "IIndividualHumanContext.h"

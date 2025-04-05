@@ -3,7 +3,6 @@
 #include "HIVRandomChoice.h"
 
 #include "InterventionEnums.h"
-#include "InterventionFactory.h"
 #include "NodeEventContext.h"  // for INodeEventContext (ICampaignCostObserver)
 #include "IHIVInterventionsContainer.h" // for time-date util function
 #include "IIndividualHumanContext.h"

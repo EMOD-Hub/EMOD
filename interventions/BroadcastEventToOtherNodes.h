@@ -22,7 +22,7 @@ namespace Kernel
     class IDMAPI BroadcastEventToOtherNodes :  public BaseIntervention, public INodeQualifier
     {
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, BroadcastEventToOtherNodes, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, BroadcastEventToOtherNodes, IDistributableIntervention)
 
     public: 
         BroadcastEventToOtherNodes();

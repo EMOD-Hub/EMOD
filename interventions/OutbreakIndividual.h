@@ -27,7 +27,7 @@ namespace Kernel
     {
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
         DECLARE_CONFIGURED(OutbreakIndividual)
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, OutbreakIndividual, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, OutbreakIndividual, IDistributableIntervention)
 
     public:
         OutbreakIndividual();

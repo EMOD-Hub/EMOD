@@ -9,7 +9,7 @@ namespace Kernel
     {
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
         DECLARE_QUERY_INTERFACE()
-        DECLARE_FACTORY_REGISTERED( InterventionFactory, StandardDiagnostic, IDistributableIntervention )
+        DECLARE_FACTORY_REGISTERED( IndividualIVFactory, StandardDiagnostic, IDistributableIntervention )
 
     public:
         StandardDiagnostic();

@@ -3,7 +3,6 @@
 #include "MalariaChallenge.h"
 
 #include "Exceptions.h"
-#include "InterventionFactory.h"
 #include "NodeMalariaEventContext.h"  // for ISporozoiteChallengeConsumer methods
 
 SETUP_LOGGING( "MalariaChallenge" )

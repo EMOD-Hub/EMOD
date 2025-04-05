@@ -9,7 +9,7 @@ namespace Kernel
 {
     class ARTMortalityTable : public AntiretroviralTherapy
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, ARTMortalityTable, IDistributableIntervention);
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, ARTMortalityTable, IDistributableIntervention);
 
     public:
         ARTMortalityTable();

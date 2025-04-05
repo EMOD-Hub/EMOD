@@ -13,7 +13,7 @@ namespace Kernel
     class BroadcastNodeEvent : public BaseNodeIntervention
     {
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
-        DECLARE_FACTORY_REGISTERED( InterventionFactory, BroadcastNodeEvent, INodeDistributableIntervention )
+        DECLARE_FACTORY_REGISTERED( NodeIVFactory, BroadcastNodeEvent, INodeDistributableIntervention )
 
     public:
         BroadcastNodeEvent();

@@ -2,7 +2,6 @@
 #include "stdafx.h"
 #include "NLHTIVNode.h"
 
-#include "InterventionFactory.h"
 #include "Log.h"
 #include "Debug.h"
 #include "ISimulationContext.h"
@@ -107,10 +106,7 @@ namespace Kernel
         //this section copied from standardevent coordinator
         if( retValue && !JsonConfigurable::_dryrun )
         {
-            _ndi = InterventionFactory::getInstance()->CreateNDIIntervention( actual_node_intervention_config._json,
-                                                                              inputJson->GetDataLocation(),
-                                                                              "Actual_NodeIntervention_Config",
-                                                                              true );
+            _ndi = InterventionFactory::CreateNDIIntervention( actual_node_intervention_config._json, inputJson->GetDataLocation(), "Actual_NodeIntervention_Config", true );
             m_ClassName = std::string( json::QuickInterpreter( actual_node_intervention_config._json )[ "class" ].As<json::String>() );
 
             event_occurred_list.resize( EventTriggerNodeFactory::GetInstance()->GetNumEventTriggers() );

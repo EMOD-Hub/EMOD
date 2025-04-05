@@ -3,7 +3,6 @@
 #include "StandardDiagnostic.h"
 
 #include "InterventionEnums.h"
-#include "InterventionFactory.h"
 
 SETUP_LOGGING( "StandardDiagnostic" )
 

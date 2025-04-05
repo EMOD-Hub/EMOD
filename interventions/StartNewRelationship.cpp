@@ -9,7 +9,6 @@
 #include "NodeEventContext.h"
 #include "INodeContext.h"
 #include "INodeSTI.h"
-#include "InterventionFactory.h"
 #include "IPairFormationAgent.h"
 
 SETUP_LOGGING( "StartNewRelationship" )
