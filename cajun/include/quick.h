@@ -63,6 +63,8 @@ public:
        return obj.Exist(name);
    }
 
+   const Element& GetElement() const { return m_Element; }
+
    operator const Element& () const { return m_Element; }
 
    template <typename ElementTypeT>

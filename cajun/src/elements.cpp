@@ -355,6 +355,10 @@ Object::iterator Object::Insert(const Member& member, Object::iterator itWhere) 
    return Imp().Insert(member, itWhere);
 }
 
+Object::iterator Object::Erase(Object::iterator itWhere) {
+      return Imp().Erase(itWhere);
+}
+
 Element& Object::operator [] (const std::string& name) {
    return Imp()[name]; 
 }
