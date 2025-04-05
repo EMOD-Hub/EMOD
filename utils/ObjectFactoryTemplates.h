@@ -125,7 +125,7 @@ namespace Kernel
                                                         const char* parameterName,
                                                         bool nullOrEmptyOrNoClassNotError )
     {
-        if( pConfig->operator const json::Element &().Type() == json::NULL_ELEMENT )
+        if( pConfig->GetElement().Type() == json::NULL_ELEMENT )
         {
             if( nullOrEmptyOrNoClassNotError )
             {
@@ -139,7 +139,7 @@ namespace Kernel
             }
         }
 
-        if( pConfig->operator const json::Element &().Type() != json::OBJECT_ELEMENT )
+        if( pConfig->GetElement().Type() != json::OBJECT_ELEMENT )
         {
             std::stringstream ss;
             ss << "'" << GetFactoryName() << "' found the element specified by '" << parameterName << "'\n"
