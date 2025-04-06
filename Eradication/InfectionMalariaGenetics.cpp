@@ -7,6 +7,8 @@
 #include "IIndividualHumanContext.h"
 #include "SusceptibilityMalaria.h"
 #include "RANDOM.h"
+#include "NodeEventContext.h"
+#include "IdmDateTime.h"
 
 SETUP_LOGGING( "InfectionMalariaGenetics" )
 
@@ -63,6 +65,14 @@ namespace Kernel
 
         StrainIdentityMalariaGenetics* p_si_genetics = dynamic_cast<StrainIdentityMalariaGenetics*>(infection_strain);
         release_assert( p_si_genetics != nullptr );
+        INodeEventContext* p_nec = parent->GetEventContext()->GetNodeEventContext();
+        p_si_genetics->SetSporozoiteInfo( InfectionSourceInfo( p_nec->GetTime().time,
+                                                               p_nec->GetExternalId(),
+                                                               p_si_genetics->GetSporozoiteVectorID(),
+                                                               p_si_genetics->GetSporozoiteBiteID(),
+                                                               parent->GetSuid().data,
+                                                               GetSuid().data,
+                                                               p_si_genetics->GetGenome().GetID() ) );
 
         ParasiteGenome genome = p_si_genetics->GetGenome();
         if( !genome.HasAlleleRoots() )

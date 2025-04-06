@@ -12,6 +12,16 @@
             "Sampling_Period": 30,
             "Include_Genome_IDs": 1,
             "class": "ReportFpgOutputForObservationalModel"
+        },
+        {
+            "Start_Day": 0,
+            "End_Day": 1000,
+            "Node_IDs_Of_Interest": [],
+            "Min_Age_Years": 0,
+            "Max_Age_Years": 1000,
+            "Must_Have_IP_Key_Value": "",
+            "Must_Have_Intervention": "",
+            "class": "ReportFpgNewInfections"
         }
     ],
     "Use_Defaults": 1

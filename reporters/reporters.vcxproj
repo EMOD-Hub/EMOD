@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build" ToolsVersion="14.0">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -126,6 +126,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ReportFpgNewInfections.h" />
     <ClInclude Include="ReportHumanMigrationTracking.h" />
     <ClInclude Include="MalariaImmunityReport.h" />
     <ClInclude Include="MalariaPatientJSONReport.h" />
@@ -164,6 +165,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ReportFpgNewInfections.cpp" />
     <ClCompile Include="ReportHumanMigrationTracking.cpp" />
     <ClCompile Include="MalariaImmunityReport.cpp" />
     <ClCompile Include="MalariaPatientJSONReport.cpp" />

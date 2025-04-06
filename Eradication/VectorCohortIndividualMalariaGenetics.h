@@ -3,6 +3,7 @@
 
 #include "VectorCohortIndividual.h"
 #include "MalariaGeneticsContexts.h"
+#include "ExternalNodeId.h"
 
 namespace Kernel
 {
@@ -38,6 +39,10 @@ namespace Kernel
                                                              IParasiteIdGenerator* pNodeGenetics,
                                                              float transmissionModifier );
         bool ExtractGametocytes( RANDOMBASE* pRNG,
+                                 float currentTime,
+                                 ExternalNodeId_t nodeId,
+                                 uint32_t vectorId,
+                                 uint32_t biteId,
                                  IParasiteIdGenerator* pNodeGenetics,
                                  const GametocytesInPerson& rGametocytesInPerson );
 

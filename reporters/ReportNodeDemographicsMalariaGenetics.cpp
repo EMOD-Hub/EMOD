@@ -741,7 +741,7 @@ namespace Kernel
             }
             
             int64_t genome_hash = r_si_genetics.GetGenome().GetHashcode();
-            uint32_t bite_id   = r_si_genetics.GetBiteID();
+            uint32_t bite_id   = r_si_genetics.GetSporozoiteBiteID();
             p_ndmg->current_num_infections += 1;
             p_ndmg->current_unique_genomes.insert( genome_hash );
             p_ndmg->current_unique_barcodes.insert( barcode_hash );

@@ -12,6 +12,7 @@
 #include "BroadcasterObserver.h"
 #include "ParasiteGenetics.h"
 #include "StrainIdentityMalariaGenetics.h"
+#include "IdmDateTime.h"
 
 SETUP_LOGGING( "VectorPopulationIndividualMalariaGenetics" )
 
@@ -205,8 +206,10 @@ namespace Kernel
 
                 sporozoites = p_vcimg->GetSporozoitesForBite( m_context->GetRng(), m_pNodeGenetics->GetParasiteIdGenerator(), modifier );
             }
+            uint32_t bite_id = m_pNodeGenetics->GetNextBiteId();
             const GametocytesInPerson& r_gametocytes_in_person = m_pNodeGenetics->VectorBitesPerson( p_ivie->GetHumanID(),
                                                                                                      cohort->GetID(),
+                                                                                                     bite_id,
                                                                                                      sporozoites );
 
             bool is_allowed = true;
@@ -230,6 +233,10 @@ namespace Kernel
                 if( m_context->GetRng()->SmartDraw( prob ) )
                 {
                     bool infected = p_vcimg->ExtractGametocytes( m_context->GetRng(),
+                                                                 m_context->GetTime().time,
+                                                                 m_context->GetExternalID(),
+                                                                 cohort->GetID(),
+                                                                 bite_id,
                                                                  m_pNodeGenetics->GetParasiteIdGenerator(),
                                                                  r_gametocytes_in_person );
                     if( infected )

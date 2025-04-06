@@ -83,7 +83,33 @@
                             ]
                         }
                     },
-                    "m_BiteID": 777
+                    "m_SporozoiteInfo" : {
+                        "m_Time"        : 222.0,
+                        "m_NodeID"      : 2,
+                        "m_VectorID"    : 772233,
+                        "m_BiteID"      : 777,
+                        "m_HumanID"     : 33,
+                        "m_InfectionID" : 43,
+                        "m_GenomeID"    : 53
+                    },
+                    "m_FemaleGametocyteInfo" : {
+                        "m_Time"        : 123.0,
+                        "m_NodeID"      : 1,
+                        "m_VectorID"    : 772234,
+                        "m_BiteID"      : 2,
+                        "m_HumanID"     : 3,
+                        "m_InfectionID" : 4,
+                        "m_GenomeID"    : 5
+                    },
+                    "m_MaleGametocyteInfo" : {
+                        "m_Time"        : 456.0,
+                        "m_NodeID"      : 6,
+                        "m_VectorID"    : 772235,
+                        "m_BiteID"      : 7,
+                        "m_HumanID"     : 8,
+                        "m_InfectionID" : 9,
+                        "m_GenomeID"    : 10
+                    }
                 },
                 "m_MaleGametocyteGenome" : {
                     "m_pInner": {
@@ -169,7 +195,33 @@
                                     ]
                                 }
                             },
-                            "m_BiteID": 333
+                            "m_SporozoiteInfo" : {
+                                "m_Time"        : 55.0,
+                                "m_NodeID"      : 25,
+                                "m_VectorID"    : 772231,
+                                "m_BiteID"      : 55,
+                                "m_HumanID"     : 55,
+                                "m_InfectionID" : 66,
+                                "m_GenomeID"    : 77
+                            },
+                            "m_FemaleGametocyteInfo" : {
+                                "m_Time"        : 234.0,
+                                "m_NodeID"      : 2,
+                                "m_VectorID"    : 772234,
+                                "m_BiteID"      : 3,
+                                "m_HumanID"     : 4,
+                                "m_InfectionID" : 5,
+                                "m_GenomeID"    : 6
+                            },
+                            "m_MaleGametocyteInfo" : {
+                                "m_Time"        : 567.0,
+                                "m_NodeID"      : 7,
+                                "m_VectorID"    : 772239,
+                                "m_BiteID"      : 8,
+                                "m_HumanID"     : 9,
+                                "m_InfectionID" : 10,
+                                "m_GenomeID"    : 11
+                            }
                         },
                         "m_MaleGametocyteGenome" : {
                             "m_pInner": {
@@ -222,7 +274,33 @@
                                     ]
                                 }
                             },
-                            "m_BiteID": 222
+                            "m_SporozoiteInfo" : {
+                                "m_Time"        : 111.0,
+                                "m_NodeID"      : 25,
+                                "m_VectorID"    : 772238,
+                                "m_BiteID"      : 222,
+                                "m_HumanID"     : 12,
+                                "m_InfectionID" : 23,
+                                "m_GenomeID"    : 34
+                            },
+                            "m_FemaleGametocyteInfo" : {
+                                "m_Time"        : 345.0,
+                                "m_NodeID"      : 3,
+                                "m_VectorID"    : 772237,
+                                "m_BiteID"      : 4,
+                                "m_HumanID"     : 5,
+                                "m_InfectionID" : 6,
+                                "m_GenomeID"    : 7
+                            },
+                            "m_MaleGametocyteInfo" : {
+                                "m_Time"        : 678.0,
+                                "m_NodeID"      : 8,
+                                "m_VectorID"    : 772236,
+                                "m_BiteID"      : 9,
+                                "m_HumanID"     : 10,
+                                "m_InfectionID" : 11,
+                                "m_GenomeID"    : 12
+                            }
                         },
                         "m_MaleGametocyteGenome" : {
                             "m_pInner": {
@@ -277,7 +355,33 @@
                                     ]
                                 }
                             },
-                            "m_BiteID":111
+                            "m_SporozoiteInfo" : {
+                                "m_Time"        : 444.0,
+                                "m_NodeID"      : 45,
+                                "m_VectorID"    : 772233,
+                                "m_BiteID"      : 111,
+                                "m_HumanID"     : 56,
+                                "m_InfectionID" : 67,
+                                "m_GenomeID"    : 78
+                            },
+                            "m_FemaleGametocyteInfo" : {
+                                "m_Time"        : 321.0,
+                                "m_NodeID"      : 5,
+                                "m_VectorID"    : 772232,
+                                "m_BiteID"      : 4,
+                                "m_HumanID"     : 3,
+                                "m_InfectionID" : 2,
+                                "m_GenomeID"    : 1
+                            },
+                            "m_MaleGametocyteInfo" : {
+                                "m_Time"        : 654.0,
+                                "m_NodeID"      : 10,
+                                "m_VectorID"    : 772231,
+                                "m_BiteID"      : 9,
+                                "m_HumanID"     : 8,
+                                "m_InfectionID" : 7,
+                                "m_GenomeID"    : 6
+                            }
                         },
                         "m_MaleGametocyteGenome" : {
                             "m_pInner": {

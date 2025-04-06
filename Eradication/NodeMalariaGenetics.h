@@ -37,8 +37,10 @@ namespace Kernel
         virtual IVectorInterventionsEffects* SelectPersonToAttemptToFeedOn( int speciesIndex,
                                                                             const VectorGenome& rVectorGenome,
                                                                             bool isForIndoor ) override;
+        virtual uint32_t GetNextBiteId() override;
         virtual const GametocytesInPerson& VectorBitesPerson( uint32_t humanID,
                                                               uint32_t vectorID,
+                                                              uint32_t biteID,
                                                               const std::vector<IParasiteCohort*>& sporozoitesFromVector ) override;
         virtual const std::vector<IParasiteCohort*>& GetSporozoitesFromBites( uint32_t humanID, uint32_t& rNumBitesReceived ) const override;
 

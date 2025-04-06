@@ -149,6 +149,16 @@ namespace Kernel
         {
             can_merge &= (this->GetMaleGametocyteGenome() == rCohortToAdd.GetMaleGametocyteGenome());
             can_merge &= (this->GetStrainIdentity().GetGeneticID() == rCohortToAdd.GetStrainIdentity().GetGeneticID());
+
+            // ------------------------------------------------------------------------------------------
+            // --- We are not merging cohorts together if they have different lineage so we can track it.
+            // --- However, this can change behavior.  People could get more infection objects than if
+            // --- we only cared about the genome.
+            // ------------------------------------------------------------------------------------------
+            const StrainIdentityMalariaGenetics* p_si_this = static_cast<const StrainIdentityMalariaGenetics*>(m_pStrainIdentity);
+            const StrainIdentityMalariaGenetics* p_si_that = static_cast<const StrainIdentityMalariaGenetics*>(&rCohortToAdd.GetStrainIdentity());
+            can_merge &= (p_si_this->GetFemaleGametocyteInfo() == p_si_that->GetFemaleGametocyteInfo());
+            can_merge &= (p_si_this->GetMaleGametocyteInfo()   == p_si_that->GetMaleGametocyteInfo()  );
         }
 
         if( can_merge )
@@ -165,9 +175,15 @@ namespace Kernel
 
         m_State = ParasiteState::OOCYST;
 
-        const StrainIdentityMalariaGenetics* p_si_genetics_male = static_cast<const StrainIdentityMalariaGenetics*>(&rMaleGametocytes.GetStrainIdentity());
-        release_assert( p_si_genetics_male != nullptr );
-        m_MaleGametocyteGenome = p_si_genetics_male->GetGenome();
+        const StrainIdentityMalariaGenetics* p_si_male_const = static_cast<const StrainIdentityMalariaGenetics*>(&rMaleGametocytes.GetStrainIdentity());
+        const InfectionSourceInfo& r_male_info = p_si_male_const->GetMaleGametocyteInfo();
+
+        StrainIdentityMalariaGenetics* p_si_female = static_cast<StrainIdentityMalariaGenetics*>(m_pStrainIdentity);
+        p_si_female->SetMaleGametocyteInfo( r_male_info );
+        p_si_female->SetSporozoiteVectorID( p_si_female->GetFemaleGametocyteInfo().GetVectorID() );
+
+        release_assert( p_si_male_const != nullptr );
+        m_MaleGametocyteGenome = p_si_male_const->GetGenome();
     }
 
     void ParasiteCohort::Recombination( RANDOMBASE* pRNG, IParasiteIdGenerator* pIdGen, std::vector<IParasiteCohort*>& rNewCohorts )
@@ -224,11 +240,11 @@ namespace Kernel
         return p_pc;
     }
 
-    void ParasiteCohort::SetBiteID( uint32_t biteID )
+    void ParasiteCohort::SetSporozoiteBiteID( uint32_t biteID )
     {
         release_assert( m_pStrainIdentity != nullptr );
         StrainIdentityMalariaGenetics* p_si_genetics = static_cast<StrainIdentityMalariaGenetics*>(m_pStrainIdentity);
-        p_si_genetics->SetBiteID( biteID );
+        p_si_genetics->SetSporozoiteBiteID( biteID );
     }
 
     float ParasiteCohort::GetOocystDuration() const

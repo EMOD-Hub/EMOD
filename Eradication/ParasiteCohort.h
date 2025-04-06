@@ -36,7 +36,7 @@ namespace Kernel
         virtual void Mate( RANDOMBASE* pRNG, const IParasiteCohort& rMaleGametocytes ) override;
         virtual void Recombination( RANDOMBASE* pRNG, IParasiteIdGenerator* pIdGen, std::vector<IParasiteCohort*>& rNewCohorts ) override;
         virtual IParasiteCohort* Split( uint32_t newCohortID, uint32_t numLeaving ) override;
-        virtual void SetBiteID( uint32_t biteID ) override;
+        virtual void SetSporozoiteBiteID( uint32_t biteID ) override;
         virtual float GetOocystDuration() const override;
 
     protected:

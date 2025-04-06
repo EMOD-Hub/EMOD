@@ -398,6 +398,10 @@ namespace Kernel
     }
 
     bool VectorCohortIndividualMalariaGenetics::ExtractGametocytes( RANDOMBASE* pRNG,
+                                                                    float currentTime,
+                                                                    ExternalNodeId_t nodeId,
+                                                                    uint32_t vectorId,
+                                                                    uint32_t biteId,
                                                                     IParasiteIdGenerator* pIdGenerator,
                                                                     const GametocytesInPerson& rGametocytesInPerson )
     {
@@ -546,6 +550,27 @@ namespace Kernel
         {
             IParasiteCohort* p_gametocyte_female = females_to_pair[ i ];
             IParasiteCohort* p_gametocyte_male   = males_to_pair[ i ];
+
+            // extract data for reporting
+            const StrainIdentityMalariaGenetics* p_si_female_const = static_cast<const StrainIdentityMalariaGenetics*>(&(p_gametocyte_female->GetStrainIdentity()));
+            StrainIdentityMalariaGenetics* p_si_female = const_cast<StrainIdentityMalariaGenetics*>(p_si_female_const);
+            p_si_female->SetFemaleGametocyteInfo( InfectionSourceInfo( currentTime,
+                                                                       nodeId,
+                                                                       vectorId,
+                                                                       biteId,
+                                                                       p_si_female->GetFemaleGametocyteInfo().GetHumanID(),
+                                                                       p_si_female->GetFemaleGametocyteInfo().GetInfectionID(),
+                                                                       p_si_female->GetGenome().GetID() ) );
+
+            const StrainIdentityMalariaGenetics* p_si_male_const = static_cast<const StrainIdentityMalariaGenetics*>(&(p_gametocyte_male->GetStrainIdentity()));
+            StrainIdentityMalariaGenetics* p_si_male = const_cast<StrainIdentityMalariaGenetics*>(p_si_male_const);
+            p_si_male->SetMaleGametocyteInfo( InfectionSourceInfo( currentTime,
+                                                                   nodeId,
+                                                                   vectorId,
+                                                                   biteId,
+                                                                   p_si_male->GetMaleGametocyteInfo().GetHumanID(),
+                                                                   p_si_male->GetMaleGametocyteInfo().GetInfectionID(),
+                                                                   p_si_male->GetGenome().GetID() ) );
 
             // split out 1 gametocyte because that is all we need to make the oocyst
             IParasiteCohort* p_oocyst = p_gametocyte_female->Split( pIdGenerator->GetNextParasiteSuid().data, 1 );

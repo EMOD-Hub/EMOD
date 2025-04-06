@@ -207,8 +207,15 @@ namespace Kernel
         return it->p_ivie;
     }
 
+    uint32_t NodeMalariaGenetics::GetNextBiteId()
+    {
+        uint32_t bite_id = GetMalariaSimulationContext()->GetNextBiteSuid().data;
+        return bite_id;
+    }
+
     const GametocytesInPerson& NodeMalariaGenetics::VectorBitesPerson( uint32_t humanID,
                                                                        uint32_t vectorID,
+                                                                       uint32_t biteID,
                                                                        const std::vector<IParasiteCohort*>& rSporozoitesFromVector )
     {
         LOG_VALID_F("Vector %u bit person %u\n", vectorID, humanID);
@@ -226,12 +233,10 @@ namespace Kernel
         // NOTE: this if check is so the bite count is more of a count of infectious bites
         if( rSporozoitesFromVector.size() > 0 )
         {
-            uint32_t bite_id = GetMalariaSimulationContext()->GetNextBiteSuid().data;
-
             // append sporozoites from this vector to the list other vectors
             for( auto p_pc : rSporozoitesFromVector )
             {
-                p_pc->SetBiteID( bite_id );
+                p_pc->SetSporozoiteBiteID( biteID );
                 p_person->sporozoites_from_vectors.push_back( p_pc );
             }
         }

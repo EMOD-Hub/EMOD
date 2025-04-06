@@ -49,7 +49,7 @@ namespace Kernel
         virtual void Mate( RANDOMBASE* pRNG, const IParasiteCohort& rMaleGametocytes ) = 0;
         virtual void Recombination( RANDOMBASE* pRNG, IParasiteIdGenerator* pIdGen, std::vector<IParasiteCohort*>& rNewCohorts ) = 0;
         virtual IParasiteCohort* Split( uint32_t newCohortID, uint32_t numLeaving ) = 0;
-        virtual void SetBiteID( uint32_t biteID ) = 0;
+        virtual void SetSporozoiteBiteID( uint32_t biteID ) = 0;
         virtual float GetOocystDuration() const = 0;
     };
 }

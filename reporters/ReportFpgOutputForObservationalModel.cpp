@@ -218,7 +218,7 @@ namespace Kernel
                 const ParasiteGenome& r_genome = r_si_genetics.GetGenome();
                 int32_t genome_id = r_genome.GetID();
                 uint32_t genome_index = AddGenome( r_genome );
-                uint32_t bite_id = r_si_genetics.GetBiteID();
+                uint32_t bite_id = r_si_genetics.GetSporozoiteBiteID();
 
                 if( recursive_count > 0 )
                 {

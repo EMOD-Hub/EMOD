@@ -58,8 +58,10 @@ namespace Kernel
         virtual IVectorInterventionsEffects* SelectPersonToAttemptToFeedOn( int speciesIndex,
                                                                             const VectorGenome& rVectorGenome,
                                                                             bool isForIndoor ) = 0;
+        virtual uint32_t GetNextBiteId() = 0;
         virtual const GametocytesInPerson& VectorBitesPerson( uint32_t humanID,
                                                               uint32_t vectorID,
+                                                              uint32_t biteID,
                                                               const std::vector<IParasiteCohort*>& sporozoitesFromVector ) = 0;
         virtual const std::vector<IParasiteCohort*>& GetSporozoitesFromBites( uint32_t humanID, uint32_t& rNumBitesReceived ) const = 0;
     };

@@ -125,6 +125,17 @@ namespace Kernel
                                                               &rStrain,
                                                               0,
                                                               femaleMatureGametocytes );
+            const StrainIdentityMalariaGenetics* p_si_genetics_const = static_cast<const StrainIdentityMalariaGenetics*>(&(p_pc_female->GetStrainIdentity()));
+            StrainIdentityMalariaGenetics* p_si_genetics = const_cast<StrainIdentityMalariaGenetics*>(p_si_genetics_const);
+            const InfectionSourceInfo& r_sporozoite_info = p_si_genetics->GetSporozoiteInfo();
+            p_si_genetics->SetFemaleGametocyteInfo( InfectionSourceInfo( 0.0,
+                                                                         0,
+                                                                         0,
+                                                                         0,
+                                                                         GetSuid().data,
+                                                                         r_sporozoite_info.GetInfectionID(),
+                                                                         p_si_genetics->GetGenome().GetID() ) );
+            p_si_genetics->SetSporozoiteInfo( InfectionSourceInfo() ); //clear it out so can be used for these gametocytes becoming sporozoites
             m_MatureGametocytesFemale.push_back( p_pc_female );
         }
 
@@ -135,6 +146,17 @@ namespace Kernel
                                                               &rStrain,
                                                               0,
                                                               maleMatureGametocytes   );
+            const StrainIdentityMalariaGenetics* p_si_genetics_const = static_cast<const StrainIdentityMalariaGenetics*>(&(p_pc_male->GetStrainIdentity()));
+            StrainIdentityMalariaGenetics* p_si_genetics = const_cast<StrainIdentityMalariaGenetics*>(p_si_genetics_const);
+            const InfectionSourceInfo& r_sporozoite_info = p_si_genetics->GetSporozoiteInfo();
+            p_si_genetics->SetMaleGametocyteInfo( InfectionSourceInfo( 0.0,
+                                                                       0,
+                                                                       0,
+                                                                       0,
+                                                                       GetSuid().data,
+                                                                       r_sporozoite_info.GetInfectionID(),
+                                                                       p_si_genetics->GetGenome().GetID() ) );
+            p_si_genetics->SetSporozoiteInfo( InfectionSourceInfo() ); //clear it out so can be used for these gametocytes becoming sporozoites
             m_MatureGametocytesMale.push_back( p_pc_male );
         }
     }
@@ -188,6 +210,7 @@ See IndvidualHumanMalaria::ExposeToInfectivity() about CSP
             {
                 const IStrainIdentity* p_strain = &(*r_sporozoites.begin())->GetStrainIdentity();
                 AcquireNewInfection( p_strain );
+                broadcaster->TriggerObservers( GetEventContext(), EventTrigger::VectorToHumanTransmission );
             }
         }
         else
@@ -201,10 +224,11 @@ See IndvidualHumanMalaria::ExposeToInfectivity() about CSP
                     if ((m_pNewInfection != nullptr) && (p_prev_inf != m_pNewInfection))
                     { 
                         const StrainIdentityMalariaGenetics& r_si_genetics = static_cast<const StrainIdentityMalariaGenetics&>(m_pNewInfection->GetInfectiousStrainID());
-                        uint32_t bite_id = r_si_genetics.GetBiteID();
+                        uint32_t bite_id = r_si_genetics.GetSporozoiteBiteID();
                         uint32_t inf_id = m_pNewInfection->GetSuid().data;
                         uint32_t person_id = GetSuid().data;
                         LOG_VALID_F("Person %d got bite %d creating infection %d\n", person_id, bite_id, inf_id); 
+                        broadcaster->TriggerObservers( GetEventContext(), EventTrigger::VectorToHumanTransmission );
                     }
                 }
             }

@@ -132,6 +132,9 @@
     <ClCompile Include="ReportVectorGeneticsMalariaGenetics.cpp">
       <Filter>Source Files\Malaria</Filter>
     </ClCompile>
+    <ClCompile Include="ReportFpgNewInfections.cpp">
+      <Filter>Source Files\Malaria</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -240,6 +243,9 @@
       <Filter>Source Files\STI</Filter>
     </ClInclude>
     <ClInclude Include="ReportVectorGeneticsMalariaGenetics.h">
+      <Filter>Source Files\Malaria</Filter>
+    </ClInclude>
+    <ClInclude Include="ReportFpgNewInfections.h">
       <Filter>Source Files\Malaria</Filter>
     </ClInclude>
   </ItemGroup>
