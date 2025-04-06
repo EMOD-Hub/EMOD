@@ -42,6 +42,8 @@ namespace Kernel
 
         virtual bool Configure( const Configuration * config ) override;
 
+        virtual std::string GetTypeName() const override;
+
         // IInsecticideWaningEffect
         virtual IInsecticideWaningEffect* Clone() override;
         virtual void SetName( const InsecticideName& rName ) override;

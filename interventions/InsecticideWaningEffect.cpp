@@ -105,6 +105,17 @@ namespace Kernel
         }
     }
 
+    std::string InsecticideWaningEffect::GetTypeName() const
+    {
+        std::stringstream ss;
+        ss << "InsecticideWaningEffect_";
+        ss << (m_Has[ ResistanceType::LARVAL_KILLING ] ? "L" : "");
+        ss << (m_Has[ ResistanceType::REPELLING ] ? "R" : "");
+        ss << (m_Has[ ResistanceType::BLOCKING ] ? "B" : "");
+        ss << (m_Has[ ResistanceType::KILLING ] ? "K" : "");
+        return ss.str();
+    }
+
     bool InsecticideWaningEffect::Configure( const Configuration * inputJson )
     {
         // make sure that it setup to have at least one WaningConfig
