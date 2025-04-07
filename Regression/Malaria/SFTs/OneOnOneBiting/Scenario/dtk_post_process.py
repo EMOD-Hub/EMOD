@@ -21,7 +21,7 @@ def create_biting_report_file(param_obj,report_name, output_folder, report_malar
                       f"Run number: {str(param_obj[veds.ConfigKeys.RUN_NUMBER])} \n")
         rsv_path = os.path.join(output_folder, report_malaria)
         malaria_df = pd.read_csv(rsv_path)
-        time = 114
+        time = 429
         today = malaria_df[malaria_df["Time"] == time]
         # check AAAAAAAAAAAAAAAAAAAAAAAA, we want the numbers to go down the nodes
         gene = "AAAAAAAAAAAAAAAAAAAAAAAA"
@@ -32,7 +32,8 @@ def create_biting_report_file(param_obj,report_name, output_folder, report_malar
         node_79 = today[today[node_id] == 340461479][gene].iloc[0]
         if node_76 > node_77 > node_78 > node_79:
             outfile.write(f"GOOD: We're expecting there to be descending malaria numbers with descending"
-                          f" nodes, and there are!\n")
+                          f" nodes, and there are! \nwe are seeing that: nodes 76, 77, 78, 79  malaria: {node_76}, "
+                          f"{node_77},{node_78},{node_79} .\n\n")
         else:
             success = False
             outfile.write(f"BAD: We're expecting there to be descending malaria numbers with descending"
@@ -46,7 +47,8 @@ def create_biting_report_file(param_obj,report_name, output_folder, report_malar
         node_79 = today[today[node_id] == 340461479][gene].iloc[0]
         if node_78 > node_79 > node_76 > node_77:
             outfile.write(f"GOOD: We're expecting there to be descending malaria numbers with nodes in order of"
-                          f" 78, 79, 76, 77 and we see that!\n")
+                          f" 78, 79, 76, 77 and we see that!  malaria: {node_78}, "
+                          f"{node_79},{node_76},{node_77}\n")
         else:
             success = False
             outfile.write(f"BAD: We're expecting there to be descending malaria numbers with nodes in order of"

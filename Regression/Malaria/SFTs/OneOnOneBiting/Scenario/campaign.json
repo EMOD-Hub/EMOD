@@ -10,7 +10,8 @@
                             "Create_Nucleotide_Sequence_From": "BARCODE_STRING",
                             "Barcode_String": "AAAAAAAAAAAAAAAAAAAAAAAA"
                         },
-                "Demographic_Coverage": 0.2,
+                "Individual_Selection_Type": "TARGET_NUM_INDIVIDUALS",
+                "Target_Num_Individuals": 100,
                 "Target_Demographic": "Everyone",
                 "class": "StandardInterventionDistributionEventCoordinator"
             },
@@ -19,7 +20,7 @@
                 "class": "NodeSetNodeList",
                 "Node_List":[340461476]
             },
-            "Start_Day": 1,
+            "Start_Day": 300,
             "class": "CampaignEvent"
         },
                 {
@@ -30,7 +31,8 @@
                             "Create_Nucleotide_Sequence_From": "BARCODE_STRING",
                             "Barcode_String": "GAAAAAAAAAAAAAAAAAAAAAAA"
                         },
-                "Demographic_Coverage": 0.2,
+                "Individual_Selection_Type": "TARGET_NUM_INDIVIDUALS",
+                "Target_Num_Individuals": 100,
                 "Target_Demographic": "Everyone",
                 "class": "StandardInterventionDistributionEventCoordinator"
             },
@@ -39,7 +41,7 @@
                 "class": "NodeSetNodeList",
                 "Node_List":[340461478]
             },
-            "Start_Day": 1,
+            "Start_Day": 300,
             "class": "CampaignEvent"
         }
     ]

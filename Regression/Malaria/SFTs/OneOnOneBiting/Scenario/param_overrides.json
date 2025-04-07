@@ -17,7 +17,7 @@
             "Config_Name": "Malaria::SFTs::OneOnOneBiting::Scenario",
             "Geography": "Namawala",
             "Run_Number": 1,
-            "Simulation_Duration": 116
+            "Simulation_Duration": 430
         },
         "REPORTS": {
             "Custom_Reports_Filename": "custom_reports.json",
@@ -48,7 +48,13 @@
                     "Vector_Migration_Modifier_Equation": "LINEAR",
                     "Vector_Migration_Food_Modifier": 1,
                     "Vector_Migration_Habitat_Modifier": 1,
-                    "Vector_Migration_Stay_Put_Modifier": 1
+                    "Vector_Migration_Stay_Put_Modifier": 1,
+                     "Habitats": [
+                        {
+                            "Habitat_Type": "TEMPORARY_RAINFALL",
+                            "Max_Larval_Capacity": 900000000.0
+                        }
+                    ]
                 }
             ],
             "Enable_Vector_Migration": 1
