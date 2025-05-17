@@ -350,29 +350,54 @@ namespace Kernel
         return group ;
     }
 
-    struct PartnerScore
+    IIndividualHumanSTI* Assortivity::SelectPartnerFromScore( float total_score,
+                                                              const std::vector<float>& rScores,
+                                                              const std::vector<IIndividualHumanSTI*>& rPartners )
     {
-        IIndividualHumanSTI* pPartner ;
-        float score ;
+        // -------------------------------------------------------------------------
+        // --- Select the partner based on their score/probability of being selected
+        // -------------------------------------------------------------------------
+        release_assert(m_pRNG != nullptr);
+        float ran_score = m_pRNG->e() * total_score;
+        std::vector<float>::const_iterator it = std::lower_bound( rScores.begin(),
+                                                                  rScores.end(),
+                                                                  ran_score );
+        if( it != rScores.end() )
+        {
+            // -------------------------------------------------------------------
+            // --- The old code was strictly greater than so this find this finds
+            // --- the next value that is greater than.  This could go away if we
+            // --- want to accept this small change in partner selection.
+            // -------------------------------------------------------------------
+            while( (it != rScores.end()) && (*it == ran_score) )
+            {
+                ++it;
+            }
+            if( it != rScores.end() )
+            {
+                int index = it - rScores.begin();
+                return rPartners[ index ];
+            }
+        }
 
-        PartnerScore() : pPartner(nullptr), score(0.0) {};
-        PartnerScore( IIndividualHumanSTI* p, float s ) : pPartner(p), score(s) {};
-    };
+        return nullptr;
+    }
 
 #define PS_MAX_LIST (50000)
-    static PartnerScore* PS_list = nullptr;
-    static int PS_size = -1;
+    static std::vector<float> PS_vector_score;
+    static std::vector<IIndividualHumanSTI*> PS_vector_partner;
 
     IIndividualHumanSTI* Assortivity::FindPartner( IIndividualHumanSTI* pPartnerA,
                                                    const list<IIndividualHumanSTI*>& potentialPartnerList,
                                                    tGetIndexFunc func)
     {
-        if (PS_size == -1)
+        if( PS_vector_score.capacity() < PS_MAX_LIST )
         {
-            PS_list = (PartnerScore*)malloc( PS_MAX_LIST * sizeof( PartnerScore ) );
-            memset( PS_list, 0, PS_MAX_LIST * sizeof( PartnerScore ) );
-            PS_size = 0;
+            PS_vector_score.reserve( PS_MAX_LIST );
+            PS_vector_partner.reserve( PS_MAX_LIST );
         }
+        PS_vector_score.clear();
+        PS_vector_partner.clear();
 
         // --------------------------------------------------------------
         // --- Get the index into the matrix for the male/partnerA based 
@@ -383,37 +408,24 @@ namespace Kernel
         // -----------------------------------------------------------------------
         // --- Find the score for each female/partnerB given this particular male
         // -----------------------------------------------------------------------
-        PS_size = 0;
         float total_score = 0.0f;
-        for (auto p_partner_B : potentialPartnerList)
+        for( auto p_partner_B : potentialPartnerList )
         {
-            int b_index = func(this, p_partner_B);
-            float score = m_WeightingMatrix[a_index][b_index];
-            if( (score > 0.0) && (PS_size < PS_MAX_LIST) )
+            int b_index = func( this, p_partner_B );
+            float score = m_WeightingMatrix[ a_index ][ b_index ];
+            if( (score > 0.0) && (PS_vector_score.size() < PS_MAX_LIST) )
             {
-                PS_list[PS_size].pPartner = p_partner_B;
-                PS_list[PS_size].score = score;
-                ++PS_size;
                 total_score += score;
+                PS_vector_score.push_back( total_score );
+                PS_vector_partner.push_back( p_partner_B );
+                if( PS_vector_score.size() >= PS_MAX_LIST )
+                {
+                    break;
+                }
             }
         }
 
-        // -------------------------------------------------------------------------
-        // --- Select the partner based on their score/probability of being selected
-        // -------------------------------------------------------------------------
-        release_assert(m_pRNG != nullptr);
-        float ran_score = m_pRNG->e() * total_score;
-        float cum_score = 0.0;
-        for (int i = 0; i < PS_size; ++i)
-        {
-            cum_score += PS_list[i].score;
-            if (cum_score > ran_score)
-            {
-                return PS_list[i].pPartner;
-            }
-        }
-
-        return nullptr;
+        return SelectPartnerFromScore( total_score, PS_vector_score, PS_vector_partner );
     }
 
     //static std::vector<PartnerScore> partner_score_list;
@@ -421,12 +433,13 @@ namespace Kernel
                                                      const list<IIndividualHumanSTI*>& potentialPartnerList,
                                                      tGetStringValueFunc func)
     {
-        if( PS_size == -1 )
+        if( PS_vector_score.capacity() < PS_MAX_LIST )
         {
-            PS_list = (PartnerScore*)malloc( PS_MAX_LIST * sizeof( PartnerScore ) );
-            memset( PS_list, 0, PS_MAX_LIST * sizeof( PartnerScore ) );
-            PS_size = 0;
+            PS_vector_score.reserve( PS_MAX_LIST );
+            PS_vector_partner.reserve( PS_MAX_LIST );
         }
+        PS_vector_score.clear();
+        PS_vector_partner.clear();
 
         // --------------------------------------------------------------
         // --- Get the index into the matrix for the male/partnerA based 
@@ -442,7 +455,6 @@ namespace Kernel
         // -----------------------------------------------------------------------
         // --- Find the score for each female/partnerB given this particular male
         // -----------------------------------------------------------------------
-        PS_size = 0;
         float total_score = 0.0f;
         for (auto p_partner_B : potentialPartnerList)
         {
@@ -453,32 +465,19 @@ namespace Kernel
                 p_partner_B->SetAssortivityIndex(m_RelType, b_index);
             }
             float score = m_WeightingMatrix[a_index][b_index];
-            if( (score > 0.0) && (PS_size < PS_MAX_LIST) )
+            if( (score > 0.0) && (PS_vector_score.size() < PS_MAX_LIST) )
             {
-                PS_list[ PS_size ].pPartner = p_partner_B;
-                PS_list[ PS_size ].score    = score;
-                ++PS_size;
-
                 total_score += score;
+                PS_vector_score.push_back( total_score );
+                PS_vector_partner.push_back( p_partner_B );
+                if( PS_vector_score.size() >= PS_MAX_LIST )
+                {
+                    break;
+                }
             }
         }
 
-        // -------------------------------------------------------------------------
-        // --- Select the partner based on their score/probability of being selected
-        // -------------------------------------------------------------------------
-        release_assert(m_pRNG != nullptr);
-        float ran_score = m_pRNG->e() * total_score;
-        float cum_score = 0.0;
-        for( int i = 0 ; i < PS_size ; ++i )
-        {
-            cum_score += PS_list[ i ].score;
-            if (cum_score > ran_score)
-            {
-                return PS_list[i].pPartner;
-            }
-        }
-
-        return nullptr;
+        return SelectPartnerFromScore( total_score, PS_vector_score, PS_vector_partner );
     }
 
     int Assortivity::GetIndex( const std::string& rStringValue )

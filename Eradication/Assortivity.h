@@ -53,6 +53,10 @@ namespace Kernel
         typedef std::function<int( const Assortivity*, const IIndividualHumanSTI* )> tGetIndexFunc;
         typedef std::function<std::string( const Assortivity*, const IIndividualHumanSTI* )> tGetStringValueFunc;
 
+        IIndividualHumanSTI* Assortivity::SelectPartnerFromScore( float total_score,
+                                                                  const std::vector<float>& rScores,
+                                                                  const std::vector<IIndividualHumanSTI*>& rPartners );
+
         IIndividualHumanSTI* FindPartner( IIndividualHumanSTI* pPartnerA,
                                           const list<IIndividualHumanSTI*>& potentialPartnerList,
                                           tGetIndexFunc func);
