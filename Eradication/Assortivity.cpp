@@ -365,9 +365,14 @@ namespace Kernel
         if( it != rScores.end() )
         {
             // -------------------------------------------------------------------
-            // --- The old code was strictly greater than so this find this finds
-            // --- the next value that is greater than.  This could go away if we
-            // --- want to accept this small change in partner selection.
+            // --- In order to continue to get the exact same results as before,
+            // --- we have the following code.  The old code did a linear search
+            // --- checking to see if ran_score was strictly greather than each
+            // --- each individuals score.  However, this new code uses lower_bound()
+            // --- to do a binary search and lower_bound() stops when it finds a
+            // --- a value that is greater than or equal to ran_score.  Hence, the
+            // --- following code keeps looking to find the first value that is
+            // --- strictly greater than the ran_score.
             // -------------------------------------------------------------------
             while( (it != rScores.end()) && (*it == ran_score) )
             {
