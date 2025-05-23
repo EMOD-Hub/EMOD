@@ -77,7 +77,7 @@ namespace Kernel
             const json::Object& json_obj = json_cast<const json::Object&>(interventions_array[idx]);
 
             // Instantiate and distribute interventions
-            IDistributableIntervention *di = InterventionFactory::CreateIntervention( json_obj, rDataLocation, param_name.str().c_str(), true );
+            IDistributableIntervention* di = InterventionFactory::CreateIntervention( json_obj, rDataLocation, param_name.str().c_str(), true );
             interventionsList.push_back( di );
         }
     }
@@ -148,7 +148,7 @@ namespace Kernel
             const json::Object& json_obj = json_cast<const json::Object&>(interventions_array[idx]);
 
             // Instantiate and distribute interventions
-            INodeDistributableIntervention *di = InterventionFactory::CreateNDIIntervention( json_obj, rDataLocation, param_name.str().c_str(), true );
+            INodeDistributableIntervention* di = InterventionFactory::CreateNDIIntervention( json_obj, rDataLocation, param_name.str().c_str(), true );
             interventionsList.push_back( di );
         }
     }
