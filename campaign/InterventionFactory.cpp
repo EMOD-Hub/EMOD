@@ -24,7 +24,7 @@ namespace Kernel
         p_di = IndividualIVFactory::getInstance()->CreateInstance( rJsonElement, rDataLocation, parameterName, ignore_null );
         if( p_di )
         {
-            IndividualIVFactory::getInstance()->ValidateSimType( p_di );
+            IndividualIVFactory::getInstance()->CheckSimType( p_di );
         }
 
         JsonConfigurable::_useDefaults = reset;
@@ -95,7 +95,7 @@ namespace Kernel
         p_ndi = NodeIVFactory::getInstance()->CreateInstance( rJsonElement, rDataLocation, parameterName, ignore_null );
         if( p_ndi )
         {
-            NodeIVFactory::getInstance()->ValidateSimType( p_ndi );
+            NodeIVFactory::getInstance()->CheckSimType( p_ndi );
         }
 
         JsonConfigurable::_useDefaults = reset;
@@ -173,11 +173,6 @@ namespace Kernel
 
     template IndividualIVFactory* ObjectFactory<IDistributableIntervention, IndividualIVFactory>::getInstance();
 
-    void IndividualIVFactory::ValidateSimType( IDistributableIntervention* pObject)
-    {
-        CheckSimType(pObject);
-    }
-
     // Node IV Factory
     NodeIVFactory::NodeIVFactory()
         : ObjectFactory<INodeDistributableIntervention, NodeIVFactory>()
@@ -187,9 +182,4 @@ namespace Kernel
     NodeIVFactory* NodeIVFactory::_instance = nullptr;
 
     template NodeIVFactory* ObjectFactory<INodeDistributableIntervention, NodeIVFactory>::getInstance();
-
-    void NodeIVFactory::ValidateSimType( INodeDistributableIntervention* pObject)
-    {
-        CheckSimType(pObject);
-    }
 }

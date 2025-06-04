@@ -40,8 +40,7 @@ namespace Kernel
 
     class IndividualIVFactory : public ObjectFactory<IDistributableIntervention, IndividualIVFactory>
     {
-    public:
-        void ValidateSimType( IDistributableIntervention* );
+        friend class InterventionFactory;
 
     protected:
         template<class IObject, class Factory> friend class Kernel::ObjectFactory;
@@ -50,8 +49,7 @@ namespace Kernel
 
     class NodeIVFactory : public ObjectFactory<INodeDistributableIntervention, NodeIVFactory>
     {
-    public:
-        void ValidateSimType( INodeDistributableIntervention* );
+        friend class InterventionFactory;
 
     protected:
         template<class IObject, class Factory> friend class Kernel::ObjectFactory;
