@@ -1,7 +1,7 @@
 {
     "Default_Config_Path": "../../defaults/hiv_default_config.json",
     "parameters": {
-        "x_Base_Population": 5e-06,
+        "x_Base_Population": 5e-05,
         "CD4_At_Death_LogLogistic_Heterogeneity": 0.7,
         "CD4_At_Death_LogLogistic_Scale": 2.96,
         "CD4_Post_Infection_Weibull_Heterogeneity": 0.2756,
@@ -11,6 +11,7 @@
         "Enable_Natural_Mortality": 0,
         "Enable_Timestep_Channel_In_Report": 0,
         "Report_HIV_ByAgeAndGender": 1,
+        "Python_Script_Path": "SHARED",
         "Report_HIV_ByAgeAndGender_Add_Relationships": 0,
         "Report_HIV_ByAgeAndGender_Add_Concordant_Relationships": 0,
         "Report_HIV_ByAgeAndGender_Add_Transmitters": 0,
@@ -135,7 +136,7 @@
         "Report_HIV_Mortality": 1,
         "Run_Number": 40,
         "Simulation_Duration": 10000,
-        "Simulation_Timestep": 7,
+        "Simulation_Timestep": 30.4166666666667,
         "____________DEMOGRAPHICS___________": "",
         "____________INTRAHOST___________": "",
         "____________NETWORK___________": "",

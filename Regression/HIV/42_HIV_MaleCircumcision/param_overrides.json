@@ -20,6 +20,7 @@
         "Num_Cores": 1,
         "PFA_Burnin_Duration_In_Days": 5475,
         "Report_HIV_ByAgeAndGender": 1,
+        "Report_HIV_ByAgeAndGender_Use_Old_Format": 1,
         "Report_HIV_ByAgeAndGender_Add_Relationships": 0,
         "Report_HIV_ByAgeAndGender_Add_Concordant_Relationships" : 0,
         "Report_HIV_ByAgeAndGender_Add_Transmitters": 0,

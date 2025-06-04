@@ -18,6 +18,7 @@
         "Report_Event_Recorder_Individual_Properties": [],
         "Report_Event_Recorder_PropertyChange_IP_Key_Of_Interest" : "",
         "Report_HIV_ByAgeAndGender": 1,
+        "Report_HIV_ByAgeAndGender_Use_Old_Format": 1,
         "Report_HIV_ByAgeAndGender_Add_Relationships": 0,
         "Report_HIV_ByAgeAndGender_Add_Concordant_Relationships" : 0,
         "Report_HIV_ByAgeAndGender_Add_Transmitters": 0,

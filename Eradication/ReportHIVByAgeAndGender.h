@@ -163,8 +163,9 @@ namespace Kernel
 
         // report controls
         const float report_hiv_half_period;
-        float start_year ;                                       // Year to start collecting data
-        float stop_year ;                                        // Year to stop  collecting data
+        float start_year;                                       // Year to start collecting data
+        float stop_year;                                        // Year to stop  collecting data
+        bool  use_old_format;
 
         // matrix dimenion flags - bools control if dimenion exists.  vectors have column for each value, except age_bins which has one column
         bool                          dim_gender;
@@ -173,7 +174,7 @@ namespace Kernel
         bool                          dim_has_hiv;
         bool                          dim_hiv_stage;
         bool                          dim_on_art;
-        std::vector<std::string>      dim_ip_key_list ;
+        std::vector<std::string>      dim_ip_key_list;
         std::vector<InterventionName> dim_intervention_name_list;
         std::vector<std::string>      dim_has_tc_list;
 

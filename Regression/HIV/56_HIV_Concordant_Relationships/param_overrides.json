@@ -22,6 +22,7 @@
         "Enable_Demographics_Reporting": 0,
         "Report_HIV_Period": 30, 
         "Report_HIV_ByAgeAndGender": 1,
+        "Report_HIV_ByAgeAndGender_Use_Old_Format": 1,
         "Report_HIV_ByAgeAndGender_Start_Year" : 1900,
         "Report_HIV_ByAgeAndGender_Stop_Year" : 2100,
         "Report_HIV_ByAgeAndGender_Collect_Gender_Data" : 1,

@@ -68,6 +68,7 @@ namespace Kernel
         , data_map()
         , dimension_vector()
         , dimension_map()
+        , use_old_format( false )
     {
         eventTriggerList.push_back( EventTrigger::DiseaseDeaths     );
         eventTriggerList.push_back( EventTrigger::NonDiseaseDeaths  );
@@ -140,6 +141,14 @@ namespace Kernel
             initConfigComplexType("Report_HIV_ByAgeAndGender_Collect_Targeting_Config_Data",
                                    &targeting_config,
                                    Report_HIV_ByAgeAndGender_Collect_Targeting_Config_Data_DESC_TEXT);
+        }
+
+        if( JsonConfigurable::_dryrun || inputJson->Exist( "Report_HIV_ByAgeAndGender_Use_Old_Format" ) )
+        {
+            initConfigTypeMap( "Report_HIV_ByAgeAndGender_Use_Old_Format", 
+                               &use_old_format,
+                               Report_HIV_ByAgeAndGender_Use_Old_Format_DESC_TEXT,
+                               false);
         }
 
         // -------------------------
@@ -346,7 +355,30 @@ namespace Kernel
             // --- data would be collected at 180.  However, for the next update
             // --- next_report_time would be 350 and the update would occur at 360.
             // ------------------------------------------------------------------------
-            next_report_time = DAYSPERYEAR*(start_year - Simulation::base_year) + report_hiv_half_period - dt / 2.0f;
+            // --- Note: Timestep's currentTime for dt > 1 day is updated at end of previous 
+            // --- timestep with the time passed so far, starting at time 0, so the
+            // --- currentTime label is one timestep 'behind' - n-th timestep is labeled with 
+            // --- currentTime = (n-1) * days_per_timestep. So with days_per_timestep = 30
+            // --- currentTime = 300 is the 11th timestep with time within the timestep being 300-329.
+            // --- We flag 'do_report' based on currentTime of the timestep to record the individual
+            // --- data for that timestep, so if report_hiv_half_period = 90 days and we start recording 
+            // --- at the beginning of the simulation, we should be recording timesteps with 
+            // --- currentTime = [0, 30, 60] <--- this will give us 90 days, so 
+            // --- we need to offset next_report_time by -dt, so that we are recording the 
+            // --- report_hiv_half_period from when we start collecting data. This is in addition to 
+            // --- the -dt/2 offset described above.
+            // ---
+            // --- use_old_format flag is for testing purposes to compare to old way we collected
+            // --- data if needed since the additional -dt changes which timesteps are collected 
+            // --- and at what currentTime
+            // ------------------------------------------------------------------------
+
+            float offset = 1.5;
+            if( use_old_format )
+            {
+                offset = 0.5;
+            }
+            next_report_time = DAYSPERYEAR * ( start_year - Simulation::base_year ) + report_hiv_half_period - dt*(offset);
 
         }
         else if( is_collecting_data && (_parent->GetSimulationTime().Year() >= stop_year) )
@@ -789,6 +821,7 @@ namespace Kernel
     void ReportHIVByAgeAndGender::EndTimestep( float currentTime, float dt )
     {
         BaseTextReportEvents::EndTimestep( currentTime, dt );
+
         if( is_collecting_data && do_report )
         {
             data_map.clear();

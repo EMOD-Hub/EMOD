@@ -15,6 +15,7 @@
         "Enable_Birth": 0,
         "Enable_Natural_Mortality": 0,
         "Report_HIV_ByAgeAndGender": 1,
+        "Report_HIV_ByAgeAndGender_Use_Old_Format": 1,
         "Report_HIV_ByAgeAndGender_Add_Concordant_Relationships": 1,
         "Report_HIV_ByAgeAndGender_Add_Relationships": 0,
         "Report_HIV_ByAgeAndGender_Add_Transmitters": 0,
@@ -31,7 +32,7 @@
         "Report_HIV_ByAgeAndGender_Has_Intervention_With_Name": "",
         "Report_HIV_ByAgeAndGender_Start_Year": 1900,
         "Report_HIV_ByAgeAndGender_Stop_Year": 2100,
-        "Report_HIV_ByAgeAndGender_Stratify_Infected_By_CD4": 1,        
+        "Report_HIV_ByAgeAndGender_Stratify_Infected_By_CD4": 1,
         "Report_HIV_Period": 30
     }
 }
