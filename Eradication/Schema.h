@@ -7,7 +7,7 @@
 
 const std::vector<std::string> getSimTypeList();
 
-void writeInputSchemas( const char* dll_path, const char* output_path );
+void writeInputSchemas( const char* output_path );
 
 namespace json
 {

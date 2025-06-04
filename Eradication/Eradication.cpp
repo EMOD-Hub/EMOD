@@ -442,7 +442,7 @@ bool ControllerInitWrapper( int argc, char *argv[], IdmMpi::MessageInterface* pM
 
         if( is_getting_schema )
         {
-            writeInputSchemas( po.GetCommandLineValueString( "dll-path" ).c_str(), po.GetCommandLineValueString( "schema-path" ).c_str() );
+            writeInputSchemas( po.GetCommandLineValueString( "schema-path" ).c_str() );
             return true;
         }
 

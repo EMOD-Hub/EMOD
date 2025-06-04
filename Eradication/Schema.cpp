@@ -53,7 +53,7 @@ const std::vector<std::string> getSimTypeList()
     return simTypeList;
 }
 
-void writeInputSchemas( const char* dll_path, const char* output_path )
+void writeInputSchemas( const char* output_path )
 {
     json::Object jsonRoot;
     json::QuickBuilder total_schema( jsonRoot );
