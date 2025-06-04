@@ -1170,39 +1170,34 @@ namespace Kernel
 
     void JsonConfigurable::initConfigComplexType(
         const char* paramName,
-        IComplexJsonConfigurable * pVariable,
+        IComplexJsonConfigurable* pVariable,
         const char* description,
-        const char* condition_key, 
-        const char* condition_value
+        const char* condition_key, const char* condition_value
     )
     {
-        json::QuickBuilder custom_schema = pVariable->GetSchema();
         GetConfigData()->complexTypeMap[ paramName ] = pVariable;
 
-        // going to get something back like : {
-        //  "type_name" : "idmType:VectorAlleleEnumPair",
-        //  "type_schema" : {
-        //      "first" : ...,
-        //      "second" : ...
-        //      }
-        //  }
-        std::string custom_type_label = (std::string) custom_schema[ _typename_label() ].As<json::String>();
-        json::String custom_type_label_as_json_string = json::String( custom_type_label );
+        json::Object newParamSchema;
+        updateSchemaWithCondition( newParamSchema, condition_key, condition_value );
 
-        // Do not update with a null object
-        json::QuickInterpreter s_check(custom_schema);
-        if( s_check.Exist(_typeschema_label()) )
+        if( _dryrun )
         {
-            jsonSchemaBase[ custom_type_label ] = custom_schema[ _typeschema_label() ];
+            json::QuickBuilder custom_schema = pVariable->GetSchema();
+            std::string custom_type_label = (std::string) custom_schema[ _typename_label() ].As<json::String>();
+            json::String custom_type_label_as_json_string = json::String( custom_type_label );
+
+            newParamSchema["type"] = json::String( custom_type_label_as_json_string );
+            newParamSchema["description"] = json::String( description );
+
+            // Do not update with a null object
+            json::QuickInterpreter s_check(custom_schema);
+            if( s_check.Exist(_typeschema_label()) )
+            {
+                jsonSchemaBase[ custom_type_label ] = custom_schema[ _typeschema_label() ];
+            }
         }
 
-        json::Object newComplexTypeSchemaEntry;
-        newComplexTypeSchemaEntry["description"] = json::String( description );
-        newComplexTypeSchemaEntry["type"] = json::String( custom_type_label_as_json_string );
-
-        updateSchemaWithCondition( newComplexTypeSchemaEntry, condition_key, condition_value );
-
-        jsonSchemaBase[ paramName ] = newComplexTypeSchemaEntry;
+        jsonSchemaBase[ paramName ] = newParamSchema;
     }
 
     void JsonConfigurable::initConfigComplexCollectionType(
