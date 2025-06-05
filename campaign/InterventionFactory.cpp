@@ -19,9 +19,14 @@ namespace Kernel
         bool reset = JsonConfigurable::_useDefaults;
         JsonConfigurable::_useDefaults = m_UseDefaults;
 
-        bool ignore_null = !throwIfNull;
+        bool valid_input = IndividualIVFactory::getInstance()->ElementIsValid( rJsonElement, rDataLocation, parameterName );
+        if(!valid_input && !throwIfNull)
+        {
+            return nullptr;
+        }
+
         IDistributableIntervention* p_di = nullptr;
-        p_di = IndividualIVFactory::getInstance()->CreateInstance( rJsonElement, rDataLocation, parameterName, ignore_null );
+        p_di = IndividualIVFactory::getInstance()->CreateInstance( rJsonElement, rDataLocation, parameterName );
         if( p_di )
         {
             IndividualIVFactory::getInstance()->CheckSimType( p_di );
@@ -90,9 +95,14 @@ namespace Kernel
         bool reset = JsonConfigurable::_useDefaults;
         JsonConfigurable::_useDefaults = m_UseDefaults;
 
-        bool ignore_null = !throwIfNull;
+        bool valid_input = NodeIVFactory::getInstance()->ElementIsValid( rJsonElement, rDataLocation, parameterName );
+        if(!valid_input && !throwIfNull)
+        {
+            return nullptr;
+        }
+
         INodeDistributableIntervention* p_ndi = nullptr;
-        p_ndi = NodeIVFactory::getInstance()->CreateInstance( rJsonElement, rDataLocation, parameterName, ignore_null );
+        p_ndi = NodeIVFactory::getInstance()->CreateInstance( rJsonElement, rDataLocation, parameterName );
         if( p_ndi )
         {
             NodeIVFactory::getInstance()->CheckSimType( p_ndi );

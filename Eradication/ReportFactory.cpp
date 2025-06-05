@@ -25,30 +25,6 @@ namespace Kernel
         }
     }
 
-    IReport* ReportFactory::CreateInstance( const Configuration* config,
-                                            const char* parameterName )
-    {
-        // --------------------------------------------------------------------------------------
-        // --- Create object and configure
-        // ---
-        // --- Keeping this simple. But bear in mind CreateInstanceFromSpecs can throw exception
-        // --- and JC::_useDefaults will not be restored. But we won't keep running in that case.
-        // --------------------------------------------------------------------------------------
-        bool reset = JsonConfigurable::_useDefaults;
-        JsonConfigurable::_useDefaults = m_UseDefaults;
-
-        IReport* p_report = ObjectFactory<IReport, ReportFactory>::CreateInstance( config, parameterName );
-
-        JsonConfigurable::_useDefaults = reset;
-
-        // ------------------------------------------------------------------------
-        // --- Verify that the object is supported for the current simulation type
-        // ------------------------------------------------------------------------
-        CheckSimType( p_report );
-
-        return p_report;
-    }
-
     std::vector<IReport*> ReportFactory::Load( const std::string& rFilename )
     {
         // ------------------

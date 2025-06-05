@@ -84,67 +84,56 @@ namespace Kernel
     }
 
     template<class IObject, class Factory>
-    IObject* ObjectFactory<IObject, Factory>::CreateInstance( const Configuration* pConfig,
+    IObject* ObjectFactory<IObject, Factory>::CreateInstance( const json::Element& rJsonElement,
+                                                              const std::string& rDataLocation,
                                                               const char* parameterName )
     {
-        // -------------------------------
-        // --- Create object and configure
-        // -------------------------------
-        CheckElement( pConfig, parameterName, false );
-        CheckRegistered( pConfig, parameterName, false );
+        ElementIsValid( rJsonElement, rDataLocation, parameterName, false );
+
+        Configuration* pConfig = Configuration::CopyFromElement( rJsonElement, rDataLocation );
         IObject* obj = CreateInstanceFromSpecs<IObject>( pConfig, m_RegisteredClasses, m_QueryForReturnInterface );
 
         if( !obj )
         {
             std::stringstream ss;
             ss << "Error loading '" << GET_CONFIG_STRING( pConfig, "class" ) << "' via "
-               << "'" << GetFactoryName() << "' for '" << parameterName << "' in <" << pConfig->GetDataLocation() << ">.";
+               << "'" << GetFactoryName() << "' for '" << parameterName << "' in <" << rDataLocation << ">.";
             throw FactoryCreateFromJsonException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }
+
+        delete pConfig;
         return obj;
     }
 
     template<class IObject, class Factory>
-    IObject* ObjectFactory<IObject, Factory>::CreateInstance( const json::Element& rJsonElement,
-                                                              const std::string& rDataLocation,
-                                                              const char* parameterName )
+    bool ObjectFactory<IObject, Factory>::ElementIsValid( const json::Element& rJsonElement,
+                                                          const std::string& rDataLocation,
+                                                          const char* parameterName,
+                                                          bool skip_exceptions )
     {
-        Configuration* p_config = Configuration::CopyFromElement( rJsonElement, rDataLocation );
-        IObject* p_obj = CreateInstance( p_config, parameterName );
-        delete p_config;
-        return p_obj;
-    }
-
-    template<class IObject, class Factory>
-    bool ObjectFactory<IObject, Factory>::CheckElement( const Configuration* pConfig,
-                                                        const char* parameterName,
-                                                        bool skip_exceptions )
-    {
-        if( pConfig->GetElement().Type() == json::NULL_ELEMENT )
+        if( rJsonElement.Type() == json::NULL_ELEMENT )
         {
             std::stringstream ss;
-            ss << "'" << GetFactoryName() << "' found the element to be NULL for '" << parameterName << "' in <" << pConfig->GetDataLocation() << ">.";
+            ss << "'" << GetFactoryName() << "' found the element to be NULL for '" << parameterName << "' in <" << rDataLocation << ">.";
             throw FactoryCreateFromJsonException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }
 
-        if( pConfig->GetElement().Type() != json::OBJECT_ELEMENT )
+        if( rJsonElement.Type() != json::OBJECT_ELEMENT )
         {
             std::stringstream ss;
             ss << "'" << GetFactoryName() << "' found the element specified by '" << parameterName << "'\n"
-               << "to NOT be a JSON object in <" << pConfig->GetDataLocation() << ">.";
+               << "to NOT be a JSON object in <" << rDataLocation << ">.";
             throw FactoryCreateFromJsonException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }
 
-        if( !pConfig->Exist( "class" ) )
+        json::QuickInterpreter json_obj( rJsonElement );
+
+        if( !json_obj.Exist( "class" ) )
         {
-            if( skip_exceptions )
-            {
-                return false;
-            }
-            else
+            if( !skip_exceptions )
             {
                 std::stringstream json_text;
-                json::Writer::Write( *pConfig, json_text );
+                json::Writer::Write( rJsonElement, json_text );
 
                 std::stringstream ss;
                 ss << "'"
@@ -155,43 +144,24 @@ namespace Kernel
                     << json_text.str();
                 throw FactoryCreateFromJsonException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
             }
-        }
-
-        return true;
-    }
-
-    template<class IObject, class Factory>
-    bool ObjectFactory<IObject, Factory>::CheckElement( const json::Element& rJsonElement,
-                                                        const std::string& rDataLocation,
-                                                        const char* parameterName,
-                                                        bool skip_exceptions )
-    {
-        Configuration* p_config = Configuration::CopyFromElement( rJsonElement, rDataLocation );
-        bool is_valid_element = CheckElement( p_config, parameterName, skip_exceptions );
-        delete p_config;
-        return is_valid_element;
-    }
-
-    template<class IObject, class Factory>
-    bool ObjectFactory<IObject, Factory>::CheckRegistered( const Configuration* pConfig,
-                                                           const char* parameterName,
-                                                           bool skip_exceptions )
-    {
-        std::string class_name = GET_CONFIG_STRING( pConfig, "class" );
-        if( m_RegisteredClasses.find( class_name ) == m_RegisteredClasses.end() )
-        {
-            if( skip_exceptions )
+            else
             {
                 return false;
             }
-            else
+        }
+
+        std::string class_name = static_cast<std::string>(json_obj["class"].As<json::String>());
+
+        if( m_RegisteredClasses.find( class_name ) == m_RegisteredClasses.end() )
+        {
+            if( !skip_exceptions )
             {
                 std::stringstream json_text;
-                json::Writer::Write( *pConfig, json_text );
+                json::Writer::Write( rJsonElement, json_text );
 
                 std::stringstream ss;
                 ss << "'" << GetFactoryName() << "' could not find class '" << class_name << "'.\n"
-                   << "It was specified in parameter '" << parameterName << "' in <" << pConfig->GetDataLocation() << ">.\n"
+                   << "It was specified in parameter '" << parameterName << "' in <" << rDataLocation << ">.\n"
                    << "This parameter had the following JSON:\n"
                    << json_text.str() << "\n"
                    << "Valid classes for this parameter are:\n";
@@ -201,21 +171,13 @@ namespace Kernel
                 }
                 throw FactoryCreateFromJsonException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
             }
+            else
+            {
+                return false;
+            }
         }
 
         return true;
-    }
-
-    template<class IObject, class Factory>
-    bool ObjectFactory<IObject, Factory>::CheckRegistered( const json::Element& rJsonElement,
-                                                           const std::string& rDataLocation,
-                                                           const char* parameterName,
-                                                           bool skip_exceptions )
-    {
-        Configuration* p_config = Configuration::CopyFromElement( rJsonElement, rDataLocation );
-        bool is_registered = CheckRegistered( p_config, parameterName, skip_exceptions );
-        delete p_config;
-        return is_registered;
     }
 
     template<class IObject, class Factory>

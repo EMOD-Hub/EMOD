@@ -142,7 +142,8 @@ namespace Kernel
             property_restrictions.Add( restriction_map );
         }
 
-        if(AdditionalRestrictionsFactory::getInstance()->CheckElement(targeting_config._json, "campaign.json", "Targeting_Config"))
+        bool valid_input = AdditionalRestrictionsFactory::getInstance()->ElementIsValid(targeting_config._json, "campaign.json", "Targeting_Config");
+        if(valid_input)
         {
             additional_restrictions = AdditionalRestrictionsFactory::getInstance()->CreateInstance( targeting_config._json,
                                                                                                     "campaign.json",
