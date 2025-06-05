@@ -63,8 +63,7 @@ namespace Kernel
                 AdditionalTargetingConfig targeting_config(p_object_config);
                 IAdditionalRestrictions* additionalm_Restrictions = AdditionalRestrictionsFactory::getInstance()->CreateInstance( targeting_config._json,
                                                                                                                                   inputJson->GetDataLocation(),
-                                                                                                                                  key.c_str(),
-                                                                                                                                  false );
+                                                                                                                                  key.c_str() );
                 innerm_Restrictions.push_back(additionalm_Restrictions);
 
                 delete p_object_config;

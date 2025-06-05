@@ -25,9 +25,8 @@ namespace Kernel
         }
     }
 
-    IReport* ReportFactory::CreateInstance( const Configuration *config,
-                                            const char* parameterName,
-                                            bool nullOrEmptyOrNoClassNotError )
+    IReport* ReportFactory::CreateInstance( const Configuration* config,
+                                            const char* parameterName )
     {
         // --------------------------------------------------------------------------------------
         // --- Create object and configure
@@ -38,7 +37,7 @@ namespace Kernel
         bool reset = JsonConfigurable::_useDefaults;
         JsonConfigurable::_useDefaults = m_UseDefaults;
 
-        IReport* p_report = ObjectFactory<IReport, ReportFactory>::CreateInstance( config, parameterName, nullOrEmptyOrNoClassNotError );
+        IReport* p_report = ObjectFactory<IReport, ReportFactory>::CreateInstance( config, parameterName );
 
         JsonConfigurable::_useDefaults = reset;
 

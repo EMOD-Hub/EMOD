@@ -37,20 +37,31 @@ namespace Kernel
 
         // Return a new configured instance of the object defined by 'pConfig'
         virtual IObject* CreateInstance( const Configuration *pConfig,
-                                         const char* parameterName,
-                                         bool nullOrEmptyOrNoClassNotError =false );
+                                         const char* parameterName );
         virtual IObject* CreateInstance( const json::Element& rJsonElement,
                                          const std::string& rDataLocation,
-                                         const char* parameterName,
-                                         bool nullOrEmptyOrNoClassNotError =false );
-
-    protected:
-        ObjectFactory( bool queryForReturnInterface = true );
+                                         const char* parameterName );
 
         // check that the input JSON ('pConfig') is valid
         bool CheckElement( const Configuration* pConfig,
                            const char* parameterName,
-                           bool nullOrEmptyNotError );
+                           bool skip_exceptions=true );
+        bool CheckElement( const json::Element& rJsonElement,
+                           const std::string& rDataLocation,
+                           const char* parameterName,
+                           bool skip_exceptions=true );
+
+        // check that the input JSON ('pConfig') has a registered class
+        bool CheckRegistered( const Configuration* pConfig,
+                              const char* parameterName,
+                              bool skip_exceptions=true );
+        bool CheckRegistered( const json::Element& rJsonElement,
+                              const std::string& rDataLocation,
+                              const char* parameterName,
+                              bool skip_exceptions=true );
+
+    protected:
+        ObjectFactory( bool queryForReturnInterface=true );
 
         // Provides a hook for the factory to add other stuff to the schema for an object
         virtual void ModifySchema( json::QuickBuilder& rSchema, ISupports*pObject ){};

@@ -74,8 +74,7 @@ namespace Kernel
             {
                 m_pWithPartnerWho = AdditionalRestrictionsFactory::getInstance()->CreateInstance( partner_config._json,
                                                                                                   config->GetDataLocation(),
-                                                                                                  WITH_PARTNER_WHO,
-                                                                                                  false );
+                                                                                                  WITH_PARTNER_WHO );
             }
 
             if( (m_OfRelationshipType == TargetRelationshipType::NA) &&

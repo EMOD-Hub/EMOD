@@ -13,8 +13,7 @@ namespace Kernel
     {
     public:
         virtual IReport* CreateInstance( const Configuration *config,
-                                         const char* parameterName,
-                                         bool nullOrEmptyOrNoClassNotError =false ) override;
+                                         const char* parameterName ) override;
 
         std::vector<IReport*> Load( const std::string& rFilename );
 

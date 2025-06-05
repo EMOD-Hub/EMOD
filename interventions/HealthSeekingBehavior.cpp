@@ -56,7 +56,7 @@ namespace Kernel
 
             if( use_event_or_config == EventOrConfig::Config )
             {
-                m_di = InterventionFactory::CreateIntervention( actual_intervention_config._json, inputJson->GetDataLocation(), "Actual_IndividualIntervention_Config", true ); 
+                m_di = InterventionFactory::CreateIntervention( actual_intervention_config._json, inputJson->GetDataLocation(), "Actual_IndividualIntervention_Config" ); 
             }
         }
         return ret ;

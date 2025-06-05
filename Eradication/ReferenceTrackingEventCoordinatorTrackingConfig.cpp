@@ -90,8 +90,7 @@ namespace Kernel
             }
             m_pTrackingRestrictions = AdditionalRestrictionsFactory::getInstance()->CreateInstance( tracking_config._json,
                                                                                                     "campaign.json",
-                                                                                                    "Tracking_Config",
-                                                                                                    false );
+                                                                                                    "Tracking_Config" );
         }
         LOG_DEBUG_F( "ReferenceTracker=%s was configured with update_period = %f, m_EndYear = %f, and tsteps_between_reps (derived) = %d.\n", 
                      m_CoordinatorName.c_str(),update_period, m_EndYear, tsteps_between_reps );

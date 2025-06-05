@@ -15,7 +15,6 @@ namespace Kernel
     public:
         virtual IAdditionalRestrictions* CreateInstance( const json::Element& rJsonElement,
                                                          const std::string& rDataLocation,
-                                                         const char* parameterName,
-                                                         bool nullOrEmptyNotError ) override;
+                                                         const char* parameterName) override;
     };
 }

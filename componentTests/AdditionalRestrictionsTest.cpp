@@ -70,8 +70,7 @@ SUITE(AdditionalRestrictionsTest)
                 atc.ConfigureFromJsonAndKey( m_pConfig, rJsonElementName );
                 p_ar = AdditionalRestrictionsFactory::getInstance()->CreateInstance( atc._json,
                                                                                      "test file",
-                                                                                     rJsonElementName.c_str(),
-                                                                                     true );
+                                                                                     rJsonElementName.c_str() );
                 release_assert( p_ar != nullptr );
             }
             catch( DetailedException& re )
@@ -589,7 +588,7 @@ SUITE(AdditionalRestrictionsTest)
 
         try
         {
-            unique_ptr<IAdditionalRestrictions> isCircumcised( AdditionalRestrictionsFactory::getInstance()->CreateInstance( atc._json, "BadSimType.json", "IsCircumcised", true ) );
+            unique_ptr<IAdditionalRestrictions> isCircumcised( AdditionalRestrictionsFactory::getInstance()->CreateInstance( atc._json, "BadSimType.json", "IsCircumcised" ) );
             CHECK(false); // should not get here
         }
         catch (GeneralConfigurationException& )

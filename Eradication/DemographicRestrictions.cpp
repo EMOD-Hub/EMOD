@@ -141,10 +141,13 @@ namespace Kernel
             }
             property_restrictions.Add( restriction_map );
         }
-        additional_restrictions = AdditionalRestrictionsFactory::getInstance()->CreateInstance( targeting_config._json,
-                                                                                                "campaign.json",
-                                                                                                "Targeting_Config",
-                                                                                                true );
+
+        if(AdditionalRestrictionsFactory::getInstance()->CheckElement(targeting_config._json, "campaign.json", "Targeting_Config"))
+        {
+            additional_restrictions = AdditionalRestrictionsFactory::getInstance()->CreateInstance( targeting_config._json,
+                                                                                                    "campaign.json",
+                                                                                                    "Targeting_Config" );
+        }
     }
 
     bool DemographicRestrictions::HasDefaultRestrictions() const

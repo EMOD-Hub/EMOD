@@ -22,8 +22,7 @@ namespace Kernel
     public:
         virtual CampaignEvent* CreateInstance( const json::Element& rJsonElement,
                                                const std::string& rDataLocation,
-                                               const char* parameterName,
-                                               bool nullOrEmptyOrNoClassNotError = false ) override;
+                                               const char* parameterName ) override;
 
     protected:
         template<class IObject, class Factory> friend class Kernel::ObjectFactory;
