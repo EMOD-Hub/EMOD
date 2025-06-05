@@ -214,13 +214,13 @@ SUITE( VectorSpeciesParametersTest )
     TEST_FIXTURE( VspFixture, TestLarvalHabitatTypesDictionary )
     {
         TestHelper_ConfigureException( __LINE__, "testdata/VectorSpeciesParametersTest/TestLarvalHabitatTypesDictionary.json",
-                                       "While trying to parse json data for param/key >>> Habitats <<< in otherwise valid json segment... \n{\n\t\"TEMPORARY_RAINFALL\" : 1.125e+10\n}\nCaught exception msg below: \nExpected ARRAY of OBJECTs" );
+                                       "While trying to parse json data for param/key >>> Habitats <<< in otherwise valid json segment... \n{\n    \"TEMPORARY_RAINFALL\": 1.125e+10\n}\nCaught exception msg below: \nExpected ARRAY of OBJECTs" );
     }
 
     TEST_FIXTURE( VspFixture, TestLarvalHabitatTypesElementNotObject )
     {
         TestHelper_ConfigureException( __LINE__, "testdata/VectorSpeciesParametersTest/TestLarvalHabitatTypesElementNotObject.json",
-                                       "While trying to parse json data for param/key >>> Habitats[0] <<< in otherwise valid json segment... \n[\n\t1.125e+10\n]\nCaught exception msg below: \nExpected ARRAY of OBJECTs" );
+                                       "While trying to parse json data for param/key >>> Habitats[0] <<< in otherwise valid json segment... \n[\n    1.125e+10\n]\nCaught exception msg below: \nExpected ARRAY of OBJECTs" );
     }
 
     TEST_FIXTURE( VspFixture, TestLarvalHabitatTypesEmpty )
@@ -232,7 +232,7 @@ SUITE( VectorSpeciesParametersTest )
     TEST_FIXTURE( VspFixture, TestLarvalHabitatTypesNoVectorHabitatType )
     {
         TestHelper_ConfigureException( __LINE__, "testdata/VectorSpeciesParametersTest/TestLarvalHabitatTypesNoVectorHabitatType.json",
-                                       "'Habitat_Type' does not exist in 'Habitats[1]'.\nIt has the following JSON:\n{\n\t\"...Habitat_Type\" : \"CONSTANT\",\n\t\"Max_Larval_Capacity\" : 1.125e+10\n}" );
+                                       "'Habitat_Type' does not exist in 'Habitats[1]'.\nIt has the following JSON:\n{\n    \"...Habitat_Type\": \"CONSTANT\",\n    \"Max_Larval_Capacity\": 1.125e+10\n}" );
     }
 
     TEST_FIXTURE( VspFixture, TestLarvalHabitatTypesEmptyElement )

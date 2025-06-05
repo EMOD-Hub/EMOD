@@ -20,5 +20,6 @@
             "Initial_Effect": 0.7,
             "Box_Duration": 365
         }
-    }
+    },
+    "Targeting_Config": {}
 }
