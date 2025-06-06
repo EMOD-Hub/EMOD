@@ -18,7 +18,7 @@ namespace Kernel
 
     class AdherentDrug : public MultiPackComboDrug
     {
-        DECLARE_FACTORY_REGISTERED( InterventionFactory, AdherentDrug, IDistributableIntervention )
+        DECLARE_FACTORY_REGISTERED( IndividualIVFactory, AdherentDrug, IDistributableIntervention )
 
     public:
         AdherentDrug();

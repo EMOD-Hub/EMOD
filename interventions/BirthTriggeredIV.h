@@ -15,7 +15,7 @@ namespace Kernel
 {
     class BirthTriggeredIV : public IIndividualEventObserver, public BaseNodeIntervention // , public INodeDistributableInterventionParameterSetterInterface
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, BirthTriggeredIV, INodeDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(NodeIVFactory, BirthTriggeredIV, INodeDistributableIntervention)
     
         friend class CalendarEventCoordinator;
     

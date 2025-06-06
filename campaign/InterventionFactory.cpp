@@ -9,55 +9,29 @@ SETUP_LOGGING( "InterventionFactory" )
 
 namespace Kernel
 {
-    InterventionFactory* InterventionFactory::_instance = nullptr;
+    bool InterventionFactory::m_UseDefaults = false;
 
-    template InterventionFactory* ObjectFactory<IDistributableIntervention, InterventionFactory>::getInstance();
-
-    InterventionFactory::InterventionFactory()
-        : ObjectFactory<IDistributableIntervention, InterventionFactory>()
-        , m_UseDefaults( false )
-    {
-    }
-
-    void InterventionFactory::Register( const char *classname, instantiator_function_t _if )
-    {
-        ObjectFactory<IDistributableIntervention, InterventionFactory>::Register( classname, _if );
-    }
-
-    // new, configurable method
     IDistributableIntervention* InterventionFactory::CreateIntervention( const json::Element& rJsonElement,
                                                                          const std::string& rDataLocation,
                                                                          const char* parameterName,
                                                                          bool throwIfNull )
     {
-        // Keeping this simple. But bear in mind CreateInstanceFromSpecs can throw exception
-        // and JC::_useDefaults will not be restored. But we won't keep running in that case.
         bool reset = JsonConfigurable::_useDefaults;
         JsonConfigurable::_useDefaults = m_UseDefaults;
 
-        Configuration* p_config = Configuration::CopyFromElement( rJsonElement, rDataLocation );
-        CheckElement( p_config, parameterName, false );
-
-        IDistributableIntervention* p_di = CreateInstanceFromSpecs<IDistributableIntervention>( p_config, m_RegisteredClasses, true );
-
-        if( p_di != nullptr )
+        bool valid_input = IndividualIVFactory::getInstance()->ElementIsValid( rJsonElement, rDataLocation, parameterName );
+        if(!valid_input && !throwIfNull)
         {
-            CheckSimType( p_di );
-        }
-        else if( throwIfNull )
-        {
-            // if we get here it should mean that we are expecting an individual-level
-            // intervention, but the user provided a node-level intervention
-            std::string class_name = std::string((*p_config)[ "class" ].As<json::String>());
-
-            std::stringstream ss;
-            ss << "Error loading '" << class_name << "' via "
-                << "'" << GetFactoryName() << "' for '" << parameterName << "' in <" << rDataLocation << ">.\n"
-                << "This parameter only takes individual-level interventions.";
-            throw FactoryCreateFromJsonException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
+            return nullptr;
         }
 
-        delete p_config;
+        IDistributableIntervention* p_di = nullptr;
+        p_di = IndividualIVFactory::getInstance()->CreateInstance( rJsonElement, rDataLocation, parameterName );
+        if( p_di )
+        {
+            IndividualIVFactory::getInstance()->CheckSimType( p_di );
+        }
+
         JsonConfigurable::_useDefaults = reset;
 
         return p_di;
@@ -71,14 +45,14 @@ namespace Kernel
         if( rJsonElement.Type() == json::NULL_ELEMENT )
         {
             std::stringstream ss;
-            ss << "'" << GetFactoryName()<< "' found the element to be NULL for '" << parameterName << "' in <" << rDataLocation << ">.";
+            ss << "'InterventionFactory' found the element to be NULL for '" << parameterName << "' in <" << rDataLocation << ">.";
             throw FactoryCreateFromJsonException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }
 
         if( rJsonElement.Type() != json::ARRAY_ELEMENT )
         {
             std::stringstream ss;
-            ss << "'" << GetFactoryName() << "' found the element specified by '" << parameterName << "'\n"
+            ss << "'InterventionFactory' found the element specified by '" << parameterName << "'\n"
                << "to NOT be a JSON ARRAY in <" << rDataLocation << ">.";
             throw FactoryCreateFromJsonException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }
@@ -87,7 +61,7 @@ namespace Kernel
         if( interventions_array.Size() == 0 )
         {
             std::stringstream ss;
-            ss << "'" << GetFactoryName() << "' found zero elements in JSON for '" << parameterName << "' in <" << rDataLocation << ">.";
+            ss << "'InterventionFactory' found zero elements in JSON for '" << parameterName << "' in <" << rDataLocation << ">.";
             throw FactoryCreateFromJsonException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }
 
@@ -100,7 +74,7 @@ namespace Kernel
             if( r_array_element.Type() != json::OBJECT_ELEMENT )
             {
                 std::stringstream ss;
-                ss << "'" << GetFactoryName() << "' found the element specified by '" << param_name.str() << "'\n"
+                ss << "'InterventionFactory' found the element specified by '" << param_name.str() << "'\n"
                    << "to NOT be a JSON OBJECT in <" << rDataLocation << ">.";
                 throw FactoryCreateFromJsonException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
             }
@@ -108,10 +82,7 @@ namespace Kernel
             const json::Object& json_obj = json_cast<const json::Object&>(interventions_array[idx]);
 
             // Instantiate and distribute interventions
-            IDistributableIntervention *di = InterventionFactory::getInstance()->CreateIntervention( json_obj,
-                                                                                                     rDataLocation,
-                                                                                                     param_name.str().c_str(),
-                                                                                                     true );
+            IDistributableIntervention* di = InterventionFactory::CreateIntervention( json_obj, rDataLocation, param_name.str().c_str(), true );
             interventionsList.push_back( di );
         }
     }
@@ -124,29 +95,19 @@ namespace Kernel
         bool reset = JsonConfigurable::_useDefaults;
         JsonConfigurable::_useDefaults = m_UseDefaults;
 
-        Configuration* p_config = Configuration::CopyFromElement( rJsonElement, rDataLocation );
-        CheckElement( p_config, parameterName, false );
-
-        INodeDistributableIntervention* p_ndi = CreateInstanceFromSpecs<INodeDistributableIntervention>( p_config, m_RegisteredClasses, true );
-
-        if( p_ndi != nullptr )
+        bool valid_input = NodeIVFactory::getInstance()->ElementIsValid( rJsonElement, rDataLocation, parameterName );
+        if(!valid_input && !throwIfNull)
         {
-            CheckSimType( p_ndi );
-        }
-        else if( throwIfNull )
-        {
-            // if we get here it should mean that we are expecting an individual-level
-            // intervention, but the user provided a node-level intervention
-            std::string class_name = std::string((*p_config)[ "class" ].As<json::String>());
-
-            std::stringstream ss;
-            ss << "Error loading '" << class_name << "' via "
-                << "'" << GetFactoryName() << "' for '" << parameterName << "' in <" << rDataLocation << ">.\n"
-                << "This parameter only takes node-level interventions.";
-            throw FactoryCreateFromJsonException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
+            return nullptr;
         }
 
-        delete p_config;
+        INodeDistributableIntervention* p_ndi = nullptr;
+        p_ndi = NodeIVFactory::getInstance()->CreateInstance( rJsonElement, rDataLocation, parameterName );
+        if( p_ndi )
+        {
+            NodeIVFactory::getInstance()->CheckSimType( p_ndi );
+        }
+
         JsonConfigurable::_useDefaults = reset;
 
         return p_ndi;
@@ -160,14 +121,14 @@ namespace Kernel
         if( rJsonElement.Type() == json::NULL_ELEMENT )
         {
             std::stringstream ss;
-            ss << "'" << GetFactoryName()<< "' found the element to be NULL for '" << parameterName << "' in <" << rDataLocation << ">.";
+            ss << "'InterventionFactory' found the element to be NULL for '" << parameterName << "' in <" << rDataLocation << ">.";
             throw FactoryCreateFromJsonException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }
 
         if( rJsonElement.Type() != json::ARRAY_ELEMENT )
         {
             std::stringstream ss;
-            ss << "'" << GetFactoryName() << "' found the element specified by '" << parameterName << "'\n"
+            ss << "'InterventionFactory' found the element specified by '" << parameterName << "'\n"
                << "to NOT be a JSON ARRAY in <" << rDataLocation << ">.";
             throw FactoryCreateFromJsonException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }
@@ -176,7 +137,7 @@ namespace Kernel
         if( interventions_array.Size() == 0 )
         {
             std::stringstream ss;
-            ss << "'" << GetFactoryName() << "' found zero elements in JSON for '" << parameterName << "' in <" << rDataLocation << ">.";
+            ss << "'InterventionFactory' found zero elements in JSON for '" << parameterName << "' in <" << rDataLocation << ">.";
             throw FactoryCreateFromJsonException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }
 
@@ -189,7 +150,7 @@ namespace Kernel
             if( r_array_element.Type() != json::OBJECT_ELEMENT )
             {
                 std::stringstream ss;
-                ss << "'" << GetFactoryName() << "' found the element specified by '" << param_name.str() << "'\n"
+                ss << "'InterventionFactory' found the element specified by '" << param_name.str() << "'\n"
                    << "to NOT be a JSON OBJECT in <" << rDataLocation << ">.";
                 throw FactoryCreateFromJsonException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
             }
@@ -197,10 +158,7 @@ namespace Kernel
             const json::Object& json_obj = json_cast<const json::Object&>(interventions_array[idx]);
 
             // Instantiate and distribute interventions
-            INodeDistributableIntervention *di = InterventionFactory::getInstance()->CreateNDIIntervention( json_obj,
-                                                                                                            rDataLocation,
-                                                                                                            param_name.str().c_str(),
-                                                                                                            true );
+            INodeDistributableIntervention* di = InterventionFactory::CreateNDIIntervention( json_obj, rDataLocation, param_name.str().c_str(), true );
             interventionsList.push_back( di );
         }
     }
@@ -210,29 +168,28 @@ namespace Kernel
         m_UseDefaults = useDefaults;
     }
 
-    bool InterventionFactory::IsUsingDefaults() const
+    bool InterventionFactory::IsUsingDefaults()
     {
         return m_UseDefaults;
     }
 
-    void InterventionFactory::ModifySchema( json::QuickBuilder& rSchema, ISupports*pObject )
+    // Individual IV Factory
+    IndividualIVFactory::IndividualIVFactory()
+        : ObjectFactory<IDistributableIntervention, IndividualIVFactory>()
     {
-        std::string type_string;
-        IDistributableIntervention* p_intervention_individual = nullptr;
-        INodeDistributableIntervention* p_intervention_node = nullptr;
-        if( pObject->QueryInterface( GET_IID(IDistributableIntervention), (void**)&p_intervention_individual ) == s_OK )
-        {
-            type_string = "IndividualTargeted";
-        }
-        else if( pObject->QueryInterface( GET_IID(INodeDistributableIntervention), (void**)&p_intervention_node ) == s_OK )
-        {
-            type_string = "NodeTargeted";
-        }
-        else
-        {
-            throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__,
-                                                 "Intervention class is not 'IDistributableIntervention' or 'INodeDistributableIntervention'." );
-        }
-        rSchema[std::string("iv_type")] = json::String(type_string);
     }
+
+    IndividualIVFactory* IndividualIVFactory::_instance = nullptr;
+
+    template IndividualIVFactory* ObjectFactory<IDistributableIntervention, IndividualIVFactory>::getInstance();
+
+    // Node IV Factory
+    NodeIVFactory::NodeIVFactory()
+        : ObjectFactory<INodeDistributableIntervention, NodeIVFactory>()
+    {
+    }
+
+    NodeIVFactory* NodeIVFactory::_instance = nullptr;
+
+    template NodeIVFactory* ObjectFactory<INodeDistributableIntervention, NodeIVFactory>::getInstance();
 }

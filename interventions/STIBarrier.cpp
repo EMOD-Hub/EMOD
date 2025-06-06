@@ -6,7 +6,6 @@
 
 #include "IIndividualHumanContext.h"
 #include "InterventionEnums.h"
-#include "InterventionFactory.h"
 #include "STIInterventionsContainer.h"  // for ISTIBarrierConsumer methods
 #include "IRelationship.h"
 #include "Sigmoid.h"

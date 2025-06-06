@@ -16,7 +16,7 @@ namespace Kernel
 
     class NodeLevelHealthTriggeredIVScaleUpSwitch : public NodeLevelHealthTriggeredIV
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, NodeLevelHealthTriggeredIVScaleUpSwitch, INodeDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(NodeIVFactory, NodeLevelHealthTriggeredIVScaleUpSwitch, INodeDistributableIntervention)
 
     public:        
         NodeLevelHealthTriggeredIVScaleUpSwitch();

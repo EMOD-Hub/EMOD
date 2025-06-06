@@ -65,7 +65,7 @@ namespace Kernel
 
     class SimpleBednet : public AbstractBednet
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, SimpleBednet, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, SimpleBednet, IDistributableIntervention)
 
     public:
         SimpleBednet();

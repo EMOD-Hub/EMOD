@@ -7,7 +7,6 @@
 #include "Debug.h"
 #include "CajunIncludes.h"     // for parsing calendar and actual interventions
 #include "InterventionEnums.h"
-#include "InterventionFactory.h"
 #include "NodeEventContext.h"  // for INodeEventContext (ICampaignCostObserver)
 #include "IIndividualHumanContext.h"
 #include "ISimulationContext.h"
@@ -136,10 +135,7 @@ namespace Kernel
         bool ret = BaseIntervention::Configure( inputJson );
         if( ret && !JsonConfigurable::_dryrun )
         {
-            InterventionFactory::getInstance()->CreateInterventionList( actual_intervention_config._json,
-                                                                        inputJson->GetDataLocation(),
-                                                                        "Actual_IndividualIntervention_Configs",
-                                                                        m_Interventions );
+            InterventionFactory::CreateInterventionList( actual_intervention_config._json, inputJson->GetDataLocation(), "Actual_IndividualIntervention_Configs", m_Interventions );
 
             for( int i = 0; i < age_prob_list.Size(); ++i )
             {

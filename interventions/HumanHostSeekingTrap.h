@@ -19,7 +19,7 @@ namespace Kernel
 
     class HumanHostSeekingTrap : public BaseIntervention
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, HumanHostSeekingTrap, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, HumanHostSeekingTrap, IDistributableIntervention)
 
     public:
         HumanHostSeekingTrap();

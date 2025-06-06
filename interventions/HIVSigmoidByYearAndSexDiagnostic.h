@@ -8,7 +8,7 @@ namespace Kernel
     class HIVSigmoidByYearAndSexDiagnostic : public AbstractDecision
     {
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, HIVSigmoidByYearAndSexDiagnostic, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, HIVSigmoidByYearAndSexDiagnostic, IDistributableIntervention)
 
     public: 
         HIVSigmoidByYearAndSexDiagnostic();

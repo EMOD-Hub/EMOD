@@ -4,7 +4,6 @@
 
 #include "Exceptions.h"
 #include "SimulationConfig.h"
-#include "InterventionFactory.h"
 #include "NodeEventContext.h"  // for IOutbreakConsumer methods
 #include "StrainIdentity.h"
 #include "ISimulationContext.h"

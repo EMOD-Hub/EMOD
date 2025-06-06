@@ -23,7 +23,7 @@ namespace Kernel
     {
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
         DECLARE_CONFIGURED(Outbreak)
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, InputEIR, INodeDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(NodeIVFactory, InputEIR, INodeDistributableIntervention)
 
     public:
         InputEIR();

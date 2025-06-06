@@ -10,7 +10,7 @@ namespace Kernel
 
     class ARTDropout : public BaseIntervention
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, ARTDropout, IDistributableIntervention);
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, ARTDropout, IDistributableIntervention);
 
     public:
         ARTDropout();

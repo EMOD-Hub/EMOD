@@ -141,10 +141,20 @@ namespace Kernel
             }
             property_restrictions.Add( restriction_map );
         }
-        additional_restrictions = AdditionalRestrictionsFactory::getInstance()->CreateInstance( targeting_config._json,
-                                                                                                "campaign.json",
-                                                                                                "Targeting_Config",
-                                                                                                true );
+
+        bool valid_input = false;
+        if(targeting_config._json.Type() != json::NULL_ELEMENT)
+        {
+            valid_input = AdditionalRestrictionsFactory::getInstance()->ElementIsValid(targeting_config._json,
+                                                                                       "campaign.json",
+                                                                                       "Targeting_Config");
+        }
+        if(valid_input)
+        {
+            additional_restrictions = AdditionalRestrictionsFactory::getInstance()->CreateInstance( targeting_config._json,
+                                                                                                    "campaign.json",
+                                                                                                    "Targeting_Config" );
+        }
     }
 
     bool DemographicRestrictions::HasDefaultRestrictions() const

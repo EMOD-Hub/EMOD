@@ -8,7 +8,7 @@ namespace Kernel
     class IDMAPI STIIsPostDebut : public StandardDiagnostic
     {
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, STIIsPostDebut, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, STIIsPostDebut, IDistributableIntervention)
 
     public:
         STIIsPostDebut();

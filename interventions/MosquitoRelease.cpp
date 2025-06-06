@@ -3,7 +3,6 @@
 #include "MosquitoRelease.h"
 
 #include "Exceptions.h"
-#include "InterventionFactory.h"
 #include "SimulationConfig.h"
 #include "NodeVectorEventContext.h"  // for IMosquitoReleaseConsumer methods
 #include "VectorParameters.h"

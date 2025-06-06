@@ -18,7 +18,7 @@ namespace Kernel
 {
     class NLHTIVNode : public INodeEventObserver, public BaseNodeIntervention
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, NLHTIVNode, INodeDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(NodeIVFactory, NLHTIVNode, INodeDistributableIntervention)
 
     public:        
         NLHTIVNode();

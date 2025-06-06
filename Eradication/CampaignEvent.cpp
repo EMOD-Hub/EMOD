@@ -35,13 +35,11 @@ namespace Kernel
 
     CampaignEvent* CampaignEventFactory::CreateInstance( const json::Element& rJsonElement,
                                                          const std::string& rDataLocation,
-                                                         const char* parameterName,
-                                                         bool nullOrEmptyOrNoClassNotError )
+                                                         const char* parameterName )
     {
         CampaignEvent *ce = ObjectFactory<CampaignEvent, CampaignEventFactory>::CreateInstance( rJsonElement,
                                                                                                 rDataLocation,
-                                                                                                parameterName,
-                                                                                                nullOrEmptyOrNoClassNotError );
+                                                                                                parameterName );
         release_assert(ce);
 
         if (ce && !JsonConfigurable::_dryrun)

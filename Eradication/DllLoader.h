@@ -34,10 +34,7 @@ public:
 
     virtual ~DllLoader ();
 
-    bool LoadDiseaseDlls(std::map< std::string, createSim>& createSimFuncPtrMap, const char* dllName=nullptr);
-    json::Object GetDiseaseDllSchemas();
     bool LoadReportDlls( Kernel::support_spec_map_t& reportInstantiators );
-    bool LoadInterventionDlls(const char* dllName=nullptr);
 
     bool StringEquals(const emodulewstr& wStr, const char* cStr);
 #if defined(WIN32)

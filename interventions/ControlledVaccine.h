@@ -14,7 +14,7 @@ namespace Kernel
 
     class ControlledVaccine : public SimpleVaccine, public IControlledVaccine
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, ControlledVaccine, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, ControlledVaccine, IDistributableIntervention)
         DECLARE_QUERY_INTERFACE()
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
 

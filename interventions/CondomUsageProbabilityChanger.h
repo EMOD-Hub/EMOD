@@ -11,7 +11,7 @@ namespace Kernel
 
     class CondomUsageProbabilityChanger : public AbstractSocietyOverrideIntervention
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, CondomUsageProbabilityChanger, INodeDistributableIntervention) 
+        DECLARE_FACTORY_REGISTERED(NodeIVFactory, CondomUsageProbabilityChanger, INodeDistributableIntervention) 
 
     public:        
         CondomUsageProbabilityChanger();

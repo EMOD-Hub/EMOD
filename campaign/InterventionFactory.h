@@ -8,46 +8,51 @@
 
 namespace Kernel
 {
-    struct IInterventionFactory
-    {
-        virtual void Register( const char *classname, instantiator_function_t _if ) = 0;
-    };
-
-    class InterventionFactory : public ObjectFactory<IDistributableIntervention,InterventionFactory>
-                              , public IInterventionFactory
+    class InterventionFactory
     {
     public:
-        virtual void Register( const char *classname, instantiator_function_t _if ) override;
-
         // returns NULL if could not create a distributable intervention with the specified definition
-        IDistributableIntervention* CreateIntervention( const json::Element& rJsonElement,
-                                                        const std::string& rDataLocation,
-                                                        const char* parameterName,
-                                                        bool throwIfNull=false );
-        void CreateInterventionList( const json::Element& rJsonElement,
-                                     const std::string& rDataLocation,
-                                     const char* parameterName,
-                                     std::vector<IDistributableIntervention*>& interventionsList );
-
-        // returns NULL if could not create a node distributable intervention with the specified definition
-        INodeDistributableIntervention* CreateNDIIntervention( const json::Element& rJsonElement,
+        static IDistributableIntervention* CreateIntervention( const json::Element& rJsonElement,
                                                                const std::string& rDataLocation,
                                                                const char* parameterName,
                                                                bool throwIfNull=false );
-        void CreateNDIInterventionList( const json::Element& rJsonElement,
-                                        const std::string& rDataLocation,
-                                        const char* parameterName,
-                                        std::vector<INodeDistributableIntervention*>& interventionsList );
+        static void CreateInterventionList( const json::Element& rJsonElement,
+                                            const std::string& rDataLocation,
+                                            const char* parameterName,
+                                            std::vector<IDistributableIntervention*>& interventionsList );
 
-        void SetUseDefaults( bool useDefaults );
-        bool IsUsingDefaults() const;
+        // returns NULL if could not create a node distributable intervention with the specified definition
+        static INodeDistributableIntervention* CreateNDIIntervention( const json::Element& rJsonElement,
+                                                                      const std::string& rDataLocation,
+                                                                      const char* parameterName,
+                                                                      bool throwIfNull=false );
+        static void CreateNDIInterventionList( const json::Element& rJsonElement,
+                                               const std::string& rDataLocation,
+                                               const char* parameterName,
+                                               std::vector<INodeDistributableIntervention*>& interventionsList );
+
+        static void SetUseDefaults( bool useDefaults );
+        static bool IsUsingDefaults();
+
+    protected:
+        static bool m_UseDefaults;
+    };
+
+    class IndividualIVFactory : public ObjectFactory<IDistributableIntervention, IndividualIVFactory>
+    {
+        friend class InterventionFactory;
 
     protected:
         template<class IObject, class Factory> friend class Kernel::ObjectFactory;
+        IndividualIVFactory();
+    };
 
-        InterventionFactory();
-        virtual void ModifySchema( json::QuickBuilder& rSchema, ISupports*pObject );
+    class NodeIVFactory : public ObjectFactory<INodeDistributableIntervention, NodeIVFactory>
+    {
+        friend class InterventionFactory;
 
-        bool m_UseDefaults;
+    protected:
+        template<class IObject, class Factory> friend class Kernel::ObjectFactory;
+        NodeIVFactory();
     };
 }

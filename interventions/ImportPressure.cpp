@@ -3,7 +3,6 @@
 #include "ImportPressure.h"
 
 #include "Exceptions.h"
-#include "InterventionFactory.h"
 #include "NodeEventContext.h"  // for ISporozoiteChallengeConsumer methods
 #include "SimulationConfig.h"
 #include "RANDOM.h"

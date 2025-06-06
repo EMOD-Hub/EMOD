@@ -53,68 +53,32 @@ const std::vector<std::string> getSimTypeList()
     return simTypeList;
 }
 
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-// access to input schema embedding
-
-void IDMAPI writeInputSchemas(
-    const char* dll_path,
-    const char* output_path
-)
+void writeInputSchemas( const char* output_path )
 {
-    std::ofstream schema_ostream_file;
-    json::Object fakeJsonRoot;
-    json::QuickBuilder total_schema( fakeJsonRoot );
+    json::Object jsonRoot;
+    json::QuickBuilder total_schema( jsonRoot );
 
-    // Get DTK version into schema
+    Kernel::JsonConfigurable::_dryrun = true;
+
+    // --- Create Metadata Schema
     json::Object vsRoot;
     json::QuickBuilder versionSchema( vsRoot );
     ProgDllVersion pv;
     versionSchema["DTK_Version"] = json::String( pv.getVersion() );
     versionSchema["DTK_Branch"] = json::String( pv.getSccsBranch() );
     versionSchema["DTK_Build_Date"] = json::String( pv.getBuildDate() );
+
     total_schema["Version"] = versionSchema.As<json::Object>();
 
-    std::string szOutputPath = std::string( output_path );
-    if( szOutputPath != "stdout" )
-    {
-        // Attempt to open output path
-        FileSystem::OpenFileForWriting( schema_ostream_file, output_path );
-    }
-    std::ostream &schema_ostream = ( ( szOutputPath == "stdout" ) ? std::cout : schema_ostream_file );
-
-    DllLoader dllLoader;
-    std::map< std::string, createSim > createSimFuncPtrMap;
-
-    if( dllLoader.LoadDiseaseDlls(createSimFuncPtrMap) )
-    {
-        //LOG_DEBUG( "Calling GetDiseaseDllSchemas\n" );
-        json::Object diseaseSchemas = dllLoader.GetDiseaseDllSchemas();
-        total_schema[ "config:emodules" ] = diseaseSchemas;
-    }
-
-    // Intervention dlls don't need any schema printing, just loading them
-    // through DllLoader causes them to all get registered with exe's Intervention
-    // Factory, which makes regular GetSchema pathway work. This still doesn't solve
-    // the problem of reporting in the schema output what dll they came from, if we
-    // even want to.
-    dllLoader.LoadInterventionDlls();
-
-    Kernel::JsonConfigurable::_dryrun = true;
-    std::ostringstream oss;
-
-    // ---------------------------
     // --- Create Config Schema
-    // ---------------------------
     json::Object configSchemaAll;
 
     for (auto& sim_type : getSimTypeList())
     {
         json::Object fakeSimTypeConfigJson;
         fakeSimTypeConfigJson["Simulation_Type"] = json::String(sim_type);
-        Configuration * fakeConfig = Configuration::CopyFromElement( fakeSimTypeConfigJson );
-        Kernel::SimulationConfig * pConfig = Kernel::SimulationConfigFactory::CreateInstance(fakeConfig);
+        Configuration* fakeConfig = Configuration::CopyFromElement( fakeSimTypeConfigJson );
+        Kernel::SimulationConfig* pConfig = Kernel::SimulationConfigFactory::CreateInstance(fakeConfig);
         release_assert( pConfig );
 
         json::QuickBuilder config_schema = pConfig->GetSchema();
@@ -133,67 +97,93 @@ void IDMAPI writeInputSchemas(
 
     total_schema[ "config" ] = configSchemaAll;
 
-    // ---------------------------
     // --- Create Campaign Schema
-    // ---------------------------
-    if( !Kernel::InterventionFactory::getInstance() )
-    {
-        throw Kernel::InitializationException( __FILE__, __LINE__, __FUNCTION__, "Kernel::InterventionFactory::getInstance(" );
-    }
+    json::Object camp_defaults_root;
+    json::QuickBuilder camp_ud_schema( camp_defaults_root );
+
+    camp_ud_schema["type"] = json::String( "bool" );
+    camp_ud_schema["default"] = json::Number( 0 );
+    camp_ud_schema["description"] = json::String( CAMP_Use_Defaults_DESC_TEXT );
+
+    json::Object camp_root;
+    json::QuickBuilder camp_schema( camp_root );
+
+    camp_schema["Events"][0] = json::String( "idmAbstractType:CampaignEvent" );
+    camp_schema["Use_Defaults"] = camp_ud_schema.As<json::Object>();
+
+    total_schema["interventions"] = camp_schema.As<json::Object>();
+
+    // --- Create Reports Schema
+    json::Object reports_defaults_root;
+    json::QuickBuilder report_ud_schema( reports_defaults_root );
+
+    report_ud_schema["type"] = json::String( "bool" );
+    report_ud_schema["default"] = json::Number( 0 );
+    report_ud_schema["description"] = json::String( REPORTS_Use_Defaults_DESC_TEXT );
+
+    json::Object reports_root;
+    json::QuickBuilder reports_schema( reports_root );
+
+    reports_schema["Reports"][0] = json::String( "idmType:IReport" );
+    reports_schema["Use_Defaults"] = report_ud_schema.As<json::Object>();
+
+    total_schema["reports"] = reports_schema.As<json::Object>();
+
+    // --- Create idmTypes Schema
+    json::Object ivtypes_root;
+    json::QuickBuilder ivt_schema( ivtypes_root );
+
+    json::QuickBuilder ivs_schema = Kernel::IndividualIVFactory::getInstance()->GetSchema();
+    json::QuickBuilder nvs_schema = Kernel::NodeIVFactory::getInstance()->GetSchema();
+
+    ivt_schema["idmAbstractType:IndividualIntervention"] = ivs_schema.As<json::Object>();
+    ivt_schema["idmAbstractType:NodeIntervention"]       = nvs_schema.As<json::Object>();
+
+    json::Object idmtypes_root;
+    json::QuickBuilder idmtypes_schema( idmtypes_root );
 
     json::QuickBuilder ces_schema = Kernel::CampaignEventFactory::getInstance()->GetSchema();
     json::QuickBuilder ecs_schema = Kernel::EventCoordinatorFactory::getInstance()->GetSchema();
-    json::QuickBuilder ivs_schema = Kernel::InterventionFactory::getInstance()->GetSchema();
-    json::QuickBuilder ns_schema  = Kernel::NodeSetFactory::getInstance()->GetSchema();
-    json::QuickBuilder we_schema  = Kernel::WaningEffectFactory::getInstance()->GetSchema();
-    json::QuickBuilder ar_schema  = Kernel::AdditionalRestrictionsFactory::getInstance()->GetSchema();
+    json::QuickBuilder nds_schema = Kernel::NodeSetFactory::getInstance()->GetSchema();
+    json::QuickBuilder rpt_schema = Kernel::ReportFactory::getInstance()->GetSchema();
+    json::QuickBuilder we_schema = Kernel::WaningEffectFactory::getInstance()->GetSchema();
+    json::QuickBuilder ar_schema = Kernel::AdditionalRestrictionsFactory::getInstance()->GetSchema();
 
-    json::Object objRoot;
-    json::QuickBuilder camp_schema( objRoot );
+    idmtypes_schema["idmAbstractType:CampaignEvent"] = ces_schema.As<json::Object>();
+    idmtypes_schema["idmAbstractType:Intervention"] = ivt_schema.As<json::Object>();
+    idmtypes_schema["idmAbstractType:EventCoordinator"] = ecs_schema.As<json::Object>();
+    idmtypes_schema["idmAbstractType:NodeSet"] = nds_schema.As<json::Object>();
+    idmtypes_schema["idmType:IReport"] = rpt_schema.As<json::Object>();  // Should be abstract type!
+    idmtypes_schema["idmType:WaningEffect"] = we_schema.As<json::Object>();  // Should be abstract type!
+    idmtypes_schema["idmType:AdditionalRestrictions"] = ar_schema.As<json::Object>();
 
-    json::Object useDefaultsRoot;
-    json::QuickBuilder udSchema( useDefaultsRoot );
-    udSchema["type"] = json::String( "bool" );
-    udSchema["default"] = json::Number( 0 );
-    udSchema["description"] = json::String( CAMP_Use_Defaults_DESC_TEXT );
-    camp_schema["Use_Defaults"] = udSchema.As<json::Object>();
+    total_schema[ "idmTypes" ] = idmtypes_schema.As<json::Object>();
 
-    camp_schema["Events"][0] = json::String( "idmType:CampaignEvent" );
+    // --- Post-processing schema
+    json::Object idmtypes_addl;
+    json::SchemaUpdater updater(idmtypes_addl);
+    jsonRoot.Accept(updater);
 
-    camp_schema[ "idmTypes" ][ "idmType:CampaignEvent"          ] = ces_schema.As<json::Object>();
-    camp_schema[ "idmTypes" ][ "idmType:EventCoordinator"       ] = ecs_schema.As<json::Object>();
-    camp_schema[ "idmTypes" ][ "idmType:Intervention"           ] = ivs_schema.As<json::Object>();
-    camp_schema[ "idmTypes" ][ "idmType:NodeSet"                ] = ns_schema.As<json::Object>();
-    camp_schema[ "idmTypes" ][ "idmType:WaningEffect"           ] = we_schema.As<json::Object>();
-    camp_schema[ "idmTypes" ][ "idmType:AdditionalRestrictions" ] = ar_schema.As<json::Object>();
+    json::Object::iterator it(idmtypes_addl.Begin());
+    json::Object::iterator itEnd(idmtypes_addl.End());
 
-    total_schema[ "interventions" ] = camp_schema.As< json::Object> ();
+    while (it != itEnd)
+    {
+        total_schema["idmTypes"][it->name] = it->element;
+        it++;
+    }
 
-    // ---------------------------
-    // --- Create Reports Schema
-    // ---------------------------
-    json::Object reports_objRoot;
-    json::QuickBuilder reports_schema( reports_objRoot );
-
-    json::Object reports_useDefaultsRoot;
-    json::QuickBuilder reports_udSchema( reports_useDefaultsRoot );
-    reports_udSchema["type"] = json::String( "bool" );
-    reports_udSchema["default"] = json::Number( 0 );
-    reports_udSchema["description"] = json::String( REPORTS_Use_Defaults_DESC_TEXT );
-    reports_schema["Use_Defaults"] = reports_udSchema.As<json::Object>();
-
-    reports_schema["Reports"][0] = json::String( "idmType:IReport" );
-
-    json::QuickBuilder rf_schema  = Kernel::ReportFactory::getInstance()->GetSchema();
-
-    reports_schema["idmTypes" ][ "idmType:IReport" ] = rf_schema.As<json::Object>();
-
-    total_schema[ "reports" ] = reports_schema.As< json::Object> ();
-
-    // --------------------------
     // --- Write Schema to output
-    // --------------------------
-    json::Writer::Write( total_schema, schema_ostream );
+    std::ofstream schema_ostream_file;
+    std::string szOutputPath = std::string( output_path );
+    if( szOutputPath != "stdout" )
+    {
+        // Attempt to open output path
+        FileSystem::OpenFileForWriting( schema_ostream_file, output_path );
+    }
+    std::ostream &schema_ostream = ( ( szOutputPath == "stdout" ) ? std::cout : schema_ostream_file );
+
+    json::Writer::Write( total_schema, schema_ostream, "    ", true, true );
     schema_ostream_file.close();
 
     // PythonSupportPtr can be null during componentTests
@@ -204,3 +194,73 @@ void IDMAPI writeInputSchemas(
     }
 }
 
+
+namespace json
+{
+    void SchemaUpdater::Visit(Array& array)
+    {
+        Array::iterator it(array.Begin());
+        Array::iterator itEnd(array.End());
+
+        // Iterate over elements
+        while (it != itEnd)
+        {
+            // No action; 
+            it->Accept(*this); 
+            it++;
+        }
+    }
+
+    void SchemaUpdater::Visit(Object& object)
+    {
+        Object::iterator it(object.Begin());
+        Object::iterator itEnd(object.End());
+
+        // Iterate over elements
+        while (it != itEnd)
+        {
+            it->element.Accept(*this);
+
+            // Aggregate idmTypes to separate object
+            std::string key_str = it->name;
+            if(key_str.rfind("idmType:", 0) == 0)
+            {
+                if(!m_idmt_schema.Exist(it->name))
+                {
+                    Object::Member obj_copy(key_str, Element(it->element));
+                    m_idmt_schema.Insert(obj_copy);
+                }
+                it = object.Erase(it);
+            }
+            else
+            {
+                it++;
+            }
+        }
+    }
+
+    void SchemaUpdater::Visit(String& stringElement)
+    {
+        // No action;
+    }
+
+    void SchemaUpdater::Visit(Number& number)
+    {
+        // No action;
+    }
+
+    void SchemaUpdater::Visit(Uint64& number)
+    {
+        // No action;
+    }
+
+    void SchemaUpdater::Visit(Boolean& booleanElement)
+    {
+        // No action;
+    }
+
+    void SchemaUpdater::Visit(Null& nullElement)
+    {
+        // No action;
+    }
+}

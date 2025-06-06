@@ -2,7 +2,6 @@
 #include "stdafx.h"
 #include "BirthTriggeredIV.h"
 
-#include "InterventionFactory.h"
 #include "Log.h"
 #include "Debug.h"
 #include "NodeEventContext.h"  // for INodeEventContext (ICampaignCostObserver)
@@ -71,10 +70,7 @@ namespace Kernel
         if( ret & !JsonConfigurable::_dryrun )
         {
             demographic_restrictions.CheckConfiguration();
-            m_di = InterventionFactory::getInstance()->CreateIntervention( actual_intervention_config._json,
-                                                                           inputJson->GetDataLocation(),
-                                                                           "Actual_IndividualIntervention_Config",
-                                                                           true ); 
+            m_di = InterventionFactory::CreateIntervention( actual_intervention_config._json, inputJson->GetDataLocation(), "Actual_IndividualIntervention_Config", true ); 
         }
         return ret ;
     }

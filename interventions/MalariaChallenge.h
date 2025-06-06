@@ -17,7 +17,7 @@ namespace Kernel
     {
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
         DECLARE_CONFIGURED(Outbreak)
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, MalariaChallenge, INodeDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(NodeIVFactory, MalariaChallenge, INodeDistributableIntervention)
 
     public:
         MalariaChallenge();

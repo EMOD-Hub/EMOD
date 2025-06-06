@@ -17,6 +17,3 @@ cajunIncFiles = ["include/elements.h",
 cajunLocalInc = ["stdafx.h"]
 
 cajunLib = env.StaticLibrary('cajun', cajunSrcFiles)
-
-
-

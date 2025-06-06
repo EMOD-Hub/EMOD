@@ -19,7 +19,7 @@ namespace Kernel
     public:
         virtual bool Configure( const Configuration * config ) override;
 
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, PropertyValueChanger, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, PropertyValueChanger, IDistributableIntervention)
 
     public:
         PropertyValueChanger();

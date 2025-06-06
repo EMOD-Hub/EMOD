@@ -22,7 +22,7 @@ namespace Kernel
 
     class STIBarrier : public BaseIntervention
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, STIBarrier, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, STIBarrier, IDistributableIntervention)
 
     public:
         STIBarrier();

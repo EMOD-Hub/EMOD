@@ -3,7 +3,6 @@
 #include "STIIsPostDebut.h"
 
 #include "InterventionEnums.h"
-#include "InterventionFactory.h"
 #include "IndividualSTI.h"
 
 SETUP_LOGGING( "STIIsPostDebut" )

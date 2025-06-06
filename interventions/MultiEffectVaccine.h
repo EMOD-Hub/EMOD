@@ -7,7 +7,7 @@ namespace Kernel
 { 
     class MultiEffectVaccine : public SimpleVaccine
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, MultiEffectVaccine, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, MultiEffectVaccine, IDistributableIntervention)
 
     public:
         MultiEffectVaccine();

@@ -3,7 +3,6 @@
 #include "VectorControlNodeTargeted.h"
 
 #include "Exceptions.h"
-#include "InterventionFactory.h"
 #include "NodeVectorEventContext.h" // for INodeVectorInterventionEffectsApply methods
 #include "SimulationConfig.h"
 #include "VectorParameters.h"

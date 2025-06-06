@@ -25,5 +25,6 @@
             "Box_Duration": 365
         }
     },
-    "Initial_Amount_Constant": 10
+    "Initial_Amount_Constant": 10,
+    "Targeting_Config": {}
 }

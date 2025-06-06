@@ -14,14 +14,12 @@ namespace Kernel
 
     IAdditionalRestrictions* AdditionalRestrictionsFactory::CreateInstance( const json::Element& rJsonElement,
                                                                             const std::string& rDataLocation,
-                                                                            const char* parameterName,
-                                                                            bool nullOrEmptyNotError )
+                                                                            const char* parameterName )
     {
         IAdditionalRestrictions* p_ar = 
             ObjectFactory<IAdditionalRestrictions, AdditionalRestrictionsFactory>::CreateInstance( rJsonElement,
                                                                                                    rDataLocation,
-                                                                                                   parameterName,
-                                                                                                   nullOrEmptyNotError );
+                                                                                                   parameterName );
 
         if( p_ar != nullptr )
         {

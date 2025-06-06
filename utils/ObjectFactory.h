@@ -36,21 +36,19 @@ namespace Kernel
         virtual json::QuickBuilder GetSchema();
 
         // Return a new configured instance of the object defined by 'pConfig'
-        virtual IObject* CreateInstance( const Configuration *pConfig,
-                                         const char* parameterName,
-                                         bool nullOrEmptyOrNoClassNotError =false );
         virtual IObject* CreateInstance( const json::Element& rJsonElement,
                                          const std::string& rDataLocation,
-                                         const char* parameterName,
-                                         bool nullOrEmptyOrNoClassNotError =false );
-
-    protected:
-        ObjectFactory( bool queryForReturnInterface = true );
+                                         const char* parameterName );
 
         // check that the input JSON ('pConfig') is valid
-        bool CheckElement( const Configuration* pConfig,
-                           const char* parameterName,
-                           bool nullOrEmptyNotError );
+        // skip_exceptions ignores no-class-def and wrong-class-def; does not ignore bad formatting
+        bool ElementIsValid( const json::Element& rJsonElement,
+                             const std::string& rDataLocation,
+                             const char* parameterName,
+                             bool skip_exceptions=true );
+
+    protected:
+        ObjectFactory( bool queryForReturnInterface=true );
 
         // Provides a hook for the factory to add other stuff to the schema for an object
         virtual void ModifySchema( json::QuickBuilder& rSchema, ISupports*pObject ){};

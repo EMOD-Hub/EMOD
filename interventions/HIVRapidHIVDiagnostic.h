@@ -16,7 +16,7 @@ namespace Kernel
     class HIVRapidHIVDiagnostic : public HIVSimpleDiagnostic
     {
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, HIVRapidHIVDiagnostic, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, HIVRapidHIVDiagnostic, IDistributableIntervention)
 
     public: 
         HIVRapidHIVDiagnostic();

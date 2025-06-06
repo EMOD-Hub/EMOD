@@ -10,7 +10,7 @@ namespace Kernel
 
     class RelationshipFormationRateChanger : public AbstractSocietyOverrideIntervention
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, RelationshipFormationRateChanger, INodeDistributableIntervention) 
+        DECLARE_FACTORY_REGISTERED(NodeIVFactory, RelationshipFormationRateChanger, INodeDistributableIntervention) 
 
     public:        
         RelationshipFormationRateChanger();

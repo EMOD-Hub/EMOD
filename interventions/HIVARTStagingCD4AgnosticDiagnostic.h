@@ -8,7 +8,7 @@ namespace Kernel
 {
     class IDMAPI HIVARTStagingCD4AgnosticDiagnostic : public HIVARTStagingAbstract
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, HIVARTStagingCD4AgnosticDiagnostic, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, HIVARTStagingCD4AgnosticDiagnostic, IDistributableIntervention)
 
     public: 
         HIVARTStagingCD4AgnosticDiagnostic();

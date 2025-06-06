@@ -15,29 +15,37 @@ TODO: additional documentation.
 
 namespace json
 {
+    class Writer : private ConstVisitor
+    {
+        public:
+            static void Write(const Element& elementRoot, std::ostream& ostr,
+                              const std::string& indentChars="    ",
+                              bool add_endl=true, bool sort_keys=false);
 
+        private:
+            Writer(std::ostream& ostr, const std::string& indentChars,
+                   bool add_endl, bool sort_keys)
+                : m_ostr(ostr)
+                , m_indentChars(indentChars)
+                , m_nTabDepth(0)
+                , m_add_endl(add_endl)
+                , m_sort_keys(sort_keys)
+            { }
 
-class Writer : private ConstVisitor
-{
-public:
-   static void Write(const Element& elementRoot, std::ostream& ostr);
-      
-private:
-   Writer(std::ostream& ostr) :
-      m_ostr(ostr),
-      m_nTabDepth(0) {}
+        std::string MultiIndent(int nReps);
 
-   virtual void Visit(const Array& array);
-   virtual void Visit(const Object& object);
-   virtual void Visit(const Number& number);
-   virtual void Visit(const Uint64& number);
-   virtual void Visit(const String& string);
-   virtual void Visit(const Boolean& boolean);
-   virtual void Visit(const Null& null);
+        virtual void Visit(const Array& array);
+        virtual void Visit(const Object& object);
+        virtual void Visit(const Number& number);
+        virtual void Visit(const Uint64& number);
+        virtual void Visit(const String& string);
+        virtual void Visit(const Boolean& boolean);
+        virtual void Visit(const Null& null);
 
-   std::ostream& m_ostr;
-   int m_nTabDepth;
-};
-
-
-} // End namespace
+        std::ostream& m_ostr;
+        std::string m_indentChars;
+        int m_nTabDepth;
+        bool m_add_endl;
+        bool m_sort_keys;
+    };
+}

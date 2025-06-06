@@ -8,7 +8,7 @@ namespace Kernel
 { 
     class MultiEffectBoosterVaccine : public MultiEffectVaccine
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, MultiEffectBoosterVaccine, IDistributableIntervention)
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, MultiEffectBoosterVaccine, IDistributableIntervention)
 
     public:
         MultiEffectBoosterVaccine();

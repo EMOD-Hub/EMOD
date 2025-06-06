@@ -6,7 +6,6 @@
 
 #include "IIndividualHumanContext.h"
 #include "InterventionEnums.h"
-#include "InterventionFactory.h"
 #include "IndividualEventContext.h"
 #include "NodeEventContext.h"
 #include "IIndividualHumanSTI.h"
@@ -103,10 +102,7 @@ namespace Kernel
                 }
                 else
                 {
-                    m_di = InterventionFactory::getInstance()->CreateIntervention( intervention_config._json,
-                                                                                   inputJson->GetDataLocation(),
-                                                                                   "Intervention_Config",
-                                                                                   true );
+                    m_di = InterventionFactory::CreateIntervention( intervention_config._json, inputJson->GetDataLocation(), "Intervention_Config" );
                 }
             }
             m_RelationshipTypes = ConvertStringsToRelationshipTypes( "Relationship_Types", rel_type_strings );

@@ -9,7 +9,7 @@ namespace Kernel
 
     class RelationshipDurationChanger : public AbstractSocietyOverrideIntervention
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, RelationshipDurationChanger, INodeDistributableIntervention) 
+        DECLARE_FACTORY_REGISTERED(NodeIVFactory, RelationshipDurationChanger, INodeDistributableIntervention) 
 
     public:        
         RelationshipDurationChanger();

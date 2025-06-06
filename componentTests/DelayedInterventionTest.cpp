@@ -78,8 +78,7 @@ SUITE( DelayedInterventionTest )
         m_pSimulationConfig->migration_structure = MigrationStructure::FIXED_RATE_MIGRATION;
 
         std::string exp_msg;
-        exp_msg += "Error loading 'MigrateFamily' via 'InterventionFactory' for 'Actual_IndividualIntervention_Configs[1]' in <testdata/DelayedInterventionTest/TestIllegalNodeLevelIntervention.json>.\n";
-        exp_msg += "This parameter only takes individual-level interventions.";
+        exp_msg += "'IndividualIVFactory' could not find class 'MigrateFamily'.\n";
 
         TestHelper_Exception( __LINE__, "testdata/DelayedInterventionTest/TestIllegalNodeLevelIntervention.json", exp_msg.c_str() );
     }

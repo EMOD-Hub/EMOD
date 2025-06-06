@@ -92,16 +92,10 @@ namespace Kernel
 
             CheckRepetitionConfiguration();
 
-            m_pInterventionIndividual = InterventionFactory::getInstance()->CreateIntervention( intervention_config._json,
-                                                                                                inputJson->GetDataLocation(),
-                                                                                                "Intervention_Config",
-                                                                                                false ); // don't throw if null
+            m_pInterventionIndividual = InterventionFactory::CreateIntervention( intervention_config._json, inputJson->GetDataLocation(), "Intervention_Config", false ); // don't throw if null
             if( m_pInterventionIndividual == nullptr )
             {
-                m_pInterventionNode = InterventionFactory::getInstance()->CreateNDIIntervention( intervention_config._json,
-                                                                                                 inputJson->GetDataLocation(),
-                                                                                                 "Intervention_Config",
-                                                                                                 false ); // don't throw if null
+                m_pInterventionNode = InterventionFactory::CreateNDIIntervention( intervention_config._json, inputJson->GetDataLocation(), "Intervention_Config", false ); // don't throw if null
             }
             if( (m_pInterventionIndividual == nullptr) && (m_pInterventionNode == nullptr) )
             {

@@ -324,8 +324,7 @@ namespace Kernel
 
             IAdditionalRestrictions* p_ar = AdditionalRestrictionsFactory::getInstance()->CreateInstance( json_obj,
                                                                                                           rDataLocation,
-                                                                                                          param_name.str().c_str(),
-                                                                                                          true );
+                                                                                                          param_name.str().c_str() );
             arList.push_back( p_ar );
         }
     }

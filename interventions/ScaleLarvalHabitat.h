@@ -8,7 +8,7 @@ namespace Kernel
 {
     class ScaleLarvalHabitat : public SimpleVectorControlNode
     {
-        DECLARE_FACTORY_REGISTERED(InterventionFactory, ScaleLarvalHabitat, INodeDistributableIntervention) 
+        DECLARE_FACTORY_REGISTERED(NodeIVFactory, ScaleLarvalHabitat, INodeDistributableIntervention) 
 
     public:
         ScaleLarvalHabitat();
