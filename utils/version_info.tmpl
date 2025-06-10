@@ -89,6 +89,7 @@
 //                      Added Vector Migration by Genome
 //                      Disabled Serialization_Mask_Node_Write & Serialization_Mask_Node_Read
 // 2.25 - 06/09/2025 -  Added internal schema post-processing, no need to post-process the schema when generated, already done
+//                      Serialization version update due to code changes for ReportFPGNewInfections
 //                      HIV: Assortivity speed up
 //                           Added condomless sex acts event
 //                           Fixed ReportHIVByAgeAndGender issue GH-77
@@ -130,8 +131,9 @@ static const char* BUILD_DATE = __DATE__ " " __TIME__;
 //4.0.0 - 06/30/2023 - GH-4935 - FPG-Hash Collision - New genome ID generator in ParasiteGenetics a new ID in a genome
 //5.0.0 - 07/09/2023 - GH-4792 - Added m_OocystDuration to ParasiteCohort
 //6.0.0 - 10/17/2024 - Vector_Migration_Improvements - New VectorCohortMale class
+//7.0.0 - 06/09/2025 - https://github.com/EMOD-Hub/EMOD/issues/89 - new data for ReportFPGNewInfections
 
-#define SER_POP_MAJOR_VERSION   6
+#define SER_POP_MAJOR_VERSION   7
 #define SER_POP_MINOR_VERSION   0
 #define SER_POP_PATCH_VERSION   0
 
