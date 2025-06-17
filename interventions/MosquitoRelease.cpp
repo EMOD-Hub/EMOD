@@ -94,6 +94,7 @@ namespace Kernel
 
                 VectorGeneCollection*       p_genes   = nullptr;
                 VectorGeneDriverCollection* p_drivers = nullptr;
+                VectorMaternalDepositionCollection* p_maternal_deposition = nullptr;
 
                 int microsporidia_strain_index = -1;
 
@@ -103,8 +104,9 @@ namespace Kernel
                     if( p_vp->vector_species[ i ]->name == m_ReleasedSpecies )
                     {
                         VectorSpeciesParameters* p_vsp = p_vp->vector_species[ i ];
-                        p_genes   = &(p_vsp->genes);
-                        p_drivers = &(p_vsp->gene_drivers);
+                        p_genes   = &( p_vsp->genes );
+                        p_drivers = &( p_vsp->gene_drivers );
+                        p_maternal_deposition = &( p_vsp->maternal_deposition );
 
                         if( microsporidia_strain_name.length() > 0 )
                         {

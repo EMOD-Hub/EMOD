@@ -42,8 +42,8 @@ namespace Kernel
     protected:
         const VectorGeneCollection* m_pGenes;
         std::string m_CopyToAlleleName;
-        uint8_t m_CopyToAlleleIndex;
-        float m_Prob;
+        uint8_t     m_CopyToAlleleIndex;
+        float       m_Prob;
     };
 
     class CopyToAlleleLikelihoodCollection : public JsonConfigurableCollection<CopyToAlleleLikelihood>
