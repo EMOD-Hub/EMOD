@@ -167,6 +167,7 @@ namespace Kernel
                                    const std::vector<std::vector<std::string>>& rComboStrings ) const;
 
         const std::string& GetAlleleName( uint8_t locusIndex, uint8_t alleleIndex ) const;
+        std::string GetGameteName( const VectorGamete& rGamete ) const;
 
         // IVectorGenomeNames
         virtual std::string GetGenomeName( const VectorGenome& rGenome ) const override; 

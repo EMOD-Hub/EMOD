@@ -59,23 +59,23 @@ namespace Kernel
 
         // Other
         void    CheckRedifinition( const MaternalDeposition& rthat ) const;
-        uint8_t GetLocusIndexToCut() const;
-        uint8_t GetAlleleIndexToCut() const;
+        uint8_t GetAlleleToCutLocus() const;
+        uint8_t GetAlleleToCutIndex() const;
+        uint8_t GetCas9AlleleLocus() const;
+        uint8_t GetCas9AlleleIndex() const;
         const CutToAlleleLikelihoodCollection& GetCutToLikelihoods() const;
-        virtual uint8_t MomCas9AlleleCount( const VectorGenome& rMomGenome ) const;
-        virtual void    DoMaternalDeposition( uint8_t num_cas9_alleles, GameteProbPairVector_t& rGametes ) const;
-        const std::string GetCas9Allele() const;
+        virtual uint16_t MomCas9AlleleCount(   const VectorGenome& rMomGenome ) const;
+        virtual void     DoMaternalDeposition( uint16_t num_cas9_alleles, 
+                                               GameteProbPairVector_t& rGametes ) const;
 
     private:
-        uint8_t m_LocusIndexToCut;
-        uint8_t m_AlleleIndexToCut;
+        uint8_t m_AlleleToCutLocus;
+        uint8_t m_AlleleToCutIndex;
+        uint8_t m_Cas9AlleleLocus;
+        uint8_t m_Cas9AlleleIndex;
         const VectorGeneCollection*     m_pGenes;
         VectorGeneDriverCollection*     m_pGeneDrivers;
         CutToAlleleLikelihoodCollection m_CutToLikelihoods;
-        jsonConfigurable::ConstrainedString m_Cas9Allele;
-
-
-
     };
 
 

@@ -1009,6 +1009,25 @@ namespace Kernel
         return indexes_list;
     }
 
+    std::string VectorGeneCollection::GetGameteName( const VectorGamete& rGamete ) const
+    {
+        std::string gamete_name;
+        for( auto p_gene : m_Collection )
+        {
+            uint8_t locus_index = p_gene->GetLocusIndex();
+            uint8_t gamete_index = rGamete.GetLocus( locus_index );
+            const VectorAllele* p_allele = p_gene->GetAllele( gamete_index );
+            release_assert( p_allele != nullptr );
+
+            if( !gamete_name.empty() )
+            {
+                gamete_name += "-";
+            }
+            gamete_name += p_allele->GetName();
+        }
+        return gamete_name;
+    }
+
     std::string VectorGeneCollection::GetGenomeName( const VectorGenome& rGenome ) const
     {
         std::string mom_gamete_name;
