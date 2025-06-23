@@ -29,7 +29,7 @@ SUITE( VectorMaternalDepositionTest )
         }
     };
 
-    /*
+
     TEST_FIXTURE( VectorMaternalDepositionFixture, TestConfigure )
     {
         unique_ptr<Configuration> p_config( Environment::LoadConfigurationFile( "testdata/VectorMaternalDepositionTest/TestConfigure.json" ) );
@@ -182,22 +182,23 @@ SUITE( VectorMaternalDepositionTest )
             CHECK( gametes[i].gamete==gametes2[i].gamete);
             CHECK( gametes[i].prob  ==gametes2[i].prob);
             total += gametes[i].prob;
-            printf( "Gamete %d: %s, prob=%.4f\n", i, gene_collection.GetGameteName( gametes[i].gamete ).c_str(), gametes[i].prob );
         }
 
+        // --- Check the results
+        // making gametes into a genome to avoid adding GetGameteName() logic
         CHECK_EQUAL( 6, gametes.size() );
         CHECK_CLOSE( 1, total, FLT_EPSILON );
-        CHECK_EQUAL( "X-a1-b3-c3-d2-e2", gene_collection.GetGameteName( gametes[0].gamete ) );
+        CHECK_EQUAL( "X-a1-b3-c3-d2-e2:X-a1-b3-c3-d2-e2", gene_collection.GetGenomeName( VectorGenome( gametes[0].gamete, gametes[0].gamete) ) );
         CHECK_CLOSE( 0.3912, gametes[0].prob, FLT_EPSILON );
-        CHECK_EQUAL( "X-a3-b3-c3-d2-e2", gene_collection.GetGameteName( gametes[1].gamete ) );
+        CHECK_EQUAL( "X-a3-b3-c3-d2-e2:X-a3-b3-c3-d2-e2", gene_collection.GetGenomeName( VectorGenome( gametes[1].gamete, gametes[1].gamete ) ) );
         CHECK_CLOSE( 0.0978, gametes[1].prob, FLT_EPSILON );
-        CHECK_EQUAL( "X-a1-b3-c4-d2-e2", gene_collection.GetGameteName( gametes[2].gamete ) );
+        CHECK_EQUAL( "X-a1-b3-c4-d2-e2:X-a1-b3-c4-d2-e2", gene_collection.GetGenomeName( VectorGenome( gametes[2].gamete, gametes[2].gamete ) ) );
         CHECK_CLOSE( 0.0504, gametes[2].prob, FLT_EPSILON );
-        CHECK_EQUAL( "X-a3-b3-c4-d2-e2", gene_collection.GetGameteName( gametes[3].gamete ) );
+        CHECK_EQUAL( "X-a3-b3-c4-d2-e2:X-a3-b3-c4-d2-e2", gene_collection.GetGenomeName( VectorGenome( gametes[3].gamete, gametes[3].gamete ) ) );
         CHECK_CLOSE( 0.0126, gametes[3].prob, FLT_EPSILON );
-        CHECK_EQUAL( "X-a1-b3-c1-d2-e2", gene_collection.GetGameteName( gametes[4].gamete ) );
+        CHECK_EQUAL( "X-a1-b3-c1-d2-e2:X-a1-b3-c1-d2-e2", gene_collection.GetGenomeName( VectorGenome( gametes[4].gamete, gametes[4].gamete ) ) );
         CHECK_CLOSE( 0.3584, gametes[4].prob, FLT_EPSILON );
-        CHECK_EQUAL( "X-a3-b3-c1-d2-e2", gene_collection.GetGameteName( gametes[5].gamete ) );
+        CHECK_EQUAL( "X-a3-b3-c1-d2-e2:X-a3-b3-c1-d2-e2", gene_collection.GetGenomeName( VectorGenome( gametes[5].gamete, gametes[5].gamete ) ) );
         CHECK_CLOSE( 0.0896, gametes[5].prob, FLT_EPSILON );
 
         // --- Test DoMaternalDeposition with genome_has_d1, this means only md_2 will be applied once
@@ -207,11 +208,11 @@ SUITE( VectorMaternalDepositionTest )
         maternal_deposition.DoMaternalDeposition( genome_has_d1, gametes );
 
         CHECK_EQUAL( 3, gametes.size() );
-        CHECK_EQUAL( "X-a1-b3-c1-d2-e2", gene_collection.GetGameteName( gametes[0].gamete ) );
+        CHECK_EQUAL( "X-a1-b3-c1-d2-e2:X-a1-b3-c1-d2-e2", gene_collection.GetGenomeName( VectorGenome( gametes[0].gamete, gametes[0].gamete ) ) );
         CHECK_CLOSE( 0.8, gametes[0].prob, FLT_EPSILON );
-        CHECK_EQUAL( "X-a1-b3-c3-d2-e2", gene_collection.GetGameteName( gametes[1].gamete ) );
+        CHECK_EQUAL( "X-a1-b3-c3-d2-e2:X-a1-b3-c3-d2-e2", gene_collection.GetGenomeName( VectorGenome( gametes[1].gamete, gametes[1].gamete ) ) );
         CHECK_CLOSE( 0.15, gametes[1].prob, FLT_EPSILON );
-        CHECK_EQUAL( "X-a1-b3-c4-d2-e2", gene_collection.GetGameteName( gametes[2].gamete ) );
+        CHECK_EQUAL( "X-a1-b3-c4-d2-e2:X-a1-b3-c4-d2-e2", gene_collection.GetGenomeName( VectorGenome( gametes[2].gamete, gametes[2].gamete ) ) );
         CHECK_CLOSE( 0.05, gametes[2].prob, FLT_EPSILON );
 
         // --- Test DoMaternalDeposition with genome_has_a2, but no available alleles to cut
@@ -221,10 +222,10 @@ SUITE( VectorMaternalDepositionTest )
         maternal_deposition.DoMaternalDeposition( genome_has_d1, gametes );
 
         CHECK_EQUAL( 1, gametes.size() );
-        CHECK_EQUAL( "X-a2-b4-c2-d2-e2", gene_collection.GetGameteName( gametes[0].gamete ) );
+        CHECK_EQUAL( "X-a2-b4-c2-d2-e2:X-a2-b4-c2-d2-e2", gene_collection.GetGenomeName( VectorGenome( gametes[0].gamete, gametes[0].gamete ) ) );
         CHECK_CLOSE( 1, gametes[0].prob, FLT_EPSILON );
 
-    } */
+    } 
     
 
 

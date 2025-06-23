@@ -1,0 +1,57 @@
+{
+    "Events": [
+        {
+            "class": "CampaignEvent",
+            "Start_Day": 80, 
+            "Nodeset_Config": {
+                "class": "NodeSetNodeList",
+                "Node_List": [ 1 ]
+            }, 
+            "Event_Coordinator_Config": {
+                "class": "StandardInterventionDistributionEventCoordinator",
+                "Number_Repetitions": 1, 
+                "Timesteps_Between_Repetitions": 0, 
+                "Intervention_Config": {
+                    "class": "MosquitoRelease",
+                    "Cost_To_Consumer": 1, 
+                    "Released_Number": 10000, 
+                    "Released_Species": "arabiensis", 
+                    "Released_Wolbachia": "VECTOR_WOLBACHIA_FREE", 
+                    "Released_Genome" : [
+                        [  "X",  "Y" ],
+                        [ "Ad", "Aw" ],
+                        [ "Bw", "Bw" ],
+                        [ "Cw", "Cw" ]
+                    ]
+                }
+            }
+        },
+        {
+            "class": "CampaignEvent",
+            "Start_Day": 200, 
+            "Nodeset_Config": {
+                "class": "NodeSetNodeList",
+                "Node_List": [ 1 ]
+            }, 
+            "Event_Coordinator_Config": {
+                "class": "StandardInterventionDistributionEventCoordinator",
+                "Number_Repetitions": 1, 
+                "Timesteps_Between_Repetitions": 0, 
+                "Intervention_Config": {
+                    "class": "MosquitoRelease",
+                    "Cost_To_Consumer": 1, 
+                    "Released_Number": 10000, 
+                    "Released_Species": "arabiensis", 
+                    "Released_Wolbachia": "VECTOR_WOLBACHIA_FREE", 
+                    "Released_Genome" : [
+                        [  "X",  "Y" ],
+                        [ "Aw", "Aw" ],
+                        [ "Bd", "Bd" ],
+                        [ "Cw", "Cw" ]
+                    ]
+                }
+            }
+        }
+    ], 
+    "Use_Defaults": 1
+}

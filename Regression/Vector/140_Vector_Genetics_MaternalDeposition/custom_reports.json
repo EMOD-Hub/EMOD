@@ -1,0 +1,13 @@
+{
+    "Reports": [
+        {
+            "Allele_Combinations_For_Stratification": [],
+            "Gender": "VECTOR_BOTH_GENDERS",
+            "Include_Vector_State_Columns": 0,
+            "Species": "arabiensis",
+            "Stratify_By": "ALLELE",
+            "class": "ReportVectorGenetics"
+        }
+    ],
+    "Use_Defaults": 1
+}
