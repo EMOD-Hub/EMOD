@@ -48,7 +48,7 @@ namespace Kernel
 
         jsonConfigurable::ConstrainedString name;
         name.constraint_param = &allowed_allele_names;
-        name.constraints = "Vector_Species_Params[x].Genes";
+        name.constraints = "Vector_Species_Params.<species>.Genes";
         initConfigTypeMap( "Copy_To_Allele", &name, CTAL_Copy_To_Allele_DESC_TEXT );
 
         initConfigTypeMap( "Likelihood", &m_Prob, CTAL_Likelihood_DESC_TEXT, 0.0f, 1.0f, 0.0f );
@@ -99,6 +99,7 @@ namespace Kernel
 
     void CopyToAlleleLikelihoodCollection::CheckConfiguration()
     {
+
         for( int i = 0; i < m_Collection.size(); ++i )
         {
             for( int j = (i+1); j < m_Collection.size(); ++j )
@@ -106,7 +107,7 @@ namespace Kernel
                 if( m_Collection[ i ]->GetCopyToAlleleName() == m_Collection[ j ]->GetCopyToAlleleName() )
                 {
                     std::stringstream ss;
-                    ss << "Duplicate allele name - '" << m_Collection[ i ]->GetCopyToAlleleName() << "' in 'Copy_To_Likelihood'\n";
+                    ss << "Duplicate allele name - '" << m_Collection[ i ]->GetCopyToAlleleName() << "' in '" << m_IdmTypeName <<"'\n";
                     ss << "Each allele can be defined only once.";
                     throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
                 }
@@ -495,7 +496,7 @@ namespace Kernel
         std::set<std::string> allowed_allele_names = m_pGenes->GetDefinedAlleleNames();
         jsonConfigurable::ConstrainedString allele_name;
         allele_name.constraint_param = &allowed_allele_names;
-        allele_name.constraints = "Vector_Species_Params[x].Genes";
+        allele_name.constraints = "Vector_Species_Params.<species>.Genes";
         initConfigTypeMap( "Driving_Allele", &allele_name, VGD_Driving_Allele_DESC_TEXT );
 
         initConfigComplexCollectionType( "Alleles_Driven", &m_AllelesDriven, VGD_Alleles_Driven_DESC_TEXT, "Driver_Type", "CLASSIC,INTEGRAL_AUTONOMOUS,DAISY_CHAIN" );
@@ -795,6 +796,7 @@ namespace Kernel
             gpp_list.push_back( gpp_driven );
         }
 
+        // ASK: WHAT IS THIS FOR, CLASSIC DRIVE ONLY HAS ONE ALLELES_DRIVEN AND WE DID IT ABOVE
         for( uint8_t locus_index = 0; locus_index < m_AllelesDrivenByLocus.size(); ++locus_index )
         {
             if( locus_index == m_DriverLocusIndex ) continue;

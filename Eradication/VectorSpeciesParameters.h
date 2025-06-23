@@ -9,6 +9,7 @@
 #include "Configure.h"
 #include "VectorGene.h"
 #include "VectorGeneDriver.h"
+#include "VectorMaternalDeposition.h"
 #include "VectorTraitModifiers.h"
 #include "JsonConfigurableCollection.h"
 #include "GeneticProbability.h"
@@ -91,6 +92,7 @@ namespace Kernel
         VectorGeneCollection genes;
         VectorTraitModifiers trait_modifiers;
         VectorGeneDriverCollection gene_drivers;
+        VectorMaternalDepositionCollection maternal_deposition;
 
         GeneticProbability vsp_blood_meal_mortality;
 

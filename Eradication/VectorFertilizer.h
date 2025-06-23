@@ -9,6 +9,7 @@ namespace Kernel
     class VectorGeneCollection;
     class VectorTraitModifiers;
     class VectorGeneDriverCollection;
+    class VectorMaternalDepositionCollection;
 
     struct MatedGenomeCount
     {
@@ -31,7 +32,8 @@ namespace Kernel
 
         void Initialize( const VectorGeneCollection* pGenes,
                          const VectorTraitModifiers* pTraitModifiers,
-                         const VectorGeneDriverCollection* pGeneDrivers );
+                         const VectorGeneDriverCollection* pGeneDrivers,
+                         const VectorMaternalDepositionCollection* pMaternalDepositions );
 
         InitialGenomeData DetermineInitialGenomeData( RANDOMBASE* pRNG, uint32_t total );
 
@@ -63,12 +65,14 @@ namespace Kernel
                                               const VectorGenome& rGenome );
 
         void GermlineMutation( GameteProbPairVector_t& rGametes );
-
+        void DoMaternalDepostion( const VectorGenome& rMomGenome, GameteProbPairVector_t& rGametes ) const;
         void AdjustForNonFertileEggs( GenomeProbPairVector_t& rPossibilities ) const;
+
 
     private:
         const VectorGeneCollection*       m_pGenes;
         const VectorTraitModifiers*       m_pTraitModifiers;
         const VectorGeneDriverCollection* m_pGeneDrivers;
+        const VectorMaternalDepositionCollection* m_pMaternalDepositions;
     };
 }

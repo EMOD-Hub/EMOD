@@ -589,6 +589,7 @@
     <ClInclude Include="VectorHabitat.h" />
     <ClInclude Include="VectorInterventionsContainer.h" />
     <ClInclude Include="VectorInterventionsContainerContexts.h" />
+    <ClInclude Include="VectorMaternalDeposition.h" />
     <ClInclude Include="VectorParameters.h" />
     <ClInclude Include="VectorPopulation.h" />
     <ClInclude Include="VectorPopulationIndividual.h" />
@@ -892,6 +893,7 @@
     <ClCompile Include="VectorGenome.cpp" />
     <ClCompile Include="VectorHabitat.cpp" />
     <ClCompile Include="VectorInterventionsContainer.cpp" />
+    <ClCompile Include="VectorMaternalDeposition.cpp" />
     <ClCompile Include="VectorPopulation.cpp" />
     <ClCompile Include="VectorPopulationIndividual.cpp" />
     <ClCompile Include="VectorPopulationIndividualMalariaCoTran.cpp" />

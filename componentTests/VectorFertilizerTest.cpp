@@ -68,7 +68,7 @@ SUITE( VectorFertilizerTest )
                                nullptr );
 
         VectorFertilizer fertilizer;
-        fertilizer.Initialize( &gene_collection, &trait_modifiers, nullptr );
+        fertilizer.Initialize( &gene_collection, &trait_modifiers, nullptr, nullptr );
 
         CHECK_EQUAL( 3, gene_collection.Size() );
         CHECK_EQUAL( 0, trait_modifiers.Size() );
@@ -162,7 +162,7 @@ SUITE( VectorFertilizerTest )
                                nullptr );
 
         VectorFertilizer fertilizer;
-        fertilizer.Initialize( &gene_collection, &trait_modifiers, nullptr );
+        fertilizer.Initialize( &gene_collection, &trait_modifiers, nullptr, nullptr );
 
         CHECK_EQUAL( 2, gene_collection.Size() );
         CHECK_EQUAL( 1, trait_modifiers.Size() );
@@ -227,7 +227,7 @@ SUITE( VectorFertilizerTest )
                                nullptr );
 
         VectorFertilizer fertilizer;
-        fertilizer.Initialize( &gene_collection, &trait_modifiers, nullptr );
+        fertilizer.Initialize( &gene_collection, &trait_modifiers, nullptr, nullptr );
 
         CHECK_EQUAL( 2, gene_collection.Size() );
         CHECK_EQUAL( 1, trait_modifiers.Size() );
@@ -281,7 +281,7 @@ SUITE( VectorFertilizerTest )
                                nullptr );
 
         VectorFertilizer fertilizer;
-        fertilizer.Initialize( &gene_collection, &trait_modifiers, nullptr );
+        fertilizer.Initialize( &gene_collection, &trait_modifiers, nullptr, nullptr );
 
         CHECK_EQUAL( 4, gene_collection.Size() );
         CHECK_EQUAL( 1, trait_modifiers.Size() );
@@ -355,7 +355,7 @@ SUITE( VectorFertilizerTest )
                                nullptr );
 
         VectorFertilizer fertilizer;
-        fertilizer.Initialize( &gene_collection, &trait_modifiers, nullptr );
+        fertilizer.Initialize( &gene_collection, &trait_modifiers, nullptr, nullptr );
 
         CHECK_EQUAL( 4, gene_collection.Size() );
         CHECK_EQUAL( 1, trait_modifiers.Size() );
@@ -446,7 +446,7 @@ SUITE( VectorFertilizerTest )
                                &gene_drivers );
 
         VectorFertilizer fertilizer;
-        fertilizer.Initialize( &gene_collection, &trait_modifiers, &gene_drivers );
+        fertilizer.Initialize( &gene_collection, &trait_modifiers, &gene_drivers, nullptr );
 
         CHECK_EQUAL( 2, gene_collection.Size() );
         CHECK_EQUAL( 0, trait_modifiers.Size() );
@@ -509,7 +509,7 @@ SUITE( VectorFertilizerTest )
                                &gene_drivers );
 
         VectorFertilizer fertilizer;
-        fertilizer.Initialize( &gene_collection, &trait_modifiers, &gene_drivers );
+        fertilizer.Initialize( &gene_collection, &trait_modifiers, &gene_drivers, nullptr );
 
         CHECK_EQUAL( 2, gene_collection.Size() );
         CHECK_EQUAL( 1, trait_modifiers.Size() );
