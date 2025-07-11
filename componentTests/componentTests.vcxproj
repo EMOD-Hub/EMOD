@@ -212,6 +212,7 @@
     <ClCompile Include="VectorGeneTest.cpp" />
     <ClCompile Include="VectorGenomeTest.cpp" />
     <ClCompile Include="VectorInterventionsContainerTest.cpp" />
+    <ClCompile Include="VectorMaternalDepositionTest.cpp" />
     <ClCompile Include="VectorPopulationHelper.cpp" />
     <ClCompile Include="VectorPopulationIndividualTest.cpp" />
     <ClCompile Include="VectorPopulationTest.cpp" />

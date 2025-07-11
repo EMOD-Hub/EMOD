@@ -4,6 +4,7 @@
 #include "VectorGene.h"
 #include "VectorGeneDriver.h"
 #include "VectorTraitModifiers.h"
+#include "VectorMaternalDeposition.h"
 #include "RANDOM.h"
 #include "Exceptions.h"
 #include "Log.h"
@@ -17,6 +18,7 @@ namespace Kernel
         : m_pGenes( nullptr )
         , m_pTraitModifiers( nullptr )
         , m_pGeneDrivers( nullptr )
+        , m_pMaternalDepositions( nullptr )
     {
     }
 
@@ -26,11 +28,13 @@ namespace Kernel
 
     void VectorFertilizer::Initialize( const VectorGeneCollection* pGenes,
                                        const VectorTraitModifiers* pTraitModifiers,
-                                       const VectorGeneDriverCollection* pGeneDrivers )
+                                       const VectorGeneDriverCollection* pGeneDrivers,
+                                       const VectorMaternalDepositionCollection* pMaternalDepositions )
     {
         m_pGenes = pGenes;
         m_pTraitModifiers = pTraitModifiers;
         m_pGeneDrivers = pGeneDrivers;
+        m_pMaternalDepositions = pMaternalDepositions;
     }
 
     InitialGenomeData VectorFertilizer::DetermineInitialGenomeData( RANDOMBASE* pRNG, uint32_t total )
@@ -143,6 +147,13 @@ namespace Kernel
         // -------------------------------------------------------------------------
         GermlineMutation( gametes_female );
         GermlineMutation( gametes_male   );
+
+        // -------------------------------------------------------------------------
+        // --- Pre-calculating allele changes due to maternal deposition of Cas9
+        // -------------------------------------------------------------------------
+
+        DoMaternalDepostion( rFemale, gametes_female );
+        DoMaternalDepostion( rFemale, gametes_male );
 
         // -------------------------------------------------------------------------
         // --- Now that we have the gametes from each parent and the probability of
@@ -486,6 +497,23 @@ namespace Kernel
         }
         return gppv;
     }
+
+    void VectorFertilizer::DoMaternalDepostion( const VectorGenome& rMomGenome, GameteProbPairVector_t& rGametes ) const
+    {
+        if( ( m_pGeneDrivers == nullptr ) || ( m_pGeneDrivers->Size() == 0 ) ||
+            ( m_pMaternalDepositions == nullptr) || ( m_pMaternalDepositions->Size() == 0) )
+        {
+            return;
+        }
+        else
+        {
+            m_pMaternalDepositions->DoMaternalDeposition( rMomGenome, rGametes );
+            return;
+        }
+
+    }
+
+
 
     void VectorFertilizer::AdjustForNonFertileEggs( GenomeProbPairVector_t& rPossibilities ) const
     {

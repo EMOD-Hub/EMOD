@@ -78,7 +78,7 @@ namespace Kernel
 
 
     const EventType::Enum EventTriggerFactory::EVENT_TYPE = EventType::INDIVIDUAL;
-    const char* EventTriggerFactory::CONSTRAINT_SCHEMA_STRING = "'<configuration>:Custom_Individual_Events.*' or Built-in";
+    const char* EventTriggerFactory::CONSTRAINT_SCHEMA_STRING = "'Custom_Individual_Events' or Built-in";
     const char* EventTriggerFactory::USER_EVENTS_PARAMETER_NAME = "Custom_Individual_Events";
     const char* EventTriggerFactory::USER_EVENTS_PARAMETER_DESC = Custom_Individual_Events_DESC_TEXT;
 

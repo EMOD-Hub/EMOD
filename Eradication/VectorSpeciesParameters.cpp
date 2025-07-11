@@ -209,6 +209,7 @@ namespace Kernel
         , genes()
         , trait_modifiers( &genes )
         , gene_drivers( &genes, &trait_modifiers )
+        , maternal_deposition( &genes, &gene_drivers)
         , vsp_blood_meal_mortality(0.0)
     {
     }
@@ -257,8 +258,8 @@ namespace Kernel
         // Below is not used yet. Not going to add param to all vector configs until it's used.
         //initConfigTypeMap( ( "Egg_Survival_Rate" ), &eggsurvivalrate, Egg_Survival_Rate_DESC_TEXT, 0.0f, 1.0f, 0.99f );
         initConfigTypeMap( ( "Aquatic_Mortality_Rate" ), &aquaticmortalityrate, Aquatic_Mortality_Rate_DESC_TEXT, 0.0f, 1.0f, 0.1f );
-        initConfigTypeMap( ("Adult_Life_Expectancy"), &adultlifeexpectancy, Adult_Life_Expectancy_DESC_TEXT, 1.0f, 730.0f, 10.0f );
-        initConfigTypeMap( ("Male_Life_Expectancy"), &malelifeexpectancy, Male_Life_Expectancy_DESC_TEXT, 1.0f, 730.0f, 10.0f );
+        initConfigTypeMap( ( "Adult_Life_Expectancy" ), &adultlifeexpectancy, Adult_Life_Expectancy_DESC_TEXT, 1.0f, 730.0f, 10.0f );
+        initConfigTypeMap( ( "Male_Life_Expectancy" ), &malelifeexpectancy, Male_Life_Expectancy_DESC_TEXT, 1.0f, 730.0f, 10.0f );
         initConfigTypeMap( ( "Transmission_Rate" ), &transmissionmod, Transmission_Rate_DESC_TEXT, 0.0f, 1.0f, 0.5f );
         initConfigTypeMap( ( "Acquire_Modifier" ), &acquiremod, Acquire_Modifier_DESC_TEXT, 0.0f, 1.0f, 1.0f );
         initConfigTypeMap( ( "Infectious_Human_Feed_Mortality_Factor" ), &infectioushfmortmod, Infectious_Human_Feed_Mortality_Factor_DESC_TEXT, 0.0f, 1000.0f, 1.5f );
@@ -321,6 +322,13 @@ namespace Kernel
             other_parameters_exist = true;
         }
 
+        if( JsonConfigurable::_dryrun || config->Exist( "Maternal_Deposition" ) )
+        {
+            // Genes and Drivers needs to be read in first
+            initConfigComplexCollectionType( ( "Maternal_Deposition" ), &maternal_deposition, MD_Maternal_Deposition_DESC_TEXT );
+            other_parameters_exist = true;
+        }
+
         if( other_parameters_exist )
         {
             ret = JsonConfigurable::Configure( config );
@@ -329,6 +337,7 @@ namespace Kernel
                 trait_modifiers.CheckConfiguration();
                 gene_drivers.CheckConfiguration();
                 vsp_blood_meal_mortality = blood_meal_mortality_config.GetProbability();
+                maternal_deposition.CheckConfiguration();
             }
         }
 

@@ -42,7 +42,7 @@ namespace Kernel
 
     bool MigrationMetadataVector::Configure( const Configuration* config )
     {
-        const char* constraint_schema = "<configuration>:Vector_Species_Params.Genes.*";
+        const char* constraint_schema = "Vector_Species_Params[X].Genes";
         std::set<std::string> allowed_values = m_pGenes->GetDefinedAlleleNames();
         allowed_values.insert( "*" );
 

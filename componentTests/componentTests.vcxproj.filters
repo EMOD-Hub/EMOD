@@ -302,5 +302,8 @@
     <ClCompile Include="GeneticProbabilityConfigTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="VectorMaternalDepositionTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

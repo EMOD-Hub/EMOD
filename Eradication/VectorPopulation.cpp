@@ -3299,7 +3299,7 @@ namespace Kernel
         LarvaQueues.initialize(      nullptr,       params()->vector_aging );
         //EggQueues - not a VectorCohortCollection
 
-        m_Fertilizer.Initialize( &(m_species_params->genes), &(m_species_params->trait_modifiers), &(m_species_params->gene_drivers) );
+        m_Fertilizer.Initialize( &(m_species_params->genes), &(m_species_params->trait_modifiers), &(m_species_params->gene_drivers), &( m_species_params->maternal_deposition ) );
 
         // Set pointer to shared vector lifecycle probabilities container.
         // The species-independent probabilities, e.g. dependent on individual-human vector-control interventions, are updated once by the node

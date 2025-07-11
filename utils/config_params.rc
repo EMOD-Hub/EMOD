@@ -16,7 +16,7 @@
 #define Air_Migration_Roundtrip_Probability_DESC_TEXT "The likelihood that an individual who flies to another node will return to the node of origin during the next migration."
 #define Air_Temperature_Filename_DESC_TEXT "The path to the input data file defining air temperature data measured 2 meters above ground."
 #define Air_Temperature_Offset_DESC_TEXT "The linear shift of air temperature in degrees Celsius."
-#define Air_Temperature_Variance_DESC_TEXT "The standard deviation (in degrees Celsius) for normally distributed noise applied to the daily air temperature values when Climate_Model is configured as CLIMATE_CONSTANT or CLIMATE_BY_DATA."
+#define Air_Temperature_Variance_DESC_TEXT "The standard deviation (in degrees Celsius) for normally distributed noise applied to the daily air temperature values when Climate_Model is configured as 'CLIMATE_CONSTANT' or 'CLIMATE_BY_DATA'."
 #define Anemia_Mortality_Inverse_Width_DESC_TEXT "The inverse width relative to threshold value of severe disease turn-on around threshold for anemia."
 #define Anemia_Mortality_Threshold_DESC_TEXT "The threshold value for hemoglobin count in grams per deciliter (g/dL) at which 50% of individuals die per day."
 #define Anemia_Severe_Inverse_Width_DESC_TEXT "The inverse width relative to threshold value of severe disease turn-on around threshold for anemia."
@@ -291,7 +291,7 @@
 #define Regional_Migration_Roundtrip_Probability_DESC_TEXT "Likelihood that an individual who travels by vehicle to another node will return to the node of origin during the next migration."
 #define Relative_Humidity_Filename_DESC_TEXT "Path of input file defining relative humidity data measured 2 meters above ground."
 #define Relative_Humidity_Scale_Factor_DESC_TEXT "The scale factor used in multiplying relative humidity values."
-#define Relative_Humidity_Variance_DESC_TEXT "The standard deviation (in percentage) for normally distributed noise applied to the daily relative humidity values when Climate_Model is configured as CLIMATE_CONSTANT or CLIMATE_BY_DATA."
+#define Relative_Humidity_Variance_DESC_TEXT "The standard deviation (in percentage) for normally distributed noise applied to the daily relative humidity values when Climate_Model is configured as 'CLIMATE_CONSTANT' or 'CLIMATE_BY_DATA'."
 #define Relative_Sample_Rate_Immune_DESC_TEXT "Relative sampling rate for people who have acquired immunity through recovery or vaccination. If set to 1, this will have no effect, even if the individual's immunity modifier is below threshold."
 #define Report_Coital_Acts_DESC_TEXT "Enables or disables the RelationshipConsummatedReport.csv output report."
 #define Report_Coordinator_Event_Recorder_DESC_TEXT "Enables or disables the ReportCoordinatorEventRecorder.csv output report for coordinator events."
@@ -304,7 +304,7 @@
 #define Report_HIV_ART_DESC_TEXT "Enables or disables the ReportHIVART.csv output report."
 #define Report_HIV_ByAgeAndGender_DESC_TEXT "Enables and disables the ReportHIVByAgeAndGener.csv output report."
 #define Report_HIV_ByAgeAndGender_Add_Concordant_Relationships_DESC_TEXT "When set to to true (1), a 'concordant' column for each relationship type, as defined with the Society parameter in the demographics file, is included in the ReportHIVByAgeAndGender.csv output report file."
-#define Report_HIV_ByAgeAndGender_Add_Relationships_DESC_TEXT "Sets whether or not the ReportHIVByAgeAndGender.csv output file will contain data by relationship type on population currently in a relationship and ever in a relationship.  A sum of those in two or more partnerships and a sum of the lifetime number of relationships in each bin will be included."
+#define Report_HIV_ByAgeAndGender_Add_Relationships_DESC_TEXT "Sets whether or not the 'ReportHIVByAgeAndGender.csv' output file will contain data by relationship type on population currently in a relationship and ever in a relationship.  A sum of those in two or more partnerships and a sum of the lifetime number of relationships in each bin will be included."
 #define Report_HIV_ByAgeAndGender_Add_Transmitters_DESC_TEXT "When set to to true (1), the 'transmitters' column is included in the output report.  For a given row, 'Transmitters' indicates how many people that have transmitted the disease meet the specifications of that row."
 #define Report_HIV_ByAgeAndGender_Collect_Age_Bins_Data_DESC_TEXT "This array of floats allows the user to define the age bins used to stratify the report by age. Each value defines the minimum value of that bin, while the next value defines the maximum value of the bin. The maximum number of age bins is 100."
 #define Report_HIV_ByAgeAndGender_Collect_Circumcision_Data_DESC_TEXT "When set to 1, the ReportHIVByAgeAndGender.csv output report will have separate rows for those who do or do not have the MaleCircumcision intervention and an additional column with 0 and 1 indicating whether the row corresponds to those who are or are not circumcised. Setting this to 1 doubles the number of rows in ReportHIVByAgeAndGender.csv."
@@ -313,13 +313,13 @@
 #define Report_HIV_ByAgeAndGender_Collect_Intervention_Data_DESC_TEXT "Stratifies the population by adding a column of 0s and 1s depending on whether or not the person has the indicated intervention. This only works for interventions that remain with a person for a period of time, such as ART, VMMC, vaccine/PrEP, or a delay state in the cascade of care. You can name the intervention by adding a parameter Intervention_Name in the campaign file, and then give this parameter the same Intervention_Name. This allows you to have multiple types of vaccines, VMMCs, etc., but to only stratify on the type you want."
 #define Report_HIV_ByAgeAndGender_Collect_IP_Data_DESC_TEXT "When set to 1, the ReportHIVByAgeAndGender.csv output report will have separate rows for those with different IndividualProperties values and an additional column for each property indicating which row corresponds to which value of that property. Setting this to 1 typically increases by severalfold the number of rows in ReportHIVByAgeAndGender.csv."
 #define Report_HIV_ByAgeAndGender_Collect_On_Art_Data_DESC_TEXT "Controls whether or not the output report is stratified by those people who are on ART and those who are not. Set to true (1) to enable stratification by ART status."
-#define Report_HIV_ByAgeAndGender_Collect_Targeting_Config_Data_DESC_TEXT "Stratifies the population by adding a column of 0s and 1s depending on whether or not the person qualifies as determined by the Targeting_Config (:doc:`parameter-campaign-targeting-config`). There will be one column (MeetsTargetingConfig_X) for each entry in the array.  The order of the targeting configs in the array will be the order of the columns in the report."
+#define Report_HIV_ByAgeAndGender_Collect_Targeting_Config_Data_DESC_TEXT "Stratifies the population by adding a column of 0s and 1s depending on whether or not the person qualifies as determined by the 'Targeting_Config' (:doc:`parameter-campaign-targeting-config`). There will be one column (MeetsTargetingConfig_X) for each entry in the array.  The order of the targeting configs in the array will be the order of the columns in the report."
 #define Report_HIV_ByAgeAndGender_Event_Counter_List_DESC_TEXT "A list of columns to add to the ReportHIVByAgeAndGender.csv output files counting the number of times an intervention with the corresponding Distributed_Event_Trigger has been distributed."
-#define Report_HIV_ByAgeAndGender_Has_Intervention_With_Name_DESC_TEXT "This parameter will be deprecated. We recommend you use Report_HIV_ByAgeAndGender_Collect_Intervention_Data instead."
-#define Report_HIV_ByAgeAndGender_Start_Year_DESC_TEXT "The beginning calendar year that will be collected by the ReportHIVByAgeAndGender.csv report."
-#define Report_HIV_ByAgeAndGender_Stop_Year_DESC_TEXT "The ending calendar year that will be collected by the HIVByAgeAndGender.csv report."
+#define Report_HIV_ByAgeAndGender_Has_Intervention_With_Name_DESC_TEXT "This parameter will be deprecated. We recommend you use 'Report_HIV_ByAgeAndGender_Collect_Intervention_Data' instead."
+#define Report_HIV_ByAgeAndGender_Start_Year_DESC_TEXT "The beginning calendar year that will be collected by the 'ReportHIVByAgeAndGender.csv' report."
+#define Report_HIV_ByAgeAndGender_Stop_Year_DESC_TEXT "The ending calendar year that will be collected by the 'HIVByAgeAndGender.csv' report."
 #define Report_HIV_ByAgeAndGender_Stratify_Infected_By_CD4_DESC_TEXT "When set to 1, the ReportHIVByAgeAndGender.csv output file will separate the count of the number of infected individuals by CD4 stratum. When set to 0, the number of infected individuals are aggregated into one column regardless of CD4 count."
-#define Report_HIV_ByAgeAndGender_Use_Old_Format_DESC_TEXT "When set to 1, data collection is offset by one time step: the first entry includes an extra time step, and subsequent entries occur at half the Report_HIV_Period but remain offset. This is a surperceeded functionality. When set to 0, data is collected as expected - data is collected for and reported every half of the Report_HIV_Period."
+#define Report_HIV_ByAgeAndGender_Use_Old_Format_DESC_TEXT "When set to 1, data collection is offset by one time step: the first entry includes an extra time step, and subsequent entries occur at half the Report_HIV_Period but remain offset. This is a superseded functionality. When set to 0, data is collected as expected - data is collected for and reported every half of the Report_HIV_Period."
 #define Report_HIV_Event_Channels_List_DESC_TEXT "This is the list of events included in the InsetChart report. If events are specified with this parameter, the InsetChart will include a channel for each event listed. If no events are listed, a 'Number of Events' channel will display the total number of all events that occurred during the simulation."
 #define Report_HIV_Infection_DESC_TEXT "Enables or disables the ReportHIVInfection.csv output report."
 #define Report_HIV_Infection_Start_Year_DESC_TEXT "The beginning calendar year that will be collected by the ReportHIVInfection.csv output report."
@@ -440,6 +440,14 @@
 #define CTAL_Copy_To_Allele_DESC_TEXT "The name of the allele to be copied.  It must be an allele of the same gene as the 'Allele_To_Copy' and 'Allele_To_Replace'."
 #define CTAL_Likelihood_DESC_TEXT "The likelihood that the copy process will produce this allele.  If you give the 'Allele_To_Replace', you are defining the likelihood the copy fails.  If you give the 'Allele_To_Copy', you are specifying the likelihood of success.  Definitions for other alleles define possible mutations."
 
+
+#define MD_Cut_To_Allele_DESC_TEXT "The allele that will be formed due to maternal deposition. This cannot be one of the driver alleles and it must be an allele of the same gene as the 'Allele_To_Cut'. If the allele is the same as 'Allele_To_Cut', you are defining likelihood that the maternal deposition will have no effect. 'Cut_To_Allele' cannot be a driving allele."
+#define MD_Cut_Likelihood_DESC_TEXT "The likelihood that the maternal deposition will produce the allele defined in 'Cut_To_Allele' from 'Allele_To_Cut' allele. "
+#define MD_Cas9_gRNA_From_DESC_TEXT "This is an allele for presence of which in the mother we will be checking to see if additional resistance alleles will be formed. This allele must be one of the 'Driver_Allele' alleles defined in 'Drivers' array."
+#define MD_Allele_To_Cut_DESC_TEXT "The allele from which resistance alleles might be formed due to maternal deposition. This must be one of the 'Allele_To_Replace' alleles defined in the 'Drivers' array which each of the 'Driver_Allele' alleles defined in 'Cas9_gRNA_From' can drive as defined in the 'Drivers' array."
+#define MD_Likelihood_Per_Cas9_gRNA_From_DESC_TEXT "This is an array of allele-to-likelihood dictionaries to be used for each 'Cas9_gRNA_from' present in the mother. If the allele is the 'Allele_To_Cut', this is the likelihood that that allele will form a 'Cut_To_Allele'. The likelihoods must be values between 0 and 1 and add up to 1 within the array. If mother is homozygous with 'Cas9_gRNA_From' allele, the likelihoods will be applied twice. "
+#define MD_Maternal_Deposition_DESC_TEXT "This is an array of maternal deposition elements. After meiosis and fertilization, maternal deposition of Cas9 and gRNA can form additional resistance alleles in the zygote or early embryo from wildtype alleles. These elements define the likelihoods of forming additional resistance alleles."
+
 #define Genes_DESC_TEXT "This is an array of Gene elements.  Each element defines all the possible allele for the gene and possible allele mutations.  Every vector will have two of the alleles of every gene.  There will be a max of 10 genes.  By default, one of the 10 genes is the gender 'gene' that has two alleles - X and Y.  This allows the user to use the X & Y alleles in Gene_To_Trait_Modifiers."
 #define Gene_To_Trait_Modifiers_DESC_TEXT "This object defines that if a vector has a particular set of allele pairs, then some of their traits will be modified.  In most cases, this will consist of a single pair of allele associated with impact of one trait.  We provide support for the many-to-many case for when things aren't simple."
 #define Drivers_DESC_TEXT "This is an array of Driver elements.  They change the likelihood that other alleles will be propagated from one parent's gamete to the other parent's gamete when the cells merge."
@@ -475,12 +483,12 @@
 // mask reading/writing from/to serialized population file
 #define SerializationMask_Node_Read_DESC_TEXT   "Currently not implemented. Please leave at 0."
 #define SerializationMask_Node_Write_DESC_TEXT  "Currently not implemented. Please leave at 0."
-#define Serialized_Population_Reading_Type_DESC_TEXT "Set to READ to enable reading from a serialized population file, set to NONE otherwise."
-#define Serialized_Population_Writing_Type_DESC_TEXT "The type of serialization to perform. NONE for no serialization, TIME to use definition from Serialization_Times, and TIMESTEP to use definition from Serialization_Time_Steps."
+#define Serialized_Population_Reading_Type_DESC_TEXT "Set to 'READ' to enable reading from a serialized population file, set to 'NONE' otherwise."
+#define Serialized_Population_Writing_Type_DESC_TEXT "The type of serialization to perform. 'NONE' for no serialization, 'TIME' to use definition from 'Serialization_Times', and 'TIMESTEP' to use definition from 'Serialization_Time_Steps'."
 
 #define Insecticides_DESC_TEXT                        "An Array of insecticides and their resistance modifiers"
-#define Insecticide_Species_Name_DESC_TEXT            "Name of the species of vectors.  Must be defined in <config.Vector_Species_Params>"
-#define Insecticide_Allele_Combinations_DESC_TEXT     "The combination of alleles that vectors must have in order to be resistant.  These alleles must be defined in <config.Vector_Species_Params.Genes.Alleles> for the associated species."
+#define Insecticide_Species_Name_DESC_TEXT            "Name of the species of vectors, as defined in 'Vector_Species_Params'."
+#define Insecticide_Allele_Combinations_DESC_TEXT     "The combination of alleles that vectors must have in order to be resistant.  These alleles must be defined in 'Vector_Species_Params[X].Genes[X].Alleles' for the associated species."
 #define Insecticide_Blocking_Modifier_DESC_TEXT       "The value used to modify (multiply) the blocking effectivity of an intervention"
 #define Insecticide_Killing_Modifier_DESC_TEXT        "The value used to modify (multiply) the killing effectivity of an intervention"
 #define Insecticide_Larval_Killing_Modifier_DESC_TEXT "The value used to modify (multiply) the larval killing effectivity of an intervention"
@@ -488,20 +496,20 @@
 #define Insecticide_Name_DESC_TEXT                    "Name of insecticide"
 #define Insecticide_Resistance_DESC_TEXT              "An array of resistance modifier objects that define how to modify the efficacy of the insecticide for particular vector genomes."
 
-#define Serialization_Precision_DESC_TEXT "Default is REDUCED to reduce the size of the serialized file.  FULL gives more floating point precision but creates larger files."
+#define Serialization_Precision_DESC_TEXT "Default is 'REDUCED' to reduce the size of the serialized file.  'FULL' gives more floating point precision but creates larger files."
 
 #define Inset_Chart_Reporting_Include_30Day_Avg_Infection_Duration_DESC_TEXT "If true the '30-Day Avg Infection Duration' channel is included in the InsetChart.json report."
 
-#define Enable_Temperature_Dependent_Egg_Hatching_DESC_TEXT "Controls whether or not temperature has an effect on egg hatching, defined by Egg_Arrhenius1 and Egg_Arrhenius2."
+#define Enable_Temperature_Dependent_Egg_Hatching_DESC_TEXT "Controls whether or not temperature has an effect on egg hatching, defined by 'Egg_Arrhenius1' and 'Egg_Arrhenius2' in 'Vector_Species_Params'."
 
 
-#define DM_Drug_Resistant_String_DESC_TEXT "A series of nucleotide base letters (A, C, G, T) that represent the drug resistant values at locations in the genome.  There must be one character for each location defined in <config>.Parasite_Genetics.Drug_Resistant_Genome_Locations."
+#define DM_Drug_Resistant_String_DESC_TEXT "A series of nucleotide base letters (A, C, G, T) that represent the drug resistant values at locations in the genome.  There must be one character for each location defined in 'Parasite_Genetics.Drug_Resistant_Genome_Locations'."
 #define DM_PKPD_C50_Modifier_DESC_TEXT "If the parasite has this drug resistant string, this value will be multiplied times the 'Drug_PKPD_C50' value of the drug.  Genomes with multiple matching strings will be simply multiplied together."
 #define DM_Max_IRBC_Kill_Modifier_DESC_TEXT "If the parasite has this drug resistant string, this value will be multiplied times the 'Max_Drug_IRBC_Kill' value of the drug.  Genomes with multiple matching strings will be simply multiplied together."
 
 #define Habitats_DESC_TEXT "A measure of the habitat type and scale factors used to estimate larval population.  Use each element in the array to specify a habitat type and max larval capacity. LINEAR_SPLINE has a more detailed scaling configuration.  See the documentation for more information."
 
-#define VH_Habitat_Type_DESC_TEXT "The type of habitat that this species of vectors use for eggs.  Each species can have at most one of each type.  You cannot use ALL_HABITATS."
+#define VH_Habitat_Type_DESC_TEXT "The type of habitat that this species of vectors use for eggs.  Each species can have at most one of each type.  You cannot use 'ALL_HABITATS'."
 
 #define Parasite_Genetics_DESC_TEXT                    "The set of parameters needed for modeling the genetics of plasmodium falciparum."
 #define Enable_FPG_Similarity_To_Base_DESC_TEXT        "If true the Full Parasite Genetics model will simulate the base model.  That is, a person can only get one infection per timestep, only adult vectors can get infected, and a vectors is always infected once it becomes infected."
@@ -522,7 +530,7 @@
 #define Neighborhood_Size_MSP_DESC_TEXT "The number of MSP variants to randomly select the MSP variant.  This is an 'neighborhood' around a number based on the barcode."
 #define Neighborhood_Size_PfEMP1_DESC_TEXT "The number of PfEMP1 variants to randomly select for the i'th PfEMP1 variant.  This is an 'neighborhood' around a number based on the barcode."
 
-#define Var_Gene_Randomness_Type_DESC_TEXT "This controls how random the var genes are in each new infection.  FIXED_NEIGHBORHOOD implies that the are set when the genome is created and each infection with this genome gets the same set of var genes.  FIXED_MSP implies that the MSP var gene is fixed but the PfEMP1 Major var genes are random for every infection.  ALL_RANDOM implies that the MPS and PfEMP1 Major var genes are random with every infection.  The minor epitopes are always random."
+#define Var_Gene_Randomness_Type_DESC_TEXT "This controls how random the var genes are in each new infection.  'FIXED_NEIGHBORHOOD' implies that the are set when the genome is created and each infection with this genome gets the same set of var genes.  'FIXED_MSP' implies that the MSP var gene is fixed but the PfEMP1 Major var genes are random for every infection.  'ALL_RANDOM' implies that the MPS and PfEMP1 Major var genes are random with every infection.  The minor epitopes are always random."
 
 #define Inset_Chart_Has_Interventions_DESC_TEXT "A channel is added to InsetChart for each InterventionName provided.  The channel name will be Has_<InterventionName> and will be the fraction of the population that has that intervention.  The 'Intervention_Name' in the campaign should be the values in this parameter."
 #define Inset_Chart_Has_IP_DESC_TEXT "A channel is added to InsetChart for each value of each IP provided.  The channel name will be HasIP_<Key:Value> and will be the fraction of the population that has that value for that IPKey."
@@ -546,7 +554,7 @@
 
 #define Report_Event_Recorder_PropertyChange_IP_Key_Of_Interest_DESC_TEXT "If the string is not empty, then the recorder will add the PropertyChange event to the list of events that the report is listening to. However, it will only record the events where the property changed the value of the given key."
 
-#define Enable_Initial_Susceptibility_Distribution_DESC_TEXT "Controls whether or not individuals in the population have immunity at the beginning of the simulation. If set to 0, individuals are not initialized with immunity but may acquire immunity. If set to 1, you must indicate the type of distribution to use for immunity in the configuration parameter Susceptibility_Initialization_Distribution_Type and the distribution values in the demographics file."
+#define Enable_Initial_Susceptibility_Distribution_DESC_TEXT "Controls whether or not individuals in the population have immunity at the beginning of the simulation. If set to 0, individuals are not initialized with immunity but may acquire immunity. If set to 1, you must indicate the type of distribution to use for immunity in the configuration parameter 'Susceptibility_Initialization_Distribution_Type' and the distribution values in the demographics file."
 
 #define VSP_Microsporidia_DESC_TEXT "A list of microsporidia parameters for each strain that this species can get."
 #define Microsporidia_Strain_Name_DESC_TEXT "The name/identifier of the collection of transmission parameters. Cannot be empty string."

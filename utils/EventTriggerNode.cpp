@@ -25,7 +25,7 @@ namespace Kernel
 
     const EventType::Enum EventTriggerNodeFactory::EVENT_TYPE = EventType::NODE;
 
-    const char* EventTriggerNodeFactory::CONSTRAINT_SCHEMA_STRING = "'<configuration>:Custom_Node_Events.*' or Built-in";
+    const char* EventTriggerNodeFactory::CONSTRAINT_SCHEMA_STRING = "'Custom_Node_Events' or Built-in";
     const char* EventTriggerNodeFactory::USER_EVENTS_PARAMETER_NAME = "Custom_Node_Events";
     const char* EventTriggerNodeFactory::USER_EVENTS_PARAMETER_DESC = Custom_Node_Events_DESC_TEXT;
 

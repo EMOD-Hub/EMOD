@@ -56,12 +56,13 @@ namespace Kernel
             VectorParameters* p_vp = GET_CONFIGURABLE( SimulationConfig )->vector_params;
             const jsonConfigurable::tDynamicStringSet& species_names = p_vp->vector_species.GetSpeciesNames();
             m_ReleasedSpecies.constraint_param = &species_names;
+            m_ReleasedSpecies.constraints = p_vp->vector_species.SPECIES_NAME_CONSTRAINTS;
         }
-        m_ReleasedSpecies.constraints = "<configuration>:Vector_Species_Params.*";
+
 
         std::vector<std::vector<std::string>> combo_strings;
         std::vector<std::vector<std::string>> combo_strings_mate;
-        const char* constraint_schema = "<configuration>:Vector_Species_Params.*Genes.*";
+        const char* constraint_schema = "Vector_Species_Params[X].Genes";
 
         std::string microsporidia_strain_name;
         VectorWolbachia::Enum wolbachia_status = VectorWolbachia::VECTOR_WOLBACHIA_FREE;
@@ -102,8 +103,8 @@ namespace Kernel
                     if( p_vp->vector_species[ i ]->name == m_ReleasedSpecies )
                     {
                         VectorSpeciesParameters* p_vsp = p_vp->vector_species[ i ];
-                        p_genes   = &(p_vsp->genes);
-                        p_drivers = &(p_vsp->gene_drivers);
+                        p_genes   = &( p_vsp->genes );
+                        p_drivers = &( p_vsp->gene_drivers );
 
                         if( microsporidia_strain_name.length() > 0 )
                         {

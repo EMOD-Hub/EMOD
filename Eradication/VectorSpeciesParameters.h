@@ -9,6 +9,7 @@
 #include "Configure.h"
 #include "VectorGene.h"
 #include "VectorGeneDriver.h"
+#include "VectorMaternalDeposition.h"
 #include "VectorTraitModifiers.h"
 #include "JsonConfigurableCollection.h"
 #include "GeneticProbability.h"
@@ -91,6 +92,7 @@ namespace Kernel
         VectorGeneCollection genes;
         VectorTraitModifiers trait_modifiers;
         VectorGeneDriverCollection gene_drivers;
+        VectorMaternalDepositionCollection maternal_deposition;
 
         GeneticProbability vsp_blood_meal_mortality;
 
@@ -107,6 +109,7 @@ namespace Kernel
         const jsonConfigurable::tDynamicStringSet& GetSpeciesNames() const;
 
         const VectorSpeciesParameters& GetSpecies( const std::string& rName ) const;
+        static constexpr const char* SPECIES_NAME_CONSTRAINTS = "Vector_Species_Params[X].Name";
 
     protected:
         virtual VectorSpeciesParameters* CreateObject() override;

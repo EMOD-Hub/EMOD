@@ -130,6 +130,7 @@
         { "path": "Vector/137_Vector_Genetics_BloodMealMortality" },
         { "path": "Vector/138_Vector_Migration_By_Allele_Combinations_compartments" },
         { "path": "Vector/139_Vector_Migration_By_Allele_Combinations_track_all" },
+        { "path": "Vector/140_Vector_Genetics_MaternalDeposition" },
         { "path": "Scenarios/VectorAndMalaria/01_A_Namawala3Vectors_lowEIR" },
         { "path": "Scenarios/VectorAndMalaria/01_B_Namawala3Vectors_highEIR" },
         { "path": "Scenarios/VectorAndMalaria/03_A_Namawala_Vector" },

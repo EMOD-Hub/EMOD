@@ -377,7 +377,7 @@ SUITE( VectorTraitModifiersTest )
     TEST_FIXTURE( VectorTraitModifiersFixture, TestInvalidBarcodeTooLong )
     {
         TestHelper_ConfigureException( __LINE__, "testdata/VectorTraitModifiersTest/TestInvalidBarcodeTooLong.json",
-                                       "The 'Gametocyte_B_Barcode_String' = 'GGGGGG' is invalid.\nIt has 6 characters and <config.Barcode_Genome_Locations> says you must have 3.", true );
+                                       "The 'Gametocyte_B_Barcode_String' = 'GGGGGG' is invalid.\nIt has 6 characters and 'Barcode_Genome_Locations' says you must have 3.", true );
     }
 
     TEST_FIXTURE( VectorTraitModifiersFixture, TestInvalidBarcodeBadCharacter )

@@ -169,6 +169,7 @@ else:
                             "VectorSpeciesReport.cpp",
                             "VectorTraitModifiers.cpp",
                             "VectorSurveillanceEventCoordinator.cpp",
+                            "VectorMaternalDeposition.cpp",
                             "Climate.cpp",
                             "ClimateByData.cpp",
                             "ClimateConstant.cpp",

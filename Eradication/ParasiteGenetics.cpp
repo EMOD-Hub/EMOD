@@ -815,8 +815,8 @@ namespace Kernel
         if( m_VarGeneRandomnessType != VarGeneRandomnessType::FIXED_NEIGHBORHOOD )
         {
             std::stringstream ss;
-            ss << "It is invalid for <config>.Parasite_Genetics.Var_Gene_Randomness_Type != FIXED_NEIGHBORHOOD and\n"
-               << "<campaign>.OutbreakIndividualMalariaGenetics.Create_Nucleotide_Sequence_From = NUCLEOTIDE_SEQUENCE.";
+            ss << "It is invalid for 'Parasite_Genetics.Var_Gene_Randomness_Type' != 'FIXED_NEIGHBORHOOD' and\n"
+                << "'OutbreakIndividualMalariaGenetics.Create_Nucleotide_Sequence_From' = 'NUCLEOTIDE_SEQUENCE'.";
             throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }
 
@@ -868,8 +868,8 @@ namespace Kernel
             std::stringstream ss;
             ss << "Invalid number of frequency sets in '" << pParamNameAlleleFreq << "'.\n";
             ss << "'" << pParamNameAlleleFreq << "' has " << sizeAlleleFreq << "\n";
-            ss << "and '<config>." << pParamNameLocations << "' has " << sizeLocations << ".\n";
-            ss << "There should be one set for each location defined in '<config>." << pParamNameLocations << "'.";
+            ss << "and '" << pParamNameLocations << "' has " << sizeLocations << ".\n";
+            ss << "There should be one set for each location defined in '" << pParamNameLocations << "'.";
             throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }
 
@@ -1219,7 +1219,7 @@ namespace Kernel
             ss << "It has " << rString.length() << " characters and ";
             if( isReportParameter )
             {
-                ss << "<config." << pLocationsParameterName << ">";
+                ss << "'" << pLocationsParameterName << "'";
             }
             else
             {

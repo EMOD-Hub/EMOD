@@ -68,7 +68,7 @@ namespace Kernel
 
     void AntimalarialDrug::ConfigureDrugType( const Configuration *intputJson )
     {
-        tmp_drug_name.constraints = "<configuration>:Malaria_Drug_Params.Name";
+        tmp_drug_name.constraints = "Malaria_Drug_Params[X].Name";
         tmp_drug_name.constraint_param = nullptr;
         if( !JsonConfigurable::_dryrun )
         {

@@ -60,7 +60,7 @@ namespace Kernel
                 {
                     std::stringstream ss;
                     ss << "Invalid PfEMP1 variant at 'IRBC_Type[ " << i << " ] = " << irbc[ i ] << "\n";
-                    ss << "IRBC/PfEMP1 variant values must be >= 0 and <= <config.Falciparum_PfEMP1_Variants(=" << max_pfemp1_variants << ")>";
+                    ss << "IRBC/PfEMP1 variant values must be >= 0 and <= <Falciparum_PfEMP1_Variants(=" << max_pfemp1_variants << ")>";
                     throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
                 }
             }
@@ -77,7 +77,7 @@ namespace Kernel
                     int max_nonspec = GET_CONFIG_INTEGER( EnvPtr->Config, "Falciparum_Nonspecific_Types" );
                     std::stringstream ss;
                     ss << "Invalid Minor Epitope variant at 'Minor_Epitope_Type[ " << i << " ] = " << minor_epitope[ i ] << "\n";
-                    ss << "Minor Epitope variant values must be >= 0 and <= <config.Falciparum_Nonspecific_Types(=" << max_nonspec << ")> * MINOR_EPITOPE_VARS_PER_SET(=5)" ;
+                    ss << "Minor Epitope variant values must be >= 0 and <= <Falciparum_Nonspecific_Types(=" << max_nonspec << ")> * MINOR_EPITOPE_VARS_PER_SET(=5)" ;
                     throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
                 }
             }

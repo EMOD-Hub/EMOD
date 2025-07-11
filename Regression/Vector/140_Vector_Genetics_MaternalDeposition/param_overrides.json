@@ -1,0 +1,203 @@
+{
+    "Default_Config_Path": "defaults/vector_default_config.json",
+    "parameters": {
+        "CLIMATE": {
+            "Base_Air_Temperature": 25.0,
+            "Climate_Model": "CLIMATE_CONSTANT",
+            "Enable_Climate_Stochasticity": 0
+        },
+        "DEMOGRAPHICS": {
+            "Enable_Vital_Dynamics": 0,
+            "Demographics_Filenames": [
+                "Demographics.json"
+            ],
+            "Enable_Initial_Prevalence": 1
+        },
+        "PRIMARY": {
+            "Config_Name": "140_Vector_Genetics_MaternalDeposition",
+            "Note1": "The drives are not doing anything so we can see Maternal_Deposition effects clearer",
+            "Note2": "Arbitrarily, Bw doesn't have Maternal_Deposition associated with it.",
+            "Custom_Reports_Filename": "custom_reports.json",
+            "Enable_Demographics_Reporting": 0,
+            "Geography": "",
+            "Run_Number": 13,
+            "Simulation_Duration": 400
+        },
+        "VECTOR": {
+            "Enable_Vector_Aging": 1,
+            "Enable_Vector_Mortality": 1,
+            "x_Temporary_Larval_Habitat": 0.2,
+            ".Vector_Sampling_Type": "VECTOR_COMPARTMENTS_NUMBER",
+            "Vector_Sampling_Type": "TRACK_ALL_VECTORS"
+        },
+        "Vector_Species_Params": [
+            {
+                "Name": "arabiensis",
+                "Indoor_Feeding_Fraction": 1,
+                "Genes": [
+                    {
+                        "Is_Gender_Gene": 0,
+                        "Alleles": [
+                            {
+                                "Name": "Aw",
+                                "Is_Y_Chromosome": 0,
+                                "Initial_Allele_Frequency": 1.0
+                            },
+                            {
+                                "Name": "Ad",
+                                "Is_Y_Chromosome": 0,
+                                "Initial_Allele_Frequency": 0.0
+                            },
+                            {
+                                "Name": "Am",
+                                "Is_Y_Chromosome": 0,
+                                "Initial_Allele_Frequency": 0.0
+                            }
+                        ],
+                        "Mutations": []
+                    },
+                    {
+                        "Is_Gender_Gene": 0,
+                        "Alleles": [
+                            {
+                                "Name": "Bw",
+                                "Is_Y_Chromosome": 0,
+                                "Initial_Allele_Frequency": 1.0
+                            },
+                            {
+                                "Name": "Bd",
+                                "Is_Y_Chromosome": 0,
+                                "Initial_Allele_Frequency": 0.0
+                            },
+                            {
+                                "Name": "Bm",
+                                "Is_Y_Chromosome": 0,
+                                "Initial_Allele_Frequency": 0.0
+                            }
+                        ],
+                        "Mutations": []
+                    },
+                    {
+                        "Is_Gender_Gene": 0,
+                        "Alleles": [
+                            {
+                                "Name": "Cw",
+                                "Is_Y_Chromosome": 0,
+                                "Initial_Allele_Frequency": 1.0
+                            },
+                            {
+                                "Name": "Ce",
+                                "Is_Y_Chromosome": 0,
+                                "Initial_Allele_Frequency": 0.0
+                            },
+                            {
+                                "Name": "Cm",
+                                "Is_Y_Chromosome": 0,
+                                "Initial_Allele_Frequency": 0.0
+                            }
+                        ],
+                        "Mutations": []
+                    }
+                ],
+                "Drivers": [
+                    {
+                        "Driver_Type": "INTEGRAL_AUTONOMOUS",
+                        "Driving_Allele": "Ad",
+                        "Alleles_Driven": [
+                            {
+                                "Allele_To_Copy": "Ad",
+                                "Allele_To_Replace": "Aw",
+                                "Copy_To_Likelihood": [
+                                    {
+                                        "Copy_To_Allele": "Aw",
+                                        "Likelihood": 1
+                                    }
+                                ]
+                            },
+                            {
+                                "Allele_To_Copy": "Ce",
+                                "Allele_To_Replace": "Cw",
+                                "Copy_To_Likelihood": [
+                                    {
+                                        "Copy_To_Allele": "Cw",
+                                        "Likelihood": 1
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "Driver_Type": "INTEGRAL_AUTONOMOUS",
+                        "Driving_Allele": "Bd",
+                        "Alleles_Driven": [
+                            {
+                                "Allele_To_Copy": "Bd",
+                                "Allele_To_Replace": "Bw",
+                                "Copy_To_Likelihood": [
+                                    {
+                                        "Copy_To_Allele": "Bw",
+                                        "Likelihood": 1
+                                    }
+                                ]
+                            },
+                            {
+                                "Allele_To_Copy": "Ce",
+                                "Allele_To_Replace": "Cw",
+                                "Copy_To_Likelihood": [
+                                    {
+                                        "Copy_To_Allele": "Cw",
+                                        "Likelihood": 1
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "Maternal_Deposition": [
+                    {
+                        "Cas9_gRNA_From": "Ad",
+                        "Allele_To_Cut": "Cw",
+                        "Likelihood_Per_Cas9_gRNA_From": [
+                            {
+                                "Cut_To_Allele": "Cw",
+                                "Likelihood": 0.95
+                            },
+                            {
+                                "Cut_To_Allele": "Cm",
+                                "Likelihood": 0.05
+                            }
+                        ]
+                    },
+                    {
+                        "Cas9_gRNA_From": "Ad",
+                        "Allele_To_Cut": "Aw",
+                        "Likelihood_Per_Cas9_gRNA_From": [
+                            {
+                                "Cut_To_Allele": "Aw",
+                                "Likelihood": 0.95
+                            },
+                            {
+                                "Cut_To_Allele": "Am",
+                                "Likelihood": 0.05
+                            }
+                        ]
+                    },
+                    {
+                        "Cas9_gRNA_From": "Bd",
+                        "Allele_To_Cut": "Cw",
+                        "Likelihood_Per_Cas9_gRNA_From": [
+                            {
+                                "Cut_To_Allele": "Cw",
+                                "Likelihood": 0.8
+                            },
+                            {
+                                "Cut_To_Allele": "Cm",
+                                "Likelihood": 0.2
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

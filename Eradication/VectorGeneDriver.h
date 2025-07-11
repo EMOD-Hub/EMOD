@@ -22,11 +22,13 @@ namespace Kernel
     class CopyToAlleleLikelihood : public JsonConfigurable
     {
     public:
-        CopyToAlleleLikelihood( const VectorGeneCollection* pGenes );
+        explicit CopyToAlleleLikelihood( const VectorGeneCollection* pGenes );
+
         CopyToAlleleLikelihood( const VectorGeneCollection* pGenes,
                                 const std::string& rAlleleName,
-                                const uint8_t alleleIndex,
+                                uint8_t alleleIndex,
                                 float likelihood );
+
         virtual ~CopyToAlleleLikelihood();
 
         //JsonConfigurable
@@ -36,15 +38,37 @@ namespace Kernel
         virtual bool Configure( const Configuration* config ) override;
 
         const std::string& GetCopyToAlleleName() const;
-        uint8_t GetCopyToAlleleIndex() const;
-        float GetLikelihood() const;
+        uint8_t            GetCopyToAlleleIndex() const;
+        float              GetLikelihood() const;
 
     protected:
+        // Protected constructor for derived classes to customize config names
+        CopyToAlleleLikelihood( const VectorGeneCollection* pGenes,
+                                const char* alleleConfigName,
+                                const char* alleleDescText,
+                                const char* likelihoodDescText );
+
+        // Protected constructor with initial values
+        CopyToAlleleLikelihood( const VectorGeneCollection* pGenes,
+                                const std::string& rAlleleName,
+                                uint8_t alleleIndex,
+                                float likelihood,
+                                const char* alleleConfigName,
+                                const char* alleleDescText,
+                                const char* likelihoodDescText );
+
         const VectorGeneCollection* m_pGenes;
         std::string m_CopyToAlleleName;
-        uint8_t m_CopyToAlleleIndex;
-        float m_Prob;
+        uint8_t     m_CopyToAlleleIndex;
+        float       m_Prob;
+
+    private:
+        const char* m_AlleleConfigName;
+        const char* m_AlleleDescText;
+        const char* m_LikelihoodDescText;
+
     };
+
 
     class CopyToAlleleLikelihoodCollection : public JsonConfigurableCollection<CopyToAlleleLikelihood>
     {
@@ -55,6 +79,8 @@ namespace Kernel
         virtual void CheckConfiguration() override;
 
     protected:
+        CopyToAlleleLikelihoodCollection( const VectorGeneCollection* pGenes, 
+                                          std::string idmTypeName);
         virtual CopyToAlleleLikelihood* CreateObject() override;
 
         const VectorGeneCollection* m_pGenes;

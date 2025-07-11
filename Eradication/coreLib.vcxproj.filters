@@ -1269,6 +1269,9 @@
     <ClInclude Include="GeneticProbabilityConfig.h">
       <Filter>Source Files\Vector</Filter>
     </ClInclude>
+    <ClInclude Include="VectorMaternalDeposition.h">
+      <Filter>Source Files\Vector</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Climate.cpp">
@@ -2157,6 +2160,9 @@
       <Filter>Source Files\Campaign\EventCoordinator\Vector</Filter>
     </ClCompile>
     <ClCompile Include="GeneticProbabilityConfig.cpp">
+      <Filter>Source Files\Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="VectorMaternalDeposition.cpp">
       <Filter>Source Files\Vector</Filter>
     </ClCompile>
   </ItemGroup>

@@ -16,25 +16,61 @@ namespace Kernel
     // ------------------------------------------------------------------------
     // --- CopyToAlleleLikelihood
     // ------------------------------------------------------------------------
-
+    
+    // public constructor implementations
     CopyToAlleleLikelihood::CopyToAlleleLikelihood( const VectorGeneCollection* pGenes )
-        : JsonConfigurable()
-        , m_pGenes( pGenes )
-        , m_CopyToAlleleName()
-        , m_CopyToAlleleIndex( 0 )
-        , m_Prob( 0.0 )
+        : CopyToAlleleLikelihood( pGenes,
+                                  "Copy_To_Allele",
+                                  CTAL_Copy_To_Allele_DESC_TEXT,
+                                  CTAL_Likelihood_DESC_TEXT )
     {
     }
 
     CopyToAlleleLikelihood::CopyToAlleleLikelihood( const VectorGeneCollection* pGenes,
                                                     const std::string& rAlleleName,
-                                                    const uint8_t alleleIndex,
+                                                    uint8_t alleleIndex,
                                                     float likelihood )
+        : CopyToAlleleLikelihood( pGenes,
+                                  rAlleleName,
+                                  alleleIndex,
+                                  likelihood,
+                                  "Copy_To_Allele",
+                                  CTAL_Copy_To_Allele_DESC_TEXT,
+                                  CTAL_Likelihood_DESC_TEXT )
+    {
+    }
+
+    //protected constructor implementations
+    CopyToAlleleLikelihood::CopyToAlleleLikelihood( const VectorGeneCollection* pGenes,
+                                                    const char* alleleConfigName,
+                                                    const char* alleleDescText,
+                                                    const char* likelihoodDescText )
+        : JsonConfigurable()
+        , m_pGenes( pGenes )
+        , m_CopyToAlleleName()
+        , m_CopyToAlleleIndex( 0 )
+        , m_Prob( 0.0f )
+        , m_AlleleConfigName( alleleConfigName )
+        , m_AlleleDescText( alleleDescText )
+        , m_LikelihoodDescText( likelihoodDescText )
+    {
+    }
+
+    CopyToAlleleLikelihood::CopyToAlleleLikelihood( const VectorGeneCollection* pGenes,
+                                                    const std::string& rAlleleName,
+                                                    uint8_t alleleIndex,
+                                                    float likelihood,
+                                                    const char* alleleConfigName,
+                                                    const char* alleleDescText,
+                                                    const char* likelihoodDescText )
         : JsonConfigurable()
         , m_pGenes( pGenes )
         , m_CopyToAlleleName( rAlleleName )
         , m_CopyToAlleleIndex( alleleIndex )
         , m_Prob( likelihood )
+        , m_AlleleConfigName( alleleConfigName )
+        , m_AlleleDescText( alleleDescText )
+        , m_LikelihoodDescText( likelihoodDescText )
     {
     }
 
@@ -44,14 +80,14 @@ namespace Kernel
 
     bool CopyToAlleleLikelihood::Configure( const Configuration* config )
     {
-        std::set<std::string> allowed_allele_names = m_pGenes->GetDefinedAlleleNames();
+        const std::set<std::string>& allowed_allele_names = m_pGenes->GetDefinedAlleleNames();
 
         jsonConfigurable::ConstrainedString name;
         name.constraint_param = &allowed_allele_names;
-        name.constraints = "Vector_Species_Params[x].Genes";
-        initConfigTypeMap( "Copy_To_Allele", &name, CTAL_Copy_To_Allele_DESC_TEXT );
+        name.constraints = m_pGenes->GENE_CONSTRAINTS;
+        initConfigTypeMap( m_AlleleConfigName, &name, m_AlleleDescText );
 
-        initConfigTypeMap( "Likelihood", &m_Prob, CTAL_Likelihood_DESC_TEXT, 0.0f, 1.0f, 0.0f );
+        initConfigTypeMap( "Likelihood", &m_Prob, m_LikelihoodDescText, 0.0f, 1.0f, 0.0f);
 
         bool is_configured = JsonConfigurable::Configure( config );
         if( is_configured && !JsonConfigurable::_dryrun )
@@ -82,8 +118,16 @@ namespace Kernel
     // --- CopyToAlleleLikelihoodnCollection
     // ------------------------------------------------------------------------
 
+
     CopyToAlleleLikelihoodCollection::CopyToAlleleLikelihoodCollection( const VectorGeneCollection* pGenes )
-        : JsonConfigurableCollection( "Copy_To_Likelihood" )
+        :CopyToAlleleLikelihoodCollection( pGenes,
+                                           "Copy_To_Likelihood" )
+    {
+    }
+
+    CopyToAlleleLikelihoodCollection::CopyToAlleleLikelihoodCollection( const VectorGeneCollection* pGenes,
+                                                                        std::string idmTypeName )
+        :  JsonConfigurableCollection<CopyToAlleleLikelihood>(idmTypeName)
         , m_pGenes( pGenes )
     {
     }
@@ -99,6 +143,7 @@ namespace Kernel
 
     void CopyToAlleleLikelihoodCollection::CheckConfiguration()
     {
+
         for( int i = 0; i < m_Collection.size(); ++i )
         {
             for( int j = (i+1); j < m_Collection.size(); ++j )
@@ -106,7 +151,7 @@ namespace Kernel
                 if( m_Collection[ i ]->GetCopyToAlleleName() == m_Collection[ j ]->GetCopyToAlleleName() )
                 {
                     std::stringstream ss;
-                    ss << "Duplicate allele name - '" << m_Collection[ i ]->GetCopyToAlleleName() << "' in 'Copy_To_Likelihood'\n";
+                    ss << "Duplicate allele name - '" << m_Collection[ i ]->GetCopyToAlleleName() << "' in '" << m_IdmTypeName <<"'\n";
                     ss << "Each allele can be defined only once.";
                     throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
                 }
@@ -177,16 +222,16 @@ namespace Kernel
 
     bool AlleleDriven::Configure( const Configuration* config )
     {
-        std::set<std::string> allowed_allele_names = m_pGenes->GetDefinedAlleleNames();
+        const std::set<std::string>& allowed_allele_names = m_pGenes->GetDefinedAlleleNames();
 
         jsonConfigurable::ConstrainedString to_copy_name;
         to_copy_name.constraint_param = &allowed_allele_names;
-        to_copy_name.constraints = "VectorSpeciesParameters.<species>.Genes";
+        to_copy_name.constraints = m_pGenes->GENE_CONSTRAINTS;
         initConfigTypeMap( "Allele_To_Copy", &to_copy_name, AlleleDriven_Allele_To_Copy_DESC_TEXT );
 
         jsonConfigurable::ConstrainedString to_replace_name;
         to_replace_name.constraint_param = &allowed_allele_names;
-        to_replace_name.constraints = "VectorSpeciesParameters.<species>.Genes";
+        to_replace_name.constraints = m_pGenes->GENE_CONSTRAINTS;
         initConfigTypeMap( "Allele_To_Replace", &to_replace_name, AlleleDriven_Allele_To_Replace_DESC_TEXT );
 
         bool ret = JsonConfigurable::Configure( config );
@@ -229,7 +274,7 @@ namespace Kernel
                     if( copy_locus_index != m_LocusIndex )
                     {
                         std::stringstream ss;
-                        ss << "Invalid allele defined in 'Copy_To_Likelihood'.\n";
+                        ss << "Invalid allele defined in '"<< m_CopyToAlleleLikelihoods.GetCollectionName() <<"'.\n";
                         ss << "The allele='" << p_ctl->GetCopyToAlleleName()<< "' is invalid with 'Allele_To_Copy'='" << to_copy_name << "'.\n";
                         ss << "The allele defined in 'Copy_To_Likelihood' must be of the same gene/locus as 'Allele_To_Copy' and 'Allele_To_Replace'.";
                         throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
@@ -385,17 +430,17 @@ namespace Kernel
 
         jsonConfigurable::ConstrainedString required_name;
         required_name.constraint_param = &allowed_allele_names;
-        required_name.constraints = "VectorSpeciesParameters.<species>.Genes";
+        required_name.constraints = m_pGenes->GENE_CONSTRAINTS;
         initConfigTypeMap( "Allele_Required", &required_name, SA_Allele_Required_DESC_TEXT );
 
         jsonConfigurable::ConstrainedString to_shred_name;
         to_shred_name.constraint_param = &allowed_allele_names;
-        to_shred_name.constraints = "VectorSpeciesParameters.<species>.Genes";
+        to_shred_name.constraints = m_pGenes->GENE_CONSTRAINTS;
         initConfigTypeMap( "Allele_To_Shred", &to_shred_name, SA_Allele_To_Shred_DESC_TEXT );
 
         jsonConfigurable::ConstrainedString to_shred_to_name;
         to_shred_to_name.constraint_param = &allowed_allele_names;
-        to_shred_to_name.constraints = "VectorSpeciesParameters.<species>.Genes";
+        to_shred_to_name.constraints = m_pGenes->GENE_CONSTRAINTS;
         initConfigTypeMap( "Allele_To_Shred_To", &to_shred_to_name, SA_Allele_To_Shread_To_DESC_TEXT );
 
         initConfigTypeMap( "Allele_Shredding_Fraction",             &m_ShreddingFraction, SA_Allele_Shredding_Fraction_DESC_TEXT,             0.0f, 1.0f, 1.0f );
@@ -492,10 +537,10 @@ namespace Kernel
     {
         initConfig( "Driver_Type", m_DriverType, config, MetadataDescriptor::Enum( "Driver_Type", VGD_Driver_Type_DESC_TEXT, MDD_ENUM_ARGS( VectorGeneDriverType ) ) );
 
-        std::set<std::string> allowed_allele_names = m_pGenes->GetDefinedAlleleNames();
+        const std::set<std::string>& allowed_allele_names = m_pGenes->GetDefinedAlleleNames();
         jsonConfigurable::ConstrainedString allele_name;
         allele_name.constraint_param = &allowed_allele_names;
-        allele_name.constraints = "Vector_Species_Params[x].Genes";
+        allele_name.constraints = m_pGenes->GENE_CONSTRAINTS;
         initConfigTypeMap( "Driving_Allele", &allele_name, VGD_Driving_Allele_DESC_TEXT );
 
         initConfigComplexCollectionType( "Alleles_Driven", &m_AllelesDriven, VGD_Alleles_Driven_DESC_TEXT, "Driver_Type", "CLASSIC,INTEGRAL_AUTONOMOUS,DAISY_CHAIN" );
@@ -795,37 +840,6 @@ namespace Kernel
             gpp_list.push_back( gpp_driven );
         }
 
-        for( uint8_t locus_index = 0; locus_index < m_AllelesDrivenByLocus.size(); ++locus_index )
-        {
-            if( locus_index == m_DriverLocusIndex ) continue;
-            if( m_AllelesDrivenByLocus[ locus_index ] == nullptr ) continue;
-
-            AlleleDriven* p_ad = m_AllelesDrivenByLocus[ locus_index ];
-
-            const CopyToAlleleLikelihoodCollection& r_ad_likelihoods = p_ad->GetCopyToAlleleLikelihoods();
-
-            // ------------------------------------------------------------------
-            // --- The gamete with the driver must have the allele to be copied.
-            // --- The gamete to be modified must have the allele to be replaced.
-            // ------------------------------------------------------------------
-            if( from_gamete.GetLocus( locus_index ) != p_ad->GetAlleleIndexToCopy()    ) continue;
-            if( to_gamete.GetLocus(   locus_index ) != p_ad->GetAlleleIndexToReplace() ) continue;
-
-            GenomeProbPairVector_t tmp_gpp_list = gpp_list;
-            gpp_list.clear();
-            for( auto& r_gpp : tmp_gpp_list )
-            {
-                for( int i = 0; i < r_ad_likelihoods.Size(); ++i )
-                {
-                    const CopyToAlleleLikelihood* p_ctl = r_ad_likelihoods[ i ];
-                    if( p_ctl->GetLikelihood() == 0.0 ) continue;
-                    GenomeProbPair gpp = r_gpp;
-                    gpp.genome.GetGamete( toGameteIndex ).SetLocus( locus_index, p_ctl->GetCopyToAlleleIndex() );
-                    gpp.prob *= p_ctl->GetLikelihood();
-                    gpp_list.push_back( gpp );
-                }
-            }
-        }
         gpp_list.push_back( gpp_not_driven );
         return gpp_list;
     }
@@ -1123,7 +1137,7 @@ namespace Kernel
                         std::string effector_replace_b = m_pGenes->GetAlleleName( p_ad_b->GetLocusIndex(), p_ad_b->GetAlleleIndexToReplace() );
                         std::stringstream ss;
                         ss << "Invalid Gene Drivers\n";
-                        ss << "Driver with 'Driving_Allele' '" << driver_allele_name_a << "' has 'Copy_To_Likelihood' = '" << effector_copy_b << "'.\n";
+                        ss << "Driver with 'Driving_Allele' '" << driver_allele_name_a << "' has '"<< r_ctal_list.GetCollectionName() <<"' = '" << effector_copy_b << "'.\n";
                         ss << "Driver with 'Driving_Allele' '" << driver_allele_name_b << "' has 'Allele_To_Replace' = '" << effector_replace_b << "'.\n";
                         ss << "This will cause a circular issue that the model does not support at this time.\n";
                         throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
@@ -1146,7 +1160,7 @@ namespace Kernel
                         std::stringstream ss;
                         ss << "Invalid Gene Drivers\n";
                         ss << "Driver with 'Driving_Allele' '" << driver_allele_name_a << "' has 'Allele_To_Replace' = '" << effector_replace_a << "'.\n";
-                        ss << "Driver with 'Driving_Allele' '" << driver_allele_name_b << "' has 'Copy_To_Likelihood' = '" << effector_copy_a << "'.\n";
+                        ss << "Driver with 'Driving_Allele' '" << driver_allele_name_b << "' has '" << r_ctal_list.GetCollectionName() << "' = '" << effector_copy_a << "'.\n";
                         ss << "This will cause a circular issue that the model does not support at this time.\n";
                         throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
                     }
