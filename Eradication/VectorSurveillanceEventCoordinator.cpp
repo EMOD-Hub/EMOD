@@ -62,7 +62,7 @@ namespace Kernel
             const jsonConfigurable::tDynamicStringSet& species_names = p_vp->vector_species.GetSpeciesNames();
             m_Species.constraint_param = &species_names;
         }
-        m_Species.constraints = "<configuration>:Vector_Species_Params.*";
+        m_Species.constraints = "Vector_Species_Params";
         initConfigTypeMap("Species", &m_Species, VC_Species_DESC_TEXT);
 
         initConfig("Gender", m_Gender, inputJson,

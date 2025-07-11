@@ -19,25 +19,29 @@ namespace Kernel
     class CutToAlleleLikelihood : public CopyToAlleleLikelihood
     {
     public:
-        CutToAlleleLikelihood( const VectorGeneCollection* pGenes );
+        explicit CutToAlleleLikelihood( const VectorGeneCollection* pGenes );
+        CutToAlleleLikelihood( const VectorGeneCollection* pGenes,
+                               const std::string& rAlleleName,
+                               uint8_t alleleIndex,
+                               float likelihood );
+
         virtual ~CutToAlleleLikelihood();
 
         //JsonConfigurable
         virtual QueryResult QueryInterface( iid_t iid, void** pinstance ) { return e_NOINTERFACE; }
         IMPLEMENT_NO_REFERENCE_COUNTING()
 
-        virtual bool Configure( const Configuration* config ) override;
+    private:
+        // Constants
+        static constexpr const char* CUT_TO_ALLELE = "Cut_To_Allele";
 
     };
 
     class CutToAlleleLikelihoodCollection : public CopyToAlleleLikelihoodCollection
     {
     public:
-        CutToAlleleLikelihoodCollection( const VectorGeneCollection* pGenes, 
-                                         string collectionName );
+        CutToAlleleLikelihoodCollection( const VectorGeneCollection* pGenes );
         ~CutToAlleleLikelihoodCollection();
-
-        string GetCollectionName();
 
     protected:
         virtual CutToAlleleLikelihood* CreateObject() override;
@@ -58,7 +62,7 @@ namespace Kernel
         virtual bool Configure( const Configuration* config ) override;
 
         // Other
-        void    CheckRedifinition( const MaternalDeposition& rthat ) const;
+        void    CheckRedefinition( const MaternalDeposition& rthat ) const;
         uint8_t GetAlleleToCutLocus() const;
         uint8_t GetAlleleToCutIndex() const;
         uint8_t GetCas9AlleleLocus() const;
@@ -76,6 +80,7 @@ namespace Kernel
         const VectorGeneCollection*     m_pGenes;
         VectorGeneDriverCollection*     m_pGeneDrivers;
         CutToAlleleLikelihoodCollection m_CutToLikelihoods;
+        static constexpr uint8_t        DEFAULT_INDEX = 0;
     };
 
 

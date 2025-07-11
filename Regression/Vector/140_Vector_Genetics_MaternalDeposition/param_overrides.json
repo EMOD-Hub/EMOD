@@ -7,8 +7,7 @@
             "Enable_Climate_Stochasticity": 0
         },
         "DEMOGRAPHICS": {
-            "Enable_Natural_Mortality": 0,
-            "Birth_Rate_Dependence": "DEMOGRAPHIC_DEP_RATE",
+            "Enable_Vital_Dynamics": 0,
             "Demographics_Filenames": [
                 "Demographics.json"
             ],
@@ -16,13 +15,13 @@
         },
         "PRIMARY": {
             "Config_Name": "140_Vector_Genetics_MaternalDeposition",
+            "Note1": "The drives are not doing anything so we can see Maternal_Deposition effects clearer",
+            "Note2": "Arbitrarily, Bw doesn't have Maternal_Deposition associated with it.",
             "Custom_Reports_Filename": "custom_reports.json",
             "Enable_Demographics_Reporting": 0,
-            "Geography": "Household_5x5",
+            "Geography": "",
             "Run_Number": 13,
-            "Simulation_Duration": 400,
-            "logLevel_DllLoader": "WARNING",
-            "logLevel_DllInterfaceHelper": "WARNING"
+            "Simulation_Duration": 400
         },
         "VECTOR": {
             "Enable_Vector_Aging": 1,
@@ -42,7 +41,7 @@
                             {
                                 "Name": "Aw",
                                 "Is_Y_Chromosome": 0,
-                                "Initial_Allele_Frequency": 1.0
+                                "Initial_Allele_Frequency": 1.0
                             },
                             {
                                 "Name": "Ad",
@@ -91,12 +90,11 @@
                                 "Is_Y_Chromosome": 0,
                                 "Initial_Allele_Frequency": 0.0
                             },
-                                                        {
+                            {
                                 "Name": "Cm",
                                 "Is_Y_Chromosome": 0,
                                 "Initial_Allele_Frequency": 0.0
                             }
-                            
                         ],
                         "Mutations": []
                     }
@@ -112,7 +110,7 @@
                                 "Copy_To_Likelihood": [
                                     {
                                         "Copy_To_Allele": "Aw",
-                                        "Likelihood":1
+                                        "Likelihood": 1
                                     }
                                 ]
                             },
@@ -155,52 +153,51 @@
                         ]
                     }
                 ],
-                "Maternal_Deposition":
-                    [
+                "Maternal_Deposition": [
+                    {
+                        "Cas9_gRNA_From": "Ad",
+                        "Allele_To_Cut": "Cw",
+                        "Likelihood_Per_Cas9_gRNA_From": [
                             {
-                                "Cas9_gRNA_From": "Ad",
-                                "Allele_To_Cut": "Cw",
-                                "Likelihood_Per_Cas9_gRNA_From": [
-                                    {
-                                        "Cut_To_Allele": "Cw",
-                                        "Likelihood": 0.95
-                                    },
-                                    {
-                                        "Cut_To_Allele": "Cm",
-                                        "Likelihood": 0.05
-                                    }
-                                ]
+                                "Cut_To_Allele": "Cw",
+                                "Likelihood": 0.95
                             },
                             {
-                                "Cas9_gRNA_From": "Ad",
-                                "Allele_To_Cut": "Aw",
-                                "Likelihood_Per_Cas9_gRNA_From": [
-                                    {
-                                        "Cut_To_Allele": "Aw",
-                                        "Likelihood": 0.95
-                                    },
-                                    {
-                                        "Cut_To_Allele": "Am",
-                                        "Likelihood": 0.05
-                                    }
-                                ]
-                            },
-                            {
-                                "Cas9_gRNA_From": "Bd",
-                                "Allele_To_Cut": "Cw",
-                                "Likelihood_Per_Cas9_gRNA_From": [
-                                    {
-                                        "Cut_To_Allele": "Cw",
-                                        "Likelihood": 0.8
-                                    },
-                                    {
-                                        "Cut_To_Allele": "Cm",
-                                        "Likelihood": 0.2
-                                    }
-                                ]
+                                "Cut_To_Allele": "Cm",
+                                "Likelihood": 0.05
                             }
-                        ]
+                        ]
+                    },
+                    {
+                        "Cas9_gRNA_From": "Ad",
+                        "Allele_To_Cut": "Aw",
+                        "Likelihood_Per_Cas9_gRNA_From": [
+                            {
+                                "Cut_To_Allele": "Aw",
+                                "Likelihood": 0.95
+                            },
+                            {
+                                "Cut_To_Allele": "Am",
+                                "Likelihood": 0.05
+                            }
+                        ]
+                    },
+                    {
+                        "Cas9_gRNA_From": "Bd",
+                        "Allele_To_Cut": "Cw",
+                        "Likelihood_Per_Cas9_gRNA_From": [
+                            {
+                                "Cut_To_Allele": "Cw",
+                                "Likelihood": 0.8
+                            },
+                            {
+                                "Cut_To_Allele": "Cm",
+                                "Likelihood": 0.2
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     }
-}
+}

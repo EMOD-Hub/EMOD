@@ -1,3 +1,4 @@
+
 #include "stdafx.h"
 #include "VectorGeneDriver.h"
 #include "VectorGene.h"
@@ -19,7 +20,24 @@ namespace Kernel
     // ------------------------------------------------------------------------
 
     CutToAlleleLikelihood::CutToAlleleLikelihood( const VectorGeneCollection* pGenes )
-        : CopyToAlleleLikelihood( pGenes )
+        : CopyToAlleleLikelihood ( pGenes,
+                                   CUT_TO_ALLELE,
+                                   MD_Cut_To_Allele_DESC_TEXT,
+                                   MD_Cut_Likelihood_DESC_TEXT )
+    {
+    }
+
+    CutToAlleleLikelihood::CutToAlleleLikelihood( const VectorGeneCollection* pGenes,
+                           const std::string& rAlleleName,
+                           uint8_t alleleIndex,
+                           float likelihood )
+        : CopyToAlleleLikelihood( pGenes,
+                                  rAlleleName,
+                                  alleleIndex,
+                                  likelihood,
+                                  CUT_TO_ALLELE,
+                                  MD_Cut_To_Allele_DESC_TEXT,
+                                  MD_Cut_Likelihood_DESC_TEXT )
     {
     }
 
@@ -27,46 +45,19 @@ namespace Kernel
     {
     }
 
-    bool CutToAlleleLikelihood::Configure( const Configuration* config )
-    {
-        std::set<std::string> allowed_allele_names = m_pGenes->GetDefinedAlleleNames();
-
-        jsonConfigurable::ConstrainedString name;
-        name.constraint_param = &allowed_allele_names;
-        name.constraints = "Vector_Species_Params[x].Genes";
-        initConfigTypeMap( "Cut_To_Allele", &name, MD_Cut_To_Allele_DESC_TEXT );
-        initConfigTypeMap( "Likelihood", &m_Prob, MD_Cut_Likelihood_DESC_TEXT, 0.0f, 1.0f, 0.0f );
-
-        bool is_configured = JsonConfigurable::Configure( config );
-        if( is_configured && !JsonConfigurable::_dryrun )
-        {
-            m_CopyToAlleleName = name;
-            m_CopyToAlleleIndex = m_pGenes->GetAlleleIndex( m_CopyToAlleleName );
-        }
-
-        return is_configured;
-    }
-
-
 
     // ------------------------------------------------------------------------
     // --- CutToAlleleLikelihoodCollection
     // ------------------------------------------------------------------------
 
-    CutToAlleleLikelihoodCollection::CutToAlleleLikelihoodCollection( const VectorGeneCollection* pGenes, 
-                                                                      std::string collectionName )
-        : CopyToAlleleLikelihoodCollection(pGenes)
+    CutToAlleleLikelihoodCollection::CutToAlleleLikelihoodCollection( const VectorGeneCollection* pGenes)
+        : CopyToAlleleLikelihoodCollection( pGenes,
+                                            "Likelihood_Per_Cas9_gRNA_From" )
     {
-        m_IdmTypeName = collectionName;
     }
 
     CutToAlleleLikelihoodCollection::~CutToAlleleLikelihoodCollection()
     {
-    }
-
-    std::string CutToAlleleLikelihoodCollection::GetCollectionName()
-    {
-        return m_IdmTypeName;
     }
 
     CutToAlleleLikelihood* CutToAlleleLikelihoodCollection::CreateObject()
@@ -85,11 +76,11 @@ namespace Kernel
         : JsonConfigurable()
         , m_pGenes( pGenes )
         , m_pGeneDrivers(pGeneDrivers)
-        , m_Cas9AlleleLocus()
-        , m_Cas9AlleleIndex()
-        , m_AlleleToCutIndex()
-        , m_AlleleToCutLocus()
-        , m_CutToLikelihoods(  pGenes, "Likelihood_Per_Cas9_gRNA_From" )
+        , m_Cas9AlleleLocus( DEFAULT_INDEX )
+        , m_Cas9AlleleIndex( DEFAULT_INDEX )
+        , m_AlleleToCutIndex( DEFAULT_INDEX )
+        , m_AlleleToCutLocus( DEFAULT_INDEX )
+        , m_CutToLikelihoods( pGenes )
     {
     }
 
@@ -99,17 +90,16 @@ namespace Kernel
 
     bool MaternalDeposition::Configure( const Configuration* config )
     {
-
-        std::set<std::string> allowed_allele_names = m_pGenes->GetDefinedAlleleNames();
+        const std::set<std::string>& allowed_allele_names = m_pGenes->GetDefinedAlleleNames();
 
         jsonConfigurable::ConstrainedString cas9_allele;
         cas9_allele.constraint_param = &allowed_allele_names;
-        cas9_allele.constraints = "VectorSpeciesParameters.<species>.Genes";
+        cas9_allele.constraints = m_pGenes->GENE_CONSTRAINTS;
         initConfigTypeMap( "Cas9_gRNA_From", &cas9_allele, MD_Cas9_gRNA_From_DESC_TEXT);
 
         jsonConfigurable::ConstrainedString allele_to_cut;
         allele_to_cut.constraint_param = &allowed_allele_names;
-        allele_to_cut.constraints = "VectorSpeciesParameters.<species>.Genes";
+        allele_to_cut.constraints = m_pGenes->GENE_CONSTRAINTS;
         initConfigTypeMap( "Allele_To_Cut", &allele_to_cut, MD_Allele_To_Cut_DESC_TEXT );
 
         bool ret = JsonConfigurable::Configure( config );
@@ -131,7 +121,6 @@ namespace Kernel
             m_Cas9AlleleLocus  = m_pGenes->GetLocusIndex(  cas9_allele );
             m_Cas9AlleleIndex  = m_pGenes->GetAlleleIndex( cas9_allele );
 
-            bool valid_driver_allele = false;
             for( int i = 0; i < m_pGeneDrivers->Size(); i++ )
             {
                 auto* driver = ( *m_pGeneDrivers )[i];
@@ -148,25 +137,21 @@ namespace Kernel
                 }
 
                 // check that allele_to_cut is one of the allele_to_replace for this driver
-                std::stringstream ss;
-                ss << "The 'Allele_To_Cut'='" << allele_to_cut << "' is not a valid allele for the 'Cas9_gRNA_From'='" << cas9_allele;
-                ss << "'.\nThe 'Allele_To_Cut' must be one of the 'Allele_To_Replace' for 'Driving_Allele'='" << cas9_allele << "'.\n";
-                
                 auto* driven_allele = driver->GetAlleleDriven( m_AlleleToCutLocus );
+                if( driven_allele == nullptr || driven_allele->GetAlleleIndexToReplace() != m_AlleleToCutIndex ) 
+                {
+                    std::stringstream ss;
+                    ss << "The 'Allele_To_Cut'='" << allele_to_cut << "' is not a valid allele for the 'Cas9_gRNA_From'='" << cas9_allele;
+                    ss << "'.\nThe 'Allele_To_Cut' must be one of the 'Allele_To_Replace' for 'Driving_Allele'='" << cas9_allele << "'.\n";
 
-                if( driven_allele == nullptr ) {
                     throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
                 }
-                if( driven_allele->GetAlleleIndexToReplace() != m_AlleleToCutIndex ) {
-                    throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
-                }
-                valid_driver_allele = true;
+
                 allele_to_copy = m_pGenes->GetAlleleName( driven_allele->GetLocusIndex(), driven_allele->GetAlleleIndexToCopy() );
                 break;
-
             }
 
-            if( !valid_driver_allele )
+            if( allele_to_copy.empty() )
             {
                 std::stringstream ss;
                 ss << "The 'Cas9_gRNA_From'='" << cas9_allele << "' is not one of the 'Driving_Allele' alleles defined in 'Drivers', but it should be.";
@@ -195,7 +180,7 @@ namespace Kernel
                 for( int i = 0; i < m_CutToLikelihoods.Size(); ++i )
                 {
                     const CutToAlleleLikelihood* p_ctl = static_cast<CutToAlleleLikelihood*>(  m_CutToLikelihoods[i] );
-                    std::string cut_to_allele_name = p_ctl->GetCopyToAlleleName();
+                    const std::string& cut_to_allele_name = p_ctl->GetCopyToAlleleName();
                     uint8_t     cut_to_locus_index = m_pGenes->GetLocusIndex( cut_to_allele_name );
                     if( cut_to_locus_index != m_AlleleToCutLocus )
                     {
@@ -205,7 +190,9 @@ namespace Kernel
                         ss << "'Cut_To_Allele' and 'Allele_To_Cut' must be on the same gene / locus.";
                         throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
                     }
-                    if( allele_to_copy == cut_to_allele_name )
+                    // allele_to_copy is an allele that's being driven, replacing the wildtype
+                    // driven alleles cannot be generated by Maternal Deposition (otherwise this would be a drive)
+                    if( allele_to_copy == cut_to_allele_name ) 
                     {
                         std::stringstream ss;
                         ss << "Invalid 'Cut_To_Allele'='" << cut_to_allele_name << "' in '"<< collection_name << "' for 'Cas9_gRNA_From'='" << cas9_allele << "'.\n";
@@ -244,9 +231,9 @@ namespace Kernel
     {
         return m_CutToLikelihoods;
     }
-    void MaternalDeposition::CheckRedifinition( const MaternalDeposition& rThat ) const
+    void MaternalDeposition::CheckRedefinition( const MaternalDeposition& rThat ) const
     {
-        // Returns True when Allele_To_Cut is the same and there's an overlap in Cas9_gRNA_From alleles
+        // Can't have two Maternal_Deposition definitions with the same Cas9_gRNA_From and Allele_To_Cut
         if( this->m_AlleleToCutLocus != rThat.m_AlleleToCutLocus ) return;
         if( this->m_AlleleToCutIndex != rThat.m_AlleleToCutIndex ) return;
         if( this->m_Cas9AlleleLocus  != rThat.m_Cas9AlleleLocus ) return;
@@ -305,6 +292,7 @@ namespace Kernel
         // Separate non-target and target gametes
         GameteProbPairVector_t non_target_gametes;
 
+        float will_not_cut_prob = 0.0f;
         // Apply the cut/likelihood logic for each Cas9 allele
         for( uint16_t i = 0; i < total_ca9_alleles_in_mom; ++i ) 
         {
@@ -321,7 +309,7 @@ namespace Kernel
                 {
                     const CopyToAlleleLikelihood* p_ctl = r_likelihoods[k];
                     float likelihood = p_ctl->GetLikelihood();
-                    if( likelihood == 0.0f ) continue;
+                    if( likelihood == will_not_cut_prob ) continue;
                     GameteProbPair new_gpp = gpp;
                     new_gpp.gamete.SetLocus( m_AlleleToCutLocus, p_ctl->GetCopyToAlleleIndex() );
                     new_gpp.prob *= likelihood;
@@ -377,7 +365,7 @@ namespace Kernel
             for( int j = i + 1; j < m_Collection.size(); ++j )
             {
                 MaternalDeposition* p_md_j = m_Collection[j];
-                p_md_i->CheckRedifinition( *p_md_j );
+                p_md_i->CheckRedefinition( *p_md_j );
             }
         }
     }

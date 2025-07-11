@@ -185,7 +185,7 @@ namespace Kernel
 
     bool GeneToTraitModifierConfig::GeneToTraitModifierConfig::Configure( const Configuration* config )
     {
-        const char* constraint_schema = "<configuration>:Vector_Species_Params.Genes.*";
+        const char* constraint_schema = m_pGenes->GENE_CONSTRAINTS;
         std::set<std::string> allowed_values = m_pGenes->GetDefinedAlleleNames();
         allowed_values.insert( "*" );
 

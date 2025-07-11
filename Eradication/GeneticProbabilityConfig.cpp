@@ -59,7 +59,7 @@ namespace Kernel
 
             jsonConfigurable::ConstrainedString species_name;
             species_name.constraint_param = &r_species_name_set;
-            species_name.constraints = "<configuration>:Vector_Species_Params.Name";
+            species_name.constraints = m_pSpeciesCollection->SPECIES_NAME_CONSTRAINTS;
 
             initConfigTypeMap( "Species", &species_name, Insecticide_Species_Name_DESC_TEXT );
 
@@ -76,15 +76,12 @@ namespace Kernel
         // --- Now that we have the species parameters, we can make sure
         // --- that the alleles entered are valid.
         // -------------------------------------------------------------
-        const char* constraint_schema = "<configuration>:Vector_Species_Params.Genes.*";
-
         std::set<std::string> allowed_values = m_pVectorSpeciesParameters->genes.GetDefinedAlleleNames();
         allowed_values.insert( "*" );
-
         float probability = 0.0;
         std::vector<std::vector<std::string>> combo_strings;
 
-        initConfigTypeMap( "Allele_Combinations", &combo_strings, ACPC_Allele_Combinations_DESC_TEXT, constraint_schema, allowed_values );
+        initConfigTypeMap( "Allele_Combinations", &combo_strings, ACPC_Allele_Combinations_DESC_TEXT, "Vector_Species_Params[X].Genes", allowed_values );
         initConfigTypeMap( "Probability",         &probability,   ACPC_Probability_DESC_TEXT, 0.0f, 1.0f, 0.0f );
 
         bool is_configured = JsonConfigurable::Configure( inputJson );

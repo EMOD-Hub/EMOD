@@ -48,7 +48,7 @@ namespace Kernel
 
         jsonConfigurable::ConstrainedString species_name;
         species_name.constraint_param = &r_species_name_set;
-        species_name.constraints = "<configuration>:Vector_Species_Params.Name";
+        species_name.constraints = m_pSpeciesCollection->SPECIES_NAME_CONSTRAINTS;
 
         initConfigTypeMap( "Species", &species_name, Insecticide_Species_Name_DESC_TEXT );
 
@@ -66,7 +66,7 @@ namespace Kernel
             allowed_values = r_species_params.genes.GetDefinedAlleleNames();
         }
         allowed_values.insert( "*" );
-        const char* constraint_schema = "<configuration>:Vector_Species_Params.Genes.*";
+        const char* constraint_schema = "Vector_Species_Params[X].Genes";
 
         std::vector<std::vector<std::string>> combo_strings;
         float modifier_larval = 1.0f;
@@ -360,7 +360,7 @@ namespace Kernel
             // because insecticides has the real thing.
             this->constraint_param = &(p_vp->insecticides.GetInsecticideNames());
         }
-        this->constraints = "<configuration>:Insecticides.Name";
+        this->constraints = "Insecticides[X].Name";
     }
 
     InsecticideName::InsecticideName( const InsecticideName& rMaster )

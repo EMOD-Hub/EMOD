@@ -6,7 +6,6 @@
 #include "VectorGene.h"
 #include "VectorTraitModifiers.h"
 #include "VectorMaternalDeposition.h"
-#include "VectorFertilizer.h"
 
 using namespace Kernel;
 
@@ -159,7 +158,6 @@ SUITE( VectorMaternalDepositionTest )
 
         CHECK_EQUAL( "X-a2-b4-c2-d2-e2:X-a1-b3-c1-d2-e2", gene_collection.GetGenomeName( genome_has_a2 ) );
         VectorGeneDriver* p_driver_a2 = gene_drivers[0];
-        VectorFertilizer vf;
 
         GameteProbPairVector_t gametes;
         gametes.push_back( GameteProbPair( genome_has_a2.GetGamete( VectorGenomeGameteIndex::GAMETE_INDEX_DAD ), 1 ) );

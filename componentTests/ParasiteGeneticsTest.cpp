@@ -899,8 +899,8 @@ SUITE( ParasiteGeneticsTest )
             std::string exp_msg;
             exp_msg += "Invalid number of frequency sets in 'Barcode_Allele_Frequencies_Per_Genome_Location'.\n";
             exp_msg += "'Barcode_Allele_Frequencies_Per_Genome_Location' has 1\n";
-            exp_msg += "and '<config>.Barcode_Genome_Locations' has 10.\n";
-            exp_msg += "There should be one set for each location defined in '<config>.Barcode_Genome_Locations'.\n";
+            exp_msg += "and 'Barcode_Genome_Locations' has 10.\n";
+            exp_msg += "There should be one set for each location defined in 'Barcode_Genome_Locations'.\n";
             std::string act_msg = re.GetMsg();
             if( act_msg.find( exp_msg ) == string::npos )
             {
@@ -993,8 +993,8 @@ SUITE( ParasiteGeneticsTest )
             std::string exp_msg;
             exp_msg += "Invalid number of frequency sets in 'Drug_Resistant_Allele_Frequencies_Per_Genome_Location'.\n";
             exp_msg += "'Drug_Resistant_Allele_Frequencies_Per_Genome_Location' has 2\n";
-            exp_msg += "and '<config>.Drug_Resistant_Genome_Locations' has 3.\n";
-            exp_msg += "There should be one set for each location defined in '<config>.Drug_Resistant_Genome_Locations'.\n";
+            exp_msg += "and 'Drug_Resistant_Genome_Locations' has 3.\n";
+            exp_msg += "There should be one set for each location defined in 'Drug_Resistant_Genome_Locations'.\n";
             std::string act_msg = re.GetMsg();
             if( act_msg.find( exp_msg ) == string::npos )
             {
@@ -1078,8 +1078,8 @@ SUITE( ParasiteGeneticsTest )
             std::string exp_msg;
             exp_msg += "Invalid number of frequency sets in 'HRP_Allele_Frequencies_Per_Genome_Location'.\n";
             exp_msg += "'HRP_Allele_Frequencies_Per_Genome_Location' has 1\n";
-            exp_msg += "and '<config>.HRP_Genome_Locations' has 2.\n";
-            exp_msg += "There should be one set for each location defined in '<config>.HRP_Genome_Locations'.\n";
+            exp_msg += "and 'HRP_Genome_Locations' has 2.\n";
+            exp_msg += "There should be one set for each location defined in 'HRP_Genome_Locations'.\n";
             std::string act_msg = re.GetMsg();
             if( act_msg.find( exp_msg ) == string::npos )
             {

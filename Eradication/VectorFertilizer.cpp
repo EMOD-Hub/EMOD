@@ -155,7 +155,6 @@ namespace Kernel
         DoMaternalDepostion( rFemale, gametes_female );
         DoMaternalDepostion( rFemale, gametes_male );
 
-
         // -------------------------------------------------------------------------
         // --- Now that we have the gametes from each parent and the probability of
         // --- that gamete generate the possible genomes (i.e. fertilized eggs).

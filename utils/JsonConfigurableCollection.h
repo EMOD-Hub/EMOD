@@ -130,6 +130,11 @@ namespace Kernel
         {
         }
 
+        const std::string& GetCollectionName() const
+        {
+            return m_IdmTypeName;
+        }
+
         virtual void Add( JsonConfigurableClass* pJcc )
         {
             m_Collection.push_back( pJcc );

@@ -32,11 +32,11 @@ namespace Kernel
     {
         jsonConfigurable::ConstrainedString tmp_from;
         tmp_from.constraint_param = m_pAlleleNameSet;
-        tmp_from.constraints = "<configuration>:Genes.Alleles.Name";
+        tmp_from.constraints = "Genes[X].Alleles[X].Name";
 
         jsonConfigurable::ConstrainedString tmp_to;
         tmp_to.constraint_param = m_pAlleleNameSet;
-        tmp_to.constraints = "<configuration>:Genes.Alleles.Name";
+        tmp_to.constraints = "Genes[X].Alleles[X].Name";
 
         initConfigTypeMap( "Mutate_From",             &tmp_from,    VAM_Mutate_From_DESC_TEXT,             std::string("") );
         initConfigTypeMap( "Mutate_To",               &tmp_to,      VAM_Mutate_To_DESC_TEXT,               std::string("") );

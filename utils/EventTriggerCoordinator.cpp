@@ -23,7 +23,7 @@ namespace Kernel
     std::vector<std::pair<std::string,EventTriggerCoordinator*>> EventTriggerCoordinatorFactory::m_VectorBuiltIn;
 
     const EventType::Enum EventTriggerCoordinatorFactory::EVENT_TYPE = EventType::COORDINATOR;
-    const char* EventTriggerCoordinatorFactory::CONSTRAINT_SCHEMA_STRING = "'<configuration>:Custom_Coordinator_Events.*' or Built-in";
+    const char* EventTriggerCoordinatorFactory::CONSTRAINT_SCHEMA_STRING = "'Custom_Coordinator_Events' or Built-in";
     const char* EventTriggerCoordinatorFactory::USER_EVENTS_PARAMETER_NAME = "Custom_Coordinator_Events";
     const char* EventTriggerCoordinatorFactory::USER_EVENTS_PARAMETER_DESC = Custom_Coordinator_Events_DESC_TEXT;
 

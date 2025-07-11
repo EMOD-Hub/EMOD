@@ -170,6 +170,7 @@ namespace Kernel
 
         // IVectorGenomeNames
         virtual std::string GetGenomeName( const VectorGenome& rGenome ) const override; 
+        static constexpr const char* GENE_CONSTRAINTS = "Vector_Species_Params[X].Genes";
 
     protected:
         virtual VectorGene* CreateObject() override;

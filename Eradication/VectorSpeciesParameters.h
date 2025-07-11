@@ -109,6 +109,7 @@ namespace Kernel
         const jsonConfigurable::tDynamicStringSet& GetSpeciesNames() const;
 
         const VectorSpeciesParameters& GetSpecies( const std::string& rName ) const;
+        static constexpr const char* SPECIES_NAME_CONSTRAINTS = "Vector_Species_Params[X].Name";
 
     protected:
         virtual VectorSpeciesParameters* CreateObject() override;
