@@ -18,7 +18,7 @@ Install prerequisites for running simulations
 The following software packages are required to run simulations using the
 |linux_binary|. You can skip this section you already installed the pre-built
 |exe_s| using the instructions in :doc:`emod-generic:install-overview` for
-generic, :doc:`emodpy-hiv:emod/install-overview` for HIV,
+generic, :doc:`emodpy-hiv:installation` for HIV, 
 or :doc:`emodpy-malaria:emod/install-overview` for malaria.
 
 .. include:: reuse/centos-install-to-run.txt
