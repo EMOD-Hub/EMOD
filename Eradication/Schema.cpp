@@ -10,6 +10,7 @@
 #endif
 
 #include "Schema.h"
+#include "IdmString.h"
 #include "Log.h"
 #include "ProgVersion.h"
 #include "DllLoader.h"
@@ -64,9 +65,19 @@ void writeInputSchemas( const char* output_path )
     json::Object vsRoot;
     json::QuickBuilder versionSchema( vsRoot );
     ProgDllVersion pv;
+    auto sims = getSimTypeList();
     versionSchema["DTK_Version"] = json::String( pv.getVersion() );
     versionSchema["DTK_Branch"] = json::String( pv.getSccsBranch() );
     versionSchema["DTK_Build_Date"] = json::String( pv.getBuildDate() );
+    std::string sim_types_str = "";
+    for( auto sim_type : sims )
+    {
+        sim_types_str += IdmString( sim_type ).split( '_' )[0];
+        sim_types_str += ", ";
+    }
+    sim_types_str.pop_back();
+    sim_types_str.pop_back();
+    versionSchema["DTK_Supported_Sim_Types"] = json::String( sim_types_str );
 
     total_schema["Version"] = versionSchema.As<json::Object>();
 

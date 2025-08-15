@@ -63,7 +63,6 @@ namespace Kernel
     {
         serializationFlagsDefault.set( SerializationFlags::LarvalHabitats );
         serializationFlagsDefault.set( SerializationFlags::VectorPopulation );
-        larval_habitat_multiplier.Initialize();
     }
 
     NodeVector::NodeVector(ISimulationContext *context, ExternalNodeId_t externalNodeId, suids::suid _suid) 
@@ -81,7 +80,6 @@ namespace Kernel
     {
         serializationFlagsDefault.set( SerializationFlags::LarvalHabitats );
         serializationFlagsDefault.set( SerializationFlags::VectorPopulation );
-        larval_habitat_multiplier.Initialize();
     }
 
     bool
@@ -103,6 +101,8 @@ namespace Kernel
     {
         Node::Initialize();
 
+        // when creating nodes from scratch (not from serialization)
+        larval_habitat_multiplier.Initialize(); 
 
         if (ClimateFactory::climate_structure == ClimateStructure::CLIMATE_OFF)
         {
@@ -531,6 +531,12 @@ namespace Kernel
     void NodeVector::propagateContextToDependents()
     {
         Node::propagateContextToDependents();
+
+        if( !larval_habitat_multiplier.WasInitialized() )
+        {
+            // For nodes that are created from serialization file
+            larval_habitat_multiplier.Initialize();
+        }
 
         for (auto population : m_vectorpopulations)
         {
