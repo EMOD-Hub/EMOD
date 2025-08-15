@@ -58,25 +58,29 @@ void writeInputSchemas( const char* output_path )
 {
     json::Object jsonRoot;
     json::QuickBuilder total_schema( jsonRoot );
-
     Kernel::JsonConfigurable::_dryrun = true;
 
     // --- Create Metadata Schema
     json::Object vsRoot;
     json::QuickBuilder versionSchema( vsRoot );
+
     ProgDllVersion pv;
-    auto sims = getSimTypeList();
     versionSchema["DTK_Version"] = json::String( pv.getVersion() );
     versionSchema["DTK_Branch"] = json::String( pv.getSccsBranch() );
     versionSchema["DTK_Build_Date"] = json::String( pv.getBuildDate() );
-    std::string sim_types_str = "";
-    for( auto sim_type : sims )
-    {
-        sim_types_str += IdmString( sim_type ).split( '_' )[0];
-        sim_types_str += ", ";
+
+    const auto sims = getSimTypeList();
+    std::string sim_types_str;
+    sim_types_str.reserve( sims.size() * 20 ); // Reserve space to avoid multiple reallocations
+    for( size_t i = 0; i < sims.size(); ++i ) {
+        const std::string sim_type_prefix = IdmString( sims[i] ).split( '_' )[0];
+        sim_types_str += sim_type_prefix;
+
+        if( i < sims.size() - 1 ) // Avoids trailing comma
+        {
+            sim_types_str += ", ";
+        }
     }
-    sim_types_str.pop_back();
-    sim_types_str.pop_back();
     versionSchema["DTK_Supported_Sim_Types"] = json::String( sim_types_str );
 
     total_schema["Version"] = versionSchema.As<json::Object>();

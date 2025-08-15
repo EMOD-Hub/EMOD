@@ -113,7 +113,7 @@ ReportPluginAgeAtInfection::ReportPluginAgeAtInfection()
 , m_pRNG( nullptr )
 {
     initSimTypes( 1, "*" );
-    LOG_INFO( "ReportPluginAgeAtInfection ctor\n" );
+    LOG_DEBUG( "ReportPluginAgeAtInfection ctor\n" );
 #ifdef _REPORT_DLL
     m_pRNG = DLL_HELPER.CreateRandomNumberGenerator( EnvPtr );
 #else

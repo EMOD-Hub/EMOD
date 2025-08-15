@@ -132,23 +132,27 @@ int main(int argc, char* argv[])
 #endif
 
     ProgDllVersion pv;
-    auto sims = getSimTypeList();
+
     std::stringstream output;
     output << "EMOD Disease Transmission Kernel " << pv.getVersion() << std::endl
-           << "Built on " << pv.getBuildDate() <<
-           " by " << pv.getBuilderName() <<
-           " from " << pv.getSccsBranch() <<
-           " checked in on " << pv.getSccsDate() << std::endl;
+           << "Built on " << pv.getBuildDate() 
+           << " by " <<      pv.getBuilderName() 
+           << " from " <<    pv.getSccsBranch() 
+           << " checked in on " << pv.getSccsDate() << std::endl;
     
-    std::string sim_types_str = "Supports sim_types: ";
-    for( auto sim_type: sims  )
-    {
-        sim_types_str += IdmString( sim_type ).split('_')[0];
-        sim_types_str += ", ";
+    // Build supported simulation types string
+    const auto sims = getSimTypeList();
+    output << "Supports sim_types: ";
+    for( size_t i = 0; i < sims.size(); ++i ) {
+        const std::string sim_type = IdmString( sims[i] ).split( '_' )[0];
+        output << sim_type;
+
+        if( i < sims.size() - 1 ) {
+            output << ", ";
+        }
     }
-    sim_types_str.pop_back();
-    sim_types_str.pop_back();
-    output << sim_types_str << "." << std::endl;
+    output << "." << std::endl;
+
 #ifdef ENABLE_LOG_VALID
     output << "TestSugar Enabled" << std::endl;
 #endif
