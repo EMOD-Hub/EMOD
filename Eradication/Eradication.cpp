@@ -140,18 +140,7 @@ int main(int argc, char* argv[])
            << " from " <<    pv.getSccsBranch() 
            << " checked in on " << pv.getSccsDate() << std::endl;
     
-    // Build supported simulation types string
-    const auto sims = getSimTypeList();
-    output << "Supports sim_types: ";
-    for( size_t i = 0; i < sims.size(); ++i ) {
-        const std::string sim_type = IdmString( sims[i] ).split( '_' )[0];
-        output << sim_type;
-
-        if( i < sims.size() - 1 ) {
-            output << ", ";
-        }
-    }
-    output << "." << std::endl;
+    output << "Supports Simulation_Type(s): " << getSupportedSimsString() << "." << std::endl;
 
 #ifdef ENABLE_LOG_VALID
     output << "TestSugar Enabled" << std::endl;
