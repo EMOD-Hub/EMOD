@@ -80,7 +80,7 @@ bool DefaultController::execute_internal()
     using namespace Kernel;
     list<string> serialization_test_state_filenames;
 
-    LOG_INFO("DefaultController::execute_internal()...\n");
+    LOG_DEBUG("DefaultController::execute_internal()...\n");
 
     JsonConfigurable::_useDefaults = false;
     JsonConfigurable::_track_missing = true;
@@ -97,7 +97,7 @@ bool DefaultController::execute_internal()
     if (EnvPtr->MPI.Rank==0) { ostringstream oss; oss << "Beginning Simulation...";  EnvPtr->getStatusReporter()->ReportStatus(oss.str()); }
 
     // populate it
-    LOG_INFO("DefaultController::execute_internal() populate simulation...\n");
+    LOG_DEBUG("DefaultController::execute_internal() populate simulation...\n");
     // Confusing variable name (JC::useDefaults); we want to collect all defaults for reporting. It's up to us as the calling function
     JsonConfigurable::_track_missing = true;
     if(sim->Populate())

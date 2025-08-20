@@ -116,10 +116,14 @@ namespace Kernel
     {
         Node::SetParameters( demographics_factory, climate_factory );
 
-        if (demographics["NodeAttributes"].Contains("LarvalHabitatMultiplier"))
+        if (demographics["NodeAttributes"].Contains("LarvalHabitatMultiplier") )
         {
-            // This bit of magic gets around the fact that we have a few competing JSON patterns colliding right here, and we have to
-            // go from one JSON view to string to another JSON view
+            // if there are already m_larval_habitats, that means we created them via de-serialization and it's too late for this.
+            if( !m_larval_habitats.empty() )
+            {
+                LOG_DEBUG( "Larval habitats already set up from de-serialization, LarvalHabitatiMultiplier will not be used.\n" );
+                return;
+            }
             std::istringstream config_string(demographics["NodeAttributes"].GetJsonObject().ToString());
             Configuration* config = Configuration::Load(config_string, std::string(""));
             larval_habitat_multiplier.Configure(config);
@@ -738,6 +742,15 @@ namespace Kernel
 
         if( node.serializationFlags.test( SerializationFlags::LarvalHabitats ) ) {
             ar.labelElement("m_larval_habitats") & node.m_larval_habitats;
+        }
+        else{
+            // Let the user know we are getting larval habitats from config
+            if( ar.IsReader() ) {
+                LOG_INFO( "Loading larval habitats from config instead of serialized data. LarvalHabitatMultiplier in demographics will not be applied.\n" );
+            }
+            else{
+                LOG_INFO( "Not serializing larval habitats, they will have to be loaded from config instead of serialized data.\n" );
+            }
         }
 
         if( node.serializationFlags.test( SerializationFlags::VectorPopulation ) ) {
