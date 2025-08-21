@@ -795,13 +795,13 @@ namespace Kernel
     bool Simulation::Populate()
     {
         // Populate nodes
-        LOG_INFO_F( "Using campaign file: %s\n", campaignFilename.c_str());
+        LOG_INFO_F( "Using campaign file: %s\n", campaignFilename.c_str() );
         LOG_INFO( "Populating simulation from demographics...\n" );
-        int node_count = populateFromDemographics(campaignFilename.c_str(), loadBalanceFilename.c_str());
+        int node_count = populateFromDemographics(campaignFilename.c_str(), loadBalanceFilename.c_str() );
 
-        LOG_DEBUG_F("Merging node rank maps...\n");
+        LOG_INFO_F( "Merging node rank maps...\n" );
         nodeRankMap.MergeMaps(); // merge rank maps across all processors
-        LOG_DEBUG_F("Merged rank %d map now has %d nodes.\n", EnvPtr->MPI.Rank, nodeRankMap.Size());
+        LOG_INFO_F( "Merged rank %d map now has %d nodes.\n", EnvPtr->MPI.Rank, nodeRankMap.Size() );
         LOG_INFO_F( "Created and populated %d nodes from demographics.\n", node_count );
         EnvPtr->Log->Flush();
 
