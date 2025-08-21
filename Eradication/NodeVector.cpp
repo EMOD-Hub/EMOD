@@ -121,7 +121,7 @@ namespace Kernel
             // if there are already m_larval_habitats, that means we created them via de-serialization and it's too late for this.
             if( !m_larval_habitats.empty() )
             {
-                LOG_DEBUG( "Larval habitats already set up from de-serialization, LarvalHabitatiMultiplier will not be used.\n" );
+                // Larval habitats already set up from de-serialization, LarvalHabitatiMultiplier will not be used.
                 return;
             }
             std::istringstream config_string(demographics["NodeAttributes"].GetJsonObject().ToString());
@@ -746,7 +746,7 @@ namespace Kernel
         else{
             // Let the user know we are getting larval habitats from config
             if( ar.IsReader() ) {
-                LOG_INFO( "Loading larval habitats from config instead of serialized data. LarvalHabitatMultiplier in demographics will not be applied.\n" );
+                LOG_INFO( "Loading larval habitats from config instead of serialized data. 'LarvalHabitatMultiplier' in demographics will not be applied.\n" );
             }
             else{
                 LOG_INFO( "Not serializing larval habitats, they will have to be loaded from config instead of serialized data.\n" );

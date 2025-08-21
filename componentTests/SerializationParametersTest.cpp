@@ -273,10 +273,6 @@ SUITE(SerializationParametersTest)
     TEST_FIXTURE( SerializationParametersFixture, ReadWriteMask16 )
     {
         unique_ptr<Configuration> p_config( Environment::LoadConfigurationFile( "testdata/SerializationParametersTest/TestReadWriteMask16.json" ) );
-        m_pSimulationConfig->Sim_Tstep = 1.5;
-        m_pSimulationConfig->starttime = 1;
-
-        int steps = 10;
 
         SerializationParameters::GetInstance()->Configure( p_config.get() );
         SerializationBitMask_t read_mask = SerializationParameters::GetInstance()->GetSerializationReadMask();

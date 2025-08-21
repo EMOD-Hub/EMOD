@@ -794,24 +794,16 @@ namespace Kernel
 
     bool Simulation::Populate()
     {
-        LOG_DEBUG("Calling populateFromDemographics()\n");
-
         // Populate nodes
-        LOG_INFO_F("Using campaign file: %s\n", campaignFilename.c_str());
+        LOG_INFO_F( "Using campaign file: %s\n", campaignFilename.c_str());
+        LOG_INFO( "Populating simulation from demographics...\n" );
         int node_count = populateFromDemographics(campaignFilename.c_str(), loadBalanceFilename.c_str());
-        LOG_DEBUG_F("populateFromDemographics() generated %d nodes.\n", node_count);
 
-        LOG_DEBUG_F("Rank %d contributes %d nodes...\n", EnvPtr->MPI.Rank, nodeRankMap.Size());
-        EnvPtr->Log->Flush();
         LOG_DEBUG_F("Merging node rank maps...\n");
         nodeRankMap.MergeMaps(); // merge rank maps across all processors
         LOG_DEBUG_F("Merged rank %d map now has %d nodes.\n", EnvPtr->MPI.Rank, nodeRankMap.Size());
-
-//        if (nodeRankMap.Size() < 500)
-//            LOG_INFO_F("Rank %d map contents:\n%s\n", EnvPtr->MPI.Rank, nodeRankMap.ToString().c_str());
-//        else 
-//            LOG_INFO("(Rank map contents not displayed due to large (> 500) number of entries.)\n");
-        LOG_DEBUG("Rank map contents not displayed until NodeRankMap::toString() (re)implemented.\n");
+        LOG_INFO_F( "Created and populated %d nodes from demographics.\n", node_count );
+        EnvPtr->Log->Flush();
 
         // We'd like to be able to run even if a processor has no nodes, but there are other issues.
         // So for now just bail...

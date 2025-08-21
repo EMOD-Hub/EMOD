@@ -249,17 +249,17 @@ namespace Kernel
         IInitialLoadBalanceScheme* p_lbs = nullptr ;
         if( extension == "json" )
         {
-            LOG_DEBUG("Loading Json Load Balance Scheme.\n");
+            LOG_INFO_F("Using Json Load Balance Scheme from file: %s.\n", rFilename);
             p_lbs = new JsonInitialLoadBalanceScheme();
         }
         else if( !rFilename.empty() && FileSystem::FileExists( rFilename ) )
         {
-            LOG_DEBUG("Loading Legacy Load Balance Scheme.\n");
+            LOG_INFO_F("Using Legacy Load Balance Scheme from file: %s.\n", rFilename);
             p_lbs = new LegacyFileInitialLoadBalanceScheme();
         }
         else
         {
-            LOG_DEBUG("Using Checkerboard Load Balance Scheme.\n");
+            LOG_INFO("Using the default Checkerboard Load Balance Scheme.\n");
             p_lbs = new CheckerboardInitialLoadBalanceScheme();
         }
         p_lbs->Initialize( rFilename, expectedNumNodes, numTasks );

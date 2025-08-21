@@ -432,6 +432,10 @@ bool ControllerInitWrapper( int argc, char *argv[], IdmMpi::MessageInterface* pM
             LOG_ERR("Failed to initialize environment, exiting\n");
             return false;
         }
+        else
+        {
+            LOG_INFO( "Environment initialized successfully.\n" );
+        }
 
         if( is_getting_schema )
         {
