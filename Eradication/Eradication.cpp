@@ -31,6 +31,7 @@
 #include "IdmString.h"
 #include "Schema.h"
 #include "SimulationConfig.h"
+#include "ConfigParams.h"
 
 #include "Exceptions.h"
 
@@ -448,6 +449,13 @@ bool ControllerInitWrapper( int argc, char *argv[], IdmMpi::MessageInterface* pM
             writeInputSchemas( po.GetCommandLineValueString( "schema-path" ).c_str() );
             return true;
         }
+
+        // Process configuration file
+        Kernel::ConfigParams config_obj;
+        config_obj.Configure(EnvPtr->Config);
+
+        // Update logger with params from configuration file
+        EnvPtr->initLogger();
 
         // UDP-enabled StatusReporter needs host and sim unique id.
         if( po.GetCommandLineValueString( "monitor_host" ) != "none" )

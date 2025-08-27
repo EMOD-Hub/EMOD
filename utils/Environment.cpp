@@ -134,8 +134,6 @@ bool Environment::Initialize(
         throw Kernel::InitializationException( __FILE__, __LINE__, __FUNCTION__, configFileName.c_str() );
     }
 
-    localEnv->Log->Init( config );
-
     localEnv->Config = Configuration::CopyFromElement( (*config)["parameters"], config->GetDataLocation() );
 
     if( localEnv->Config->CheckElementByName("Default_Config_Path") || config->CheckElementByName("Default_Config_Path") )
@@ -256,6 +254,11 @@ void Environment::setInstance(Environment* env)
 void Environment::setLogger(SimpleLogger* log)
 { 
     getInstance()->Log = log; 
+}
+
+void Environment::initLogger()
+{
+    getInstance()->Log->Init();
 }
 
 void Environment::setSimulationConfig(void* SimConfig)

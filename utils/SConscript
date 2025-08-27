@@ -77,6 +77,7 @@ utilsSrcFiles = [
     "BaseProperties.cpp",
     "BinaryArchiveReader.cpp",
     "BinaryArchiveWriter.cpp",
+    "ConfigParams.cpp",
     "Configuration.cpp",
     "Configure.cpp",
     "Coredump.cpp",
@@ -123,32 +124,5 @@ utilsSrcFiles = [
     "Types.cpp",
     "Timers.cpp",
 ]
-
-utilsIncFiles = [
-    'BaseProperties.h',
-    'BasePropertiesTemplates.h',
-    'BoostLibWrapper.h',
-    'Configuration.h',
-    'ConfigurationImpl.h',
-    'Configure.h',
-    'EnumSupport.h',
-    'Environment.h',
-    'FactorySupport.h',
-    "InterpolatedValueMap.h",
-    "InstructionSetInfo.h",
-    'ISupports.h',
-    'Log.h',
-    'MathFunctions.h',
-    'Memory.h',
-    'Profile.h',
-    'ProgVersion.h',
-    'Properties.h',
-    'SimpleTypemapRegistration.h',
-    "StatusReporter.h",
-    'Sugar.h',
-    'version_info.h'
-]
-
-utilsLocalInc = ['stdafx.h']
 
 utilsLib = env.StaticLibrary('utils', utilsSrcFiles)

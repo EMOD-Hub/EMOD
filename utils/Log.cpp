@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include <stdarg.h>
 #include <iostream>
+#include "ConfigParams.h"
 #include "Log.h"
 #include "Environment.h"
 #include "Exceptions.h"
@@ -12,39 +13,27 @@ using namespace std;
 
 SETUP_LOGGING("Log")
 
-// standard tags
-const char * LogLevel::Valid =      "V";
-const char * LogLevel::Debug =      "D";
-const char * LogLevel::Info =       "I";
-const char * LogLevel::Warning =    "W";
-const char * LogLevel::Error =      "E";
-typedef std::map< Logger::tLevel, std::string > tLogLevel;
+static std::map< Logger::tLevel, std::string > logLevelStrMap   = {{Logger::VALIDATION, "V"},
+                                                                   {Logger::DEBUG,      "D"},
+                                                                   {Logger::INFO,       "I"},
+                                                                   {Logger::WARNING,    "W"},
+                                                                   {Logger::_ERROR,     "E"}};
+static std::map< std::string, Logger::tLevel > logLevelLookup   = {{"VALID",   Logger::VALIDATION},
+                                                                   {"DEBUG",   Logger::DEBUG     },
+                                                                   {"INFO",    Logger::INFO      },
+                                                                   {"WARNING", Logger::WARNING   },
+                                                                   {"ERROR",   Logger::_ERROR    }};
+static std::map< std::string,    std::string > _logShortHistory;
 
-tLogLevel init_loglevel_map()
+DummyLogger::DummyLogger( std::string module_name )
 {
-    tLogLevel returnThis;
-    returnThis[Logger::VALIDATION] = LogLevel::Valid;
-    returnThis[Logger::DEBUG     ] = LogLevel::Debug;
-    returnThis[Logger::INFO      ] = LogLevel::Info;
-    returnThis[Logger::WARNING   ] = LogLevel::Warning;
-    returnThis[Logger::_ERROR    ] = LogLevel::Error;
-    return returnThis;
+    AddModuleName(module_name);
 }
 
-tLogLevel init_full_string_loglevel_map()
+void DummyLogger::AddModuleName( std::string module_name )
 {
-    tLogLevel returnThis;
-    returnThis[Logger::VALIDATION] = "VALID";
-    returnThis[Logger::DEBUG     ] = "DEBUG";
-    returnThis[Logger::INFO      ] = "INFO" ;
-    returnThis[Logger::WARNING   ] = "WARNING";
-    returnThis[Logger::_ERROR    ] = "ERROR";
-    return returnThis;
+    SimpleLogger::AddModuleName(module_name);
 }
-
-static std::map< Logger::tLevel, std::string > logLevelStrMap     = init_loglevel_map();
-static std::map< Logger::tLevel, std::string > logLevelFullStrMap = init_full_string_loglevel_map();
-
 
 SimpleLogger::SimpleLogger()
     : _systemLogLevel(Logger::INFO)
@@ -68,114 +57,60 @@ SimpleLogger::SimpleLogger( Logger::tLevel syslevel )
     _initTime = time(nullptr);
 }
 
-void
-SimpleLogger::Init(
-    const json::QuickInterpreter * configJson
-)
+std::vector<std::string>* SimpleLogger::module_names;
+
+const std::vector<std::string>& SimpleLogger::GetModuleNames()
 {
-    // Only throttle if config.json says to.
-    if( (*configJson)["parameters"].Exist( "Enable_Log_Throttling" ) && (*configJson)["parameters"]["Enable_Log_Throttling"].As<json::Number>() == 1 )
+    release_assert(module_names);
+    return *module_names;
+}
+
+void SimpleLogger::AddModuleName( std::string module_name )
+{
+    if(!module_names)
     {
-        _throttle = true;
+        module_names = new std::vector<std::string>();
     }
+    module_names->push_back(module_name);
+}
 
-    if( (*configJson)["parameters"].Exist( "Enable_Continuous_Log_Flushing" ) && (*configJson)["parameters"]["Enable_Continuous_Log_Flushing"].As<json::Number>() == 1 )
+void SimpleLogger::Init()
+{
+    const Kernel::LoggingParams* lp  = Kernel::LoggingConfig::GetLoggingParams();
+
+    _rank                    = EnvPtr->MPI.Rank;
+    _throttle                = lp->enable_log_throttling;
+    _flush_all               = lp->enable_continuous_log_flushing;
+    _warnings_are_fatal      = lp->enable_warnings_are_fatal;
+    _systemLogLevel          = logLevelLookup[lp->log_levels.at(DEFAULT_LOG_NAME)];
+
+    for(auto log_module : lp->log_levels)
     {
-        _flush_all = true;
-    }
-
-    _logLevelMap["Eradication"] = Logger::INFO; // Default Eradication to INFO, config.json can override.
-
-    // Iterate through config.json looking for any keys with logLevel prefix.
-    for( json::Object::Members::const_iterator it = (*configJson)["parameters"].As<json::Object>().Begin();
-                                               it != (*configJson)["parameters"].As<json::Object>().End();
-                                             ++it )
-    {
-        const std::string& key = it->name;
-        if( key.substr(0,9) == "logLevel_" ) // 9 is the length of "logLevel_"
+        if(logLevelLookup[log_module.second] != _systemLogLevel)
         {
-            const std::string& moduleName = key.substr(9);
-            const json::QuickInterpreter elemConfigJson = json::QuickInterpreter( it->element );
-            const std::string& value = elemConfigJson.As<json::String>();
-            Logger::tLevel moduleLogLevel = Logger::_ERROR;
-            // Brute force this (instead of map) since only used here.
-            if( value == logLevelFullStrMap[Logger::_ERROR] )
-            {
-                moduleLogLevel = Logger::_ERROR;
-            }
-            else if( value == logLevelFullStrMap[Logger::WARNING] )
-            {
-                moduleLogLevel = Logger::WARNING;
-            }
-            else if( value == logLevelFullStrMap[Logger::INFO] )
-            {
-                moduleLogLevel = Logger::INFO;
-            }
-            else if( value == logLevelFullStrMap[Logger::DEBUG] )
-            {
-                moduleLogLevel = Logger::DEBUG;
-            }
-            else if( value == logLevelFullStrMap[Logger::VALIDATION] )
-            {
-                moduleLogLevel = Logger::VALIDATION;
-            }
-            else
-            {
-                std::string msg = "Unknown log level ("+value+") for " + key + ".  Acceptable values are: " ;
-                for( tLogLevel::iterator jt = logLevelFullStrMap.begin() ; jt != logLevelFullStrMap.end() ; ++jt )
-                {
-                    msg += jt->second + ", " ;
-                }
-                msg = msg.substr(0, msg.size()-2) ; //remove trailing comma and space
-                throw Kernel::InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, msg.c_str() );
-            }
-
-            if( moduleName == "default" )
-            {
-                _systemLogLevel = moduleLogLevel;
-            }
-            else
-            {
-                // Copy module-names to char*'s, otherwise searching in the map later
-                // results in poor performance because of lots of string::assign()...
-                char * tmp = new char[moduleName.size()+1];
-                strcpy(tmp, moduleName.c_str());
-                _logLevelMap[tmp/*moduleName*/] = moduleLogLevel;
-            }
+            _logLevelMap[log_module.first] = logLevelLookup[log_module.second];
         }
     }
 
-    _rank = EnvPtr->MPI.Rank;
-
-    std::cout << "Log-levels:" << std::endl ;
-    std::cout << "\tDefault -> " <<  logLevelFullStrMap[_systemLogLevel] << std::endl ;
-    for (auto& loglevelpair : _logLevelMap)
+    std::cout << "Log-levels:" << std::endl;
+    std::cout << "    Default -> " << lp->log_levels.at(DEFAULT_LOG_NAME) << std::endl;
+    for(auto loglevelpair : _logLevelMap)
     {
-        std::cout << "\t" << loglevelpair.first << " -> " << logLevelFullStrMap[ loglevelpair.second ] << std::endl ;
-    }
-
-    if( (*configJson)["parameters"].Exist( "Warnings_Are_Fatal" ) && (*configJson)["parameters"]["Warnings_Are_Fatal"].As<json::Number>() == 1 )
-    {
-        _warnings_are_fatal = true;
+        std::cout << "    " << loglevelpair.first << " -> " 
+                  << lp->log_levels.at(loglevelpair.first) << std::endl;
     }
 
     _initialized = true;
 }
 
-static map< std::string, std::string > _logShortHistory; // module name to log line map
-
 bool SimpleLogger::CheckLogLevel( Logger::tLevel log_level, const char* module )
 {
     // We use standard 0-based priority sequence (0 is the highest level priority)
     // Check if module is in our map
-    module_loglevel_map_t::const_iterator findIt;
-
-    if( _logLevelMap.size() > 0 && 
-        (findIt = _logLevelMap.find( module )) != _logLevelMap.end() )
+    if( _logLevelMap.count(module) )
     {
         // We have this module in our map, check the priority.
-        Logger::tLevel moduleLogLevel = findIt->second;
-        if( log_level > moduleLogLevel )
+        if( log_level > _logLevelMap[module] )
         {
             return false;
         }
