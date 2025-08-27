@@ -91,7 +91,7 @@ void SetFloatingPointSignalHandler()
 #endif
 
     // Install a signal handler
-    if( std::signal(SIGFPE, FPE_SignalHandler) )
+    if( std::signal(SIGFPE, FPE_SignalHandler) == SIG_ERR )
     {
         LOG_WARN("Could not install Floating Point Exception signal handler\n");
     }
