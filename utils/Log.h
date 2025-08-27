@@ -5,7 +5,6 @@
 #include <map>
 #include <cstring>
 
-#include "IdmApi.h"
 #include "Sugar.h"
 
 namespace Logger
@@ -41,7 +40,6 @@ static bool* _log_level_enabled_array = nullptr;
 #define LOG_INFO(x)           LOG_LVL( INFO, x )
 #define LOG_INFO_F(x, ...)    LOG_LVL_F( INFO, x, ##__VA_ARGS__ )
 
-
 // NOTE: LOG_DEBUG is disabled with LOG_VALID for performance reasons - 2-4%.
 #if defined(_DEBUG) || defined(ENABLE_LOG_VALID)
     #define LOG_DEBUG(x)          LOG_LVL( DEBUG, x )
@@ -72,7 +70,8 @@ struct cmp_str
    bool operator()(char const *a, char const *b) const { return std::strcmp(a, b) < 0; }
 };
 
-class IDMAPI SimpleLogger
+
+class SimpleLogger
 {
 public:
     static inline bool IsLoggingEnabled( Logger::tLevel log_level, const char* module, bool*& logLevelEnabledArray )
@@ -94,10 +93,10 @@ public:
         return logLevelEnabledArray[ log_level ];
     }
 
-
     SimpleLogger();
     SimpleLogger( Logger::tLevel syslevel );
     void Init( const json::QuickInterpreter * configJson );
+
     bool CheckLogLevel( Logger::tLevel log_level, const char* module );
     virtual void Log( Logger::tLevel log_level, const char* module, const char* msg, ...);
     virtual void Flush();

@@ -47,23 +47,23 @@ static std::map< Logger::tLevel, std::string > logLevelFullStrMap = init_full_st
 
 
 SimpleLogger::SimpleLogger()
-    : _systemLogLevel(Logger::INFO),
-      _throttle(false),
-      _initialized(false),
-      _flush_all(false),
-      _warnings_are_fatal(false),
-      _rank(0)
+    : _systemLogLevel(Logger::INFO)
+    , _throttle(false)
+    , _initialized(false)
+    , _flush_all(false)
+    , _warnings_are_fatal(false)
+    , _rank(0)
 {
     _initTime = time(nullptr);
 }
 
 SimpleLogger::SimpleLogger( Logger::tLevel syslevel )
-    : _systemLogLevel(syslevel),
-      _throttle(false),
-      _initialized(false),
-      _flush_all(false),
-      _warnings_are_fatal(false),
-      _rank(0)
+    : _systemLogLevel(syslevel)
+    , _throttle(false)
+    , _initialized(false)
+    , _flush_all(false)
+    , _warnings_are_fatal(false)
+    , _rank(0)
 {
     _initTime = time(nullptr);
 }
@@ -164,8 +164,7 @@ SimpleLogger::Init(
 
 static map< std::string, std::string > _logShortHistory; // module name to log line map
 
-bool
-SimpleLogger::CheckLogLevel( Logger::tLevel log_level, const char* module )
+bool SimpleLogger::CheckLogLevel( Logger::tLevel log_level, const char* module )
 {
     // We use standard 0-based priority sequence (0 is the highest level priority)
     // Check if module is in our map
@@ -191,12 +190,7 @@ SimpleLogger::CheckLogLevel( Logger::tLevel log_level, const char* module )
 
 // Either we have a log_level for this module in the map (intialized at init time), or we use the system log level.
 // Either way, if the requested level is >= the setting (in terms of criticality), log it.
-
-void
-SimpleLogger::Log(
-    Logger::tLevel log_level,
-    const char* module,
-    const char* msg, ...)
+void SimpleLogger::Log( Logger::tLevel log_level, const char* module, const char* msg, ...)
 {
     if(_throttle)
     {
@@ -243,15 +237,13 @@ SimpleLogger::Log(
     }
 }
 
-void
-SimpleLogger::Flush()
+void SimpleLogger::Flush()
 {
     std::cout.flush();
     std::cerr.flush();
 }
 
-void 
-SimpleLogger::GetLogInfo( LogTimeInfo &tInfo )
+void SimpleLogger::GetLogInfo( LogTimeInfo &tInfo )
 {
     // Need timestamp
     time_t now = time(nullptr);
@@ -260,4 +252,3 @@ SimpleLogger::GetLogInfo( LogTimeInfo &tInfo )
     tInfo.mins = (sim_time - (tInfo.hours*3600))/60;
     tInfo.secs = (sim_time - (tInfo.hours*3600)) - tInfo.mins*60;
 }
-
