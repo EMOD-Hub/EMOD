@@ -12,7 +12,6 @@ if os.sys.platform != 'win32':
     # for getting commit/branch info either get the info directly (if we're building in a repo)
     git_rev_handle = Popen( "git rev-list HEAD --count".encode('utf-8').split(), stdout=PIPE )
     rev = str( git_rev_handle.stdout.read().rstrip() )[1:].replace( "'", "" )
-    
     # or look for and use an externally provided file
     root = Dir('#').abspath
     provided_version_info_file = '{0}/utils/version.provided.txt'.format(root)
@@ -38,15 +37,11 @@ if os.sys.platform != 'win32':
         git_date_handle = Popen( "git log -1 --pretty=%ai".encode("utf8").split(), stdout=PIPE )
         git_date = str( git_date_handle.stdout.read().rstrip() )[1:].replace( ' ', '_' )
 
-    #print( str( rev ) )
-
     print( branch )
-
     print( str( sha1 ) )
 
     if rev == "":
         rev = 0
-        #rev = '"Unknown"'
     if branch == "":
         branch = "unknownbranch"
     if sha1 == "":
@@ -82,6 +77,7 @@ utilsSrcFiles = [
     "BaseProperties.cpp",
     "BinaryArchiveReader.cpp",
     "BinaryArchiveWriter.cpp",
+    "ConfigParams.cpp",
     "Configuration.cpp",
     "Configure.cpp",
     "Coredump.cpp",
@@ -126,35 +122,7 @@ utilsSrcFiles = [
     "stdafx.cpp",
     "suids.cpp",
     "Types.cpp",
-    "Timers.cpp"
+    "Timers.cpp",
 ]
-#    "../rapidjson/modp/modp_numtoa.cpp",
-
-utilsIncFiles = [
-    'BaseProperties.h',
-    'BasePropertiesTemplates.h',
-    'BoostLibWrapper.h',
-    'Configuration.h',
-    'ConfigurationImpl.h',
-    'Configure.h',
-    'EnumSupport.h',
-    'Environment.h',
-    'FactorySupport.h',
-    "InterpolatedValueMap.h",
-    "InstructionSetInfo.h",
-    'ISupports.h',
-    'Log.h',
-    'MathFunctions.h',
-    'Memory.h',
-    'Profile.h',
-    'ProgVersion.h',
-    'Properties.h',
-    'SimpleTypemapRegistration.h',
-    "StatusReporter.h",
-    'Sugar.h',
-    'version_info.h'
-]
-
-utilsLocalInc = ['stdafx.h']
 
 utilsLib = env.StaticLibrary('utils', utilsSrcFiles)

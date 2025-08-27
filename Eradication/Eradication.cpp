@@ -31,6 +31,7 @@
 #include "IdmString.h"
 #include "Schema.h"
 #include "SimulationConfig.h"
+#include "ConfigParams.h"
 
 #include "Exceptions.h"
 
@@ -44,6 +45,7 @@
 using namespace std;
 
 int MPIInitWrapper(int argc, char* argv[]);
+bool ControllerInitWrapper(int argc, char *argv[], IdmMpi::MessageInterface* pMpi ); // returns false if something broke
 
 
 #ifndef WIN32
@@ -54,11 +56,6 @@ void setStackSize();
 
 SETUP_LOGGING( "Eradication" )
 
-void Usage(char* cmd)
-{
-    LOG_INFO_F("For full usage, run: %s --help\n", cmd);
-    exit(1);
-}
 
 void FPE_SignalHandler( int signal )
 {
@@ -84,25 +81,21 @@ void FPE_SignalHandler( int signal )
 void SetFloatingPointSignalHandler()
 {
 #ifdef WIN32
-    unsigned int currentlControl = 0;        
-    _controlfp_s( &currentlControl, 0, 0 );      //read current FPE control word
-
-    _controlfp_s(&currentlControl, ~(_EM_ZERODIVIDE | _EM_OVERFLOW | _EM_INVALID), _MCW_EM);	// division by 0 | positive/negative infinity (e.g. FLT_MAX/FLT_MIN) |  NaN 
-
-    _controlfp_s(&currentlControl, 0, 0);        //read FPE control word after clearing the bits
+    unsigned int currentlControl = 0;
+    _controlfp_s( &currentlControl, 0, 0 );   //read current FPE control word
+    _controlfp_s(&currentlControl, ~(_EM_ZERODIVIDE | _EM_OVERFLOW | _EM_INVALID), _MCW_EM);   // /0 | +/-inf | NaN
+    _controlfp_s(&currentlControl, 0, 0);     //read FPE control word after clearing the bits
     LOG_DEBUG_F("Signal Handler control word: %u \n", currentlControl);
-
 #else
-    feenableexcept(FE_INVALID | FE_DIVBYZERO | FE_OVERFLOW);    // division by 0 | positive/negative infinity (e.g. FLT_MAX/FLT_MIN) |  NaN 
+    feenableexcept(FE_INVALID | FE_DIVBYZERO | FE_OVERFLOW);   // /0 | +/-inf | NaN
     LOG_DEBUG_F("Signal Handler control word: %d \n", fegetexcept() );
 #endif
 
     // Install a signal handler
-    if( std::signal(SIGFPE, FPE_SignalHandler) )
+    if( std::signal(SIGFPE, FPE_SignalHandler) == SIG_ERR )
     {
         LOG_WARN("Could not install Floating Point Exception signal handler\n");
     }
-
 }
 
 void DisableFloatingPointSignalHandler()
@@ -110,12 +103,11 @@ void DisableFloatingPointSignalHandler()
 #ifdef WIN32
     unsigned int currentlControl = 0;
     _controlfp_s(&currentlControl, 0, 0);   //read current control word
-
-    _controlfp_s(&currentlControl, currentlControl | _EM_ZERODIVIDE | _EM_INVALID , _MCW_EM);	// disable FPE signals by setting bits    
+    _controlfp_s(&currentlControl, currentlControl | _EM_ZERODIVIDE | _EM_INVALID , _MCW_EM);   // disable FPE signals by setting bits
 #else
-    fedisableexcept(FE_INVALID | FE_DIVBYZERO | FE_OVERFLOW);    // disable FPE signals
+    fedisableexcept(FE_INVALID | FE_DIVBYZERO | FE_OVERFLOW);   // disable FPE signals
 #endif
-    std::signal(SIGFPE, SIG_DFL);	//set default signal handler for SIGFPE
+    std::signal(SIGFPE, SIG_DFL);   //set default signal handler for SIGFPE
 }
 
 int main(int argc, char* argv[])
@@ -124,7 +116,8 @@ int main(int argc, char* argv[])
     Environment::setLogger(new SimpleLogger());
     if (argc < 2)
     {
-        Usage(argv[0]);
+        LOG_INFO_F("For full usage, run: %s --help\n", argv[0]);
+        exit(1);
     }
 
 #ifndef WIN32
@@ -201,8 +194,6 @@ void setStackSize()
 
 #endif
 
-
-bool ControllerInitWrapper(int argc, char *argv[], IdmMpi::MessageInterface* pMpi ); // returns false if something broke
 
 int MPIInitWrapper( int argc, char* argv[])
 {
@@ -326,24 +317,40 @@ bool ControllerInitWrapper( int argc, char *argv[], IdmMpi::MessageInterface* pM
 
         //////////////////////////////////////////
         if( po.CommandLineHas( "config" ) )
+        {
             LOG_INFO_F( "Using config file: %s\n", po.GetCommandLineValueString( "config" ).c_str() );
-        else 
+        }
+        else
+        {
             LOG_WARN("No config file specified.\n");
+        }
 
         if( po.CommandLineHas( "input-path" ) )
+        {
             LOG_INFO_F( "Using input path: %s\n", po.GetCommandLineValueString( "input-path" ).c_str() );
-        else 
+        }
+        else
+        {
             LOG_WARN("Input path not specified, assuming current directory.\n"); // in reality these never happen since default values are supplied by the program options
+        }
 
         if( po.CommandLineHas( "output-path" ) )
+        {
             LOG_INFO_F( "Using output path: %s\n", po.GetCommandLineValueString( "output-path" ).c_str() );
-        else 
+        }
+        else
+        {
             LOG_WARN("Output path not specified, using current directory.\n");
+        }
 
         if( po.CommandLineHas( "dll-path" ) )
+        {
             LOG_INFO_F( "Using dll path: %s\n", po.GetCommandLineValueString( "dll-path" ).c_str() );
+        }
         else
+        {
             LOG_WARN("Dll path not specified.\n");
+        }
     }
     catch( std::exception& e) 
     {
@@ -443,6 +450,13 @@ bool ControllerInitWrapper( int argc, char *argv[], IdmMpi::MessageInterface* pM
             return true;
         }
 
+        // Process configuration file
+        Kernel::ConfigParams config_obj;
+        config_obj.Configure(EnvPtr->Config);
+
+        // Update logger with params from configuration file
+        EnvPtr->initLogger();
+
         // UDP-enabled StatusReporter needs host and sim unique id.
         if( po.GetCommandLineValueString( "monitor_host" ) != "none" )
         {
@@ -506,15 +520,17 @@ bool ControllerInitWrapper( int argc, char *argv[], IdmMpi::MessageInterface* pM
         // override controller selection if unit tests requested on command line
         LOG_INFO("Initializing Controller...\n");
         EnvPtr->Log->Flush();
-        IController *controller = ControllerFactory::CreateController(EnvPtr->Config);
+        IController* controller = ControllerFactory::CreateController(EnvPtr->Config);
 
         if (controller)
         {
-            SetFloatingPointSignalHandler();    // Enable floating point signal handler while controller is running
+            SetFloatingPointSignalHandler();        // Enable floating point signal handler while controller is running
             status = controller->Execute();
+            DisableFloatingPointSignalHandler();    // Prevent external programs from triggering fpe, e.g. Python dll
+
             if (status)
             {
-                DisableFloatingPointSignalHandler();	//prevent external programs from triggering fpe, e.g. Python dll
+
                 release_assert( EnvPtr );
 
                 // Run python post-process script; does nothing if no python.
@@ -550,24 +566,24 @@ bool ControllerInitWrapper( int argc, char *argv[], IdmMpi::MessageInterface* pM
         {
             exceptionErrorReport << "Presence of \"Default_Config_Path\" detected in config-file may indicate a problem; make sure you're using a flattened config." << std::endl;
         }
-        exceptionErrorReport<< std::endl << e.GetStackTrace() << std::endl ;
+        exceptionErrorReport << std::endl << e.GetStackTrace() << std::endl;
     }
     catch( Kernel::DetailedException &e )
     {
         exceptionErrorReport << std::endl << std::endl;
         exceptionErrorReport << e.GetMsg() << std::endl << std::endl;
-        exceptionErrorReport << e.GetStackTrace() << std::endl ;
+        exceptionErrorReport << e.GetStackTrace() << std::endl;
     }
     catch (std::bad_alloc &e)
     {
         exceptionErrorReport << std::endl << std::endl;
-        exceptionErrorReport << e.what() << endl;
+        exceptionErrorReport << e.what() << std::endl;
         exceptionErrorReport << "Memory allocation failure: try reducing the memory footprint of your simulation or using more cores.\n"; 
     }
     catch (json::Exception &e)
     {
         exceptionErrorReport << std::endl << std::endl;
-        exceptionErrorReport << "Caught json::Exception: " << e.what() << endl;
+        exceptionErrorReport << "Caught json::Exception: " << e.what() << std::endl;
 
         if(Kernel::JsonConfigurable::_possibleNonflatConfig)
         {
@@ -577,12 +593,12 @@ bool ControllerInitWrapper( int argc, char *argv[], IdmMpi::MessageInterface* pM
     catch (std::runtime_error &e)
     {
         exceptionErrorReport << std::endl << std::endl;
-        exceptionErrorReport << "Caught std::runtime_error: " << e.what() << endl;
+        exceptionErrorReport << "Caught std::runtime_error: " << e.what() << std::endl;
     }
     catch (std::exception &e)
     {
         exceptionErrorReport << std::endl << std::endl;
-        exceptionErrorReport << e.what() <<  endl;
+        exceptionErrorReport << e.what() << std::endl;
     } 
 
     // no finally in c++

@@ -588,3 +588,8 @@
 
 #define MMV_AlleleCombinations_DESC_TEXT "An array of allele combinations (pairs of alleles) to use for mapping migration rates to in the migration binary file. Depends on GenderDataType=VECTOR_MIGRATION_BY_GENETICS."
 
+#define Enable_Continuous_Log_Flushing_DESC_TEXT                  "Indicates if output and error streams should be flushed after every logging message."
+#define Enable_Log_Throttling_DESC_TEXT                           "Indicates if identical sequential logging messages should be skipped."
+#define Enable_Warnings_Are_Fatal_DESC_TEXT                       "Indicates if warning messages should generate exceptions and halt execution."
+#define logLevel_default_DESC_TEXT                                "Default logging level for all modules unless otherwise specified."
+#define logLevel_MODULE_DESC_TEXT                                 "Logging level to be used for indicated module."
