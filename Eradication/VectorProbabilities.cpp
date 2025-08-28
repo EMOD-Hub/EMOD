@@ -104,6 +104,7 @@ namespace Kernel
         kill_livestockfeed      = GeneticProbability( 0.0f );
         spatial_repellent       = GeneticProbability( 0.0f );
         nooutdoorhumanfound     = 0;
+        sp_repelled_or_killed   = GeneticProbability( 0.0f );
 
         outdoorRestKilling      = GeneticProbability( 0.0f );
 
@@ -172,31 +173,37 @@ namespace Kernel
     void VectorProbabilities::SetNodeProbabilities(INodeVectorInterventionEffects* invie, float dt)
     {
         outdoorareakilling  = invie->GetOutdoorKilling();
-        attraction_ADIV     = invie->GetADIVAttraction();
-        attraction_ADOV     = invie->GetADOVAttraction();
+        attraction_ADIV     = invie->GetADIVAttraction();  // Artificial Diet Inside Village
+        attraction_ADOV     = invie->GetADOVAttraction();  // Artificial Diet Outside Village
         spatial_repellent   = invie->GetVillageSpatialRepellent();
         is_using_sugar_trap = invie->IsUsingSugarTrap();
         sugarTrapKilling    = invie->GetSugarFeedKilling();
         kill_livestockfeed  = invie->GetAnimalFeedKilling();
         outdoorRestKilling  = invie->GetOutdoorRestKilling();
+        sp_repelled_or_killed = invie->GetVillageSpatialRepellentRepelledOrKilled();        
     }
 
     void VectorProbabilities::FinalizeTransitionProbabilites(float anthropophily, float indoor_feeding)
     {
         // Non-Feeding Branch
         diewithoutattemptingfeed      =  outdoorareakilling; // for those that do not attempt to feed
+        // -- non-feeding vectors are not affected by spatial repellent killing (otherwise it would be the same as SpaceSpraying)
 
         // Feeding Branch
-        survivewithoutsuccessfulfeed  =  (1.0f - attraction_ADOV) * (spatial_repellent * (1.0f - outdoorareakilling) + (1.0f - spatial_repellent) * (1.0f - attraction_ADIV) * anthropophily * (1.0f - indoor_feeding) * (1.0f - outdoorareakilling) * nooutdoorhumanfound);
-        successfulfeed_animal         =  (1.0f - attraction_ADOV) * (1.0f - spatial_repellent) * (1.0f - attraction_ADIV) * (1.0f - anthropophily) * (1.0f - outdoorareakilling) * (1.0f - kill_livestockfeed);
-        successfulfeed_AD             =  (attraction_ADOV * (1.0f - outdoorareakilling) + (1.0f - attraction_ADOV) * (1.0f - spatial_repellent) * attraction_ADIV * (1.0f - outdoorareakilling));
-        indoorattempttohumanfeed      =  (1.0f - attraction_ADOV) * (1.0f - spatial_repellent) * (1.0f - attraction_ADIV) * anthropophily * indoor_feeding;
-        outdoorattempttohumanfeed     =  (1.0f - attraction_ADOV) * (1.0f - spatial_repellent) * (1.0f - attraction_ADIV) * anthropophily * (1.0f - indoor_feeding) * (1.0f - outdoorareakilling) * (1.0f - nooutdoorhumanfound);
+        survivewithoutsuccessfulfeed = (1.0f - attraction_ADOV) * (spatial_repellent * (1.0f - outdoorareakilling) + (1.0f - sp_repelled_or_killed) * (1.0f - attraction_ADIV) * anthropophily * (1.0f - indoor_feeding) * (1.0f - outdoorareakilling) * nooutdoorhumanfound);
+        successfulfeed_animal        = (1.0f - attraction_ADOV) * (1.0f - sp_repelled_or_killed) * (1.0f - attraction_ADIV) * (1.0f - anthropophily) * (1.0f - outdoorareakilling) * (1.0f - kill_livestockfeed);
+        successfulfeed_AD            = (attraction_ADOV * (1.0f - outdoorareakilling) + (1.0f - attraction_ADOV) * (1.0f - sp_repelled_or_killed) * attraction_ADIV * (1.0f - outdoorareakilling));
+        indoorattempttohumanfeed     = (1.0f - attraction_ADOV) * (1.0f - sp_repelled_or_killed) * (1.0f - attraction_ADIV) * anthropophily * indoor_feeding;
+        outdoorattempttohumanfeed    = (1.0f - attraction_ADOV) * (1.0f - sp_repelled_or_killed) * (1.0f - attraction_ADIV) * anthropophily * (1.0f - indoor_feeding) * (1.0f - outdoorareakilling) * (1.0f - nooutdoorhumanfound);
+
         diebeforeattempttohumanfeed   =  1.0f - (survivewithoutsuccessfulfeed + successfulfeed_animal + successfulfeed_AD + indoorattempttohumanfeed + outdoorattempttohumanfeed);
 
         release_assert( diebeforeattempttohumanfeed.GetDefaultValue() >= 0.0 );
 
         // outdoor probabilities
+        // should spatial_repellent_killing be applied here?
+        // this kills male vectors
+        // and kills female vectors after they successfully feed on a human
         outdoor_returningmortality = outdoorRestKilling;
     }
 }

@@ -26,6 +26,7 @@ namespace Kernel
         virtual void UpdateOutdoorKilling(const GeneticProbability& killing) = 0;
         virtual void UpdateOviTrapKilling(VectorHabitatType::Enum habitat, float killing) = 0;
         virtual void UpdateVillageSpatialRepellent(const GeneticProbability& repelling) = 0;
+        virtual void UpdateVillageSpatialRepellentRepelledOrKilled(const GeneticProbability& killing) = 0;
         virtual void UpdateADIVAttraction(float) = 0;
         virtual void UpdateADOVAttraction(float) = 0;
         virtual void UpdateSugarFeedKilling(const GeneticProbability& killing) = 0;
@@ -56,6 +57,7 @@ namespace Kernel
         virtual void UpdateLarvalHabitatReduction(const LarvalHabitatMultiplier& lhm) override;
         virtual void UpdateOutdoorKilling(const GeneticProbability& killing) override;
         virtual void UpdateVillageSpatialRepellent(const GeneticProbability& repelling) override;
+        virtual void UpdateVillageSpatialRepellentRepelledOrKilled(const GeneticProbability& killing) override;
         virtual void UpdateADIVAttraction(float reduction) override;
         virtual void UpdateADOVAttraction(float reduction) override;
         virtual void UpdateSugarFeedKilling(const GeneticProbability& killing) override;
@@ -67,7 +69,8 @@ namespace Kernel
         // INodeVectorInterventionEffects;
         virtual const GeneticProbability& GetLarvalKilling(VectorHabitatType::Enum) const override;
         virtual float GetLarvalHabitatReduction(VectorHabitatType::Enum, const std::string& species) override;
-        virtual const GeneticProbability&  GetVillageSpatialRepellent() override;
+        virtual const GeneticProbability& GetVillageSpatialRepellent() override;
+        virtual const GeneticProbability& GetVillageSpatialRepellentRepelledOrKilled() override;
         virtual float GetADIVAttraction() override;
         virtual float GetADOVAttraction() override;
         virtual const GeneticProbability& GetOutdoorKilling() override;
@@ -98,6 +101,7 @@ namespace Kernel
         GeneticProbability pLarvalKilling;
         float              pLarvalHabitatReduction;
         GeneticProbability pVillageSpatialRepellent;
+        GeneticProbability pVillageSpatialRepellentRepelledOrKilled;
         float              pADIVAttraction;
         float              pADOVAttraction;
         GeneticProbability pOutdoorKilling;

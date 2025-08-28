@@ -87,19 +87,24 @@ namespace Kernel
         initConfigComplexType( "Killing_Config", &m_KillingConfig,  VCN_Killing_Config_DESC_TEXT   );
     }
 
+    void SimpleVectorControlNode::initConfigKilling( const Configuration* inputJson )
+    {
+        initConfigKilling();
+    }
+
     void SimpleVectorControlNode::initConfigRepelling()
     {
     }
 
-    bool SimpleVectorControlNode::ConfigureKilling( const Configuration* config )
+    bool SimpleVectorControlNode::ConfigureKilling( const Configuration* inputJson )
     {
         InsecticideName name;
 
         initConfigRepelling();
-        initConfigKilling();
+        initConfigKilling( inputJson );
         initConfigTypeMap( "Insecticide_Name", &name, INT_Insecticide_Name_DESC_TEXT );
 
-        bool configured = BaseNodeIntervention::Configure( config );
+        bool configured = BaseNodeIntervention::Configure( inputJson );
 
         if( configured && !JsonConfigurable::_dryrun )
         {
@@ -464,21 +469,44 @@ namespace Kernel
 
     void SpatialRepellent::initConfigRepelling()
     {
-        initConfigTypeMap("Spray_Coverage", &m_Coverage, Spray_Coverage_DESC_TEXT, 0.0f, 1.0f, 1.0f);
-        initConfigComplexType("Repelling_Config", &m_RepellingConfig, Repelling_Config_DESC_TEXT );
+        initConfigTypeMap(     "Spray_Coverage",   &m_Coverage,        Spray_Coverage_DESC_TEXT, 0.0f, 1.0f, 1.0f);
+        initConfigComplexType( "Repelling_Config", &m_RepellingConfig, Repelling_Config_DESC_TEXT );
     }
 
-    void SpatialRepellent::initConfigKilling()
+    void SpatialRepellent::initConfigKilling( const Configuration* inputJson )
     {
-        // override so Killing_Config is not included
+        if( JsonConfigurable::_dryrun || inputJson->Exist( "Killing_Config" ) )
+        {
+            SimpleVectorControlNode::initConfigKilling();
+        }
     }
 
-    void SpatialRepellent::ApplyEffects( float dt )
+    void SpatialRepellent::ApplyEffects(float dt)
     {
-        release_assert( m_pINVIC != nullptr );
+        release_assert(m_pINVIC != nullptr);
 
-        GeneticProbability repelling = GetKilling( ResistanceType::REPELLING ) * m_Coverage;
-        m_pINVIC->UpdateVillageSpatialRepellent( repelling );
+        GeneticProbability repelling = GetKilling(ResistanceType::REPELLING);
+
+        // Originally, VectorProbabilities used '(1-repelling*coverage)' for vectors that were '(not repelled) union (not affected
+        // by the repellent)' (coverage was rolled into repelling above) to calculate various vector outcomes.
+        // However, with addition of Killing_Config to the intervention, this becomes
+        // '(not repelled and not killed) union (not affected by the repellent)' where the vectors killed are a subset of 
+        // vectors not repelled (but affected) by the intervention. 
+        // We would have to pass in repelling, killing, and coverage parameters to calculate that using the repelling parameter above
+        // affected_not_repelled = m_Coverage * (1 - repelling) 
+        // affected_not_repelled_not_killed = affected_not_repelled * (1 - killing)
+        // not_affected = (1 - m_Coverage)
+        // not_repelled_not_killed = affected_not_repelled_not_killed + not_affected 
+        // which simplifies to the expression below
+        GeneticProbability killing = 0;
+        if(m_pInsecticideWaningEffect->Has(ResistanceType::KILLING))
+        {
+            killing = GetKilling(ResistanceType::KILLING);
+        }
+        GeneticProbability repelled_or_killed = m_Coverage * (1 - ((1 - repelling) * (1 - killing))); // includes vectors not affected by the intervention
+
+        m_pINVIC->UpdateVillageSpatialRepellentRepelledOrKilled(repelled_or_killed);
+        m_pINVIC->UpdateVillageSpatialRepellent(repelling * m_Coverage);
     }
 
     ReportInterventionData SpatialRepellent::GetReportInterventionData() const
@@ -487,6 +515,15 @@ namespace Kernel
         ReportInterventionData data = BaseNodeIntervention::GetReportInterventionData();
 
         data.efficacy_repelling = m_pInsecticideWaningEffect->GetCurrent( ResistanceType::REPELLING ).GetSum() * m_Coverage;
+
+        if (m_pInsecticideWaningEffect->Has( ResistanceType::KILLING ))
+        {
+            data.efficacy_killing = m_pInsecticideWaningEffect->GetCurrent( ResistanceType::KILLING ).GetSum() * m_Coverage;
+        }
+        else
+        {
+            data.efficacy_killing = 0.0f; // no killing effect
+        }
 
         return data;
     }

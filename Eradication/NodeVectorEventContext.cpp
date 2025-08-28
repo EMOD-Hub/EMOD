@@ -140,6 +140,14 @@ namespace Kernel
     }
 
     void
+        NodeVectorEventContextHost::UpdateVillageSpatialRepellentRepelledOrKilled(
+            const GeneticProbability& repelled_or_killed
+        )
+    {
+        pVillageSpatialRepellentRepelledOrKilled = repelled_or_killed;
+    }
+
+    void
     NodeVectorEventContextHost::UpdateADIVAttraction(
         float reduction
     )
@@ -236,6 +244,11 @@ namespace Kernel
     const GeneticProbability& NodeVectorEventContextHost::GetVillageSpatialRepellent()
     {
         return pVillageSpatialRepellent;
+    }
+
+    const GeneticProbability& NodeVectorEventContextHost::GetVillageSpatialRepellentRepelledOrKilled()
+    {
+        return pVillageSpatialRepellentRepelledOrKilled;
     }
 
     float NodeVectorEventContextHost::GetADIVAttraction()

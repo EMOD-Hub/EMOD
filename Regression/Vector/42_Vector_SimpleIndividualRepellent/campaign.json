@@ -5,9 +5,15 @@
                 "Demographic_Coverage": 0.5, 
                 "Intervention_Config": {
                     "Repelling_Config": {
-                        "Box_Duration": 100, 
-                        "Decay_Time_Constant": 150, 
-                        "Initial_Effect": 0.8, 
+                        "Box_Duration": 2, 
+                        "Decay_Time_Constant": 15, 
+                        "Initial_Effect": 0.4, 
+                        "class": "WaningEffectBoxExponential"
+                    },
+                    ".Killing_Config": {
+                        "Box_Duration": 3, 
+                        "Decay_Time_Constant": 15, 
+                        "Initial_Effect": 0.5, 
                         "class": "WaningEffectBoxExponential"
                     }, 
                     "Cost_To_Consumer": 10.0, 
@@ -19,7 +25,7 @@
             "Nodeset_Config": {
                 "class": "NodeSetAll"
             }, 
-            "Start_Day": 120, 
+            "Start_Day": 1, 
             "class": "CampaignEvent"
         }
     ], 

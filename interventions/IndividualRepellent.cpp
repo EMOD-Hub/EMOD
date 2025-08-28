@@ -50,17 +50,27 @@ namespace Kernel
     {
         InsecticideName name;
         WaningConfig   repelling_config;
+        WaningConfig   killing_config;
 
-        initConfigTypeMap("Cost_To_Consumer", &cost_per_unit, IV_Cost_To_Consumer_DESC_TEXT, 0, 999999, 8.0);
-        initConfigComplexType("Repelling_Config", &repelling_config, Repelling_Config_DESC_TEXT );
-        initConfigTypeMap( "Insecticide_Name", &name, INT_Insecticide_Name_DESC_TEXT );
+        initConfigTypeMap(     "Cost_To_Consumer", &cost_per_unit,    IV_Cost_To_Consumer_DESC_TEXT, 0, 999999, 8.0);
+        initConfigTypeMap(     "Insecticide_Name", &name,             INT_Insecticide_Name_DESC_TEXT );
+        initConfigComplexType( "Repelling_Config", &repelling_config, Repelling_Config_DESC_TEXT );
+
+        if( JsonConfigurable::_dryrun || inputJson->Exist( "Killing_Config" ) )
+        {
+            initConfigComplexType( "Killing_Config", &killing_config, IR_Killing_Config_DESC_TEXT );
+        }
 
         bool configured = BaseIntervention::Configure( inputJson );
 
         if( !JsonConfigurable::_dryrun  && configured )
         {
             WaningConfig empty_config;
-            m_pInsecticideWaningEffect = new InsecticideWaningEffect( empty_config, repelling_config, empty_config, empty_config );
+            m_pInsecticideWaningEffect = new InsecticideWaningEffect( empty_config, repelling_config, empty_config, killing_config );
+
+            //get rid of memory no longer needed
+            repelling_config = empty_config;
+            killing_config = empty_config;
 
             name.CheckConfiguration( GetName().ToString(), "Insecticide_Name");
             m_pInsecticideWaningEffect->SetName( name );
@@ -102,10 +112,17 @@ namespace Kernel
         if( !BaseIntervention::UpdateIndividualsInterventionStatus() ) return;
 
         m_pInsecticideWaningEffect->Update(dt);
-        GeneticProbability current = m_pInsecticideWaningEffect->GetCurrent( ResistanceType::REPELLING );
-
+        GeneticProbability current_repelling = m_pInsecticideWaningEffect->GetCurrent( ResistanceType::REPELLING );
         release_assert( m_pIRC != nullptr );
-        m_pIRC->UpdateProbabilityOfIndRep( current );
+        m_pIRC->UpdateProbabilityOfIndRep( current_repelling );
+
+        if( m_pInsecticideWaningEffect->Has( ResistanceType::KILLING ) )
+        {
+            GeneticProbability current_killing = m_pInsecticideWaningEffect->GetCurrent( ResistanceType::KILLING );
+            //TODO: hook up killing effect
+            //m_pIRC->UpdateProbabilityOfIndKill( current_killing );
+        }
+
     }
 
     ReportInterventionData SimpleIndividualRepellent::GetReportInterventionData() const
@@ -113,6 +130,14 @@ namespace Kernel
         ReportInterventionData data = BaseIntervention::GetReportInterventionData();
 
         data.efficacy_repelling = m_pInsecticideWaningEffect->GetCurrent( ResistanceType::REPELLING ).GetSum();
+        if( m_pInsecticideWaningEffect->Has( ResistanceType::KILLING ) )
+        {
+            data.efficacy_killing = m_pInsecticideWaningEffect->GetCurrent( ResistanceType::KILLING ).GetSum();
+        }
+        else
+        {
+            data.efficacy_killing = 0.0f; // if no killing effect, set to 0
+        }
 
         return data;
     }

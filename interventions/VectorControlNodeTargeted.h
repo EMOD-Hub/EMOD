@@ -44,8 +44,9 @@ namespace Kernel
         virtual ReportInterventionData GetReportInterventionData() const override;
 
     protected:
-        virtual void initConfigKilling();
-        virtual void initConfigRepelling();
+        virtual void initConfigKilling( const Configuration* inputJson );
+        virtual void initConfigKilling( );
+        virtual void initConfigRepelling( );
         virtual bool ConfigureKilling( const Configuration* config );
         virtual void ApplyEffects( float dt ) = 0;
         void CheckHabitatTarget( VectorHabitatType::Enum, const char* pParameterName );
@@ -162,7 +163,7 @@ namespace Kernel
 
     protected:
         virtual void initConfigRepelling() override;
-        virtual void initConfigKilling() override;
+        virtual void initConfigKilling(const Configuration* inputJson) override;
         virtual void ApplyEffects( float dt ) override;
 
         float m_Coverage;

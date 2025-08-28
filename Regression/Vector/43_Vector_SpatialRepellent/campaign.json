@@ -6,11 +6,17 @@
                     "Repelling_Config": {
                         "Box_Duration": 100, 
                         "Decay_Time_Constant": 150, 
-                        "Initial_Effect": 0.4, 
+                        "Initial_Effect": 0.6, 
+                        "class": "WaningEffectBoxExponential"
+                    }, 
+                    "Killing_Config": {
+                        "Box_Duration": 100, 
+                        "Decay_Time_Constant": 150, 
+                        "Initial_Effect": 0.1, 
                         "class": "WaningEffectBoxExponential"
                     }, 
                     "Cost_To_Consumer": 1.0, 
-                    "Spray_Coverage": 0.75,
+                    "Spray_Coverage": 0.9,
                     "class": "SpatialRepellent"
                 }, 
                 "class": "StandardInterventionDistributionEventCoordinator"
@@ -18,7 +24,7 @@
             "Nodeset_Config": {
                 "class": "NodeSetAll"
             }, 
-            "Start_Day": 120, 
+            "Start_Day": 1, 
             "class": "CampaignEvent"
         }
     ], 
