@@ -93,7 +93,7 @@ namespace Kernel
             std::string cur_iv_type_name = typeid( *intervention ).name();
             if( (cur_iv_type_name == type_name) && qual_func( intervention ) )
             {
-                LOG_INFO_F("Found an existing intervention of class '%s' which we are purging\n", type_name.c_str());
+                LOG_INFO_F("Found an existing intervention '%s' in node %d. Purging.\n", type_name.c_str(), GetId() );
                 m_StagedNodeInterventionsToPurge.push_back( intervention );
                 break;
             }

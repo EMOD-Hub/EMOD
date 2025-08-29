@@ -184,7 +184,7 @@ namespace Kernel
             std::string cur_iv_type_name = typeid( *p_intervention ).name();
             if( cur_iv_type_name == type_name)
             {
-                LOG_DEBUG_F("Found an existing intervention of class '%s' which we are purging\n", type_name.c_str());
+                LOG_DEBUG_F("Found an existing intervention '%s'. Purging.\n", type_name.c_str());
                 Remove( i );
                 break;
             }
@@ -199,7 +199,7 @@ namespace Kernel
             InterventionName cur_iv_name = p_intervention->GetName();
             if(cur_iv_name == iv_name)
             {
-                LOG_DEBUG_F("Found an existing intervention with name '%s' which we are purging\n", iv_name.c_str());
+                LOG_DEBUG_F("Found an existing intervention with name '%s'. Purging.\n", iv_name.c_str());
                 Remove(i);
                 break;
             }

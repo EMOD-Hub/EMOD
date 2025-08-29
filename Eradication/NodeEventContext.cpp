@@ -331,14 +331,14 @@ namespace Kernel
         return interventions_of_type;
     }
 
-    void NodeEventContextHost::PurgeExistingByType( const std::string& iv_name )
+    void NodeEventContextHost::PurgeExistingByType( const std::string& type_name )
     {
         for (auto intervention : node_interventions)
         {
             std::string cur_iv_type_name = typeid( *intervention ).name();
-            if( cur_iv_type_name == iv_name )
+            if( cur_iv_type_name == type_name)
             {
-                LOG_INFO_F("Found an existing intervention of class '%s' which we are purging\n", iv_name.c_str());
+                LOG_INFO_F("Found an existing intervention '%s' in node %d. Purging.\n", type_name.c_str(), GetId() );
                 node_interventions.remove( intervention );
                 delete intervention;
                 break;
@@ -353,7 +353,7 @@ namespace Kernel
             InterventionName cur_iv_name = intervention->GetName();
             if(cur_iv_name == iv_name)
             {
-                LOG_INFO_F("Found an existing intervention with name '%s' which we are purging\n", iv_name.c_str());
+                LOG_INFO_F("Found an existing intervention with name '%s' in node %d. Purging.\n", iv_name.c_str(), GetId() );
                 node_interventions.remove(intervention);
                 delete intervention;
                 break;

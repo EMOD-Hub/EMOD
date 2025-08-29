@@ -494,7 +494,7 @@ namespace Kernel
         ndi->AddRef();
         if( ndi->Distribute( event_context, this ) )
         {
-            LOG_INFO_F( "UpdateNodes() distributed '%s' intervention to node %d\n", log_intervention_name.c_str(), event_context->GetId().data );
+            LOG_INFO_F( "UpdateNodes() distributed '%s' intervention to node %d.\n", log_intervention_name.c_str(), event_context->GetId().data );
         }
         ndi->Release();
     }
