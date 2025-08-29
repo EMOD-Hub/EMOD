@@ -190,7 +190,10 @@ public:
     virtual void RegisterTravelDistributionSource(  ITravelLinkedDistributionSource *tles, TravelEventType type) { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
     virtual void UnregisterTravelDistributionSource(ITravelLinkedDistributionSource *tles, TravelEventType type) { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
 
-    virtual void PurgeExisting( const std::string& iv_name ) override
+    virtual void PurgeExistingByType( const std::string& type_name ) override
+    {
+    }
+    virtual void PurgeExistingByName(const InterventionName& name) override
     {
     }
     virtual const std::list<INodeDistributableIntervention*>& GetNodeInterventions() const override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented." ); }

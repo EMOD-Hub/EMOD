@@ -90,7 +90,7 @@ namespace Kernel
         {
             return false;
         }
-        context->PurgeExisting( typeid(*this).name() );
+        context->PurgeExistingByName( name );
 
         bool distributed = BaseIntervention::Distribute( context, pCCO );
         if( distributed )

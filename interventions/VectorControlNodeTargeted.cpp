@@ -132,8 +132,8 @@ namespace Kernel
 
     bool SimpleVectorControlNode::Distribute( INodeEventContext *pNodeContext, IEventCoordinator2 *pEC )
     {
-        // Just one of each of these allowed
-        pNodeContext->PurgeExisting( typeid(*this).name() ); // hmm?  let's come back to this and query the right interfaces everywhere.
+        // Just one of each of these allowed??
+        pNodeContext->PurgeExistingByName( name ); // hmm?  let's come back to this and query the right interfaces everywhere.
         return BaseNodeIntervention::Distribute( pNodeContext, pEC );
     }
     

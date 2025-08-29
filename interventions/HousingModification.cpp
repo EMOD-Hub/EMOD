@@ -121,7 +121,7 @@ namespace Kernel
             throw QueryInterfaceException( __FILE__, __LINE__, __FUNCTION__, "context", "IHousingModificationConsumer", "IIndividualHumanInterventionsContext" );
         }
 
-        context->PurgeExisting( typeid(*this).name() );
+        context->PurgeExistingByName( name );
 
         return BaseIntervention::Distribute( context, pCCO );
     }

@@ -97,16 +97,22 @@ namespace Kernel
             {
                 m_pInterventionNode = InterventionFactory::CreateNDIIntervention( intervention_config._json, inputJson->GetDataLocation(), "Intervention_Config", false ); // don't throw if null
             }
+
+            
             if( (m_pInterventionIndividual == nullptr) && (m_pInterventionNode == nullptr) )
             {
-                std::string class_name = std::string(json::QuickInterpreter( intervention_config._json )["class"].As<json::String>()) ;
-
+                std::string class_name = std::string( json::QuickInterpreter( intervention_config._json )["class"].As<json::String>() );
                 std::stringstream ss;
                 ss << "Invalid Intervention Type in '" << GetTypeName() << "'.\n";
                 ss << "'" << class_name << "' is not a known intervention.";
                 throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
             }
-            log_intervention_name = std::string( json::QuickInterpreter( intervention_config._json )[ "class" ].As<json::String>() );
+
+            log_intervention_name = std::string( json::QuickInterpreter( intervention_config._json )["class"].As<json::String>() );
+            if( json::QuickInterpreter( intervention_config._json ).Exist( "Intervention_Name" ) && !std::string( json::QuickInterpreter( intervention_config._json )["Intervention_Name"].As<json::String>() ).empty())
+            {
+                log_intervention_name = std::string( json::QuickInterpreter( intervention_config._json )["Intervention_Name"].As<json::String>() );
+            }
 
             if( m_pInterventionNode != nullptr )
             {
@@ -120,7 +126,7 @@ namespace Kernel
                 {
                     std::ostringstream msg ;
                     msg << "Cannot target individuals when distributing nodel-level intervention (";
-                    msg << std::string( json::QuickInterpreter( intervention_config._json )[ "class" ].As<json::String>() );
+                    msg << log_intervention_name.c_str();
                     msg << ").\n";
                     msg << "In StandardInterventionDistributionEventCoordinator, you cannot target individuals\n";
                     msg << "when distributing node-level interventions such as NodeLevelHealthTriggeredIV or SpaceSpraying.\n";
@@ -526,7 +532,8 @@ namespace Kernel
                                                                                                 ICampaignCostObserver * pICCO )
     {
         // instantiate and distribute intervention
-        LOG_DEBUG_F( "Attempting to instantiate intervention of class %s\n", log_intervention_name.c_str());
+        LOG_DEBUG_F( "Attempting to instantiate intervention %s\n", log_intervention_name.c_str());
+
         IDistributableIntervention *di = m_pInterventionIndividual->Clone();
         release_assert( di );
 
