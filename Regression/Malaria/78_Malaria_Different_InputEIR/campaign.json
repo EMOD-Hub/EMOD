@@ -9,7 +9,6 @@
                 "Number_Repetitions": 1, 
                 "class": "StandardInterventionDistributionEventCoordinator", 
                 "Intervention_Config": {
-                    "Age_Dependence": "SURFACE_AREA_DEPENDENT",
                     "EIR_Type": "MONTHLY",
                     "Monthly_EIR": [ 0, 0, 1, 5, 1, 0, 0, 0, 0, 0, 0, 0],
                     "class": "InputEIR"
@@ -27,7 +26,6 @@
                 "Number_Repetitions": 1, 
                 "class": "StandardInterventionDistributionEventCoordinator", 
                 "Intervention_Config": {
-                    "Age_Dependence": "SURFACE_AREA_DEPENDENT",
                     "EIR_Type": "MONTHLY",
                     "Monthly_EIR": [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                     "class": "InputEIR"
@@ -45,7 +43,6 @@
                 "Number_Repetitions": 1, 
                 "class": "StandardInterventionDistributionEventCoordinator", 
                 "Intervention_Config": {
-                    "Age_Dependence": "SURFACE_AREA_DEPENDENT",
                     "COMMENT": "If you change the 0.111's to 0 and Scaling_Factor to 1, then the daily should give the exact same results as monthly.",
                     ".EIR_Type": "MONTHLY",
                     ".Monthly_EIR": [ 30, 0, 0, 0, 0, 0, 30, 0, 0, 0, 0, 0],

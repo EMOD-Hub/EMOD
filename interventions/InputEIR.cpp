@@ -23,42 +23,42 @@ namespace Kernel
 
     InputEIR::InputEIR() 
     : BaseNodeIntervention()
-    , age_dependence(AgeDependentBitingRisk::OFF)
     , eir_type( EIRType::MONTHLY )
     , monthly_EIR()
     , daily_EIR()
     , scaling_factor(1.0f)
     , today(0)
-    , risk_function(nullptr)
     {
         initSimTypes( 1, "MALARIA_SIM" ); // using sporozoite challenge
     }
 
     InputEIR::InputEIR( const InputEIR& master )
     : BaseNodeIntervention( master )
-    , age_dependence( master.age_dependence )
     , eir_type( master.eir_type )
     , monthly_EIR( master.monthly_EIR )
     , daily_EIR( master.daily_EIR )
     , scaling_factor( master.scaling_factor )
     , today( master.today )
-    , risk_function( master.risk_function )
     {
     }
 
     bool InputEIR::Configure( const Configuration * inputJson )
     {
-        initConfig( "Age_Dependence", age_dependence, inputJson, MetadataDescriptor::Enum("Age_Dependence", IE_Age_Dependence_DESC_TEXT, MDD_ENUM_ARGS(AgeDependentBitingRisk)) );
-
-        initConfig( "EIR_Type", eir_type, inputJson, MetadataDescriptor::Enum( "EIR_Type", IE_EIR_Type_DESC_TEXT, MDD_ENUM_ARGS( EIRType ) ) );
-        initConfigTypeMap( "Monthly_EIR", &monthly_EIR, IE_Monthly_EIR_DESC_TEXT, 0.0f, 1000.0f, false, "EIR_Type", "MONTHLY" );
-        initConfigTypeMap( "Daily_EIR", &daily_EIR, IE_Daily_EIR_DESC_TEXT, 0.0f, 1000.0f, false, "EIR_Type", "DAILY" );
-
-        initConfigTypeMap( "Scaling_Factor", &scaling_factor, IE_Scaling_Factor_DESC_TEXT, 0.0f, 10000.0f, 1.0 );
+        initConfig(        "EIR_Type",        eir_type,        inputJson, MetadataDescriptor::Enum( "EIR_Type", IE_EIR_Type_DESC_TEXT, MDD_ENUM_ARGS( EIRType ) ) );
+        initConfigTypeMap( "Monthly_EIR",    &monthly_EIR,     IE_Monthly_EIR_DESC_TEXT,    0.0f, 1000.0f, false, "EIR_Type", "MONTHLY" );
+        initConfigTypeMap( "Daily_EIR",      &daily_EIR,       IE_Daily_EIR_DESC_TEXT,      0.0f, 1000.0f, false, "EIR_Type", "DAILY" );
+        initConfigTypeMap( "Scaling_Factor", &scaling_factor,  IE_Scaling_Factor_DESC_TEXT, 0.0f, 10000.0f, 1.0 );
 
         bool configured = BaseNodeIntervention::Configure( inputJson );
         if( configured && ! JsonConfigurable::_dryrun )
         {
+            if(inputJson->Exist("Age_Dependence"))
+            {
+                std::stringstream ss;
+                ss << "'Age_Dependence' is no longer a parameter in the 'InputEIR' intervention. ";
+                ss << "'Age_Dependent_Biting_Risk_Type' configuration parameter is used to determine if there is any age-dependent biting risk.";
+                throw GeneralConfigurationException(__FILE__, __LINE__, __FUNCTION__, ss.str().c_str());
+            }
             if( !inputJson->Exist( "EIR_Type" ) )
             {
                 std::stringstream ss;
@@ -77,29 +77,6 @@ namespace Kernel
             {
                 throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__,
                                                      "'Daily_EIR' parameterizes the mean number of infectious bites experienced by an individual for each day of the year.  As such, it must be an array of EXACTLY length 365." );
-            }
-
-            switch( age_dependence )
-            {
-                case AgeDependentBitingRisk::OFF:
-                    risk_function = nullptr;
-                    break;
-
-                case AgeDependentBitingRisk::LINEAR:
-                    risk_function = SusceptibilityVector::LinearBitingFunction;
-                    break;
-
-                case AgeDependentBitingRisk::SURFACE_AREA_DEPENDENT:
-                    risk_function = SusceptibilityVector::SurfaceAreaBitingFunction;
-                    break;
-
-                default:
-                    if( !JsonConfigurable::_dryrun )
-                    {
-                        throw BadEnumInSwitchStatementException( __FILE__, __LINE__, __FUNCTION__,
-                                                                 "age_dependence", age_dependence,
-                                                                 AgeDependentBitingRisk::pairs::lookup_key( age_dependence ) );
-                    }
             }
         }
 
@@ -140,7 +117,7 @@ namespace Kernel
         {
             throw QueryInterfaceException( __FILE__, __LINE__, __FUNCTION__, "iscc", "ISporozoiteChallengeConsumer", "INodeEventContext" );
         }
-        iscc->ChallengeWithInfectiousBites( 1, eir_for_today, risk_function );
+        iscc->ChallengeWithInfectiousBites( 1, eir_for_today);
     }
 
     float InputEIR::GetCostPerUnit() const

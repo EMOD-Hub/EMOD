@@ -59,7 +59,7 @@
                 "PrevalenceDistribution1": 0.0,
                 "PrevalenceDistribution2": 0.0,
                 "PrevalenceDistributionFlag": 0,
-                "RiskDistribution1": 1.0,
+                "RiskDistribution1": 0.66,
                 "RiskDistribution2": 0,
                 "RiskDistributionFlag": 0
             },
