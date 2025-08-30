@@ -46,15 +46,6 @@ namespace Kernel
         const Configuration * inputJson
     )
     {
-        std::string default_name = typeid( *this ).name();
-#ifdef WIN32
-        default_name = default_name.substr( 14 ); // remove "class Kernel::"
-#else
-        default_name = abi::__cxa_demangle( default_name.c_str(), 0, 0, nullptr );
-        default_name = default_name.substr( 8 ); // remove "Kernel::"
-#endif
-        name = default_name;
-
         initConfigTypeMap( "Antigen", &antigen, Antigen_DESC_TEXT, 0, 10, 0 );
         initConfigTypeMap( "Genome", &genome, Genome_DESC_TEXT, -1, 16777216, 0 );
         initConfigTypeMap( "Import_Age", &import_age, Import_Age_DESC_TEXT, 0, MAX_INDIVIDUAL_AGE_IN_YRS*DAYSPERYEAR, DAYSPERYEAR );
