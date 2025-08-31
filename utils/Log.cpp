@@ -160,10 +160,6 @@ void SimpleLogger::Log( Logger::tLevel log_level, const char* module, const char
         }
 
         fprintf(stdout, "%02d:%02d:%02d [%d] [%s] [%s] ", t_hrs, t_min, t_sec, _rank, log_char, module);
-        va_list args;
-        va_start(args,msg);
-        vfprintf(stdout, msg, args);
-        va_end(args);
 
         if(log_level == Logger::_ERROR)
         {
@@ -174,6 +170,11 @@ void SimpleLogger::Log( Logger::tLevel log_level, const char* module, const char
             va_end(args);
         }
     }
+
+    va_list args;
+    va_start(args,msg);
+    vfprintf(stdout, msg, args);
+    va_end(args);
 
     if(_flush_all)
     {
