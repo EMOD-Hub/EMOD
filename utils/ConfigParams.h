@@ -27,7 +27,7 @@ namespace Kernel
         bool enable_log_throttling;
         bool enable_warnings_are_fatal;
 
-        std::map<std::string, std::string> log_levels;
+        std::map<std::string, std::string> module_name_to_level_map;
     };
 
     // *****************************************************************************

@@ -10,7 +10,6 @@ namespace Kernel
     // Static param structures
     LoggingParams    LoggingConfig::logging_params;
 
-
     // ConfigParams Methods
     bool ConfigParams::Configure(Configuration* config)
     {
@@ -31,7 +30,7 @@ namespace Kernel
         : enable_continuous_log_flushing(false)
         , enable_log_throttling(false)
         , enable_warnings_are_fatal(false)
-        , log_levels()
+        , module_name_to_level_map()
     {}
 
     // *****************************************************************************
@@ -43,7 +42,10 @@ namespace Kernel
 
     bool LoggingConfig::Configure(const Configuration* config)
     {
-        // Enable defaults
+        // Logging parameters have historically not been required in the config file. In emod-api (2.0.28), as part of the
+        // finalize method for the config file, all logLevel_<module_name> parameters are removed if they are equal to
+        // the value of logLevel_default. This process simplifies the config file, but requires that absent parameters for
+        // logging do not cause an exception.
         JsonConfigurable::_useDefaults = true;
 
         // Logging parameters
@@ -68,14 +70,14 @@ namespace Kernel
         initConfigTypeMap(log_name_param.c_str(), &log_config_str, logLevel_default_DESC_TEXT, log_default_val);
         bRet &= JsonConfigurable::Configure(config);
         log_default_val = static_cast<std::string>(log_config_str);
-        logging_params.log_levels[default_log_name] = log_default_val;
+        logging_params.module_name_to_level_map[default_log_name] = log_default_val;
 
         for (auto& mod_name : SimpleLogger::GetModuleNames())
         {
             log_name_param = LOG_NAME_PREFIX+mod_name;
             initConfigTypeMap(log_name_param.c_str(), &log_config_str, logLevel_MODULE_DESC_TEXT, log_default_val);
             bRet &= JsonConfigurable::Configure(config);
-            logging_params.log_levels[mod_name] = static_cast<std::string>(log_config_str);
+            logging_params.module_name_to_level_map[mod_name] = static_cast<std::string>(log_config_str);
         }
 
         JsonConfigurable::_useDefaults = false;

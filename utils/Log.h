@@ -10,8 +10,7 @@
 namespace Logger
 {
     typedef enum {
-        CRITICAL = 0,
-        _ERROR, // ERROR breaks on msvc!
+        _ERROR = 0, // ERROR breaks on msvc!
         WARNING,
         INFO,
         DEBUG,
@@ -19,7 +18,7 @@ namespace Logger
     } tLevel;
 };
 
-#define NUM_LOG_LEVELS    (6)
+#define NUM_LOG_LEVELS    (5)
 #define LOG_NAME_PREFIX   ("logLevel_")
 #define DEFAULT_LOG_NAME  ("default")
 
@@ -72,9 +71,6 @@ class DummyLogger
 {
 public:
     DummyLogger( std::string module_name );
-
-protected:
-    void AddModuleName( std::string module_name );
 };
 
 
