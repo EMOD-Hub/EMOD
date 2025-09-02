@@ -41,7 +41,7 @@ namespace Kernel
     public:
         virtual bool Configure(const Configuration* config) override;
 
-        static const LoggingParams*   GetLoggingParams();
+        static const LoggingParams&   GetLoggingParams();
 
     protected:
         static       LoggingParams    logging_params;

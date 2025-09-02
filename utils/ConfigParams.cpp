@@ -84,9 +84,9 @@ namespace Kernel
         return bRet;
     }
 
-    const LoggingParams* LoggingConfig::GetLoggingParams()
+    const LoggingParams& LoggingConfig::GetLoggingParams()
     {
-        return &logging_params;
+        return logging_params;
     }
 
 }
