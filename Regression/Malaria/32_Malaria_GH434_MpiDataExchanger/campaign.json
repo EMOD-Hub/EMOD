@@ -39808,7 +39808,6 @@
         {
             "Event_Coordinator_Config": {
                 "Intervention_Config": {
-                    "Age_Dependence": "SURFACE_AREA_DEPENDENT", 
                     "EIR_Type": "MONTHLY",
                     "Monthly_EIR": [
                         3, 

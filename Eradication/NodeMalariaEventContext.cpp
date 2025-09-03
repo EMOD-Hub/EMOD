@@ -8,6 +8,7 @@
 #include "IInfectable.h"     // for IInfectionAcquirable
 #include "RANDOM.h"
 #include "StrainIdentity.h"
+#include "IIndividualHuman.h"
 
 SETUP_LOGGING( "NodeMalariaEventContext" )
 
@@ -25,28 +26,22 @@ namespace Kernel
     {
     }
 
-    void NodeMalariaEventContextHost::ChallengeWithSporozoites(int n_sporozoites, float coverage, tAgeBitingFunction risk )
+    void NodeMalariaEventContextHost::ChallengeWithSporozoites(int n_sporozoites, float coverage)
     {
         INodeEventContext::individual_visit_function_t sporozoite_challenge_func = 
-            [this, n_sporozoites, coverage, risk](IIndividualHumanEventContext *ihec)
+            [this, n_sporozoites, coverage](IIndividualHumanEventContext *ihec)
         {
-            float relative_risk=1.0f;
-            if(risk != nullptr)
+            IIndividualHumanVectorContext* p_ind_vector = nullptr;
+            if(s_OK != ihec->QueryInterface(GET_IID(IIndividualHumanVectorContext), (void**)&p_ind_vector))
             {
-                relative_risk = risk(ihec->GetAge());
-            }
-
-            IDrugVaccineInterventionEffects* idvie = nullptr;
-            if ( s_OK != ihec->GetInterventionsContext()->QueryInterface(GET_IID(IDrugVaccineInterventionEffects), (void**)&idvie) )
-            {
-                throw QueryInterfaceException( __FILE__, __LINE__, __FUNCTION__, "ihec->GetInterventionsContext()", "IDrugVaccineInterventionEffects", "IIndividualHumanInterventionsContext");
+                throw QueryInterfaceException(__FILE__, __LINE__, __FUNCTION__, "context", "IIndividualHumanVectorContext", "IIndividualHumanEventContext");
             }
 
             // Allow the bite challenge rate to be modified the individual factors that are usually handled in the Expose logic
-            // GetRelativeBitingRate is already handled by the flexibility to pass in an age-risk function
-            // Susceptibility::getModAcquire is only used in GENERIC and VECTOR immunity but not MALARIA
-            // InterventionsContainer::GetInterventionReducedAcquire can be modified by a SimpleVaccine intervention used in MALARIA_SIM
-            relative_risk *= idvie->GetInterventionReducedAcquire();
+            // GetAcquisitionImmunity() = Susceptibility::getModAcquire * InterventionsContainer::GetInterventionReducedAcquire
+            // Susceptibility::getModAcquire is not used in Malaria, so remains 1.0
+            // GetRelativeBitingRate() = demographics-based-risk::relative_biting_rate * m_age_dependent_biting_risk
+            float relative_risk = p_ind_vector->GetRelativeBitingRate() * ihec->GetIndividualHumanConst()->GetAcquisitionImmunity();
 
             IMalariaHumanInfectable* imhi = nullptr;
             if ( s_OK !=  ihec->QueryInterface(GET_IID(IMalariaHumanInfectable), (void**)&imhi) )
@@ -69,28 +64,22 @@ namespace Kernel
         VisitIndividuals(sporozoite_challenge_func);
     }
 
-    void NodeMalariaEventContextHost::ChallengeWithInfectiousBites(int n_bites, float coverage, tAgeBitingFunction risk)
+    void NodeMalariaEventContextHost::ChallengeWithInfectiousBites(int n_bites, float coverage)
     {
         INodeEventContext::individual_visit_function_t infectious_bite_challenge_func = 
-            [this, n_bites, coverage, risk](IIndividualHumanEventContext *ihec)
+            [this, n_bites, coverage](IIndividualHumanEventContext *ihec)
         {
-            float relative_risk=1.0f;
-            if(risk != nullptr)
+            IIndividualHumanVectorContext* p_ind_vector = nullptr;
+            if(s_OK != ihec->QueryInterface(GET_IID(IIndividualHumanVectorContext), (void**)&p_ind_vector))
             {
-                relative_risk = risk(ihec->GetAge());
-            }
-
-            IDrugVaccineInterventionEffects* idvie = nullptr;
-            if ( s_OK != ihec->GetInterventionsContext()->QueryInterface(GET_IID(IDrugVaccineInterventionEffects), (void**)&idvie) )
-            {
-                throw QueryInterfaceException( __FILE__, __LINE__, __FUNCTION__, "ihec->GetInterventionsContext()", "IDrugVaccineInterventionEffects", "IIndividualHumanInterventionsContext");
+                throw QueryInterfaceException(__FILE__, __LINE__, __FUNCTION__, "context", "IIndividualHumanVectorContext", "IIndividualHumanEventContext");
             }
 
             // Allow the bite challenge rate to be modified the individual factors that are usually handled in the Expose logic
-            // GetRelativeBitingRate is already handled by the flexibility to pass in an age-risk function
-            // Susceptibility::getModAcquire is only used in GENERIC and VECTOR immunity but not MALARIA
-            // InterventionsContainer::GetInterventionReducedAcquire can be modified by a SimpleVaccine intervention used in MALARIA_SIM
-            relative_risk *= idvie->GetInterventionReducedAcquire();
+            // GetAcquisitionImmunity() = Susceptibility::getModAcquire * InterventionsContainer::GetInterventionReducedAcquire
+            // Susceptibility::getModAcquire is not used in Malaria, so remains 1.0
+            // GetRelativeBitingRate() = demographics-based-risk::relative_biting_rate * m_age_dependent_biting_risk
+            float relative_risk = p_ind_vector->GetRelativeBitingRate() * ihec->GetIndividualHumanConst()->GetAcquisitionImmunity();
 
             IMalariaHumanInfectable* imhi = nullptr;
             if ( s_OK !=  ihec->QueryInterface(GET_IID(IMalariaHumanInfectable), (void**)&imhi) )
