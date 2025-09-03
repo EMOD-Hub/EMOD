@@ -26,18 +26,18 @@ SETUP_LOGGING( "Environment" )
 Environment* Environment::localEnv = nullptr;
 
 Environment::Environment()
-: MPI()
-, Log( nullptr )
-, Config(nullptr)
-, SimConfig(nullptr)
-, pIPFactory( nullptr )
-, pNPFactory( nullptr )
-, pRngFactory( nullptr )
-, Status_Reporter(nullptr)
-, InputPaths()
-, OutputPath()
-, StatePath()
-, DllPath()
+    : MPI()
+    , Log( nullptr )
+    , Config(nullptr)
+    , SimConfig(nullptr)
+    , pIPFactory( nullptr )
+    , pNPFactory( nullptr )
+    , pRngFactory( nullptr )
+    , Status_Reporter(nullptr)
+    , InputPaths()
+    , OutputPath()
+    , StatePath()
+    , DllPath()
 {
     MPI.NumTasks  = 1;
     MPI.Rank      = 0;
@@ -49,7 +49,7 @@ Environment::Environment()
 bool Environment::Initialize(
     IdmMpi::MessageInterface* pMpi,
     string configFileName, 
-    string inputPath, string outputPath, /* 2.5 string statePath, */ string dllPath,
+    string inputPath, string outputPath, string dllPath,
     bool get_schema)
 {
     release_assert( pMpi );
@@ -117,8 +117,7 @@ bool Environment::Initialize(
     }
 
     localEnv->OutputPath  = outputPath;
-    localEnv->InputPaths   = inputPaths;
-// 2.5    localEnv->StatePath   = statePath;
+    localEnv->InputPaths  = inputPaths;
     localEnv->DllPath     = dllPath;
 
     if( get_schema )
@@ -134,8 +133,6 @@ bool Environment::Initialize(
         localEnv = nullptr;
         throw Kernel::InitializationException( __FILE__, __LINE__, __FUNCTION__, configFileName.c_str() );
     }
-
-    localEnv->Log->Init( config );
 
     localEnv->Config = Configuration::CopyFromElement( (*config)["parameters"], config->GetDataLocation() );
 
@@ -236,9 +233,9 @@ Environment* Environment::getInstance()
     return localEnv;
 }
 
-void Environment::setInstance(Environment * env)
+void Environment::setInstance(Environment* env)
 {
-    if( (localEnv != nullptr) && (localEnv != env) )
+    if( localEnv && (localEnv != env) )
     {
         delete localEnv ;
         localEnv = nullptr;
@@ -257,6 +254,11 @@ void Environment::setInstance(Environment * env)
 void Environment::setLogger(SimpleLogger* log)
 { 
     getInstance()->Log = log; 
+}
+
+void Environment::initLogger()
+{
+    getInstance()->Log->Init();
 }
 
 void Environment::setSimulationConfig(void* SimConfig)

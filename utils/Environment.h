@@ -67,6 +67,7 @@ public:
     static Environment* getInstance();
     static void setInstance( Environment * env );
     static void setLogger( SimpleLogger* log );
+    static void initLogger();
     static void setSimulationConfig( void* SimConfig );
     static const void* getSimulationConfig();
     static StatusReporter * getStatusReporter();

@@ -5,14 +5,12 @@
 #include <map>
 #include <cstring>
 
-#include "IdmApi.h"
 #include "Sugar.h"
 
 namespace Logger
 {
     typedef enum {
-        CRITICAL = 0,
-        _ERROR, // ERROR breaks on msvc!
+        _ERROR = 0, // ERROR breaks on msvc!
         WARNING,
         INFO,
         DEBUG,
@@ -20,17 +18,19 @@ namespace Logger
     } tLevel;
 };
 
-#define NUM_LOG_LEVELS (6)
+#define NUM_LOG_LEVELS    (5)
+#define LOG_NAME_PREFIX   ("logLevel_")
+#define DEFAULT_LOG_NAME  ("default")
 
 // EVIL MACROS COMING UP! Idea here is that folks can log with 1 parameter (the string).
 
-#define SETUP_LOGGING(moduleName)\
-static const char * _module = moduleName;\
-static bool* _log_level_enabled_array = nullptr;
+#define SETUP_LOGGING(moduleName)                                   \
+static const char*  _module                   = moduleName;         \
+static       bool*  _log_level_enabled_array  = nullptr;            \
+static DummyLogger  _tmp_log_obj(moduleName);
 
-
-#define LOG_LVL(lvl, x)          do { if( SimpleLogger::IsLoggingEnabled( Logger::lvl, _module, _log_level_enabled_array ) )  EnvPtr->Log->Log( Logger::lvl, _module, x); } while(0)
-#define LOG_LVL_F(lvl, x, ...)   do { if( SimpleLogger::IsLoggingEnabled( Logger::lvl, _module, _log_level_enabled_array ) )  EnvPtr->Log->Log(Logger::lvl, _module, x, ##__VA_ARGS__); } while(0)
+#define LOG_LVL(lvl, x)          { if( SimpleLogger::IsLoggingEnabled( Logger::lvl, _module, _log_level_enabled_array ) )  EnvPtr->Log->Log(Logger::lvl, _module, x               ); }
+#define LOG_LVL_F(lvl, x, ...)   { if( SimpleLogger::IsLoggingEnabled( Logger::lvl, _module, _log_level_enabled_array ) )  EnvPtr->Log->Log(Logger::lvl, _module, x, ##__VA_ARGS__); }
 
 #define LOG_LEVEL(lvl)          ((EnvPtr != nullptr) ? EnvPtr->Log->CheckLogLevel(Logger::lvl, _module) : false)
 
@@ -40,7 +40,6 @@ static bool* _log_level_enabled_array = nullptr;
 #define LOG_WARN_F(x, ...)    LOG_LVL_F( WARNING, x, ##__VA_ARGS__ )
 #define LOG_INFO(x)           LOG_LVL( INFO, x )
 #define LOG_INFO_F(x, ...)    LOG_LVL_F( INFO, x, ##__VA_ARGS__ )
-
 
 // NOTE: LOG_DEBUG is disabled with LOG_VALID for performance reasons - 2-4%.
 #if defined(_DEBUG) || defined(ENABLE_LOG_VALID)
@@ -55,10 +54,6 @@ static bool* _log_level_enabled_array = nullptr;
     #define LOG_VALID_F(X, ...)
 #endif // _DEBUG
 
-namespace json
-{
-    class QuickInterpreter;
-}
 
 struct LogTimeInfo
 {
@@ -67,12 +62,19 @@ struct LogTimeInfo
     time_t secs;
 };
 
-struct cmp_str
+// DummyLogger was created so the SETUP_LOGGING macro records a list of module names and the
+// module names can be included in the schema. The static vector of module names in SimpleLogger
+// is a pointer to avoid initialization order conflicts. Customs reporters are loaded after
+// simulation creation, so don't get config params. Should add to custom reports file if logging
+// control is needed there. Reports as interventions would also resolve the problem.
+class DummyLogger
 {
-   bool operator()(char const *a, char const *b) const { return std::strcmp(a, b) < 0; }
+public:
+    DummyLogger( std::string module_name );
 };
 
-class IDMAPI SimpleLogger
+
+class SimpleLogger
 {
 public:
     static inline bool IsLoggingEnabled( Logger::tLevel log_level, const char* module, bool*& logLevelEnabledArray )
@@ -94,19 +96,23 @@ public:
         return logLevelEnabledArray[ log_level ];
     }
 
-
     SimpleLogger();
     SimpleLogger( Logger::tLevel syslevel );
-    void Init( const json::QuickInterpreter * configJson );
+
+    void Init();
     bool CheckLogLevel( Logger::tLevel log_level, const char* module );
     virtual void Log( Logger::tLevel log_level, const char* module, const char* msg, ...);
     virtual void Flush();
 
     void GetLogInfo(LogTimeInfo &tInfo );
 
+    static const std::vector<std::string>& GetModuleNames();
+    static void                            AddModuleName(std::string);
+
 protected:
-    typedef std::map< const char*, Logger::tLevel, cmp_str > module_loglevel_map_t;
-    module_loglevel_map_t _logLevelMap;
+    static std::vector<std::string>* module_names;
+
+    std::map< std::string, Logger::tLevel > _logLevelMap;
 
     Logger::tLevel _systemLogLevel;
 
@@ -116,14 +122,5 @@ protected:
     bool _warnings_are_fatal;
 
     time_t _initTime;
-    int _rank;
-};
-
-struct LogLevel // for holding tags we will use in the log itself to indicate the level
-{
-    static const char * Valid;
-    static const char * Debug;
-    static const char * Info;
-    static const char * Warning;
-    static const char * Error;
+    int    _rank;
 };
