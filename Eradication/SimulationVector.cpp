@@ -169,12 +169,12 @@ namespace Kernel
 
         // If we're running a simulation with actual vectors, do VectorSpeciesReport as well
         const jsonConfigurable::tDynamicStringSet& species_names = GET_CONFIGURABLE( SimulationConfig )->vector_params->vector_species.GetSpeciesNames();
-        bool enable_report = ( GET_CONFIGURABLE( SimulationConfig )->vector_params->enable_vector_species_report &&
-                              !species_names.empty() );
-        if( enable_report )
+        bool report_enabled = GET_CONFIGURABLE( SimulationConfig )->vector_params->enable_vector_species_report;
+
+        if( report_enabled && !species_names.empty() )
             reports.push_back(VectorSpeciesReport::CreateReport( species_names ));
-        else
-            LOG_INFO("Skipping VectorSpeciesReport; no vectors detected in simulation\n");
+        else if ( report_enabled && species_names.empty() )
+            LOG_WARN("VectorSpeciesReport enabled, but no vectors detected in simulation. Skipping.\n");
     }
 
     // called by demographic file Populate()

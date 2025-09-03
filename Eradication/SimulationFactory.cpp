@@ -58,13 +58,13 @@ namespace Kernel
         if ( SerializationParameters::GetInstance()->GetSerializedPopulationReadingType() != SerializationTypeRead::NONE )
         {
             const std::string population_filename = SerializationParameters::GetInstance()->GetSerializedPopulationFilename();
-            
+            LOG_INFO_F( "Loading serialized file: '%s'.\n", population_filename.c_str() );
             auto t_start = std::chrono::high_resolution_clock::now();
             newsim = SerializedState::LoadSerializedSimulation( population_filename.c_str() );
             auto t_finish = std::chrono::high_resolution_clock::now();
             newsim->Initialize( EnvPtr->Config );
             double elapsed = uint64_t((t_finish - t_start).count()) * 1000 * double(std::chrono::high_resolution_clock::period::num) / double(std::chrono::high_resolution_clock::period::den);
-            LOG_INFO_F( "Loaded serialized population from '%s' in %f ms\n.", population_filename.c_str(), elapsed );
+            LOG_DEBUG_F( "Loaded serialized population from '%s' in %f ms\n.", population_filename.c_str(), elapsed );
             return newsim;
         }
 

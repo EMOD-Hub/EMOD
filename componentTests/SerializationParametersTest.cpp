@@ -269,6 +269,19 @@ SUITE(SerializationParametersTest)
         m_fakeLogger.Pop_Back();
         CHECK(m_fakeLogger.Empty());
     }
+
+    TEST_FIXTURE( SerializationParametersFixture, ReadWriteMask16 )
+    {
+        unique_ptr<Configuration> p_config( Environment::LoadConfigurationFile( "testdata/SerializationParametersTest/TestReadWriteMask16.json" ) );
+
+        SerializationParameters::GetInstance()->Configure( p_config.get() );
+        SerializationBitMask_t read_mask = SerializationParameters::GetInstance()->GetSerializationReadMask();
+        SerializationBitMask_t write_mask = SerializationParameters::GetInstance()->GetSerializationWriteMask();
+        SerializationBitMask_t expected;
+        expected.set( SerializationFlags::LarvalHabitats );
+        CHECK_EQUAL( read_mask, expected );
+        CHECK_EQUAL( write_mask, expected );
+    }
  
     TEST_FIXTURE( SerializationParametersFixture, TestErrorMsgNoTimeInSerPop )
     {
@@ -285,14 +298,14 @@ SUITE(SerializationParametersTest)
     TEST_FIXTURE( SerializationParametersFixture, TestErrorUnsupportedWriteMask )
     {
         TestHelper_ConfigureException( __LINE__, "testdata/SerializationParametersTest/TestErrorUnsupportedWriteMask.json",
-            "InvalidInputDataException", "Currently, no flags are supported for 'Serialization_Mask_Node_Read' or 'Serialization_Mask_Node_Write' parameters. Please leave these parameters set to 0." );
+            "InvalidInputDataException", "Parameter 'Serialization_Mask_Node_Write' with value '17' is not supported. Currently only '16' and '0' are supported." );
     }
 
     TEST_FIXTURE( SerializationParametersFixture, TestErrorMsgMPINumTasks )
     {
         EnvPtr->MPI.NumTasks = 2;
         TestHelper_ConfigureException( __LINE__, "testdata/SerializationParametersTest/TestErrorMsgMPINumTasks.json",
-            "IncoherentConfigurationException", "Number of serialized population filenames doesn't match number of MPI tasks." );
+            "IncoherentConfigurationException", "Number of files listed in 'Serialized_Population_Filenames' doesn't match number of MPI tasks." );
     }
 
     TEST_FIXTURE( SerializationParametersFixture, TestErrorMsgNoSerPopFiles )
@@ -304,6 +317,7 @@ SUITE(SerializationParametersTest)
     TEST_FIXTURE( SerializationParametersFixture, TestErrorUnsupportedReadMask )
     {
         TestHelper_ConfigureException( __LINE__, "testdata/SerializationParametersTest/TestErrorUnsupportedReadMask.json",
-            "InvalidInputDataException", "Currently, no flags are supported for 'Serialization_Mask_Node_Read' or 'Serialization_Mask_Node_Write' parameters. Please leave these parameters set to 0." );
+            "InvalidInputDataException", "Parameter 'Serialization_Mask_Node_Read' with value '17' is not supported. Currently only '16' and '0' are supported.");
     }
 }
+

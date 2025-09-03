@@ -10,6 +10,7 @@
 #endif
 
 #include "Schema.h"
+#include "IdmString.h"
 #include "Log.h"
 #include "ProgVersion.h"
 #include "DllLoader.h"
@@ -53,21 +54,39 @@ const std::vector<std::string> getSimTypeList()
     return simTypeList;
 }
 
+
+const std::string getSupportedSimsString()
+{
+    const auto sims = getSimTypeList();
+    std::string sim_types_str;
+    sim_types_str.reserve( sims.size() * 20 ); // Reserve space to avoid multiple reallocations
+    for( size_t i = 0; i < sims.size(); ++i ) {
+        const std::string sim_type_prefix = IdmString( sims[i] ).split( '_' )[0];
+        sim_types_str += sim_type_prefix;
+
+        if( i < sims.size() - 1 ) // Avoids trailing comma
+        {
+            sim_types_str += ", ";
+        }
+    }
+    return sim_types_str;
+}
+
 void writeInputSchemas( const char* output_path )
 {
     json::Object jsonRoot;
     json::QuickBuilder total_schema( jsonRoot );
-
     Kernel::JsonConfigurable::_dryrun = true;
 
     // --- Create Metadata Schema
     json::Object vsRoot;
     json::QuickBuilder versionSchema( vsRoot );
+
     ProgDllVersion pv;
     versionSchema["DTK_Version"] = json::String( pv.getVersion() );
     versionSchema["DTK_Branch"] = json::String( pv.getSccsBranch() );
     versionSchema["DTK_Build_Date"] = json::String( pv.getBuildDate() );
-
+    versionSchema["Supported_Simulation_Types"] = json::String( getSupportedSimsString() );
     total_schema["Version"] = versionSchema.As<json::Object>();
 
     // --- Create Config Schema
@@ -189,8 +208,8 @@ void writeInputSchemas( const char* output_path )
     // PythonSupportPtr can be null during componentTests
     if( szOutputPath != "stdout" )
     {
-        std::cout << "Successfully created schema in file " << output_path << ". Attempting to post-process." << std::endl;
         Kernel::PythonSupport::RunPyFunction( output_path, Kernel::PythonSupport::SCRIPT_POST_PROCESS_SCHEMA );
+        std::cout << "Created schema file " << output_path << ". " << std::endl;
     }
 }
 

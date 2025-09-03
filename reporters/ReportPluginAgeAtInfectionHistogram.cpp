@@ -115,7 +115,7 @@ ReportPluginAgeAtInfectionHistogram::ReportPluginAgeAtInfectionHistogram()
 , reporting_interval_in_years( 1 )
 {
     initSimTypes( 1, "*" );
-    LOG_INFO( "ReportPluginAgeAtInfectionHistogram ctor\n" );
+    LOG_DEBUG( "ReportPluginAgeAtInfectionHistogram ctor\n" );
 }
 
 /////////////////////////
