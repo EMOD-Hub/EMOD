@@ -98,20 +98,21 @@ namespace Kernel
                 m_pInterventionNode = InterventionFactory::CreateNDIIntervention( intervention_config._json, inputJson->GetDataLocation(), "Intervention_Config", false ); // don't throw if null
             }
 
-            
+            json::QuickInterpreter config = json::QuickInterpreter( intervention_config._json );
+
             if( (m_pInterventionIndividual == nullptr) && (m_pInterventionNode == nullptr) )
             {
-                std::string class_name = std::string( json::QuickInterpreter( intervention_config._json )["class"].As<json::String>() );
+                std::string class_name = std::string( config["class"].As<json::String>() );
                 std::stringstream ss;
                 ss << "Invalid Intervention Type in '" << GetTypeName() << "'.\n";
                 ss << "'" << class_name << "' is not a known intervention.";
                 throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
             }
 
-            log_intervention_name = std::string( json::QuickInterpreter( intervention_config._json )["class"].As<json::String>() );
-            if( json::QuickInterpreter( intervention_config._json ).Exist( "Intervention_Name" ) && !std::string( json::QuickInterpreter( intervention_config._json )["Intervention_Name"].As<json::String>() ).empty())
+            log_intervention_name = std::string( config["class"].As<json::String>() );
+            if(config.Exist( "Intervention_Name" ) && !std::string( config["Intervention_Name"].As<json::String>() ).empty())
             {
-                log_intervention_name = std::string( json::QuickInterpreter( intervention_config._json )["Intervention_Name"].As<json::String>() );
+                log_intervention_name = std::string( config["Intervention_Name"].As<json::String>() );
             }
 
             if( m_pInterventionNode != nullptr )

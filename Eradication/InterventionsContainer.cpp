@@ -129,6 +129,7 @@ namespace Kernel
             if( intervention_names[ i ] == intervention_name )
             {
                 interventions_list.push_back( interventions[ i ] );
+                break; // there's only one intervention with same InterventionName because we purge existing either by name or by type(class) when adding new ones
             }
         }
 
@@ -193,10 +194,9 @@ namespace Kernel
 
     void InterventionsContainer::PurgeExistingByName( const InterventionName& iv_name)
     {
-        for(int i = 0; i < interventions.size(); ++i)
+        for(int i = 0; i < intervention_names.size(); ++i)
         {
-            IDistributableIntervention* p_intervention = interventions[i];
-            InterventionName cur_iv_name = p_intervention->GetName();
+            InterventionName cur_iv_name = intervention_names[i];
             if(cur_iv_name == iv_name)
             {
                 LOG_DEBUG_F("Found an existing intervention with name '%s'. Purging.\n", iv_name.c_str());
