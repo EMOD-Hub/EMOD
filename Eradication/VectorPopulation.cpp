@@ -2587,9 +2587,9 @@ namespace Kernel
             IVectorCohort* cohort = *it;
 
             float p_local_male_mortality = GetLocalMatureMortalityProbability( dt, cohort ); // can be age dependent
-            float p_outdoor_killing = probs()->outdoorareakilling.GetValue( m_SpeciesIndex, cohort->GetGenome() );
+            float p_outdoor_killing = probs()->outdoorareakilling.GetValue( m_SpeciesIndex, cohort->GetGenome() ); // SpaceSpraying
             float p_sugar_trap_killing = GetSugarTrapKilling( cohort );
-            float p_outdoor_rest_killing   = probs()->outdoorRestKilling.GetValue( m_SpeciesIndex, cohort->GetGenome() );
+            float p_outdoor_rest_killing = probs()->outdoorRestKilling.GetValue( m_SpeciesIndex, cohort->GetGenome() ); // OutdoorRestKill and SpatialRepellent 
 
             float p_male_mortality = p_local_male_mortality;
             p_male_mortality += (1.0f - p_male_mortality) * p_outdoor_killing;

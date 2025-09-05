@@ -256,5 +256,25 @@ namespace Kernel
     {
         SimpleHousingModification::serialize(ar, obj);
     }
+
+    // ------------------------------------------------------------------------
+    // --- SpatialRepellentHousingModification
+    // ------------------------------------------------------------------------
+
+    void IndoorIndividualEmanator::ApplyEffectsKilling( float dt )
+    {
+        GeneticProbability current_killingrate = m_pInsecticideWaningEffect->GetCurrent( ResistanceType::KILLING );
+
+        release_assert( m_pIHMC != nullptr );
+
+        m_pIHMC->UpdateProbabilityOfHouseKilling( current_killingrate ); // folded into p_kill_IRSpostfeed, also used by IRSHousingModification
+        m_pIHMC->UpdateProbabilityOfHouseKillingPrefeed( current_killingrate ); // folded into p_kill_prefeed, only used by IndoorIndividualEmanator
+    }
+
+    void IndoorIndividualEmanator::serialize( IArchive& ar, IndoorIndividualEmanator* obj )
+    {
+        SimpleHousingModification::serialize( ar, obj );
+    }
+
 }
 

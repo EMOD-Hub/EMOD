@@ -1681,7 +1681,7 @@ SUITE( GeneticProbabilityTest )
 
         float p_kill_PFH                                = 0.1f;
         float p_block_housing                           = 0.2f;
-        float p_kill_IRSprefeed                         = 0.0f; // always zero - not hooked up
+        float p_kill_prefeed                         = 0.0f; // always zero - not hooked up
         float p_attraction_ADIH                         = 0.3f;
         GeneticProbability p_kill_ADIH                  = 0.4f; //** SugarTrap - currently multi-species
         float p_block_net                               = 0.6f;
@@ -1714,7 +1714,7 @@ SUITE( GeneticProbabilityTest )
 
         GeneticProbability pDieBeforeFeeding = p_kill_PFH
                                              + (1-p_kill_PFH) * (1-p_block_housing)
-                                                * (p_kill_IRSprefeed + (1-p_kill_IRSprefeed * pAttractionADIH) );
+                                                * (p_kill_prefeed + (1-p_kill_prefeed * pAttractionADIH) );
         CHECK_CLOSE( 0.82f, pDieBeforeFeeding.GetValue( m_SpeciesIndexGambiae,  m_Genome_a1b2c1_a1b2c1 ), FLT_EPSILON );
         CHECK_CLOSE( 0.82f, pDieBeforeFeeding.GetValue( m_SpeciesIndexGambiae,  m_Genome_a2b2c1_a2b2c1 ), FLT_EPSILON );
         CHECK_CLOSE( 0.82f, pDieBeforeFeeding.GetValue( m_SpeciesIndexGambiae,  m_Genome_a1b1c1_a1b1c1 ), FLT_EPSILON );
@@ -1724,7 +1724,7 @@ SUITE( GeneticProbabilityTest )
         GeneticProbability pHostNotAvailable = (1-p_kill_PFH)
                                              * ( p_block_housing 
                                                  + (1-p_block_housing)
-                                                   * (1-p_kill_IRSprefeed)
+                                                   * (1-p_kill_prefeed)
                                                    * (1-p_attraction_ADIH)
                                                    * (p_block_net * (1-p_kill_ITN) * (1-p_kill_PFH)
                                                        + (1.0f-p_block_net) * p_block_indrep * (1.0f-p_kill_PFH)
@@ -1738,7 +1738,7 @@ SUITE( GeneticProbabilityTest )
 
         GeneticProbability pDieDuringFeeding = (1-p_kill_PFH)
                                              * (1-p_block_housing)
-                                             * (1-p_kill_IRSprefeed)
+                                             * (1-p_kill_prefeed)
                                              * (1-p_attraction_ADIH)
                                              * (1-p_block_net)
                                              * (1-p_block_indrep)
@@ -1751,7 +1751,7 @@ SUITE( GeneticProbabilityTest )
 
         GeneticProbability pDiePostFeeding = (1-p_kill_PFH)
                                            * (1-p_block_housing)
-                                           * (1-p_kill_IRSprefeed)
+                                           * (1-p_kill_prefeed)
                                            * (1-p_attraction_ADIH)
                                            * (1-p_block_net)
                                            * (1-p_block_indrep)
@@ -1765,7 +1765,7 @@ SUITE( GeneticProbabilityTest )
 
         GeneticProbability pSuccessfulFeedHuman = (1-p_kill_PFH)
                                                 * (1-p_block_housing)
-                                                * (1-p_kill_IRSprefeed)
+                                                * (1-p_kill_prefeed)
                                                 * (1-p_attraction_ADIH)
                                                 * (1-p_block_net)
                                                 * (1-p_block_indrep)
@@ -1780,7 +1780,7 @@ SUITE( GeneticProbabilityTest )
 
         GeneticProbability pSuccessfulFeedAD  = (1-p_kill_PFH)
                                               * (1-p_block_housing)
-                                              * (1-p_kill_IRSprefeed)
+                                              * (1-p_kill_prefeed)
                                               * p_attraction_ADIH
                                               * (1-p_kill_ADIH)
                                               * (1-p_kill_IRSpostfeed_effective)

@@ -30,9 +30,9 @@ namespace Kernel
         , p_block_net(0.0f)
         , p_kill_ITN(0.0f)
         , p_penetrate_housingmod(1.0f)
-        , p_kill_IRSprefeed(0.0f)
         , is_using_housingmod(false)
         , p_survive_housingmod(1.0f)
+        , p_survive_housingmod_prefeed( 1.0f )
         , p_indrep(0.0f)
         , p_attraction_ADIH(0.0f)
         , p_kill_ADIH(0.0f)
@@ -88,6 +88,14 @@ namespace Kernel
         p_survive_housingmod *= (1.0f - prob);  // will multiply by 1-all housing mods and then do 1- that.
     }
 
+    void VectorInterventionsContainer::UpdateProbabilityOfHouseKillingPrefeed(
+        const GeneticProbability& prob
+    )
+    {
+        // is_using_housingmod = true;  // don't need to set this, since if prefeed is being used, postfeed will be too
+        p_survive_housingmod_prefeed *= ( 1.0f - prob );  // will multiply by 1-all housing mods prefeed and then do 1- that.
+    }
+
     void VectorInterventionsContainer::UpdateArtificialDietAttractionRate(
         float rate
     )
@@ -134,16 +142,16 @@ namespace Kernel
         // knowing a priori about any intervention types. Current favorite
         // idea is for interventions to enforce this in the Give by doing a
         // Get and Remove first via QI. 
-        p_block_net                 = GeneticProbability( 0.0f );
-        p_kill_ITN                  = GeneticProbability( 0.0f );
-        p_penetrate_housingmod      = GeneticProbability( 1.0f ); // block probability of housing: screening, spatial repellent, IRS repellent-- starts at 1.0 because will do 1.0-p_block_housing below
-        p_kill_IRSprefeed           = 0;                          // pre-feed kill probability of IRS (TODO: this is not hooked up!)
-        is_using_housingmod         = false;                      // true if p_kill_IRSpostfeed was set
-        p_survive_housingmod        = GeneticProbability( 1.0f ); // prob of suviving housing modifications (e.g. IRS) after successful feed -- starts at 1.0 because will do 1-surviving to get the killing below
-        p_indrep                    = GeneticProbability( 0.0f ); // probability of individual repellent working against the vector
-        p_attraction_ADIH           = 0;                          // probability of distraction by Artificial Diet--In House
-        p_kill_ADIH                 = 0;                          // kill probability of in-house artificial diet
-        p_survive_insecticidal_drug = GeneticProbability( 1.0f ); // post-feed survivability of insecticidal drug (e.g. Ivermectin)-- starts at 1.0 because will do 1.0-p_survive_insecticidal_drug below
+        p_block_net                  = GeneticProbability( 0.0f );
+        p_kill_ITN                   = GeneticProbability( 0.0f );
+        p_penetrate_housingmod       = GeneticProbability( 1.0f ); // block probability of housing: screening, spatial repellent, IRS repellent-- starts at 1.0 because will do 1.0-p_block_housing below
+        is_using_housingmod          = false;                      // true if p_kill_IRSpostfeed was set
+        p_survive_housingmod         = GeneticProbability( 1.0f ); // prob of suviving housing modifications (e.g. IRS) after successful feed -- starts at 1.0 because will do 1-surviving to get the killing below
+        p_survive_housingmod_prefeed = GeneticProbability( 1.0f ); // pre-feed killed by IndividualIndoorEmanator
+        p_indrep                     = GeneticProbability( 0.0f ); // probability of individual repellent working against the vector
+        p_attraction_ADIH            = 0;                          // probability of distraction by Artificial Diet--In House
+        p_kill_ADIH                  = 0;                          // kill probability of in-house artificial diet
+        p_survive_insecticidal_drug  = GeneticProbability( 1.0f ); // post-feed survivability of insecticidal drug (e.g. Ivermectin)-- starts at 1.0 because will do 1.0-p_survive_insecticidal_drug below
 
         // call base level
         InterventionsContainer::InfectiousLoopUpdate( dt );
@@ -164,6 +172,8 @@ namespace Kernel
         GeneticProbability p_block_housing = 1.0f - p_penetrate_housingmod;
         // probability of dying due to IRS or other housing modifications after feeding
         GeneticProbability p_kill_IRSpostfeed = 1.0f - p_survive_housingmod;
+        // probability of dying due to IRS or other housing modifications before feeding after getting into the house
+        GeneticProbability p_kill_prefeed = 1.0f - p_survive_housingmod_prefeed;
         // probability of dying due to insecticidal drug (e.g. Ivermectin) after feeding
         GeneticProbability p_kill_insecticidal_drug = 1.0f - p_survive_insecticidal_drug;
 
@@ -200,23 +210,23 @@ namespace Kernel
         GeneticProbability not_kill_ITN      = (1-p_kill_ITN);
         GeneticProbability not_indrep        = (1-p_indrep);
 
-        //(1-p_block_housing)*(1-p_kill_IRSprefeed)
+        //(1-p_block_housing)*(1-p_kill_prefeed)
         // probability of (not being blocked by housing, and not killed by IRS pre-feed)
-        GeneticProbability not_housing_IRSprefeed = not_block_housing*(1-p_kill_IRSprefeed);
+        GeneticProbability not_housing_prefeed = not_block_housing*(1-p_kill_prefeed);
 
-        //(1-p_block_housing)*(1-p_kill_IRSprefeed)*(1-p_attraction_ADIH)*(1-p_block_net)*(1-p_indrep)
+        //(1-p_block_housing)*(1-p_kill_prefeed)*(1-p_attraction_ADIH)*(1-p_block_net)*(1-p_indrep)
         // probability of (not being blocked by housing, and not killed by IRS pre-feed, and not attracted to artifical diet, and not blocked by net, 
         // and not repelled by individual repellent)
-        GeneticProbability not_housing_IRSprefeed_ADIH_net_indrep = not_housing_IRSprefeed*not_block_net*not_indrep*(1-p_attraction_ADIH);
+        GeneticProbability not_housing_prefeed_ADIH_net_indrep = not_housing_prefeed*not_block_net*not_indrep*(1-p_attraction_ADIH);
 
-        //(1-p_block_housing)*(1-p_kill_IRSprefeed)*(1-p_attraction_ADIH)*(1-p_block_net)*(1-p_indrep)*(1-p_dieduringfeeding)
+        //(1-p_block_housing)*(1-p_kill_prefeed)*(1-p_attraction_ADIH)*(1-p_block_net)*(1-p_indrep)*(1-p_dieduringfeeding)
         // probability of (not being blocked by housing, and not killed by IRS pre-feed, and not attracted to artifical diet, and not blocked by net,
         // and not repelled by individual repellent, and not dying during feeding)
-        GeneticProbability not_housing_IRSprefeed_ADIH_net_indrep_dieduringfeeding = not_housing_IRSprefeed_ADIH_net_indrep*(1-p_dieduringfeeding);
+        GeneticProbability not_housing_prefeed_ADIH_net_indrep_dieduringfeeding = not_housing_prefeed_ADIH_net_indrep*(1-p_dieduringfeeding);
 
         // now get probabilities for indoor feeding outcomes
         // for mosquitoes that make it inside the house:
-        //   Some mosquitoes die immediately from initial IRS (Indoor Residual Spraying) before attempting to feed  <--- not hooked up
+        //   Some mosquitoes die immediately before attempting to feed  
         //   For mosquitoes that survive the initial IRS:
         //       Some are attracted to artificial diet indoors:
         //            Some of those are killed by the artificial diet indoors 
@@ -224,27 +234,27 @@ namespace Kernel
         //       Some are not attracted to artificial diet indoors:
         //            Some of those are blocked and killed by ITN
         //            Some of those are not blocked by ITN and are repelled by individual repellent
-        pDieBeforeFeeding    = not_block_housing * (p_kill_IRSprefeed 
+        pDieBeforeFeeding    = not_block_housing * (p_kill_prefeed 
                                                      + 
-                                                   (1-p_kill_IRSprefeed) * ( p_attraction_ADIH * ( p_kill_ADIH 
+                                                   (1-p_kill_prefeed) * ( p_attraction_ADIH * ( p_kill_ADIH 
                                                                                                     +
                                                                                                   (1-p_kill_ADIH) * p_die_indoor_post_feed) 
                                                                             + 
                                                                            ( 1-p_attraction_ADIH ) * (p_block_net * p_kill_ITN)));
 
         pHostNotAvailable    = p_block_housing 
-                             + not_block_housing * ((1-p_kill_IRSprefeed) * (1-p_attraction_ADIH))
+                             + not_block_housing * ((1-p_kill_prefeed) * (1-p_attraction_ADIH))
                                                  * ((p_block_net * not_kill_ITN) + (not_block_net * p_indrep));
 
-        pDieDuringFeeding    = not_housing_IRSprefeed_ADIH_net_indrep * p_dieduringfeeding;
-        pDiePostFeeding      = not_housing_IRSprefeed_ADIH_net_indrep_dieduringfeeding * p_die_indoor_post_feed;
-        pSuccessfulFeedHuman = not_housing_IRSprefeed_ADIH_net_indrep_dieduringfeeding * not_die_post_feed;
+        pDieDuringFeeding    = not_housing_prefeed_ADIH_net_indrep * p_dieduringfeeding;
+        pDiePostFeeding      = not_housing_prefeed_ADIH_net_indrep_dieduringfeeding * p_die_indoor_post_feed;
+        pSuccessfulFeedHuman = not_housing_prefeed_ADIH_net_indrep_dieduringfeeding * not_die_post_feed;
 
-        // (1-p_block_housing)*(1-p_kill_IRSprefeed)*p_attraction_ADIH*(1-p_kill_ADIH)*(1-p_kill_IRSpostfeed_effective)
+        // (1-p_block_housing)*(1-p_kill_prefeed)*p_attraction_ADIH*(1-p_kill_ADIH)*(1-p_kill_IRSpostfeed_effective)
         // probability of ((not being blocked by housing and not killed by IRS pre-feed) 
         //                  and (not die indoors post-feed due to irs, insecticides or bloodmeal mortality)
         //                  and (attracted to artifical diet, and not killed by artificial diet))
-        pSuccessfulFeedAD    = not_housing_IRSprefeed * not_die_post_feed * (p_attraction_ADIH * (1-p_kill_ADIH));
+        pSuccessfulFeedAD    = not_housing_prefeed * not_die_post_feed * (p_attraction_ADIH * (1-p_kill_ADIH));
 
         // update intervention effect on acquisition and transmission of infection
         // --NOTE that vector tendencies to bite an individual are already gathered
@@ -259,7 +269,7 @@ namespace Kernel
 
         // update probabilities for outdoor feeding outcomes
         GeneticProbability not_indrep_not_dieduringfeeding = not_indrep * (1.0f - p_dieduringfeeding);
-        pOutdoorDieBeforeFeeding    = 0;
+        pOutdoorDieBeforeFeeding    = 0; 
         pOutdoorHostNotAvailable    = p_indrep;
         pOutdoorDieDuringFeeding    = not_indrep * p_dieduringfeeding;
         pOutdoorDiePostFeeding      = not_indrep_not_dieduringfeeding * p_die_in_out_post_feed;
