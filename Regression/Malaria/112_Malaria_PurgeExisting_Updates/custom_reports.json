@@ -1,0 +1,16 @@
+{
+    "Reports": [
+        {
+            "class": "ReportInterventionPopAvg",
+            "Filename_Suffix": "test_suffix",
+            "Start_Day": 1,
+            "End_Day": 70,
+            "Node_IDs_Of_Interest": [],
+            "Min_Age_Years" : 0.0,
+            "Max_Age_Years" : 1000.0,
+            "Must_Have_IP_Key_Value": "",
+            "Must_Have_Intervention": ""
+        }
+    ],
+    "Use_Defaults": 1
+}

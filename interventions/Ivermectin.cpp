@@ -51,8 +51,8 @@ namespace Kernel
         WaningConfig killing_config;
         InsecticideName name;
 
-        initConfigTypeMap( "Insecticide_Name", &name, INT_Insecticide_Name_DESC_TEXT );
-        initConfigComplexType("Killing_Config",  &killing_config, IVM_Killing_Config_DESC_TEXT );
+        initConfigTypeMap(     "Insecticide_Name", &name,           INT_Insecticide_Name_DESC_TEXT );
+        initConfigComplexType( "Killing_Config",   &killing_config, IVM_Killing_Config_DESC_TEXT );
 
         bool configured = BaseIntervention::Configure( inputJson );
         if( !JsonConfigurable::_dryrun && configured )
@@ -73,7 +73,7 @@ namespace Kernel
         {
             return false;
         }
-        context->PurgeExisting( typeid(*this).name() );
+        context->PurgeExistingByName( name );
 
         bool distributed = BaseIntervention::Distribute( context, pCCO );
         if( distributed )

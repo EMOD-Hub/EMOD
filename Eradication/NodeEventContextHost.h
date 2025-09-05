@@ -57,7 +57,8 @@ namespace Kernel
         virtual void SetContextTo(INodeContext* context) override;
         virtual std::list<INodeDistributableIntervention*> GetInterventionsByType(const std::string& type_name) override;
         virtual bool ContainsExistingByName( const InterventionName& iv_name ) override;
-        virtual void PurgeExisting( const std::string& iv_name ) override;
+        virtual void PurgeExistingByType(const std::string& type_name) override;
+        virtual void PurgeExistingByName(const InterventionName& iv_name) override;
         virtual const std::list<INodeDistributableIntervention*>& GetNodeInterventions() const override;
 
         // INodeInterventionConsumer

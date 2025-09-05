@@ -129,6 +129,7 @@ namespace Kernel
             if( intervention_names[ i ] == intervention_name )
             {
                 interventions_list.push_back( interventions[ i ] );
+                break; // there's only one intervention with same InterventionName because we purge existing either by name or by type(class) when adding new ones
             }
         }
 
@@ -150,12 +151,12 @@ namespace Kernel
         return interface_list;
     }
 
-    IDistributableIntervention* InterventionsContainer::GetIntervention( const std::string& iv_name )
+    IDistributableIntervention* InterventionsContainer::GetIntervention( const std::string& type_name )
     {
         for( auto p_intervention : interventions )
         {
             std::string cur_iv_type_name = typeid( *p_intervention ).name();
-            if( cur_iv_type_name == iv_name )
+            if( cur_iv_type_name == type_name)
             {
                 return p_intervention ;
             }
@@ -176,26 +177,38 @@ namespace Kernel
         delete p_intervention;
     }
 
-    void InterventionsContainer::PurgeExisting(
-        const std::string &iv_name
-    )
+    void InterventionsContainer::PurgeExistingByType( const std::string & type_name )
     {
         for( int i = 0; i < interventions.size(); ++i )
         {
             IDistributableIntervention* p_intervention = interventions[ i ];
             std::string cur_iv_type_name = typeid( *p_intervention ).name();
-            if( cur_iv_type_name == iv_name )
+            if( cur_iv_type_name == type_name)
             {
-                LOG_DEBUG_F("Found an existing intervention by that name (%s) which we are purging\n", iv_name.c_str());
+                LOG_DEBUG_F("Found an existing intervention '%s'. Purging.\n", type_name.c_str());
                 Remove( i );
                 break;
             }
         }
     }
 
-    bool InterventionsContainer::ContainsExisting( const std::string &iv_name )
+    void InterventionsContainer::PurgeExistingByName( const InterventionName& iv_name)
     {
-        IDistributableIntervention* p_intervention = GetIntervention( iv_name );
+        for(int i = 0; i < intervention_names.size(); ++i)
+        {
+            InterventionName cur_iv_name = intervention_names[i];
+            if(cur_iv_name == iv_name)
+            {
+                LOG_DEBUG_F("Found an existing intervention with name '%s'. Purging.\n", iv_name.c_str());
+                Remove(i);
+                break;
+            }
+        }
+    }
+
+    bool InterventionsContainer::ContainsExistingByType( const std::string &type_name)
+    {
+        IDistributableIntervention* p_intervention = GetIntervention(type_name);
         return (p_intervention != nullptr);
     }
 

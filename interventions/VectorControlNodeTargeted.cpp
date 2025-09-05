@@ -132,8 +132,9 @@ namespace Kernel
 
     bool SimpleVectorControlNode::Distribute( INodeEventContext *pNodeContext, IEventCoordinator2 *pEC )
     {
-        // Just one of each of these allowed
-        pNodeContext->PurgeExisting( typeid(*this).name() ); // hmm?  let's come back to this and query the right interfaces everywhere.
+        // only one of each is allowed because the effects from each intervention are directly assigned
+        // and are not cumulative, so the last one wins.
+        pNodeContext->PurgeExistingByType( typeid(*this).name() );
         return BaseNodeIntervention::Distribute( pNodeContext, pEC );
     }
     
@@ -354,7 +355,7 @@ namespace Kernel
 
         initConfigComplexCollectionType( "Insecticides", p_iwec, MISS_Insecticides_DESC_TEXT );
 
-        bool configured = JsonConfigurable::Configure( config );
+        bool configured = BaseNodeIntervention::Configure( config );
         if( !JsonConfigurable::_dryrun && configured )
         {
             p_iwec->CheckConfiguration();
@@ -433,7 +434,7 @@ namespace Kernel
 
         initConfigComplexCollectionType( "Insecticides", p_iwec, MIISS_Insecticides_DESC_TEXT );
 
-        bool configured = JsonConfigurable::Configure( config );
+        bool configured = BaseNodeIntervention::Configure( config );
         if( !JsonConfigurable::_dryrun && configured )
         {
             p_iwec->CheckConfiguration();
