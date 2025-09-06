@@ -235,7 +235,7 @@ namespace Kernel
         //            Some of those are blocked and killed by ITN
         //            Some of those are not blocked by ITN and are repelled by individual repellent
         pDieBeforeFeeding    = not_block_housing
-                                *(p_kill_IRSprefeed + (1-p_kill_IRSprefeed)
+                                *(p_kill_prefeed + (1-p_kill_prefeed)
                                    * ( 
                                        p_attraction_ADIH * (p_kill_ADIH + (1-p_kill_ADIH) * p_die_indoor_post_feed)
                                      +
