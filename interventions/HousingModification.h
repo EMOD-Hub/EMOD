@@ -91,12 +91,11 @@ namespace Kernel
 
     class IndoorIndividualEmanator : public SimpleHousingModification
     {
-        DECLARE_FACTORY_REGISTERED( IndividualIVFactory, IndoorIndividualEmanator, IDistributableIntervention )
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, IndoorIndividualEmanator, IDistributableIntervention)
 
-        DECLARE_SERIALIZABLE( IndoorIndividualEmanator );
+        DECLARE_SERIALIZABLE(IndoorIndividualEmanator);
 
     protected:
-        virtual void initConfigKilling( WaningConfig* pKillingConfig );
         virtual void ApplyEffectsKilling( float dt ) override;
     };
 }

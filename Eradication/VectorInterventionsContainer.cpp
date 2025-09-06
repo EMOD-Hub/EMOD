@@ -149,8 +149,8 @@ namespace Kernel
         p_survive_housingmod         = GeneticProbability( 1.0f ); // prob of suviving housing modifications (e.g. IRS) after successful feed -- starts at 1.0 because will do 1-surviving to get the killing below
         p_survive_housingmod_prefeed = GeneticProbability( 1.0f ); // pre-feed killed by IndividualIndoorEmanator
         p_indrep                     = GeneticProbability( 0.0f ); // probability of individual repellent working against the vector
-        p_attraction_ADIH            = 0;                          // probability of distraction by Artificial Diet--In House
-        p_kill_ADIH                  = 0;                          // kill probability of in-house artificial diet
+        p_attraction_ADIH            = 0;                          // HumanHostSeekingTrap: probability of distraction by Artificial Diet--In House 
+        p_kill_ADIH                  = 0;                          // HumanHostSeekingTrap: kill probability of in-house artificial diet 
         p_survive_insecticidal_drug  = GeneticProbability( 1.0f ); // post-feed survivability of insecticidal drug (e.g. Ivermectin)-- starts at 1.0 because will do 1.0-p_survive_insecticidal_drug below
 
         // call base level
@@ -169,11 +169,11 @@ namespace Kernel
         float p_dieduringfeeding = p_vp->human_feeding_mortality;
 
         // final adjustment to product of (1-prob) accumulated over potentially multiple instances
-        GeneticProbability p_block_housing = 1.0f - p_penetrate_housingmod;
+        GeneticProbability p_block_housing    = 1.0f - p_penetrate_housingmod;
         // probability of dying due to IRS or other housing modifications after feeding
         GeneticProbability p_kill_IRSpostfeed = 1.0f - p_survive_housingmod;
         // probability of dying due to IRS or other housing modifications before feeding after getting into the house
-        GeneticProbability p_kill_prefeed = 1.0f - p_survive_housingmod_prefeed;
+        GeneticProbability p_kill_prefeed     = 1.0f - p_survive_housingmod_prefeed;
         // probability of dying due to insecticidal drug (e.g. Ivermectin) after feeding
         GeneticProbability p_kill_insecticidal_drug = 1.0f - p_survive_insecticidal_drug;
 
@@ -234,13 +234,14 @@ namespace Kernel
         //       Some are not attracted to artificial diet indoors:
         //            Some of those are blocked and killed by ITN
         //            Some of those are not blocked by ITN and are repelled by individual repellent
-        pDieBeforeFeeding    = not_block_housing * (p_kill_prefeed 
-                                                     + 
-                                                   (1-p_kill_prefeed) * ( p_attraction_ADIH * ( p_kill_ADIH 
-                                                                                                    +
-                                                                                                  (1-p_kill_ADIH) * p_die_indoor_post_feed) 
-                                                                            + 
-                                                                           ( 1-p_attraction_ADIH ) * (p_block_net * p_kill_ITN)));
+        pDieBeforeFeeding    = not_block_housing
+                                *(p_kill_IRSprefeed + (1-p_kill_IRSprefeed)
+                                   * ( 
+                                       p_attraction_ADIH * (p_kill_ADIH + (1-p_kill_ADIH) * p_die_indoor_post_feed)
+                                     +
+                                       (1-p_attraction_ADIH) * (p_block_net * p_kill_ITN)
+                                     )
+                                 );
 
         pHostNotAvailable    = p_block_housing 
                              + not_block_housing * ((1-p_kill_prefeed) * (1-p_attraction_ADIH))

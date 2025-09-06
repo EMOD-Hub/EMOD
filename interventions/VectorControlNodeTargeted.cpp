@@ -507,6 +507,7 @@ namespace Kernel
 
         m_pINVIC->UpdateVillageSpatialRepellentRepelledOrKilled(repelled_or_killed);
         m_pINVIC->UpdateVillageSpatialRepellent(repelling * m_Coverage);
+        m_pINVIC->UpdateOutdoorRestKilling( killing * m_Coverage );
     }
 
     ReportInterventionData SpatialRepellent::GetReportInterventionData() const

@@ -107,7 +107,7 @@ namespace Kernel
         GeneticProbability pOutdoorKilling;
         float              pOviTrapKilling;
         GeneticProbability pAnimalFeedKilling;
-        GeneticProbability pOutdoorRestKilling;
+        GeneticProbability pOutdoorRestSurviving;
         bool               isUsingIndoorKilling;
         GeneticProbability pIndoorKilling;
         bool               isUsingSugarTrap;

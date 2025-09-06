@@ -26,7 +26,7 @@ namespace Kernel
     , pOutdoorKilling(0)
     , pOviTrapKilling(0)
     , pAnimalFeedKilling(0)
-    , pOutdoorRestKilling(0)
+    , pOutdoorRestSurviving(0)
     , isUsingIndoorKilling(false)
     , pIndoorKilling( 0.0f )
     , isUsingSugarTrap(false)
@@ -85,7 +85,7 @@ namespace Kernel
         pOutdoorKilling = GeneticProbability( 0.0f );
         pOviTrapKilling = 0.0;
         pAnimalFeedKilling = GeneticProbability( 0.0f );
-        pOutdoorRestKilling = GeneticProbability( 0.0f );
+        pOutdoorRestSurviving = GeneticProbability( 1.0f );
         isUsingIndoorKilling = false;
         pIndoorKilling = GeneticProbability( 0.0f );
         isUsingSugarTrap = false;
@@ -195,7 +195,7 @@ namespace Kernel
         const GeneticProbability& killing
     )
     {
-        pOutdoorRestKilling = killing;
+        pOutdoorRestSurviving *= (1 - killing);
     }
 
     void NodeVectorEventContextHost::UpdateIndoorKilling( const GeneticProbability& killing )
@@ -298,7 +298,9 @@ namespace Kernel
 
     const GeneticProbability& NodeVectorEventContextHost::GetOutdoorRestKilling()
     {
-        return pOutdoorRestKilling;
+        // calculate killing from surviving probability, 
+        // which is affected by OutdoorRestKill and SpatialRepellent interventiond
+        return (1 - pOutdoorRestSurviving);
     }
 
     bool NodeVectorEventContextHost::IsUsingIndoorKilling() const

@@ -180,14 +180,13 @@ namespace Kernel
         sugarTrapKilling    = invie->GetSugarFeedKilling();
         kill_livestockfeed  = invie->GetAnimalFeedKilling();
         outdoorRestKilling  = invie->GetOutdoorRestKilling();
-        sp_repelled_or_killed = invie->GetVillageSpatialRepellentRepelledOrKilled();        
+        sp_repelled_or_killed = invie->GetVillageSpatialRepellentRepelledOrKilled(); // repelled or not repelled and then killed by spatial repellent, precalculated
     }
 
     void VectorProbabilities::FinalizeTransitionProbabilites(float anthropophily, float indoor_feeding)
     {
         // Non-Feeding Branch
         diewithoutattemptingfeed      =  outdoorareakilling; // for those that do not attempt to feed
-        // -- non-feeding vectors are not affected by spatial repellent killing (otherwise it would be the same as SpaceSpraying)
 
         // Feeding Branch
         survivewithoutsuccessfulfeed = (1.0f - attraction_ADOV) * (spatial_repellent * (1.0f - outdoorareakilling) + (1.0f - sp_repelled_or_killed) * (1.0f - attraction_ADIV) * anthropophily * (1.0f - indoor_feeding) * (1.0f - outdoorareakilling) * nooutdoorhumanfound);
@@ -200,10 +199,6 @@ namespace Kernel
 
         release_assert( diebeforeattempttohumanfeed.GetDefaultValue() >= 0.0 );
 
-        // outdoor probabilities
-        // should spatial_repellent_killing be applied here?
-        // this kills male vectors
-        // and kills female vectors after they successfully feed on a human
-        outdoor_returningmortality = outdoorRestKilling;
+        outdoor_returningmortality = outdoorRestKilling;  // affects females successfully fed outdoors and are returning to rest and male vectors
     }
 }

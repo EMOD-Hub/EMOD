@@ -989,6 +989,10 @@ namespace Kernel
 
         FeedingProbabilities feed_probs;
 
+        // returningmortality is related to OutdoorRestKill and NodeEmanator/SpatialRepellent where the vector is resting after a feed
+        // both indoor and outdoor feeding vectors are affected by the outdoor returning mortality
+        float outdoor_returningmortality = probs()->outdoor_returningmortality.GetValue( m_SpeciesIndex, r_genome );
+
         feed_probs.die_local_mortality             = p_local_mortality;
         feed_probs.die_without_attempting_to_feed  = p_local_survivability * probs()->diewithoutattemptingfeed.GetValue( m_SpeciesIndex, r_genome );
         feed_probs.die_sugar_feeding               = 0.0f;
@@ -999,17 +1003,17 @@ namespace Kernel
         feed_probs.successful_feed_attempt_outdoor = p_local_survivability * feed_attempt_outdoor;
         feed_probs.survive_without_feeding         = p_local_survivability * survive_without_feeding;
 
+        float indoor_successfulfeed_human          = probs()->indoor_successfulfeed_human.GetValue( m_SpeciesIndex, r_genome );
         feed_probs.indoor.successful_feed_ad       = probs()->indoor_successfulfeed_AD.GetValue(    m_SpeciesIndex, r_genome );
         feed_probs.indoor.die_before_feeding       = probs()->indoor_diebeforefeeding.GetValue(     m_SpeciesIndex, r_genome );
         feed_probs.indoor.not_available            = probs()->indoor_hostnotavailable.GetValue(     m_SpeciesIndex, r_genome );
         feed_probs.indoor.die_during_feeding       = probs()->indoor_dieduringfeeding.GetValue(     m_SpeciesIndex, r_genome ) * x_infectioushfmortmod;
-        feed_probs.indoor.die_after_feeding        = probs()->indoor_diepostfeeding.GetValue(       m_SpeciesIndex, r_genome ) * x_infectiouscorrection;
-        feed_probs.indoor.successful_feed_human    = probs()->indoor_successfulfeed_human.GetValue( m_SpeciesIndex, r_genome ) * x_infectiouscorrection;
+        feed_probs.indoor.die_after_feeding        = probs()->indoor_diepostfeeding.GetValue(       m_SpeciesIndex, r_genome ) * x_infectiouscorrection
+                                                   + indoor_successfulfeed_human * outdoor_returningmortality * x_infectiouscorrection;
 
-        // returningmortality is related to OutdoorRestKill where the vector is resting after a feed
-        float outdoor_successfulfeed_human = probs()->outdoor_successfulfeed_human.GetValue( m_SpeciesIndex, r_genome );
-        float outdoor_returningmortality   = probs()->outdoor_returningmortality.GetValue(   m_SpeciesIndex, r_genome );
-
+        feed_probs.indoor.successful_feed_human    = ( 1.0f - outdoor_returningmortality ) * indoor_successfulfeed_human * x_infectiouscorrection;
+        
+        float outdoor_successfulfeed_human          = probs()->outdoor_successfulfeed_human.GetValue( m_SpeciesIndex, r_genome );
         feed_probs.outdoor.die_before_feeding       = probs()->outdoor_diebeforefeeding;
         feed_probs.outdoor.not_available            = probs()->outdoor_hostnotavailable.GetValue(     m_SpeciesIndex, r_genome );
         feed_probs.outdoor.die_during_feeding       = probs()->outdoor_dieduringfeeding.GetValue(     m_SpeciesIndex, r_genome ) * x_infectioushfmortmod;
