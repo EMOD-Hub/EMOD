@@ -6,6 +6,7 @@
 #include "CajunIncludes.h"
 
 const std::vector<std::string> getSimTypeList();
+const std::string getSupportedSimsString();
 
 void writeInputSchemas( const char* output_path );
 

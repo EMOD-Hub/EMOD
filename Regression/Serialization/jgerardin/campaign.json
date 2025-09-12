@@ -4,7 +4,6 @@
         {
             "Event_Coordinator_Config": {
                 "Intervention_Config": {
-                    "Age_Dependence": "SURFACE_AREA_DEPENDENT",
                     "Monthly_EIR": [
                         15,
                         15,

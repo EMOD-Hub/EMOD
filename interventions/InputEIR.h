@@ -38,12 +38,10 @@ namespace Kernel
         // IBaseIntervention
         virtual float GetCostPerUnit() const override;
     protected:
-        AgeDependentBitingRisk::Enum age_dependence;
         EIRType::Enum eir_type;
         std::vector<float> monthly_EIR; // 12 values of EIR by month
         std::vector<float> daily_EIR;
         float scaling_factor;
         float today;
-        tAgeBitingFunction risk_function;
     };
 }

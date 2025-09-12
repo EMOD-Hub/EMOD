@@ -1,0 +1,14 @@
+{
+    "Serialization_Mask_Node_Read": 16,
+    "Serialization_Mask_Node_Write": 16,
+    "Serialized_Population_Filenames": [
+        "testdata/SerializationParametersTest/dummy.dtk"
+    ],
+    "Serialized_Population_Path": ".",
+    "Serialized_Population_Reading_Type": "READ",
+    "Serialized_Population_Writing_Type": "TIME",
+    "Serialization_Times" : [
+        1
+    ],
+    "Serialization_Precision" : "REDUCED"
+}

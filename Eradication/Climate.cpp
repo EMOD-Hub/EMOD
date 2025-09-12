@@ -192,7 +192,7 @@ namespace Kernel {
 
     bool ClimateFactory::Initialize(const ::Configuration* config, const string idreference)
     {
-        LOG_INFO( "Initialize\n" );
+        LOG_DEBUG( "Initialize\n" );
         Configure( EnvPtr->Config );
 
         try
@@ -428,7 +428,7 @@ namespace Kernel {
             std::string schema_version( ReadStringFromConfig( metadata, SCHEMA_VERSION, metadata_filepath ) );
             if ( schema_version == "2.0" )
             {
-                LOG_INFO( "Found 'WeatherSchemaVersion' \"2.0\" in climate file metadata. Using 'WeatherCellCount' and 'NumberDTKNodes'\n" );
+                LOG_DEBUG( "Found 'WeatherSchemaVersion' \"2.0\" in climate file metadata. Using 'WeatherCellCount' and 'NumberDTKNodes'\n" );
                 md_num_entries = ReadIntegerFromConfig( metadata, CELL_COUNT, metadata_filepath );
                 md_num_offsets = ReadIntegerFromConfig( metadata, DTK_NODE_COUNT, metadata_filepath );
             }
@@ -442,7 +442,7 @@ namespace Kernel {
         }
         else // Fallback to "original" behavior.
         {
-            LOG_WARN( "No 'WeatherSchemaVersion' found in climate file metadata. Falling back to 'NodeCount' and 'NumberDTKNodes'\n" );
+            LOG_DEBUG( "No 'WeatherSchemaVersion' found in climate file metadata. Falling back to 'NodeCount' and 'NumberDTKNodes'\n" );
             md_num_entries = ReadIntegerFromConfig( metadata, NODE_COUNT, metadata_filepath );
             md_num_offsets = md_num_entries;
 

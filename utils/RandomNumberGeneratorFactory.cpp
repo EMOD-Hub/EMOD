@@ -144,7 +144,7 @@ namespace Kernel
             default:
                 throw BadEnumInSwitchStatementException( __FILE__, __LINE__, __FUNCTION__, "m_RngType", m_RngType, "RandomNumberGeneratorType" );
         }
-        LOG_INFO_F( "Using %s random number generator.\n", RandomNumberGeneratorType::pairs::lookup_key( m_RngType ) );
+        LOG_DEBUG_F( "Using %s random number generator.\n", RandomNumberGeneratorType::pairs::lookup_key( m_RngType ) );
         return p_rng;
     }
 
