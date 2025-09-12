@@ -502,7 +502,7 @@ SUITE( VectorInterventionsContainerTest )
 
         CHECK_CLOSE( 0.1572f, vic.GetDieBeforeFeeding().GetDefaultValue(), EPSILON );
         CHECK_CLOSE( 0.6268f, vic.GetHostNotAvailable().GetDefaultValue(), EPSILON );
-        CHECK_CLOSE( 0.00f, vic.GetDieDuringFeeding().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.00f,   vic.GetDieDuringFeeding().GetDefaultValue(), EPSILON );
         CHECK_CLOSE( 0.1917f, vic.GetDiePostFeeding().GetDefaultValue(), EPSILON );
         CHECK_CLOSE( 0.0243f, vic.GetSuccessfulFeedHuman().GetDefaultValue(), EPSILON );
 
