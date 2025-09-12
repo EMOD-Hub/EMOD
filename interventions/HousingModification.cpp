@@ -269,8 +269,7 @@ namespace Kernel
 
         release_assert( m_pIHMC != nullptr );
 
-        m_pIHMC->UpdateProbabilityOfHouseKilling( current_killingrate ); // folded into p_kill_IRSpostfeed, also used by IRSHousingModification
-        m_pIHMC->UpdateProbabilityOfHouseKillingPrefeed( current_killingrate ); // folded into p_kill_prefeed, only used by IndoorIndividualEmanator
+        m_pIHMC->UpdateProbabilityOfIndoorEmanatorKilling( current_killingrate ); // folded into p_kill_emanator, only for pre- and post- feed killing
     }
 
     void IndoorIndividualEmanator::serialize( IArchive& ar, IndoorIndividualEmanator* obj )

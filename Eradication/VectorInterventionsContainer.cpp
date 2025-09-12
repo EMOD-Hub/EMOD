@@ -31,8 +31,8 @@ namespace Kernel
         , p_kill_ITN(0.0f)
         , p_penetrate_housingmod(1.0f)
         , is_using_housingmod(false)
-        , p_survive_housingmod(1.0f)
-        , p_survive_housingmod_prefeed( 1.0f )
+        , p_survive_irshousingmod(1.0f)
+        , p_survive_emanator( 1.0f )
         , p_indrep(0.0f)
         , p_attraction_ADIH(0.0f)
         , p_kill_ADIH(0.0f)
@@ -85,15 +85,15 @@ namespace Kernel
     )
     {
         is_using_housingmod = true;
-        p_survive_housingmod *= (1.0f - prob);  // will multiply by 1-all housing mods and then do 1- that.
+        p_survive_irshousingmod *= (1.0f - prob);  // will multiply by 1-all housing mods and then do 1- that.
     }
 
-    void VectorInterventionsContainer::UpdateProbabilityOfHouseKillingPrefeed(
+    void VectorInterventionsContainer::UpdateProbabilityOfIndoorEmanatorKilling(
         const GeneticProbability& prob
     )
     {
-        // is_using_housingmod = true;  // don't need to set this, since if prefeed is being used, postfeed will be too
-        p_survive_housingmod_prefeed *= ( 1.0f - prob );  // will multiply by 1-all housing mods prefeed and then do 1- that.
+        // is_using_housingmod = true;  This does not interfere with IRS, so don't set this flag
+        p_survive_emanator *= ( 1.0f - prob );  // will multiply by 1-all housing mods prefeed and then do 1- that.
     }
 
     void VectorInterventionsContainer::UpdateArtificialDietAttractionRate(
@@ -146,8 +146,8 @@ namespace Kernel
         p_kill_ITN                   = GeneticProbability( 0.0f );
         p_penetrate_housingmod       = GeneticProbability( 1.0f ); // block probability of housing: screening, spatial repellent, IRS repellent-- starts at 1.0 because will do 1.0-p_block_housing below
         is_using_housingmod          = false;                      // true if p_kill_IRSpostfeed was set
-        p_survive_housingmod         = GeneticProbability( 1.0f ); // prob of suviving housing modifications (e.g. IRS) after successful feed -- starts at 1.0 because will do 1-surviving to get the killing below
-        p_survive_housingmod_prefeed = GeneticProbability( 1.0f ); // pre-feed killed by IndividualIndoorEmanator
+        p_survive_irshousingmod      = GeneticProbability( 1.0f ); // prob of suviving housing modifications (e.g. IRS) after successful feed -- starts at 1.0 because will do 1-surviving to get the killing below
+        p_survive_emanator           = GeneticProbability( 1.0f ); // killed by IndividualIndoorEmanator pre- and post- feed -- starts at 1.0 because will do 1-surviving to get the killing below
         p_indrep                     = GeneticProbability( 0.0f ); // probability of individual repellent working against the vector
         p_attraction_ADIH            = 0;                          // HumanHostSeekingTrap: probability of distraction by Artificial Diet--In House 
         p_kill_ADIH                  = 0;                          // HumanHostSeekingTrap: kill probability of in-house artificial diet 
@@ -171,9 +171,9 @@ namespace Kernel
         // final adjustment to product of (1-prob) accumulated over potentially multiple instances
         GeneticProbability p_block_housing    = 1.0f - p_penetrate_housingmod;
         // probability of dying due to IRS or other housing modifications after feeding
-        GeneticProbability p_kill_IRSpostfeed = 1.0f - p_survive_housingmod;
+        GeneticProbability p_kill_IRSpostfeed = 1.0f - p_survive_irshousingmod;
         // probability of dying due to IRS or other housing modifications before feeding after getting into the house
-        GeneticProbability p_kill_prefeed     = 1.0f - p_survive_housingmod_prefeed;
+        GeneticProbability p_kill_emanator    = 1.0f - p_survive_emanator;
         // probability of dying due to insecticidal drug (e.g. Ivermectin) after feeding
         GeneticProbability p_kill_insecticidal_drug = 1.0f - p_survive_insecticidal_drug;
 
@@ -202,7 +202,8 @@ namespace Kernel
         // and that the mosquito survives the blood meal mortality
         GeneticProbability p_die_indoor_post_feed = 1.0 
                                                   - ( (1.0f - p_kill_IRSpostfeed_effective) *
-                                                      (1.0f - p_die_in_out_post_feed) );
+                                                      (1.0f - p_die_in_out_post_feed) *
+                                                      (1.0f - p_kill_emanator));
 
         GeneticProbability not_block_housing = (1-p_block_housing);
         GeneticProbability not_block_net     = (1-p_block_net);
@@ -212,7 +213,7 @@ namespace Kernel
 
         //(1-p_block_housing)*(1-p_kill_prefeed)
         // probability of (not being blocked by housing, and not killed by IRS pre-feed)
-        GeneticProbability not_housing_prefeed = not_block_housing*(1-p_kill_prefeed);
+        GeneticProbability not_housing_prefeed = not_block_housing * (1 - p_kill_emanator);
 
         //(1-p_block_housing)*(1-p_kill_prefeed)*(1-p_attraction_ADIH)*(1-p_block_net)*(1-p_indrep)
         // probability of (not being blocked by housing, and not killed by IRS pre-feed, and not attracted to artifical diet, and not blocked by net, 
@@ -235,7 +236,7 @@ namespace Kernel
         //            Some of those are blocked and killed by ITN
         //            Some of those are not blocked by ITN and are repelled by individual repellent
         pDieBeforeFeeding    = not_block_housing
-                                *(p_kill_prefeed + (1-p_kill_prefeed)
+                                *(p_kill_emanator + (1-p_kill_emanator) // die or not die from indoor emanator pre-feed
                                    * ( 
                                        p_attraction_ADIH * (p_kill_ADIH + (1-p_kill_ADIH) * p_die_indoor_post_feed)
                                      +
@@ -244,7 +245,7 @@ namespace Kernel
                                  );
 
         pHostNotAvailable    = p_block_housing 
-                             + not_block_housing * ((1-p_kill_prefeed) * (1-p_attraction_ADIH))
+                             + not_block_housing * ((1-p_kill_emanator) * (1-p_attraction_ADIH))
                                                  * ((p_block_net * not_kill_ITN) + (not_block_net * p_indrep));
 
         pDieDuringFeeding    = not_housing_prefeed_ADIH_net_indrep * p_dieduringfeeding;
