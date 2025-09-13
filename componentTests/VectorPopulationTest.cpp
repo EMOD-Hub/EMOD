@@ -680,7 +680,7 @@ SUITE( VectorPopulationTest )
         // --- Add NodeEmanator - spatial repellent with no killing
         // --------------------------------------------------
         p_vec_probs->spatial_repellent = 0.4f;
-        p_vec_probs->sp_repelled_or_killed = 0.4f;  //killing = 0, need to be set together since we pre-calculate repelled or killed inside the intervention
+        p_vec_probs->not_repelled_or_killed_or_affected = 0.6f;  //killing = 0, need to be set together since we pre-calculate repelled or killed inside the intervention
         p_vec_probs->FinalizeTransitionProbabilites( anthropophily, indoor_feeding );
 
         // main outputs used by VectorPopulation
@@ -729,7 +729,7 @@ SUITE( VectorPopulationTest )
         // --- Add NodeEmanator - Repelling - 0.4, Killing = 0.1
         // --------------------------------------------------
         p_vec_probs->spatial_repellent = 0.4f;
-        p_vec_probs->sp_repelled_or_killed = 0.46f;  //killing = 0.1, need to be set together since we pre-calculate repelled or killed inside the intervention
+        p_vec_probs->not_repelled_or_killed_or_affected = 0.54f;  //killing = 0.1, need to be set together since we pre-calculate repelled or killed inside the intervention
         p_vec_probs->outdoorRestKilling = 0.1;
         p_vec_probs->FinalizeTransitionProbabilites( anthropophily, indoor_feeding );
 

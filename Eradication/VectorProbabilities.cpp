@@ -75,6 +75,7 @@ namespace Kernel
         attraction_ADIV(0.0f),
         kill_livestockfeed(0.0f),
         spatial_repellent(0.0f),
+        not_repelled_or_killed_or_affected(1.0f),
         nooutdoorhumanfound(0.0f),
         outdoorRestKilling(0.0f),
         sugarTrapKilling(),
@@ -104,8 +105,7 @@ namespace Kernel
         kill_livestockfeed      = GeneticProbability( 0.0f );
         spatial_repellent       = GeneticProbability( 0.0f );
         nooutdoorhumanfound     = 0;
-        sp_repelled_or_killed   = GeneticProbability( 0.0f );
-
+        not_repelled_or_killed_or_affected = GeneticProbability( 1.0f );
         outdoorRestKilling      = GeneticProbability( 0.0f );
 
         // reset indoor probabilities
@@ -180,7 +180,7 @@ namespace Kernel
         sugarTrapKilling    = invie->GetSugarFeedKilling();
         kill_livestockfeed  = invie->GetAnimalFeedKilling();
         outdoorRestKilling  = invie->GetOutdoorRestKilling();
-        sp_repelled_or_killed = invie->GetVillageSpatialRepellentRepelledOrKilled(); // repelled or not repelled and then killed by spatial repellent, precalculated
+        not_repelled_or_killed_or_affected = invie->GetVillageEmanatorNotRepelledOrKilledOrAffected(); // repelled or not repelled and then killed by spatial repellent, precalculated
     }
 
     void VectorProbabilities::FinalizeTransitionProbabilites(float anthropophily, float indoor_feeding)
@@ -189,11 +189,11 @@ namespace Kernel
         diewithoutattemptingfeed      =  outdoorareakilling; // for those that do not attempt to feed
 
         // Feeding Branch
-        survivewithoutsuccessfulfeed = (1.0f - attraction_ADOV) * (spatial_repellent * (1.0f - outdoorareakilling) + (1.0f - sp_repelled_or_killed) * (1.0f - attraction_ADIV) * anthropophily * (1.0f - indoor_feeding) * (1.0f - outdoorareakilling) * nooutdoorhumanfound);
-        successfulfeed_animal        = (1.0f - attraction_ADOV) * (1.0f - sp_repelled_or_killed) * (1.0f - attraction_ADIV) * (1.0f - anthropophily) * (1.0f - outdoorareakilling) * (1.0f - kill_livestockfeed);
-        successfulfeed_AD            = (attraction_ADOV * (1.0f - outdoorareakilling) + (1.0f - attraction_ADOV) * (1.0f - sp_repelled_or_killed) * attraction_ADIV * (1.0f - outdoorareakilling));
-        indoorattempttohumanfeed     = (1.0f - attraction_ADOV) * (1.0f - sp_repelled_or_killed) * (1.0f - attraction_ADIV) * anthropophily * indoor_feeding;
-        outdoorattempttohumanfeed    = (1.0f - attraction_ADOV) * (1.0f - sp_repelled_or_killed) * (1.0f - attraction_ADIV) * anthropophily * (1.0f - indoor_feeding) * (1.0f - outdoorareakilling) * (1.0f - nooutdoorhumanfound);
+        survivewithoutsuccessfulfeed = (1.0f - attraction_ADOV) * (spatial_repellent * (1.0f - outdoorareakilling) + not_repelled_or_killed_or_affected * (1.0f - attraction_ADIV) * anthropophily * (1.0f - indoor_feeding) * (1.0f - outdoorareakilling) * nooutdoorhumanfound);
+        successfulfeed_animal        = (1.0f - attraction_ADOV) * not_repelled_or_killed_or_affected * (1.0f - attraction_ADIV) * (1.0f - anthropophily) * (1.0f - outdoorareakilling) * (1.0f - kill_livestockfeed);
+        successfulfeed_AD            = (attraction_ADOV * (1.0f - outdoorareakilling) + (1.0f - attraction_ADOV) * not_repelled_or_killed_or_affected * attraction_ADIV * (1.0f - outdoorareakilling));
+        indoorattempttohumanfeed     = (1.0f - attraction_ADOV) * not_repelled_or_killed_or_affected * (1.0f - attraction_ADIV) * anthropophily * indoor_feeding;
+        outdoorattempttohumanfeed    = (1.0f - attraction_ADOV) * not_repelled_or_killed_or_affected * (1.0f - attraction_ADIV) * anthropophily * (1.0f - indoor_feeding) * (1.0f - outdoorareakilling) * (1.0f - nooutdoorhumanfound);
 
         diebeforeattempttohumanfeed   =  1.0f - (survivewithoutsuccessfulfeed + successfulfeed_animal + successfulfeed_AD + indoorattempttohumanfeed + outdoorattempttohumanfeed);
 

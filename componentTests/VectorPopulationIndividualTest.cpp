@@ -133,7 +133,7 @@ SUITE( VectorPopulationIndividualTest )
         CHECK_EQUAL( 0.0, p_vec_probs->sugarTrapKilling.GetDefaultValue() );
         CHECK_EQUAL( 0.0, p_vec_probs->kill_livestockfeed.GetDefaultValue() );
         CHECK_EQUAL( 0.0, p_vec_probs->outdoorRestKilling.GetDefaultValue() );
-        CHECK_EQUAL( 0.0, p_vec_probs->sp_repelled_or_killed.GetDefaultValue());
+        CHECK_EQUAL( 1.0, p_vec_probs->not_repelled_or_killed_or_affected.GetDefaultValue());
 
 
         // Individual interventions
@@ -501,7 +501,7 @@ SUITE( VectorPopulationIndividualTest )
         CHECK_EQUAL( 0.0, p_vec_probs->sugarTrapKilling.GetDefaultValue() );
         CHECK_EQUAL( 0.0, p_vec_probs->kill_livestockfeed.GetDefaultValue() );
         CHECK_EQUAL( 0.0, p_vec_probs->outdoorRestKilling.GetDefaultValue() );
-        CHECK_EQUAL( 0.0, p_vec_probs->sp_repelled_or_killed.GetDefaultValue());
+        CHECK_EQUAL( 1.0, p_vec_probs->not_repelled_or_killed_or_affected.GetDefaultValue());
 
         // Individual interventions
         VectorInterventionsContainer vic;
@@ -669,7 +669,7 @@ SUITE( VectorPopulationIndividualTest )
         CHECK_EQUAL( 0.0, p_vec_probs->sugarTrapKilling.GetDefaultValue() );
         CHECK_EQUAL( 0.0, p_vec_probs->kill_livestockfeed.GetDefaultValue() );
         CHECK_EQUAL( 0.0, p_vec_probs->outdoorRestKilling.GetDefaultValue() );
-        CHECK_EQUAL( 0.0, p_vec_probs->sp_repelled_or_killed.GetDefaultValue());
+        CHECK_EQUAL( 1.0, p_vec_probs->not_repelled_or_killed_or_affected.GetDefaultValue());
 
         // Individual interventions
         VectorInterventionsContainer vic;
@@ -759,7 +759,7 @@ SUITE( VectorPopulationIndividualTest )
         // --- Add NodeEmanator, No Killing
         // --------------------------------------------------
         p_vec_probs->spatial_repellent = 0.4f;
-        p_vec_probs->sp_repelled_or_killed = 0.4f;  //killing = 0, need to be set together since we pre-calculate repelled or killed inside the intervention
+        p_vec_probs->not_repelled_or_killed_or_affected = 0.6f;  //killing = 0, need to be set together since we pre-calculate repelled or killed inside the intervention
         p_vec_probs->FinalizeTransitionProbabilites( anthropophily, indoor_feeding );
 
         // main outputs used by VectorPopulation
@@ -768,8 +768,8 @@ SUITE( VectorPopulationIndividualTest )
         CHECK_CLOSE( 0.4f,   p_vec_probs->survivewithoutsuccessfulfeed.GetDefaultValue() , EPSILON );
         CHECK_CLOSE( 0.06f,  p_vec_probs->successfulfeed_animal.GetDefaultValue()        , EPSILON ); //(1.0f - anthropophily) * (1.0f - outdoorareakilling)
         CHECK_CLOSE( 0.000f, p_vec_probs->successfulfeed_AD.GetDefaultValue()            , 0.0f );
-        CHECK_CLOSE( 0.405f, p_vec_probs->indoorattempttohumanfeed.GetDefaultValue()     , EPSILON ); //~(1.0f - sp_repelled_or_killed)*anthropohily*indoor_feeding
-        CHECK_CLOSE( 0.135f, p_vec_probs->outdoorattempttohumanfeed.GetDefaultValue()    , EPSILON ); //~anythropohily*(1-indoor_feeding)* (1.0f - sp_repelled_or_killed)
+        CHECK_CLOSE( 0.405f, p_vec_probs->indoorattempttohumanfeed.GetDefaultValue()     , EPSILON ); //~not_repelled_or_killed_or_affected*anthropohily*indoor_feeding
+        CHECK_CLOSE( 0.135f, p_vec_probs->outdoorattempttohumanfeed.GetDefaultValue()    , EPSILON ); //~anythropohily*(1-indoor_feeding)* not_repelled_or_killed_or_affected
 
         CHECK_CLOSE( 1.0f,
                      p_vec_probs->diebeforeattempttohumanfeed.GetDefaultValue() +
@@ -809,7 +809,7 @@ SUITE( VectorPopulationIndividualTest )
         // --- Add NodeEmanator with Killing
         // --------------------------------------------------
         p_vec_probs->spatial_repellent = 0.4f;  // Repelling = 0.4
-        p_vec_probs->sp_repelled_or_killed = 0.46f;  //killing = 0.1, need to be set together since we pre-calculate repelled or killed inside the intervention
+        p_vec_probs->not_repelled_or_killed_or_affected = 0.54f;  //killing = 0.1, need to be set together since we pre-calculate repelled or killed inside the intervention
         p_vec_probs->outdoorRestKilling = 0.1; 
         p_vec_probs->FinalizeTransitionProbabilites(anthropophily, indoor_feeding);
 
@@ -860,7 +860,7 @@ SUITE( VectorPopulationIndividualTest )
         // --- Add SpatialRepellent no Repelling just Killing
         // --------------------------------------------------
         p_vec_probs->spatial_repellent = 0.0f; //Repelling = 0
-        p_vec_probs->sp_repelled_or_killed = 0.1f; // Killing = 0.1
+        p_vec_probs->not_repelled_or_killed_or_affected = 0.9f; // Killing = 0.1
         p_vec_probs->outdoorRestKilling = 0.1;
         p_vec_probs->FinalizeTransitionProbabilites(anthropophily, indoor_feeding);
 
@@ -870,8 +870,8 @@ SUITE( VectorPopulationIndividualTest )
         CHECK_CLOSE(0.0f,   p_vec_probs->survivewithoutsuccessfulfeed.GetDefaultValue(), EPSILON);
         CHECK_CLOSE(0.09f,  p_vec_probs->successfulfeed_animal.GetDefaultValue(), EPSILON); //(1.0f - anthropophily) * (1.0f - outdoorareakilling)
         CHECK_CLOSE(0.000f, p_vec_probs->successfulfeed_AD.GetDefaultValue(), 0.0f);
-        CHECK_CLOSE(0.6075f, p_vec_probs->indoorattempttohumanfeed.GetDefaultValue(), EPSILON); //~(1.0f - sp_repelled_or_killed)*anthropohily*indoor_feeding
-        CHECK_CLOSE(0.2025f, p_vec_probs->outdoorattempttohumanfeed.GetDefaultValue(), EPSILON); //~anythropohily*(1-indoor_feeding)* (1.0f - sp_repelled_or_killed)
+        CHECK_CLOSE(0.6075f, p_vec_probs->indoorattempttohumanfeed.GetDefaultValue(), EPSILON); //~not_repelled_or_killed_or_affected*anthropohily*indoor_feeding
+        CHECK_CLOSE(0.2025f, p_vec_probs->outdoorattempttohumanfeed.GetDefaultValue(), EPSILON); //~anythropohily*(1-indoor_feeding)* not_repelled_or_killed_or_affected
         CHECK_CLOSE( 0.1f, p_vec_probs->outdoor_returningmortality.GetDefaultValue(), EPSILON ); //
 
         CHECK_CLOSE(1.0f,
@@ -912,7 +912,7 @@ SUITE( VectorPopulationIndividualTest )
         // --- Add SimpleIndividualRepellent
         // --------------------------------------------------
         p_vec_probs->spatial_repellent = 0.4f;         // resetting repelling with no killing
-        p_vec_probs->sp_repelled_or_killed = 0.4f; // resetting repelling with no killing
+        p_vec_probs->not_repelled_or_killed_or_affected = 0.6f; // resetting repelling with no killing
         p_vec_probs->outdoorRestKilling = 0.0f;  //resetting repelling with no killing
         p_vec_probs->FinalizeTransitionProbabilites( anthropophily, indoor_feeding );
 
@@ -953,8 +953,8 @@ SUITE( VectorPopulationIndividualTest )
         CHECK_CLOSE(0.4f,   p_vec_probs->survivewithoutsuccessfulfeed.GetDefaultValue(), EPSILON);
         CHECK_CLOSE(0.06f,  p_vec_probs->successfulfeed_animal.GetDefaultValue(), EPSILON); //(1.0f - anthropophily) * (1.0f - outdoorareakilling)
         CHECK_CLOSE(0.000f, p_vec_probs->successfulfeed_AD.GetDefaultValue(), 0.0f);
-        CHECK_CLOSE(0.405f, p_vec_probs->indoorattempttohumanfeed.GetDefaultValue(), EPSILON); //~(1.0f - sp_repelled_or_killed)*anthropohily*indoor_feeding
-        CHECK_CLOSE(0.135f, p_vec_probs->outdoorattempttohumanfeed.GetDefaultValue(), EPSILON); //~anythropohily*(1-indoor_feeding)* (1.0f - sp_repelled_or_killed)
+        CHECK_CLOSE(0.405f, p_vec_probs->indoorattempttohumanfeed.GetDefaultValue(), EPSILON); //~not_repelled_or_killed_or_affected*anthropohily*indoor_feeding
+        CHECK_CLOSE(0.135f, p_vec_probs->outdoorattempttohumanfeed.GetDefaultValue(), EPSILON); //~anythropohily*(1-indoor_feeding)* not_repelled_or_killed_or_affected
 
         CHECK_CLOSE( 1.0f,
                      p_vec_probs->diebeforeattempttohumanfeed.GetDefaultValue() +

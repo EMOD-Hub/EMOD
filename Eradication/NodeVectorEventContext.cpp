@@ -21,12 +21,13 @@ namespace Kernel
     , pLarvalKilling(0)
     , pLarvalHabitatReduction(0)
     , pVillageSpatialRepellent(0)
+    , pVillageNotRepelledOrKilledOrAffected(1)
     , pADIVAttraction(0)
     , pADOVAttraction(0)
     , pOutdoorKilling(0)
     , pOviTrapKilling(0)
     , pAnimalFeedKilling(0)
-    , pOutdoorRestSurviving(0)
+    , pOutdoorRestKilling(0)
     , isUsingIndoorKilling(false)
     , pIndoorKilling( 0.0f )
     , isUsingSugarTrap(false)
@@ -80,12 +81,13 @@ namespace Kernel
         pLarvalKilling = GeneticProbability( 0.0f );
         pLarvalHabitatReduction = 0.0;
         pVillageSpatialRepellent = GeneticProbability( 0.0f );
+        pVillageNotRepelledOrKilledOrAffected = GeneticProbability( 1.0f );
         pADIVAttraction = 0.0;
         pADOVAttraction = 0.0;
         pOutdoorKilling = GeneticProbability( 0.0f );
         pOviTrapKilling = 0.0;
         pAnimalFeedKilling = GeneticProbability( 0.0f );
-        pOutdoorRestSurviving = GeneticProbability( 1.0f );
+        pOutdoorRestKilling = GeneticProbability( 1.0f );
         isUsingIndoorKilling = false;
         pIndoorKilling = GeneticProbability( 0.0f );
         isUsingSugarTrap = false;
@@ -132,19 +134,12 @@ namespace Kernel
     }
 
     void
-    NodeVectorEventContextHost::UpdateVillageSpatialRepellent(
-        const GeneticProbability& repelling
+    NodeVectorEventContextHost::UpdateOutdoorNodeEmanator( const float coverage,
+        const GeneticProbability& repelling, const GeneticProbability& killing
     )
     {
-        pVillageSpatialRepellent = repelling;
-    }
-
-    void
-        NodeVectorEventContextHost::UpdateVillageSpatialRepellentRepelledOrKilled(
-            const GeneticProbability& repelled_or_killed
-        )
-    {
-        pVillageSpatialRepellentRepelledOrKilled = repelled_or_killed;
+        pVillageSpatialRepellent = pVillageSpatialRepellent + pVillageNotRepelledOrKilledOrAffected * coverage * repelling;  // all the vectors that have been repelled
+        pVillageNotRepelledOrKilledOrAffected = pVillageNotRepelledOrKilledOrAffected * ( 1 - coverage *  repelling - coverage * killing + coverage * repelling * killing ); // vectors that have not be repelled or killed and not affected by the intervention 
     }
 
     void
@@ -195,7 +190,7 @@ namespace Kernel
         const GeneticProbability& killing
     )
     {
-        pOutdoorRestSurviving *= (1 - killing);
+        pOutdoorRestKilling = 1 - ( 1 - killing )*( 1 - pOutdoorRestKilling );
     }
 
     void NodeVectorEventContextHost::UpdateIndoorKilling( const GeneticProbability& killing )
@@ -246,9 +241,9 @@ namespace Kernel
         return pVillageSpatialRepellent;
     }
 
-    const GeneticProbability& NodeVectorEventContextHost::GetVillageSpatialRepellentRepelledOrKilled()
+    const GeneticProbability& NodeVectorEventContextHost::GetVillageEmanatorNotRepelledOrKilledOrAffected()
     {
-        return pVillageSpatialRepellentRepelledOrKilled;
+        return pVillageNotRepelledOrKilledOrAffected;
     }
 
     float NodeVectorEventContextHost::GetADIVAttraction()
@@ -298,9 +293,8 @@ namespace Kernel
 
     const GeneticProbability& NodeVectorEventContextHost::GetOutdoorRestKilling()
     {
-        // calculate killing from surviving probability, 
-        // which is affected by OutdoorRestKill and SpatialRepellent interventiond
-        return (1 - pOutdoorRestSurviving);
+        // affected by OutdoorRestKill and OutdoorNodeEmanator interventions
+        return pOutdoorRestKilling;
     }
 
     bool NodeVectorEventContextHost::IsUsingIndoorKilling() const

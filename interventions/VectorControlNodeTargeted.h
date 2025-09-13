@@ -44,7 +44,6 @@ namespace Kernel
         virtual ReportInterventionData GetReportInterventionData() const override;
 
     protected:
-        virtual void initConfigKilling( const Configuration* inputJson );
         virtual void initConfigKilling( );
         virtual void initConfigRepelling( );
         virtual bool ConfigureKilling( const Configuration* config );
@@ -149,8 +148,8 @@ namespace Kernel
     protected:
         virtual bool ConfigureKilling( const Configuration* config ) override;
     };
-
-    class SpatialRepellent : public SimpleVectorControlNode
+	
+	class SpatialRepellent : public SimpleVectorControlNode
     {
         DECLARE_FACTORY_REGISTERED(NodeIVFactory, SpatialRepellent, INodeDistributableIntervention) 
 
@@ -163,7 +162,25 @@ namespace Kernel
 
     protected:
         virtual void initConfigRepelling() override;
-        virtual void initConfigKilling(const Configuration* inputJson) override;
+        virtual void initConfigKilling() override;
+        virtual void ApplyEffects( float dt ) override;
+
+        float m_Coverage;
+    };
+
+    class OutdoorNodeEmanator : public SimpleVectorControlNode
+    {
+        DECLARE_FACTORY_REGISTERED(NodeIVFactory, OutdoorNodeEmanator, INodeDistributableIntervention)
+
+    public:
+        OutdoorNodeEmanator();
+        OutdoorNodeEmanator( const OutdoorNodeEmanator& rMaster );
+        virtual ~OutdoorNodeEmanator();
+
+        virtual ReportInterventionData GetReportInterventionData() const override;
+
+    protected:
+        virtual void initConfigRepelling() override;
         virtual void ApplyEffects( float dt ) override;
 
         float m_Coverage;

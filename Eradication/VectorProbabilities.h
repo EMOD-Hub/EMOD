@@ -55,7 +55,7 @@ namespace Kernel
         float attraction_ADIV;
         GeneticProbability kill_livestockfeed;
         GeneticProbability spatial_repellent;
-        GeneticProbability sp_repelled_or_killed;
+        GeneticProbability not_repelled_or_killed_or_affected;
         float nooutdoorhumanfound;
         GeneticProbability outdoorRestKilling;
         GeneticProbability sugarTrapKilling;

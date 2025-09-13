@@ -25,8 +25,9 @@ namespace Kernel
         virtual void UpdateLarvalHabitatReduction(const LarvalHabitatMultiplier& lhm) = 0;
         virtual void UpdateOutdoorKilling(const GeneticProbability& killing) = 0;
         virtual void UpdateOviTrapKilling(VectorHabitatType::Enum habitat, float killing) = 0;
-        virtual void UpdateVillageSpatialRepellent(const GeneticProbability& repelling) = 0;
-        virtual void UpdateVillageSpatialRepellentRepelledOrKilled(const GeneticProbability& killing) = 0;
+        virtual void UpdateOutdoorNodeEmanator(const float coverage,
+                                               const GeneticProbability& repelling, 
+                                               const GeneticProbability& killing) = 0;
         virtual void UpdateADIVAttraction(float) = 0;
         virtual void UpdateADOVAttraction(float) = 0;
         virtual void UpdateSugarFeedKilling(const GeneticProbability& killing) = 0;
@@ -56,8 +57,9 @@ namespace Kernel
         virtual void UpdateLarvalHabitatReduction(VectorHabitatType::Enum habitat, float reduction) override;
         virtual void UpdateLarvalHabitatReduction(const LarvalHabitatMultiplier& lhm) override;
         virtual void UpdateOutdoorKilling(const GeneticProbability& killing) override;
-        virtual void UpdateVillageSpatialRepellent(const GeneticProbability& repelling) override;
-        virtual void UpdateVillageSpatialRepellentRepelledOrKilled(const GeneticProbability& killing) override;
+        virtual void UpdateOutdoorNodeEmanator(const float coverage,
+                                               const GeneticProbability& repelling,
+                                               const GeneticProbability& killing) override;
         virtual void UpdateADIVAttraction(float reduction) override;
         virtual void UpdateADOVAttraction(float reduction) override;
         virtual void UpdateSugarFeedKilling(const GeneticProbability& killing) override;
@@ -70,7 +72,7 @@ namespace Kernel
         virtual const GeneticProbability& GetLarvalKilling(VectorHabitatType::Enum) const override;
         virtual float GetLarvalHabitatReduction(VectorHabitatType::Enum, const std::string& species) override;
         virtual const GeneticProbability& GetVillageSpatialRepellent() override;
-        virtual const GeneticProbability& GetVillageSpatialRepellentRepelledOrKilled() override;
+        virtual const GeneticProbability& GetVillageEmanatorNotRepelledOrKilledOrAffected() override;
         virtual float GetADIVAttraction() override;
         virtual float GetADOVAttraction() override;
         virtual const GeneticProbability& GetOutdoorKilling() override;
@@ -101,13 +103,13 @@ namespace Kernel
         GeneticProbability pLarvalKilling;
         float              pLarvalHabitatReduction;
         GeneticProbability pVillageSpatialRepellent;
-        GeneticProbability pVillageSpatialRepellentRepelledOrKilled;
+        GeneticProbability pVillageNotRepelledOrKilledOrAffected;
         float              pADIVAttraction;
         float              pADOVAttraction;
         GeneticProbability pOutdoorKilling;
         float              pOviTrapKilling;
         GeneticProbability pAnimalFeedKilling;
-        GeneticProbability pOutdoorRestSurviving;
+        GeneticProbability pOutdoorRestKilling;
         bool               isUsingIndoorKilling;
         GeneticProbability pIndoorKilling;
         bool               isUsingSugarTrap;
