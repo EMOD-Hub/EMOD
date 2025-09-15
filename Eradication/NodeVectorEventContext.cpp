@@ -87,7 +87,7 @@ namespace Kernel
         pOutdoorKilling = GeneticProbability( 0.0f );
         pOviTrapKilling = 0.0;
         pAnimalFeedKilling = GeneticProbability( 0.0f );
-        pOutdoorRestKilling = GeneticProbability( 1.0f );
+        pOutdoorRestKilling = GeneticProbability( 0.0f );
         isUsingIndoorKilling = false;
         pIndoorKilling = GeneticProbability( 0.0f );
         isUsingSugarTrap = false;
