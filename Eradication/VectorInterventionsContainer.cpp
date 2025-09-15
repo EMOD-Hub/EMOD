@@ -194,16 +194,14 @@ namespace Kernel
         }
         GeneticProbability p_kill_IRSpostfeed_effective = (effects->IsUsingIndoorKilling()) ? effects->GetIndoorKilling() : p_kill_IRSpostfeed;
 
-        // probability of (not (surviving insecticidal drug and survive blood_meal_mortality)
+        // die due to internal vector issues (insecticides, blood meal mortality)
         GeneticProbability p_die_in_out_post_feed = 1.0f - (p_survive_insecticidal_drug * (1.0f - p_vp->blood_meal_mortality));
-
-        // = 1.0f - ((1.0f-p_kill_IRSpostfeed_effective)*(1.0f-p_kill_insecticidal_drug)*(1-blood_meal_mortality));
-        // probability of dying indoors after feeding, given that vector survived IRS and insecticidal drug are applied
-        // and that the mosquito survives the blood meal mortality
-        GeneticProbability p_die_indoor_post_feed = 1.0 
-                                                  - ( (1.0f - p_kill_IRSpostfeed_effective) *
-                                                      (1.0f - p_die_in_out_post_feed) *
-                                                      (1.0f - p_kill_emanator));
+        
+        // die after being done with feeding due to wall resting - irs, or flying through emanator again
+        GeneticProbability p_die_after_from_housingmod = 1.0f - (( 1.0f - p_kill_IRSpostfeed_effective ) * p_survive_emanator);
+        
+        // die after feeding due to housing modifications, blood meal mortality, insecticidal drugs
+        GeneticProbability p_die_indoor_post_feed = 1.0f - (( 1.0f - p_die_in_out_post_feed ) * ( 1 - p_die_after_from_housingmod ));
 
         GeneticProbability not_block_housing = (1-p_block_housing);
         GeneticProbability not_block_net     = (1-p_block_net);
@@ -211,9 +209,8 @@ namespace Kernel
         GeneticProbability not_kill_ITN      = (1-p_kill_ITN);
         GeneticProbability not_indrep        = (1-p_indrep);
 
-        //(1-p_block_housing)*(1-p_kill_prefeed)
-        // probability of (not being blocked by housing, and not killed by IRS pre-feed)
-        GeneticProbability not_housing_prefeed = not_block_housing * (1 - p_kill_emanator);
+        // probability get into house and not die from emanator after entering
+        GeneticProbability not_housing_prefeed = not_block_housing * p_survive_emanator;
 
         //(1-p_block_housing)*(1-p_kill_prefeed)*(1-p_attraction_ADIH)*(1-p_block_net)*(1-p_indrep)
         // probability of (not being blocked by housing, and not killed by IRS pre-feed, and not attracted to artifical diet, and not blocked by net, 
@@ -225,20 +222,14 @@ namespace Kernel
         // and not repelled by individual repellent, and not dying during feeding)
         GeneticProbability not_housing_prefeed_ADIH_net_indrep_dieduringfeeding = not_housing_prefeed_ADIH_net_indrep*(1-p_dieduringfeeding);
 
-        // now get probabilities for indoor feeding outcomes
-        // for mosquitoes that make it inside the house:
-        //   Some mosquitoes die immediately before attempting to feed  
-        //   For mosquitoes that survive the initial IRS:
-        //       Some are attracted to artificial diet indoors:
-        //            Some of those are killed by the artificial diet indoors 
-        //            Some of those are not killed by the artificial diet indoors, die after feeding because of the artificial diet
-        //       Some are not attracted to artificial diet indoors:
-        //            Some of those are blocked and killed by ITN
-        //            Some of those are not blocked by ITN and are repelled by individual repellent
+        // get into house and ( die from emanator after
+        //                    or surive emanator and ( get attracted to HHST ((and die from it) or (not die from it and die due to IRS or emanator))
+        //                                            or not get attracted and die when blocked and killed by net)
+
         pDieBeforeFeeding    = not_block_housing
-                                *(p_kill_emanator + (1-p_kill_emanator) // die or not die from indoor emanator pre-feed
+                                *(p_kill_emanator + p_survive_emanator // die or not die from indoor emanator pre-feed
                                    * ( 
-                                       p_attraction_ADIH * (p_kill_ADIH + (1-p_kill_ADIH) * p_die_indoor_post_feed)
+                                       p_attraction_ADIH * (p_kill_ADIH + (1-p_kill_ADIH) * p_die_after_from_housingmod)
                                      +
                                        (1-p_attraction_ADIH) * (p_block_net * p_kill_ITN)
                                      )
