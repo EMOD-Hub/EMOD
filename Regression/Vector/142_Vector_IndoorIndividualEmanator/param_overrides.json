@@ -1,0 +1,18 @@
+{
+    "Default_Config_Path": "../../defaults/vector_default_single_species_climate_constant_config.json",
+    "parameters": {
+        "DEMOGRAPHICS": {
+            "Demographics_Filenames": [
+                "Namawala_single_node_demographics.json"
+            ],
+            "Enable_Initial_Prevalence": 1
+        },
+        "PRIMARY": {
+            "Config_Name": "142_Vector_IndoorIndividualEmanator",
+            "Geography": "Namawala",
+            "Run_Number": 1,
+            "Simulation_Duration": 360,
+            "x_Temporary_Larval_Habitat": 0.1
+        }
+    }
+}
