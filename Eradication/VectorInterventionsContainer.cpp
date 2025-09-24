@@ -48,9 +48,9 @@ namespace Kernel
         , pOutdoorDieDuringFeeding(.1f)
         , pOutdoorDiePostFeeding(0)
         , pOutdoorSuccessfulFeedHuman(.9f)
-        , blockIndoorVectorAcquire(1)
+        , blockIndoorVectorAcquire(1.0f)
         , blockIndoorVectorTransmit(.9f)
-        , blockOutdoorVectorAcquire(1)
+        , blockOutdoorVectorAcquire(1.0f)
         , blockOutdoorVectorTransmit(.9f)
     {
     }
