@@ -264,26 +264,17 @@ namespace Kernel
         IndoorOutdoorProbabilities probs;
         // we need to factor in this node-level probability
         // returningmortality is related to OutdoorRestKill where the vector is resting after a feed
-        float outdoor_returningmortality = this->probs()->outdoor_returningmortality.GetValue( m_SpeciesIndex, r_genome );
         if( routeVectorToHuman == TransmissionRoute::TRANSMISSIONROUTE_VECTOR_TO_HUMAN_INDOOR )
         {
             probs.die_during_feeding    = pIVIE->GetDieDuringFeeding().GetValue(    m_SpeciesIndex, r_genome );
             probs.die_after_feeding     = pIVIE->GetDiePostFeeding().GetValue(      m_SpeciesIndex, r_genome );
             probs.successful_feed_human = pIVIE->GetSuccessfulFeedHuman().GetValue( m_SpeciesIndex, r_genome );
-
-            // due to vectors going outdoors after feeding
-            probs.die_after_feeding     += probs.successful_feed_human * outdoor_returningmortality;
-            probs.successful_feed_human *= ( 1.0 - outdoor_returningmortality );
         }
         else if( routeVectorToHuman == TransmissionRoute::TRANSMISSIONROUTE_VECTOR_TO_HUMAN_OUTDOOR )
         {
             probs.die_during_feeding    = pIVIE->GetOutdoorDieDuringFeeding().GetValue(    m_SpeciesIndex, r_genome );
             probs.die_after_feeding     = pIVIE->GetOutdoorDiePostFeeding().GetValue(      m_SpeciesIndex, r_genome );
             probs.successful_feed_human = pIVIE->GetOutdoorSuccessfulFeedHuman().GetValue( m_SpeciesIndex, r_genome );
-
-            // due to vectors being outdoors after feeding
-            probs.die_after_feeding     += probs.successful_feed_human * outdoor_returningmortality;
-            probs.successful_feed_human *= (1.0 - outdoor_returningmortality);
         }
         else
         {

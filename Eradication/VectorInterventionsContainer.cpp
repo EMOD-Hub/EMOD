@@ -194,6 +194,10 @@ namespace Kernel
         }
         GeneticProbability p_kill_IRSpostfeed_effective = (effects->IsUsingIndoorKilling()) ? effects->GetIndoorKilling() : p_kill_IRSpostfeed;
 
+        // die due to outdoor resting after feed or interacting with emanator, from node-level interventions - OutdoorNodeEmanator, OutdoorRestKill
+        // for both indoor and outdoor feeding vectors
+        GeneticProbability p_die_returning_to_outdoors = effects->GetOutdoorRestKilling();
+
         // die due to internal vector issues (insecticides, blood meal mortality)
         GeneticProbability p_die_in_out_post_feed = 1.0f - (p_survive_insecticidal_drug * (1.0f - p_vp->blood_meal_mortality));
         
@@ -205,7 +209,7 @@ namespace Kernel
 
         GeneticProbability not_block_housing = (1-p_block_housing);
         GeneticProbability not_block_net     = (1-p_block_net);
-        GeneticProbability not_die_post_feed = (1-p_die_indoor_post_feed);
+        GeneticProbability not_die_indoor_post_feed = (1-p_die_indoor_post_feed);
         GeneticProbability not_kill_ITN      = (1-p_kill_ITN);
         GeneticProbability not_indrep        = (1-p_indrep);
 
@@ -228,8 +232,8 @@ namespace Kernel
 
         pDieBeforeFeeding    = not_block_housing
                                 *(p_kill_emanator + p_survive_emanator // die or not die from indoor emanator pre-feed
-                                   * ( 
-                                       p_attraction_ADIH * (p_kill_ADIH + (1-p_kill_ADIH) * p_die_after_from_housingmod)
+                                   * ( // attracted to artifical diet and (die from it or not die from it and die due to IRS or emanator/outdoorrest)
+                                       p_attraction_ADIH * ( p_kill_ADIH + ( 1 - p_kill_ADIH ) * ( p_die_after_from_housingmod + ( 1 - p_die_after_from_housingmod ) * p_die_returning_to_outdoors ) )  
                                      +
                                        (1-p_attraction_ADIH) * (p_block_net * p_kill_ITN)
                                      )
@@ -240,14 +244,10 @@ namespace Kernel
                                                  * ((p_block_net * not_kill_ITN) + (not_block_net * p_indrep));
 
         pDieDuringFeeding    = not_housing_prefeed_ADIH_net_indrep * p_dieduringfeeding;
-        pDiePostFeeding      = not_housing_prefeed_ADIH_net_indrep_dieduringfeeding * p_die_indoor_post_feed;
-        pSuccessfulFeedHuman = not_housing_prefeed_ADIH_net_indrep_dieduringfeeding * not_die_post_feed;
+        pDiePostFeeding      = not_housing_prefeed_ADIH_net_indrep_dieduringfeeding * (p_die_indoor_post_feed + not_die_indoor_post_feed * p_die_returning_to_outdoors);
+        pSuccessfulFeedHuman = not_housing_prefeed_ADIH_net_indrep_dieduringfeeding * not_die_indoor_post_feed * (1 - p_die_returning_to_outdoors);
 
-        // (1-p_block_housing)*(1-p_kill_prefeed)*p_attraction_ADIH*(1-p_kill_ADIH)*(1-p_kill_IRSpostfeed_effective)
-        // probability of ((not being blocked by housing and not killed by IRS pre-feed) 
-        //                  and (not die indoors post-feed due to irs, insecticides or bloodmeal mortality)
-        //                  and (attracted to artifical diet, and not killed by artificial diet))
-        pSuccessfulFeedAD    = not_housing_prefeed * not_die_post_feed * (p_attraction_ADIH * (1-p_kill_ADIH));
+        pSuccessfulFeedAD = not_housing_prefeed * ( p_attraction_ADIH * ( 1.0f - p_kill_ADIH ) ) * ( 1.0f - p_die_after_from_housingmod ) * ( 1.0f - p_die_returning_to_outdoors);
 
         // update intervention effect on acquisition and transmission of infection
         // --NOTE that vector tendencies to bite an individual are already gathered
@@ -265,8 +265,8 @@ namespace Kernel
         pOutdoorDieBeforeFeeding    = 0; 
         pOutdoorHostNotAvailable    = p_indrep;
         pOutdoorDieDuringFeeding    = not_indrep * p_dieduringfeeding;
-        pOutdoorDiePostFeeding      = not_indrep_not_dieduringfeeding * p_die_in_out_post_feed;
-        pOutdoorSuccessfulFeedHuman = not_indrep_not_dieduringfeeding * (1.0f - p_die_in_out_post_feed);
+        pOutdoorDiePostFeeding      = not_indrep_not_dieduringfeeding * (p_die_in_out_post_feed + ( 1.0f - p_die_in_out_post_feed) * p_die_returning_to_outdoors);  
+        pOutdoorSuccessfulFeedHuman = not_indrep_not_dieduringfeeding * (1.0f - p_die_in_out_post_feed) * ( 1.0f - p_die_returning_to_outdoors );
 
         blockOutdoorVectorAcquire   = pOutdoorDieDuringFeeding
                                     + pOutdoorDiePostFeeding
