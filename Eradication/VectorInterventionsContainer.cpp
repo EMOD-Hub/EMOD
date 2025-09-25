@@ -247,7 +247,7 @@ namespace Kernel
         pDiePostFeeding      = not_housing_prefeed_ADIH_net_indrep_dieduringfeeding * (p_die_indoor_post_feed + not_die_indoor_post_feed * p_die_returning_to_outdoors);
         pSuccessfulFeedHuman = not_housing_prefeed_ADIH_net_indrep_dieduringfeeding * not_die_indoor_post_feed * (1 - p_die_returning_to_outdoors);
 
-        pSuccessfulFeedAD = not_housing_prefeed * ( p_attraction_ADIH * ( 1.0f - p_kill_ADIH ) ) * ( 1.0f - p_die_after_from_housingmod ) * ( 1.0f - p_die_returning_to_outdoors);
+        pSuccessfulFeedAD    = not_housing_prefeed * ( p_attraction_ADIH * ( 1.0f - p_kill_ADIH ) ) * ( 1.0f - p_die_after_from_housingmod ) * ( 1.0f - p_die_returning_to_outdoors);
 
         // update intervention effect on acquisition and transmission of infection
         // --NOTE that vector tendencies to bite an individual are already gathered
