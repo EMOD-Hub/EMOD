@@ -32,6 +32,9 @@ namespace Kernel
         GeneticProbability indoorattempttohumanfeed;
         GeneticProbability outdoorattempttohumanfeed;
 
+        // outdoor feeding probabilities are simple 
+        GeneticProbability outdoor_returningmortality;
+
         // indoor feeding outcomes
         GeneticProbability indoor_diebeforefeeding;
         GeneticProbability indoor_hostnotavailable;

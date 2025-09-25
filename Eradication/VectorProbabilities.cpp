@@ -22,6 +22,8 @@ namespace Kernel
             ar.labelElement("indoorattempttohumanfeed") & probabilities->indoorattempttohumanfeed;
             ar.labelElement("outdoorattempttohumanfeed") & probabilities->outdoorattempttohumanfeed;
 
+            ar.labelElement("outdoor_returningmortality") & probabilities->outdoor_returningmortality;
+
             ar.labelElement("indoor_diebeforefeeding") & probabilities->indoor_diebeforefeeding;
             ar.labelElement("indoor_hostnotavailable") & probabilities->indoor_hostnotavailable;
             ar.labelElement("indoor_dieduringfeeding") & probabilities->indoor_dieduringfeeding;
@@ -57,6 +59,7 @@ namespace Kernel
         successfulfeed_AD(0.0f),
         indoorattempttohumanfeed(0.0f),
         outdoorattempttohumanfeed(0.0f),
+        outdoor_returningmortality(0.0f),
         indoor_diebeforefeeding(0.0f),
         indoor_hostnotavailable(0.0f),
         indoor_dieduringfeeding(0.0f),
