@@ -532,7 +532,7 @@ namespace Kernel
 
     ReportInterventionData OutdoorNodeEmanator::GetReportInterventionData() const
     {
-        // only has repelling so don't call SimpleVectorControlNode::GetReportInterventionData()
+        // has coverage so SimpleVectorControlNode::GetReportInterventionData() doesn't work for this
         ReportInterventionData data = BaseNodeIntervention::GetReportInterventionData();
 
         data.efficacy_repelling = m_pInsecticideWaningEffect->GetCurrent( ResistanceType::REPELLING ).GetSum() * m_Coverage;

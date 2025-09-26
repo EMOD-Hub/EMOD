@@ -1659,7 +1659,6 @@ SUITE( GeneticProbabilityTest )
         // -----------------------
         // --- Test serialization
         // -----------------------
-        gpx3 = gpx3 * 0; //to avoid floating point issue in comparison
         JsonFullWriter json_writer;
         IArchive* p_json_writer = &json_writer;
         p_json_writer->labelElement( "Test" )& gpx3;
@@ -1670,6 +1669,12 @@ SUITE( GeneticProbabilityTest )
         IArchive* p_json_reader = &json_reader;
         p_json_reader->labelElement( "Test" )& gp_read;
 
+        CHECK_CLOSE( gpx3.GetValue( m_SpeciesIndexGambiae, m_Genome_a2b1c1_a2b1c1 ), gp_read.GetValue( m_SpeciesIndexGambiae, m_Genome_a2b1c1_a2b1c1 ), FLT_EPSILON );
+        CHECK_CLOSE( gpx3.GetDefaultValue(), gp_read.GetDefaultValue(), FLT_EPSILON);
+
+        // only changing default value to make sure everything else matches because otherwise fails due to floating point
+        gpx3.SetDefaultValue( 0 );
+        gp_read.SetDefaultValue( 0 );
         CHECK( gpx3 == gp_read );
 
     }
