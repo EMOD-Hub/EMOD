@@ -183,14 +183,14 @@ namespace Kernel
         not_repelled_or_killed_or_affected = invie->GetVillageEmanatorNotRepelledOrKilledOrAffected(); // repelled or not repelled and then killed by spatial repellent, precalculated
     }
 
-    void VectorProbabilities::FinalizeTransitionProbabilites(float anthropophily, float indoor_feeding)
+    void VectorProbabilities::FinalizeTransitionProbabilites(float anthropophily, float indoor_feeding, const GeneticProbability& bloodmeal_mortality )
     {
         // Non-Feeding Branch
         diewithoutattemptingfeed      =  outdoorareakilling; // for those that do not attempt to feed
 
         // Feeding Branch
         survivewithoutsuccessfulfeed = (1.0f - attraction_ADOV) * (spatial_repellent * (1.0f - outdoorareakilling) + not_repelled_or_killed_or_affected * (1.0f - attraction_ADIV) * anthropophily * (1.0f - indoor_feeding) * (1.0f - outdoorareakilling) * nooutdoorhumanfound);
-        successfulfeed_animal        = (1.0f - attraction_ADOV) * not_repelled_or_killed_or_affected * (1.0f - attraction_ADIV) * (1.0f - anthropophily) * (1.0f - outdoorareakilling) * (1.0f - kill_livestockfeed);
+        successfulfeed_animal        = (1.0f - attraction_ADOV) * not_repelled_or_killed_or_affected * (1.0f - attraction_ADIV) * (1.0f - anthropophily) * (1.0f - outdoorareakilling) * (1.0f - kill_livestockfeed) * (1.0f - bloodmeal_mortality);
         successfulfeed_AD            = (attraction_ADOV * (1.0f - outdoorareakilling) + (1.0f - attraction_ADOV) * not_repelled_or_killed_or_affected * attraction_ADIV * (1.0f - outdoorareakilling));
         indoorattempttohumanfeed     = (1.0f - attraction_ADOV) * not_repelled_or_killed_or_affected * (1.0f - attraction_ADIV) * anthropophily * indoor_feeding;
         outdoorattempttohumanfeed    = (1.0f - attraction_ADOV) * not_repelled_or_killed_or_affected * (1.0f - attraction_ADIV) * anthropophily * (1.0f - indoor_feeding) * (1.0f - outdoorareakilling) * (1.0f - nooutdoorhumanfound);

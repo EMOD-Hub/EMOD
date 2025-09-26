@@ -17,7 +17,7 @@ namespace Kernel
         void AccumulateIndividualProbabilities(IVectorInterventionsEffects* ivie, float weight);
         void NormalizeIndividualProbabilities();
         void SetNodeProbabilities(INodeVectorInterventionEffects* invie, float dt);
-        void FinalizeTransitionProbabilites(float anthropophily, float indoor_feeding);
+        void FinalizeTransitionProbabilites(float anthropophily, float indoor_feeding, const GeneticProbability& bloodmeal_mortality );
 
         // vector-feeding and MC weighted population
         float effective_host_population;
