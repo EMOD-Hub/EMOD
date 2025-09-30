@@ -126,6 +126,7 @@ namespace Kernel
                 break; // the person will have only one bednet intervention max
             }
         }
+
         bool distributed = BaseIntervention::Distribute( context, pCCO );
         if( distributed )
         {
