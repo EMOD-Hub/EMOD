@@ -132,9 +132,7 @@ namespace Kernel
 
     bool SimpleVectorControlNode::Distribute( INodeEventContext *pNodeContext, IEventCoordinator2 *pEC )
     {
-        // only one of each is allowed because the effects from each intervention are directly assigned
-        // and are not cumulative, so the last one wins.
-        pNodeContext->PurgeExistingByType( typeid(*this).name() );
+        pNodeContext->PurgeExistingByName( typeid( *this ).name(), name );
         return BaseNodeIntervention::Distribute( pNodeContext, pEC );
     }
     

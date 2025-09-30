@@ -56,7 +56,7 @@ namespace Kernel
         virtual std::list<IDistributableIntervention*> GetInterventionsByName(const InterventionName& intervention_name) = 0;
         virtual std::list<void*>                       GetInterventionsByInterface( iid_t iid ) = 0;
         virtual void PurgeExistingByType( const std::string &type_name ) = 0;
-        virtual void PurgeExistingByName( const InterventionName& name ) = 0;
+        virtual void PurgeExistingByName( const std::string& type_name, const InterventionName& name ) = 0;
         virtual bool ContainsExistingByType( const std::string &type_name ) = 0;
         virtual bool ContainsExistingByName( const InterventionName& name ) = 0;
         virtual void ChangeProperty( const char *property, const char* new_value ) = 0;

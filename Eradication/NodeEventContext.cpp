@@ -349,7 +349,7 @@ namespace Kernel
     }
 
 
-    void NodeEventContextHost::PurgeExistingByName( const InterventionName& iv_name)
+    void NodeEventContextHost::PurgeExistingByName( const std::string& type_name, const InterventionName& iv_name)
     {
         // returns the first element that satisfies the condition or .end() if no such element is found.
         auto it = std::find_if( node_interventions.begin(), node_interventions.end(),

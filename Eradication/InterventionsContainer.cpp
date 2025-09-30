@@ -192,16 +192,20 @@ namespace Kernel
         }
     }
 
-    void InterventionsContainer::PurgeExistingByName( const InterventionName& iv_name)
+    void InterventionsContainer::PurgeExistingByName( const std::string& type_name, const InterventionName& iv_name)
     {
-        for(int i = 0; i < intervention_names.size(); ++i)
+        for(int i = 0; i < interventions.size(); ++i)
         {
-            InterventionName cur_iv_name = intervention_names[i];
-            if(cur_iv_name == iv_name)
+            IDistributableIntervention* p_intervention = interventions[i];
+            std::string cur_iv_type_name = typeid(*p_intervention).name();
+            if(cur_iv_type_name == type_name)
             {
-                LOG_DEBUG_F("Found an existing intervention with name '%s'. Purging.\n", iv_name.c_str());
-                Remove(i);
-                break;
+                if (p_intervention->GetName() == iv_name)
+                {
+                    LOG_DEBUG_F("Found an existing intervention of type '%s' with name '%s'. Purging.\n", type_name.c_str(), iv_name.c_str());
+                    Remove(i);
+                    break;
+                }
             }
         }
     }

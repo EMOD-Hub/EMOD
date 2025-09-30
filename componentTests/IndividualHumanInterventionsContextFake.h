@@ -68,7 +68,7 @@ public:
         throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented.");
     }
 
-    virtual void PurgeExistingByName( const InterventionName& intervention_name )
+    virtual void PurgeExistingByName( const std::string& type_name, const InterventionName& intervention_name )
     {
         throw Kernel::NotYetImplementedException(__FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented.");
     }

@@ -97,7 +97,7 @@ namespace Kernel
 
     struct INodeVectorInterventionEffects : ISupports
     {
-        virtual const GeneticProbability& GetLarvalKilling(VectorHabitatType::Enum) const = 0;
+        virtual const GeneticProbability& GetLarvalKilling(VectorHabitatType::Enum) = 0;
         virtual float GetLarvalHabitatReduction(VectorHabitatType::Enum, const std::string& species) = 0;
         virtual const GeneticProbability& GetVillageSpatialRepellent() = 0;
         virtual float GetADIVAttraction() = 0;

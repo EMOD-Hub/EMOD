@@ -73,7 +73,7 @@ namespace Kernel
         virtual std::list<INodeDistributableIntervention*> GetInterventionsByType(const std::string& type_name) = 0;
         virtual bool ContainsExistingByName( const InterventionName& iv_name ) = 0;
         virtual void PurgeExistingByType( const std::string& type_name) = 0;
-        virtual void PurgeExistingByName( const InterventionName& iv_name ) = 0;
+        virtual void PurgeExistingByName( const std::string& type_name, const InterventionName& iv_name ) = 0;
         virtual const std::list<INodeDistributableIntervention*>& GetNodeInterventions() const = 0;
 
         virtual bool IsInPolygon(float* vertex_coords, int numcoords) = 0;

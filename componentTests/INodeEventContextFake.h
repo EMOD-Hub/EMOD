@@ -193,7 +193,7 @@ public:
     virtual void PurgeExistingByType( const std::string& type_name ) override
     {
     }
-    virtual void PurgeExistingByName(const InterventionName& name) override
+    virtual void PurgeExistingByName( const std::string& type_name, const InterventionName& name ) override
     {
     }
     virtual const std::list<INodeDistributableIntervention*>& GetNodeInterventions() const override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented." ); }
@@ -272,7 +272,7 @@ public:
     // ----------------------------------
     // --- INodeVectorInterventionEffects
     // ----------------------------------
-    virtual const GeneticProbability& GetLarvalKilling( VectorHabitatType::Enum ) const override { return m_Junk; }
+    virtual const GeneticProbability& GetLarvalKilling( VectorHabitatType::Enum ) override { return m_Junk; }
     virtual float GetLarvalHabitatReduction( VectorHabitatType::Enum, const std::string& species ) override  { return 0.0; }
     virtual const GeneticProbability& GetVillageSpatialRepellent() override  { return m_Junk; }
     virtual float GetADIVAttraction() override  { return 0.0; }

@@ -65,7 +65,7 @@ namespace Kernel
         virtual void UpdateIndoorKilling(const GeneticProbability& killing) override;
 
         // INodeVectorInterventionEffects;
-        virtual const GeneticProbability& GetLarvalKilling(VectorHabitatType::Enum) const override;
+        virtual const GeneticProbability& GetLarvalKilling(VectorHabitatType::Enum) override;
         virtual float GetLarvalHabitatReduction(VectorHabitatType::Enum, const std::string& species) override;
         virtual const GeneticProbability&  GetVillageSpatialRepellent() override;
         virtual float GetADIVAttraction() override;
@@ -79,10 +79,7 @@ namespace Kernel
         virtual bool  IsUsingSugarTrap() const override;
         virtual const GeneticProbability& GetSugarFeedKilling() const override;
 
-        VectorHabitatType::Enum larval_killing_target;
         VectorHabitatType::Enum larval_reduction_target;
-        VectorHabitatType::Enum ovitrap_killing_target;
-
         LarvalHabitatMultiplier larval_reduction;
 
         // IMosquitoReleaseConsumer
@@ -95,13 +92,13 @@ namespace Kernel
                                         float    releasedInfectious ) override;
 
     protected: 
-        GeneticProbability pLarvalKilling;
+        std::map<VectorHabitatType::Enum, GeneticProbability> larval_killing_map;
+        std::map<VectorHabitatType::Enum, float> oviposition_killing_map;
         float              pLarvalHabitatReduction;
         GeneticProbability pVillageSpatialRepellent;
         float              pADIVAttraction;
         float              pADOVAttraction;
         GeneticProbability pOutdoorKilling;
-        float              pOviTrapKilling;
         GeneticProbability pAnimalFeedKilling;
         GeneticProbability pOutdoorRestKilling;
         bool               isUsingIndoorKilling;
@@ -110,6 +107,8 @@ namespace Kernel
         GeneticProbability pSugarFeedKilling;
 
     private:
+        GeneticProbability& CombineProbabilities( GeneticProbability& prob1, const GeneticProbability& prob2);
+        float CombineProbabilities( float prob1, float prob2 );
         NodeVectorEventContextHost() : NodeEventContextHost(nullptr) { }
     };
 }

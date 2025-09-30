@@ -108,7 +108,7 @@ namespace Kernel
 
     bool InputEIR::Distribute( INodeEventContext *pNodeContext, IEventCoordinator2 *pEC )
     {
-        pNodeContext->PurgeExistingByType( typeid( *this ).name() )
+        pNodeContext->PurgeExistingByType( typeid( *this ).name() );
         return BaseNodeIntervention::Distribute( pNodeContext, pEC );
     }
 
