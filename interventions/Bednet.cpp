@@ -117,13 +117,15 @@ namespace Kernel
         {
             return false;
         }
-
-        std::list<IDistributableIntervention*> net_list = context->GetInterventionsByName( GetName() );
-        for( IDistributableIntervention* p_bednet : net_list )
+        // We do not want users to have multiple bednets.
+        for(auto* intervention : context->GetInterventions())
         {
-            p_bednet->SetExpired( true );
+            if(auto* bednet = dynamic_cast<Kernel::AbstractBednet*>( intervention ))
+            {
+                bednet->SetExpired(true); // set to be removed
+                break; // the person will have only one bednet intervention max
+            }
         }
-
         bool distributed = BaseIntervention::Distribute( context, pCCO );
         if( distributed )
         {
