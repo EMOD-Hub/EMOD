@@ -107,7 +107,6 @@ namespace Kernel
         GeneticProbability pSugarFeedKilling;
 
     private:
-        void CombineProbabilities( GeneticProbability& prob1, const GeneticProbability& prob2);
         float CombineProbabilities( float prob1, float prob2 );
         NodeVectorEventContextHost() : NodeEventContextHost(nullptr) { }
     };

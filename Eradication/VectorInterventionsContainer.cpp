@@ -106,7 +106,7 @@ namespace Kernel
         const GeneticProbability& prob
         )
     {
-        p_indrep = 1.0f - ( 1.0f - p_indrep ) * ( 1.0f - prob );
+        p_indrep.CombineProbabilities( prob );
     }
 
     void VectorInterventionsContainer::UpdateInsecticidalDrugKillingProbability( const GeneticProbability& prob )

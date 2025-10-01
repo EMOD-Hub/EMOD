@@ -879,6 +879,11 @@ namespace Kernel
         return result;
     }
 
+    void GeneticProbability::CombineProbabilities( const GeneticProbability& right )
+    {
+        *this = 1.0f - ( 1.0f - *this ) * ( 1.0f - right );
+    } 
+
     void GeneticProbability::Add( const AlleleComboProbability& racp )
     {
         if( m_pAlleleCombosPerSpecies == nullptr )

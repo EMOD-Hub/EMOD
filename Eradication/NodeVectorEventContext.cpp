@@ -110,12 +110,12 @@ namespace Kernel
             for(int i = 1; i < (VectorHabitatType::pairs::count() - 1); ++i)
             {
                 VectorHabitatType::Enum vht = VectorHabitatType::Enum( VectorHabitatType::pairs::get_values()[i] );
-                CombineProbabilities( larval_killing_map[vht], killing );
+                larval_killing_map[vht].CombineProbabilities( killing );
             }
         }
         else
         {
-            CombineProbabilities( larval_killing_map[habitat], killing );
+            larval_killing_map[habitat].CombineProbabilities( killing );
         }
     }
 
@@ -140,7 +140,7 @@ namespace Kernel
         const GeneticProbability& killing
     )
     {
-        CombineProbabilities( pOutdoorKilling, killing );
+        pOutdoorKilling.CombineProbabilities( killing );
     }
 
     void
@@ -148,7 +148,7 @@ namespace Kernel
         const GeneticProbability& repelling
     )
     {
-        CombineProbabilities( pVillageSpatialRepellent, repelling );
+        pVillageSpatialRepellent.CombineProbabilities( repelling );
     }
 
     void
@@ -173,7 +173,7 @@ namespace Kernel
     )
     {
         isUsingSugarTrap = true;
-        CombineProbabilities( pSugarFeedKilling, killing );
+        pSugarFeedKilling.CombineProbabilities( killing );
     }
 
     void
@@ -205,7 +205,7 @@ namespace Kernel
         const GeneticProbability& killing
     )
     {
-        CombineProbabilities( pAnimalFeedKilling, killing );
+        pAnimalFeedKilling.CombineProbabilities( killing );
     }
 
     void
@@ -213,13 +213,13 @@ namespace Kernel
         const GeneticProbability& killing
     )
     {
-        CombineProbabilities( pOutdoorRestKilling, killing );
+        pOutdoorRestKilling.CombineProbabilities( killing );
     }
 
     void NodeVectorEventContextHost::UpdateIndoorKilling( const GeneticProbability& killing )
     {
         isUsingIndoorKilling = true;
-        CombineProbabilities( pIndoorKilling, killing );
+        pIndoorKilling.CombineProbabilities( killing );
     }
 
     //
@@ -309,11 +309,6 @@ namespace Kernel
     const GeneticProbability& NodeVectorEventContextHost::GetIndoorKilling()
     {
         return pIndoorKilling;
-    }
-
-    void NodeVectorEventContextHost::CombineProbabilities( GeneticProbability& prob1, const GeneticProbability& prob2 )
-    {
-        prob1 = 1.0f - (1.0f - prob1) * (1.0f - prob2);
     }
 
     float NodeVectorEventContextHost::CombineProbabilities( float prob1, float prob2 )
