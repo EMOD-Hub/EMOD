@@ -258,6 +258,11 @@ namespace Kernel
     {
     }
 
+    bool Larvicides::Distribute( INodeEventContext* pNodeContext, IEventCoordinator2* pEC )
+    {
+        return BaseNodeIntervention::Distribute( pNodeContext, pEC );
+    }
+
     void Larvicides::ApplyEffects( float dt )
     {
         release_assert( m_pINVIC != nullptr );

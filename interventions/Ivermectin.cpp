@@ -73,7 +73,6 @@ namespace Kernel
         {
             return false;
         }
-        context->PurgeExistingByName( typeid( *this ).name(), name );
 
         bool distributed = BaseIntervention::Distribute( context, pCCO );
         if( distributed )
