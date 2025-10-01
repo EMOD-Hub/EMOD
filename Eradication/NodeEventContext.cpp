@@ -354,7 +354,7 @@ namespace Kernel
         // returns the first element that satisfies the condition or .end() if no such element is found.
         auto it = std::find_if( node_interventions.begin(), node_interventions.end(),
                                 [&]( INodeDistributableIntervention* intervention ) {
-                                    return intervention->GetName() == iv_name;
+                                    return ( type_name == typeid( *intervention ).name() && intervention->GetName() == iv_name );
                                 } );
 
         if(it != node_interventions.end()) {

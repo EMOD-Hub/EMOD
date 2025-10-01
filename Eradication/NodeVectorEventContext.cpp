@@ -110,12 +110,12 @@ namespace Kernel
             for(int i = 1; i < (VectorHabitatType::pairs::count() - 1); ++i)
             {
                 VectorHabitatType::Enum vht = VectorHabitatType::Enum( VectorHabitatType::pairs::get_values()[i] );
-                larval_killing_map[vht] = CombineProbabilities( larval_killing_map[vht], killing );
+                CombineProbabilities( larval_killing_map[vht], killing );
             }
         }
         else
         {
-            larval_killing_map[habitat] = CombineProbabilities( larval_killing_map[habitat], killing );
+            CombineProbabilities( larval_killing_map[habitat], killing );
         }
     }
 
@@ -140,7 +140,7 @@ namespace Kernel
         const GeneticProbability& killing
     )
     {
-        pOutdoorKilling = CombineProbabilities( pOutdoorKilling, killing );
+        CombineProbabilities( pOutdoorKilling, killing );
     }
 
     void
@@ -148,7 +148,7 @@ namespace Kernel
         const GeneticProbability& repelling
     )
     {
-        pVillageSpatialRepellent = CombineProbabilities( pVillageSpatialRepellent, repelling );
+        CombineProbabilities( pVillageSpatialRepellent, repelling );
     }
 
     void
@@ -156,7 +156,7 @@ namespace Kernel
         float reduction
     )
     {
-        pADIVAttraction = CombineProbabilities( pADIVAttraction, reduction );
+        CombineProbabilities( pADIVAttraction, reduction );
     }
 
     void
@@ -164,7 +164,7 @@ namespace Kernel
         float reduction
     )
     {
-        pADOVAttraction = CombineProbabilities( pADOVAttraction, reduction );
+        CombineProbabilities( pADOVAttraction, reduction );
     }
 
     void
@@ -173,7 +173,7 @@ namespace Kernel
     )
     {
         isUsingSugarTrap = true;
-        pSugarFeedKilling = CombineProbabilities( pSugarFeedKilling, killing );
+        CombineProbabilities( pSugarFeedKilling, killing );
     }
 
     void
@@ -191,12 +191,12 @@ namespace Kernel
             for(int i = 1; i < ( VectorHabitatType::pairs::count() - 1 ); ++i)
             {
                 VectorHabitatType::Enum vht = VectorHabitatType::Enum( VectorHabitatType::pairs::get_values()[i] );
-                oviposition_killing_map[vht] = CombineProbabilities( oviposition_killing_map[vht], killing );
+                CombineProbabilities( oviposition_killing_map[vht], killing );
             }
         }
         else
         {
-            oviposition_killing_map[habitat] = CombineProbabilities( oviposition_killing_map[habitat], killing );
+            CombineProbabilities( oviposition_killing_map[habitat], killing );
         }
     }
 
@@ -205,7 +205,7 @@ namespace Kernel
         const GeneticProbability& killing
     )
     {
-        pAnimalFeedKilling = CombineProbabilities( pAnimalFeedKilling, killing );
+        CombineProbabilities( pAnimalFeedKilling, killing );
     }
 
     void
@@ -213,13 +213,13 @@ namespace Kernel
         const GeneticProbability& killing
     )
     {
-        pOutdoorRestKilling = CombineProbabilities( pOutdoorRestKilling, killing );
+        CombineProbabilities( pOutdoorRestKilling, killing );
     }
 
     void NodeVectorEventContextHost::UpdateIndoorKilling( const GeneticProbability& killing )
     {
         isUsingIndoorKilling = true;
-        pIndoorKilling = CombineProbabilities( pIndoorKilling, killing );
+        CombineProbabilities( pIndoorKilling, killing );
     }
 
     //
@@ -311,9 +311,9 @@ namespace Kernel
         return pIndoorKilling;
     }
 
-    GeneticProbability& NodeVectorEventContextHost::CombineProbabilities( GeneticProbability& prob1, const GeneticProbability& prob2 )
+    void NodeVectorEventContextHost::CombineProbabilities( GeneticProbability& prob1, const GeneticProbability& prob2 )
     {
-        return 1.0f - (1.0f - prob1) * (1.0f - prob2);
+        prob1 = 1.0f - (1.0f - prob1) * (1.0f - prob2);
     }
 
     float NodeVectorEventContextHost::CombineProbabilities( float prob1, float prob2 )
