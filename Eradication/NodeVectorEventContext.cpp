@@ -156,7 +156,7 @@ namespace Kernel
         float reduction
     )
     {
-        CombineProbabilities( pADIVAttraction, reduction );
+        pADIVAttraction = CombineProbabilities( pADIVAttraction, reduction );
     }
 
     void
@@ -164,7 +164,7 @@ namespace Kernel
         float reduction
     )
     {
-        CombineProbabilities( pADOVAttraction, reduction );
+        pADOVAttraction = CombineProbabilities( pADOVAttraction, reduction );
     }
 
     void
@@ -191,12 +191,12 @@ namespace Kernel
             for(int i = 1; i < ( VectorHabitatType::pairs::count() - 1 ); ++i)
             {
                 VectorHabitatType::Enum vht = VectorHabitatType::Enum( VectorHabitatType::pairs::get_values()[i] );
-                CombineProbabilities( oviposition_killing_map[vht], killing );
+                oviposition_killing_map[vht] = CombineProbabilities( oviposition_killing_map[vht], killing );
             }
         }
         else
         {
-            CombineProbabilities( oviposition_killing_map[habitat], killing );
+            oviposition_killing_map[habitat] = CombineProbabilities( oviposition_killing_map[habitat], killing );
         }
     }
 
