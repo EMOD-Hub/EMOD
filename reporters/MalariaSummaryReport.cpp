@@ -645,8 +645,7 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
 
         if(add_hrp2)
         {
-            float true_hrp2 = susceptibility_malaria->GetPfHRP2() * susceptibility_malaria->get_inv_microliters_blood();
-            if(true_hrp2 > detection_threshold_true_hrp2)
+            if(susceptibility_malaria->GetPfHRP2() > detection_threshold_true_hrp2)
             {
                 if(is2to10)
                 {
