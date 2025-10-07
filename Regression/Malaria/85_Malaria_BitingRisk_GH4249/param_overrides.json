@@ -15,6 +15,7 @@
             "Enable_Vital_Dynamics": 0
         }, 
         "PRIMARY": {
+            "Custom_Reports_Filename": "custom_reports.json",
             "Age_Dependent_Biting_Risk_Type": "SURFACE_AREA_DEPENDENT",
             "Config_Name": "85_Malaria_BitingRisk_GH4249", 
             "Geography": "Namawala", 
