@@ -643,16 +643,13 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
         }
         IMalariaSusceptibility* susceptibility_malaria = individual_malaria->GetMalariaSusceptibilityContext();
 
-        if(add_hrp2)
+        if(add_hrp2 && susceptibility_malaria->GetPfHRP2() > detection_threshold_true_hrp2)
         {
-            if(susceptibility_malaria->GetPfHRP2() > detection_threshold_true_hrp2)
+            if(is2to10)
             {
-                if(is2to10)
-                {
-                    m_pReportData->sum_hrp2_2to10 += mc_weight;
-                }
-                m_pReportData->sum_hrp2_by_agebin.at( agebin ) += mc_weight;
+                m_pReportData->sum_hrp2_2to10 += mc_weight;
             }
+            m_pReportData->sum_hrp2_by_agebin.at( agebin ) += mc_weight;
         }
 
         // push back today's disease variables for infected individuals
