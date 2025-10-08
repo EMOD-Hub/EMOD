@@ -117,12 +117,14 @@ namespace Kernel
         {
             return false;
         }
+
         // We do not want users to have multiple bednets.
+        AbstractBednet* abd;
         for(auto* intervention : context->GetInterventions())
         {
-            if(auto* bednet = dynamic_cast<Kernel::AbstractBednet*>( intervention ))
+            if(s_OK != context->QueryInterface( GET_IID( AbstractBednet ), (void**)&abd ))
             {
-                bednet->SetExpired(true); // set to be removed
+                intervention->SetExpired( true ); // so bednets that send out expiration events will do so
                 break; // the person will have only one bednet intervention max
             }
         }

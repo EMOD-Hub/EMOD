@@ -14,8 +14,8 @@ namespace Kernel
 {
     NodeVectorEventContextHost::NodeVectorEventContextHost(Node* _node) 
     : NodeEventContextHost(_node)
-    , larval_killing_map()
-    , oviposition_killing_map()
+    , larval_killing_list( std::vector<GeneticProbability>( VectorHabitatType::pairs::count() - 2, GeneticProbability( 0.0f ) ) )
+    , oviposition_killing_list( std::vector<float>( VectorHabitatType::pairs::count() - 2, 0.0f ) )
     , larval_reduction_target( VectorHabitatType::NONE )
     , larval_reduction( false, -FLT_MAX, FLT_MAX, 0.0f )
     , pLarvalHabitatReduction(0)
@@ -76,8 +76,8 @@ namespace Kernel
     {
         larval_reduction.Initialize();
         pLarvalHabitatReduction = 0.0;
-        larval_killing_map = std::map<VectorHabitatType::Enum, GeneticProbability>();
-        oviposition_killing_map = std::map<VectorHabitatType::Enum, float>();
+        larval_killing_list = std::vector<GeneticProbability>( VectorHabitatType::pairs::count() - 2, GeneticProbability( 0.0f ) ); // not including NONE or ALL_HABITATS
+        oviposition_killing_list = std::vector<float>( VectorHabitatType::pairs::count() - 2, 0.0f);  // not including NONE or ALL_HABITATS
         pVillageSpatialRepellent = GeneticProbability( 0.0f );
         pADIVAttraction = 0.0;
         pADOVAttraction = 0.0;
@@ -102,20 +102,20 @@ namespace Kernel
     )
     {
         release_assert( habitat != VectorHabitatType::NONE );
-        // Apply to ALL_HABITATS to all habitats in case other habitats are specified later
+        // Apply ALL_HABITATS to all habitats in case other habitats are specified later
         if(habitat == VectorHabitatType::ALL_HABITATS)
         {
-            // starting with 1, which skips "NONE"
-            // skipping the last one, which is "ALL_HABITATS"
-            for(int i = 1; i < (VectorHabitatType::pairs::count() - 1); ++i)
+            // update all the larval_killing values with the new killing value
+            for(auto& larval_killing : larval_killing_list)
             {
-                VectorHabitatType::Enum vht = VectorHabitatType::Enum( VectorHabitatType::pairs::get_values()[i] );
-                larval_killing_map[vht].CombineProbabilities( killing );
+                larval_killing.CombineProbabilities( killing );
             }
         }
         else
         {
-            larval_killing_map[habitat].CombineProbabilities( killing );
+            int index = habitat - 1; // -1 to account for NONE not being in the list
+            release_assert( index >= 0 && index < (int)oviposition_killing_list.size() );
+            larval_killing_list[index].CombineProbabilities( killing );
         }
     }
 
@@ -183,20 +183,20 @@ namespace Kernel
     )
     {
         release_assert( habitat != VectorHabitatType::NONE );
-        // Apply to ALL_HABITATS to all habitats in case other habitats are specified later
+        // Apply ALL_HABITATS to all habitats in case other habitats are specified later
         if(habitat == VectorHabitatType::ALL_HABITATS)
         {
-            // starting with 1, which skips "NONE"
-            // skipping the last one, which is "ALL_HABITATS"
-            for(int i = 1; i < ( VectorHabitatType::pairs::count() - 1 ); ++i)
+            // update all the oviposition_killing values with the new killing value
+            for(auto& oviposition_killing: oviposition_killing_list)
             {
-                VectorHabitatType::Enum vht = VectorHabitatType::Enum( VectorHabitatType::pairs::get_values()[i] );
-                oviposition_killing_map[vht] = CombineProbabilities( oviposition_killing_map[vht], killing );
+                oviposition_killing = CombineProbabilities( oviposition_killing, killing );
             }
         }
         else
         {
-            oviposition_killing_map[habitat] = CombineProbabilities( oviposition_killing_map[habitat], killing );
+            int index = habitat - 1; // -1 to account for NONE not being in the list
+            release_assert( index >= 0 && index < (int)oviposition_killing_list.size() );
+            oviposition_killing_list[index] = CombineProbabilities( oviposition_killing_list[index], killing );
         }
     }
 
@@ -225,17 +225,17 @@ namespace Kernel
     //
     // INodeVectorInterventionEffects; (The Getters)
     // 
-    const GeneticProbability& NodeVectorEventContextHost::GetLarvalKilling( VectorHabitatType::Enum habitat_query )
+    const GeneticProbability& NodeVectorEventContextHost::GetLarvalKilling( VectorHabitatType::Enum habitat_query ) const
     {
         release_assert( habitat_query != VectorHabitatType::NONE );
         release_assert( habitat_query != VectorHabitatType::ALL_HABITATS );
-        return larval_killing_map[habitat_query];
+        return larval_killing_list[habitat_query - 1]; // -1 to account for NONE not being in the list
     }
 
     float NodeVectorEventContextHost::GetLarvalHabitatReduction(
         VectorHabitatType::Enum habitat_query, // shouldn't the type be the enum???
         const std::string& species
-    )
+    ) 
     {
         VectorHabitatType::Enum vht = habitat_query;
         if( larval_reduction_target == VectorHabitatType::ALL_HABITATS )
@@ -252,22 +252,22 @@ namespace Kernel
         return ret;
     }
 
-    const GeneticProbability& NodeVectorEventContextHost::GetVillageSpatialRepellent()
+    const GeneticProbability& NodeVectorEventContextHost::GetVillageSpatialRepellent() const
     {
         return pVillageSpatialRepellent;
     }
 
-    float NodeVectorEventContextHost::GetADIVAttraction()
+    float NodeVectorEventContextHost::GetADIVAttraction() const
     {
         return pADIVAttraction;
     }
 
-    float NodeVectorEventContextHost::GetADOVAttraction()
+    float NodeVectorEventContextHost::GetADOVAttraction() const
     {
         return pADOVAttraction;
     }
 
-    const GeneticProbability& NodeVectorEventContextHost::GetOutdoorKilling()
+    const GeneticProbability& NodeVectorEventContextHost::GetOutdoorKilling() const
     {
         return pOutdoorKilling;
     }
@@ -284,19 +284,19 @@ namespace Kernel
 
     float NodeVectorEventContextHost::GetOviTrapKilling(
         VectorHabitatType::Enum habitat_query
-    )
+    ) const
     {
         release_assert( habitat_query != VectorHabitatType::NONE );
         release_assert( habitat_query != VectorHabitatType::ALL_HABITATS );
-        return oviposition_killing_map[habitat_query];
+        return oviposition_killing_list[habitat_query - 1]; // -1 to account for NONE not being in the list
     }
 
-    const GeneticProbability& NodeVectorEventContextHost::GetAnimalFeedKilling()
+    const GeneticProbability& NodeVectorEventContextHost::GetAnimalFeedKilling() const
     {
         return pAnimalFeedKilling;
     }
 
-    const GeneticProbability& NodeVectorEventContextHost::GetOutdoorRestKilling()
+    const GeneticProbability& NodeVectorEventContextHost::GetOutdoorRestKilling() const
     {
         return pOutdoorRestKilling;
     }
@@ -306,7 +306,7 @@ namespace Kernel
         return isUsingIndoorKilling;
     }
 
-    const GeneticProbability& NodeVectorEventContextHost::GetIndoorKilling()
+    const GeneticProbability& NodeVectorEventContextHost::GetIndoorKilling() const
     {
         return pIndoorKilling;
     }

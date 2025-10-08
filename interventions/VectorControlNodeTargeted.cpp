@@ -260,6 +260,7 @@ namespace Kernel
 
     bool Larvicides::Distribute( INodeEventContext* pNodeContext, IEventCoordinator2* pEC )
     {
+        // stacked automatically, SimpleVectorControlNode Distribute() purges existing by name
         return BaseNodeIntervention::Distribute( pNodeContext, pEC );
     }
 

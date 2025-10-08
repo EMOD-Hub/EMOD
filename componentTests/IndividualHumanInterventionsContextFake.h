@@ -48,16 +48,6 @@ public:
         return m_Parent ;
     }
 
-    virtual std::list<IDistributableIntervention*> GetInterventionsByType(const std::string &type_name)
-    {
-        throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented.");
-    }
-
-    virtual std::list<IDistributableIntervention*> GetInterventionsByName(const InterventionName& intervention_name)
-    { 
-        throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented.");
-    }
-
     virtual std::list<void*> GetInterventionsByInterface( iid_t iid )
     { 
         throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); 
@@ -71,11 +61,6 @@ public:
     virtual void PurgeExistingByName( const std::string& type_name, const InterventionName& intervention_name )
     {
         throw Kernel::NotYetImplementedException(__FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented.");
-    }
-
-    virtual bool ContainsExistingByType( const std::string &iv_name )
-    {
-        throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented.");
     }
 
     virtual const std::vector<IDistributableIntervention*>& GetInterventions() const override

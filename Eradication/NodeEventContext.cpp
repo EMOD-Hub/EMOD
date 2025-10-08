@@ -314,23 +314,6 @@ namespace Kernel
         return true;
     }
 
-    std::list<INodeDistributableIntervention*> NodeEventContextHost::GetInterventionsByType(const std::string& type_name)
-    {
-        std::list<INodeDistributableIntervention*> interventions_of_type;
-        LOG_DEBUG_F("Looking for intervention of type %s", type_name.c_str());
-        for (auto intervention : node_interventions)
-        {
-            std::string cur_iv_type_name = typeid( *intervention ).name();
-            if( cur_iv_type_name == type_name )
-            {
-                LOG_INFO( "Found one..." );
-                interventions_of_type.push_back( intervention );
-            }
-        }
-
-        return interventions_of_type;
-    }
-
     void NodeEventContextHost::PurgeExistingByType( const std::string& type_name )
     {
         // returns the first element that satisfies the condition or .end() if no such element is found.

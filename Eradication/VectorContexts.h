@@ -97,17 +97,17 @@ namespace Kernel
 
     struct INodeVectorInterventionEffects : ISupports
     {
-        virtual const GeneticProbability& GetLarvalKilling(VectorHabitatType::Enum) = 0;
+        virtual const GeneticProbability& GetLarvalKilling(VectorHabitatType::Enum) const = 0;
         virtual float GetLarvalHabitatReduction(VectorHabitatType::Enum, const std::string& species) = 0;
-        virtual const GeneticProbability& GetVillageSpatialRepellent() = 0;
-        virtual float GetADIVAttraction() = 0;
-        virtual float GetADOVAttraction() = 0;
-        virtual const GeneticProbability& GetOutdoorKilling() = 0;
-        virtual float GetOviTrapKilling(VectorHabitatType::Enum) = 0;
-        virtual const GeneticProbability& GetAnimalFeedKilling() = 0;
-        virtual const GeneticProbability& GetOutdoorRestKilling() = 0;
+        virtual const GeneticProbability& GetVillageSpatialRepellent() const = 0;
+        virtual float GetADIVAttraction() const = 0;
+        virtual float GetADOVAttraction() const = 0;
+        virtual const GeneticProbability& GetOutdoorKilling() const = 0;
+        virtual float GetOviTrapKilling(VectorHabitatType::Enum) const = 0;
+        virtual const GeneticProbability& GetAnimalFeedKilling() const = 0;
+        virtual const GeneticProbability& GetOutdoorRestKilling() const = 0;
         virtual bool  IsUsingIndoorKilling() const = 0;
-        virtual const GeneticProbability& GetIndoorKilling() = 0;
+        virtual const GeneticProbability& GetIndoorKilling() const = 0;
         virtual bool  IsUsingSugarTrap() const = 0;
         virtual const GeneticProbability& GetSugarFeedKilling() const = 0;
     };

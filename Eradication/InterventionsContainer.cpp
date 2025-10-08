@@ -95,47 +95,6 @@ namespace Kernel
         }
     }
 
-    std::list<IDistributableIntervention*> InterventionsContainer::GetInterventionsByType(const std::string &type_name)
-    {
-        std::list<IDistributableIntervention*> interventions_of_type;
-        LOG_DEBUG_F( "Looking for intervention of type %s\n", type_name.c_str() );
-        for (auto intervention : interventions)
-        {
-            std::string cur_iv_type_name = typeid( *intervention ).name();
-#ifndef WIN32
-            cur_iv_type_name = abi::__cxa_demangle(cur_iv_type_name.c_str(), 0, 0, nullptr );
-#endif
-            LOG_DEBUG_F("intervention name = %s\n", cur_iv_type_name.c_str());
-            if( cur_iv_type_name == type_name )
-            {
-                LOG_DEBUG("Found one...\n");
-                interventions_of_type.push_back( intervention );
-            }
-            /*else
-            {
-                LOG_INFO_F("No match: you asked about %s but I have %s\n", type_name, cur_iv_type_name);
-            }*/
-        }
-
-        return interventions_of_type;
-    }
-
-    std::list<IDistributableIntervention*> InterventionsContainer::GetInterventionsByName(const InterventionName& intervention_name)
-    {
-        std::list<IDistributableIntervention*> interventions_list;
-        LOG_DEBUG_F( "Looking for interventions with name %s\n", intervention_name.c_str() );
-        for( int i =0; i < intervention_names.size(); ++i )
-        {
-            if( intervention_names[ i ] == intervention_name )
-            {
-                interventions_list.push_back( interventions[ i ] );
-                break; // there's only one intervention with same InterventionName because we purge existing either by name or by type(class) when adding new ones
-            }
-        }
-
-        return interventions_list;
-    }
-
     std::list<void*> InterventionsContainer::GetInterventionsByInterface( iid_t iid )
     {
         std::list<void*> interface_list;
@@ -208,12 +167,6 @@ namespace Kernel
                 }
             }
         }
-    }
-
-    bool InterventionsContainer::ContainsExistingByType( const std::string &type_name)
-    {
-        IDistributableIntervention* p_intervention = GetIntervention(type_name);
-        return (p_intervention != nullptr);
     }
 
     bool InterventionsContainer::ContainsExistingByName( const InterventionName& rInputName )
