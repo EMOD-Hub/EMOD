@@ -43,9 +43,10 @@ ver_tag = "v{:s}.{:s}".format(ver_maj, ver_min)
 git_rev_handle = Popen(["git","rev-list","{:s}..HEAD".format(ver_tag),"--count"], stdout=PIPE, stderr=PIPE)
 rev = git_rev_handle.stdout.read().decode().strip().strip( '"\'' ).replace(" ","_")
 git_err = git_rev_handle.stderr.read().decode()
-# Raising an error breaks the Jenkins build; should be an error once off of Jenkins
-# if git_err:
-#     raise Exception(git_err)
+if git_err:
+    # Raising an error breaks the Jenkins build; should be an error once off of Jenkins
+    # raise Exception(git_err)
+    rev = '0'
 
 git_branch_handle = Popen( "git rev-parse --abbrev-ref HEAD".split(), stdout=PIPE )
 branch = git_branch_handle.stdout.read().decode().strip().strip( '"\'' ).replace(" ","_")
