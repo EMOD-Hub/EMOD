@@ -127,7 +127,6 @@
 #define Enable_Climate_Stochasticity_DESC_TEXT "Controls whether or not the climate has stochasticity."
 #define Enable_Coital_Dilution_DESC_TEXT "Controls whether or not coital dilution will occur."
 #define Enable_Default_Reporting_DESC_TEXT "Controls whether or not the default InsetChart.json report is created."
-#define Enable_Demographics_Birth_DESC_TEXT "Controls whether or not newborns have identical or heterogeneous characteristics."
 #define Enable_Demographics_Builtin_DESC_TEXT "Controls whether or not built-in demographics for default geography will be used. Note that the built-in demographics feature does not represent a real geographical location and is mostly used for testing."
 #define Enable_Demographics_Reporting_DESC_TEXT "Controls whether or not demographic summary data and age-binned reports are outputted to file."
 #define Enable_Demographics_Risk_DESC_TEXT "Controls whether or not the simulation includes the impact of disease risk in demographics."
