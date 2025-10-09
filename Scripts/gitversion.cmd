@@ -21,24 +21,19 @@ CALL git status > NUL: 2> NUL:
 IF %ERRORLEVEL% NEQ 0 ECHO Doesn't appear to be a Git repository. & GOTO NOGIT
 
 ECHO %USERNAME%> %TEMP_SCRATCH_FILE%
+
 :: Seed temp version info file with branch name
 git rev-parse --abbrev-ref HEAD >> %TEMP_SCRATCH_FILE%
+
 :: Append short commit hash and date to version info file (use --pretty=format to prevent extra newline)
 git show --no-patch --pretty="format:%%h%%n%%ai%%n" HEAD >> %TEMP_SCRATCH_FILE%
+
 :: Append length (count) of commit chain to version info file for revision number
 git rev-list --count HEAD >> %TEMP_SCRATCH_FILE%
 
 GOTO TEMPLATE
 
 :NOGIT
-
-:: If a version info file has already been provided externally then use that
-SET PROVIDED_VERSION_INFO_FILE="%1\version.provided.txt"
-
-IF EXIST %PROVIDED_VERSION_INFO_FILE% (
-    SET TEMP_SCRATCH_FILE=%PROVIDED_VERSION_INFO_FILE%
-    GOTO :TEMPLATE
-)
 
 :: butt redirects up against text to prevent extraneous spacing
 ECHO %USERNAME%> %TEMP_SCRATCH_FILE%
