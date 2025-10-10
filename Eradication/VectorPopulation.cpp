@@ -710,7 +710,7 @@ namespace Kernel
     {
         // Update adult transition probabilities:
         // calculated for each queue entry up to human indoor and outdoor feeding attempts
-        probs()->FinalizeTransitionProbabilites( species()->anthropophily, species()->indoor_feeding, species()->vsp_blood_meal_mortality ); // TODO: rename this function now??
+        probs()->FinalizeTransitionProbabilites( species()->anthropophily, species()->indoor_feeding, species()->vsp_blood_meal_mortality ); 
 
         // Update mortality from heat
         dryheatmortality = 0.0;
