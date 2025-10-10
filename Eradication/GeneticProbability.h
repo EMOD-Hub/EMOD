@@ -161,6 +161,7 @@ namespace Kernel
         explicit operator float() const;
 
         GeneticProbability expcdf( float dt ) const;
+        void CombineProbabilities( const GeneticProbability& right );
 
         void Add( const AlleleComboProbability& racp );
         std::vector<AlleleCombo> FindMissingAlleleCombos( const GeneticProbability& rgp ) const;

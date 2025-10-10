@@ -1,0 +1,56 @@
+{
+    "Metadata": {
+        "DateCreated": "Tue Jun 30 07:00:42 2015",
+        "Tool": "Eradication.exe",
+        "Author": "DTK",
+        "IdReference": "0",
+        "NodeCount": 1
+    },
+    "Defaults": {
+        "NodeID": -1,
+        "NodeAttributes": {
+            "Latitude": -1,
+            "Longitude": -1,
+            "Altitude": 0,
+            "Airport": 0,
+            "Region": 1,
+            "Seaport": 1,
+            "BirthRate": 8.715e-005,
+            "Urban": 0,
+            "AbovePoverty": 0.5
+        },
+        "IndividualAttributes": {
+            "AgeDistributionFlag": 3,
+            "AgeDistribution1": 0.000118,
+            "AgeDistribution2": 0,
+            "PrevalenceDistributionFlag": 0,
+            "PrevalenceDistribution1": 0,
+            "PrevalenceDistribution2": 0,
+            "ImmunityDistributionFlag": 0,
+            "ImmunityDistribution1": 0,
+            "ImmunityDistribution2": 0,
+            "RiskDistributionFlag": 0,
+            "RiskDistribution1": 0,
+            "RiskDistribution2": 0,
+            "MigrationHeterogeneityDistributionFlag": 0,
+            "MigrationHeterogeneityDistribution1": 0.25,
+            "MigrationHeterogeneityDistribution2": 0,
+            "PercentageChildren" : 0.7
+        }
+    },
+    "Nodes": [
+        {
+            "NodeID": 1,
+            "NodeAttributes": {
+                "InitialPopulation": 1,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 10000,
+                    "funestus"  : 0,
+                    "gambiae"   : 0
+                 },
+                "Latitude": 0,
+                "Longitude": 0
+            }
+        }
+    ]
+}

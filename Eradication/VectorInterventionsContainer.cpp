@@ -100,21 +100,21 @@ namespace Kernel
         float rate
     )
     {
-        p_attraction_ADIH = rate;
+        p_attraction_ADIH = 1.0f - ( 1.0f - p_attraction_ADIH ) * ( 1.0f - rate );
     }
 
     void VectorInterventionsContainer::UpdateArtificialDietKillingRate(
         float rate
     )
     {
-        p_kill_ADIH = rate;
+        p_kill_ADIH = 1.0f - ( 1.0f - p_kill_ADIH ) * ( 1.0f - rate );
     }
 
     void VectorInterventionsContainer::UpdateProbabilityOfIndRep(
         const GeneticProbability& prob
         )
     {
-        p_indrep = prob;
+        p_indrep.CombineProbabilities( prob );
     }
 
     void VectorInterventionsContainer::UpdateInsecticidalDrugKillingProbability( const GeneticProbability& prob )

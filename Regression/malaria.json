@@ -107,6 +107,7 @@
         { "path": "Malaria/109_Malaria_FPG_WorkflowOutput" },
         { "path": "Malaria/110_Malaria_FPG_SporozoiteMortality" },
         { "path": "Malaria/111_Malaria_FPG_OocystProgression" },
+        { "path": "Malaria/112_Malaria_PurgeExisting_Updates" },
         { "path": "Multicore_Nosibe/23_Malaria_Intervention_RTSSVaccine" },
         { "path": "Malaria/fpg_vs_base/1_Mort-1" },
         { "path": "Malaria/fpg_vs_base/2_Mort-2" },

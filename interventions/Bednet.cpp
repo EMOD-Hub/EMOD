@@ -19,10 +19,11 @@ namespace Kernel
     // --- AbstractBednet
     // ------------------------------------------------------------------------
     BEGIN_QUERY_INTERFACE_BODY( AbstractBednet )
+        HANDLE_INTERFACE( IAbstractBednet )
         HANDLE_INTERFACE( IReportInterventionDataAccess )
         HANDLE_INTERFACE( IConfigurable )
-        HANDLE_INTERFACE(IDistributableIntervention)
-        HANDLE_ISUPPORTS_VIA(IDistributableIntervention)
+        HANDLE_INTERFACE( IDistributableIntervention )
+        HANDLE_ISUPPORTS_VIA( IDistributableIntervention )
     END_QUERY_INTERFACE_BODY( AbstractBednet )
 
     AbstractBednet::AbstractBednet()
@@ -118,10 +119,15 @@ namespace Kernel
             return false;
         }
 
-        std::list<IDistributableIntervention*> net_list = context->GetInterventionsByName( GetName() );
-        for( IDistributableIntervention* p_bednet : net_list )
+        // We do not want users to have multiple bednets.
+        IAbstractBednet* abd;
+        for(auto* intervention : context->GetInterventions())
         {
-            p_bednet->SetExpired( true );
+            if(s_OK == intervention->QueryInterface( GET_IID( IAbstractBednet ), (void**)&abd ))
+            {
+                intervention->SetExpired( true ); // so bednets that send out expiration events will do so
+                break; // the person will have only one bednet intervention max
+            }
         }
 
         bool distributed = BaseIntervention::Distribute( context, pCCO );

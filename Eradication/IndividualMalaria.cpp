@@ -623,7 +623,7 @@ namespace Kernel
                 break;
 
             case MalariaDiagnosticType::PF_HRP2:
-                measurement = malaria_susceptibility->GetPfHRP2() * malaria_susceptibility->get_inv_microliters_blood();
+                measurement = malaria_susceptibility->GetPfHRP2();
                 break;
 
             case MalariaDiagnosticType::TRUE_PARASITE_DENSITY:

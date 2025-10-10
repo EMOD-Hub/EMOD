@@ -88,7 +88,7 @@
             "Detection_Threshold_True_Parasite_Density": 40.0,
             "Detection_Threshold_True_Gametocyte_Density": 1.0,
             "Add_Prevalence_By_HRP2": 1,
-            "Detection_Threshold_True_HRP2": 100000000.0,
+            "Detection_Threshold_True_HRP2": 5.0,
             "Age_Bins": [
                 10,
                 20,

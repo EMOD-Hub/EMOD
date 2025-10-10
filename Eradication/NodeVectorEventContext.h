@@ -71,23 +71,20 @@ namespace Kernel
         // INodeVectorInterventionEffects;
         virtual const GeneticProbability& GetLarvalKilling(VectorHabitatType::Enum) const override;
         virtual float GetLarvalHabitatReduction(VectorHabitatType::Enum, const std::string& species) override;
-        virtual const GeneticProbability& GetVillageSpatialRepellent() override;
-        virtual const GeneticProbability& GetVillageEmanatorNotRepelledOrKilledOrAffected() override;
-        virtual float GetADIVAttraction() override;
-        virtual float GetADOVAttraction() override;
-        virtual const GeneticProbability& GetOutdoorKilling() override;
-        virtual float GetOviTrapKilling(VectorHabitatType::Enum) override;
-        virtual const GeneticProbability& GetAnimalFeedKilling() override;
-        virtual const GeneticProbability& GetOutdoorRestKilling() override;
+        virtual const GeneticProbability& GetVillageSpatialRepellent() const override;
+        virtual const GeneticProbability& GetVillageEmanatorNotRepelledOrKilledOrAffected() const override;
+        virtual float GetADIVAttraction() const override;
+        virtual float GetADOVAttraction() const override;
+        virtual const GeneticProbability& GetOutdoorKilling() const override;
+        virtual float GetOviTrapKilling(VectorHabitatType::Enum) const override;
+        virtual const GeneticProbability& GetAnimalFeedKilling() const override;
+        virtual const GeneticProbability& GetOutdoorRestKilling() const override;
         virtual bool  IsUsingIndoorKilling() const override;
-        virtual const GeneticProbability& GetIndoorKilling() override;
+        virtual const GeneticProbability& GetIndoorKilling() const override;
         virtual bool  IsUsingSugarTrap() const override;
         virtual const GeneticProbability& GetSugarFeedKilling() const override;
 
-        VectorHabitatType::Enum larval_killing_target;
         VectorHabitatType::Enum larval_reduction_target;
-        VectorHabitatType::Enum ovitrap_killing_target;
-
         LarvalHabitatMultiplier larval_reduction;
 
         // IMosquitoReleaseConsumer
@@ -100,14 +97,14 @@ namespace Kernel
                                         float    releasedInfectious ) override;
 
     protected: 
-        GeneticProbability pLarvalKilling;
+        std::vector<GeneticProbability> larval_killing_list;
+        std::vector<float> oviposition_killing_list;
         float              pLarvalHabitatReduction;
         GeneticProbability pVillageSpatialRepellent;
         GeneticProbability pVillageNotRepelledOrKilledOrAffected;
         float              pADIVAttraction;
         float              pADOVAttraction;
         GeneticProbability pOutdoorKilling;
-        float              pOviTrapKilling;
         GeneticProbability pAnimalFeedKilling;
         GeneticProbability pOutdoorRestKilling;
         bool               isUsingIndoorKilling;
@@ -116,6 +113,7 @@ namespace Kernel
         GeneticProbability pSugarFeedKilling;
 
     private:
+        float CombineProbabilities( float prob1, float prob2 );
         NodeVectorEventContextHost() : NodeEventContextHost(nullptr) { }
     };
 }

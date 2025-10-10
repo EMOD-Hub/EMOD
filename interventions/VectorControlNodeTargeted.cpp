@@ -133,8 +133,7 @@ namespace Kernel
 
     bool SimpleVectorControlNode::Distribute( INodeEventContext *pNodeContext, IEventCoordinator2 *pEC )
     {
-        // Just one of each of these allowed
-        pNodeContext->PurgeExisting( typeid(*this).name() ); // hmm?  let's come back to this and query the right interfaces everywhere.
+        pNodeContext->PurgeExistingByName( typeid( *this ).name(), name );
         return BaseNodeIntervention::Distribute( pNodeContext, pEC );
     }
     
@@ -260,6 +259,12 @@ namespace Kernel
     {
     }
 
+    bool Larvicides::Distribute( INodeEventContext* pNodeContext, IEventCoordinator2* pEC )
+    {
+        // stacked automatically, SimpleVectorControlNode Distribute() purges existing by name
+        return BaseNodeIntervention::Distribute( pNodeContext, pEC );
+    }
+
     void Larvicides::ApplyEffects( float dt )
     {
         release_assert( m_pINVIC != nullptr );
@@ -355,7 +360,7 @@ namespace Kernel
 
         initConfigComplexCollectionType( "Insecticides", p_iwec, MISS_Insecticides_DESC_TEXT );
 
-        bool configured = JsonConfigurable::Configure( config );
+        bool configured = BaseNodeIntervention::Configure( config );
         if( !JsonConfigurable::_dryrun && configured )
         {
             p_iwec->CheckConfiguration();
@@ -434,7 +439,7 @@ namespace Kernel
 
         initConfigComplexCollectionType( "Insecticides", p_iwec, MIISS_Insecticides_DESC_TEXT );
 
-        bool configured = JsonConfigurable::Configure( config );
+        bool configured = BaseNodeIntervention::Configure( config );
         if( !JsonConfigurable::_dryrun && configured )
         {
             p_iwec->CheckConfiguration();

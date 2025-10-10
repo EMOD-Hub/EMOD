@@ -643,6 +643,15 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
         }
         IMalariaSusceptibility* susceptibility_malaria = individual_malaria->GetMalariaSusceptibilityContext();
 
+        if(add_hrp2 && susceptibility_malaria->GetPfHRP2() > detection_threshold_true_hrp2)
+        {
+            if(is2to10)
+            {
+                m_pReportData->sum_hrp2_2to10 += mc_weight;
+            }
+            m_pReportData->sum_hrp2_by_agebin.at( agebin ) += mc_weight;
+        }
+
         // push back today's disease variables for infected individuals
         if ( context->IsInfected() )
         {
@@ -650,7 +659,7 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
             float measured_gametocyte_count = individual_malaria->GetDiagnosticMeasurementForReports( MalariaDiagnosticType::BLOOD_SMEAR_GAMETOCYTES );
             float true_parasite_density     = susceptibility_malaria->get_parasite_density();
             float true_gametocyte_density   = individual_malaria->GetGametocyteDensity();
-            float true_hrp2                 = susceptibility_malaria->GetPfHRP2();
+
 
             release_assert( detection_thresholds.size() == MalariaDiagnosticType::pairs::count() );
 
@@ -691,15 +700,6 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
                     m_pReportData->sum_log_true_parasite_density_by_agebin.at(agebin) += log10_true_parasite;
                 }
 
-            }
-
-            if( add_hrp2 && ( true_hrp2 > detection_threshold_true_hrp2) )
-            {
-                if(is2to10)
-                {
-                    m_pReportData->sum_hrp2_2to10 += mc_weight;
-                }
-                m_pReportData->sum_hrp2_by_agebin.at(agebin) += mc_weight;
             }
 
             int PfPRbin = ReportUtilities::GetBinIndex( true_parasite_density, PfPRbins );

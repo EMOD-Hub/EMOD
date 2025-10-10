@@ -82,7 +82,7 @@ namespace Kernel
         return success;
     }
 
-    void NodeSTIEventContextHost::StageExistingForPurgingIfQualifies( const std::string& iv_name,
+    void NodeSTIEventContextHost::StageExistingForPurgingIfQualifies( const std::string& type_name,
                                                                       node_intervention_qualify_function_t qual_func )
     {
         // -----------------------------------------------------------------
@@ -91,9 +91,9 @@ namespace Kernel
         for (auto intervention : node_interventions)
         {
             std::string cur_iv_type_name = typeid( *intervention ).name();
-            if( (cur_iv_type_name == iv_name) && qual_func( intervention ) )
+            if( (cur_iv_type_name == type_name) && qual_func( intervention ) )
             {
-                LOG_INFO_F("Found an existing intervention by that name (%s) which we are purging\n", iv_name.c_str());
+                LOG_INFO_F("Found an existing intervention '%s' in node %d. Purging.\n", type_name.c_str(), GetId() );
                 m_StagedNodeInterventionsToPurge.push_back( intervention );
                 break;
             }

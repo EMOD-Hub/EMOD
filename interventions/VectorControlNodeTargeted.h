@@ -75,7 +75,7 @@ namespace Kernel
         virtual ~Larvicides();
 
         virtual bool Configure( const Configuration * config ) override;
-
+        virtual bool Distribute( INodeEventContext* context, IEventCoordinator2* pEC = nullptr ) override;
         virtual ReportInterventionData GetReportInterventionData() const override;
 
     protected:

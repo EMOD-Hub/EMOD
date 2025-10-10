@@ -52,11 +52,9 @@ namespace Kernel
         // IIndividualHumanInterventionsContext
         virtual void SetContextTo(IIndividualHumanContext* context) override;
         virtual IIndividualHumanContext* GetParent() override;
-        virtual std::list<IDistributableIntervention*> GetInterventionsByType(const std::string& type_name) override;
-        virtual std::list<IDistributableIntervention*> GetInterventionsByName(const InterventionName& intervention_name) override;
-        virtual std::list<void*>                       GetInterventionsByInterface( iid_t iid ) override;
-        virtual void PurgeExisting( const std::string& iv_name ) override;
-        virtual bool ContainsExisting( const std::string &iv_name ) override;
+        virtual std::list<void*> GetInterventionsByInterface( iid_t iid ) override;
+        virtual void PurgeExistingByType( const std::string& type_name ) override;
+        virtual void PurgeExistingByName( const std::string& type_name, const InterventionName& name ) override;
         virtual bool ContainsExistingByName( const InterventionName& name ) override;
         virtual void ChangeProperty( const char *property, const char* new_value ) override;
         virtual const std::vector<IDistributableIntervention*>& GetInterventions() const override;

@@ -446,7 +446,7 @@ namespace Kernel
 
     float SusceptibilityMalaria::GetPfHRP2() const
     {
-        return m_PfHRP2_pg;
+        return m_PfHRP2_pg * m_inv_microliters_blood;
     }
 
     void SusceptibilityMalaria::UpdateInfectionCleared()

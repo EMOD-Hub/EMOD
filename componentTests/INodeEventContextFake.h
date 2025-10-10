@@ -190,12 +190,14 @@ public:
     virtual void RegisterTravelDistributionSource(  ITravelLinkedDistributionSource *tles, TravelEventType type) { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
     virtual void UnregisterTravelDistributionSource(ITravelLinkedDistributionSource *tles, TravelEventType type) { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
 
-    virtual void PurgeExisting( const std::string& iv_name ) override
+    virtual void PurgeExistingByType( const std::string& type_name ) override
+    {
+    }
+    virtual void PurgeExistingByName( const std::string& type_name, const InterventionName& name ) override
     {
     }
     virtual const std::list<INodeDistributableIntervention*>& GetNodeInterventions() const override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented." ); }
 
-    virtual std::list<INodeDistributableIntervention*> GetInterventionsByType(const std::string& type_name) { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
     virtual bool ContainsExistingByName( const InterventionName& iv_name ) { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
        
     virtual bool IsInPolygon(float* vertex_coords, int numcoords) { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
@@ -271,16 +273,16 @@ public:
     // ----------------------------------
     virtual const GeneticProbability& GetLarvalKilling( VectorHabitatType::Enum ) const override { return m_Junk; }
     virtual float GetLarvalHabitatReduction( VectorHabitatType::Enum, const std::string& species ) override  { return 0.0; }
-    virtual const GeneticProbability& GetVillageSpatialRepellent() override  { return m_Junk; }
-    virtual const GeneticProbability& GetVillageEmanatorNotRepelledOrKilledOrAffected() override  { return m_Junk; }
-    virtual float GetADIVAttraction() override  { return 0.0; }
-    virtual float GetADOVAttraction() override  { return 0.0; }
-    virtual const GeneticProbability& GetOutdoorKilling() override  { return m_Junk; }
-    virtual float GetOviTrapKilling( VectorHabitatType::Enum ) override { return 0.0; }
-    virtual const GeneticProbability& GetAnimalFeedKilling() override  { return m_Junk; }
-    virtual const GeneticProbability& GetOutdoorRestKilling() override  { return m_Junk; }
+    virtual const GeneticProbability& GetVillageSpatialRepellent() const override  { return m_Junk; }
+    virtual const GeneticProbability& GetVillageSpatialRepellent() const override  { return m_Junk; }
+    virtual float GetADIVAttraction() const override  { return 0.0; }
+    virtual float GetADOVAttraction() const override  { return 0.0; }
+    virtual const GeneticProbability& GetOutdoorKilling() const override  { return m_Junk; }
+    virtual float GetOviTrapKilling( VectorHabitatType::Enum ) const override { return 0.0; }
+    virtual const GeneticProbability& GetAnimalFeedKilling() const override  { return m_Junk; }
+    virtual const GeneticProbability& GetOutdoorRestKilling() const override  { return m_Junk; }
     virtual bool  IsUsingIndoorKilling() const override { return false; }
-    virtual const GeneticProbability& GetIndoorKilling() override  { return m_Junk; }
+    virtual const GeneticProbability& GetIndoorKilling() const override  { return m_Junk; }
     virtual bool  IsUsingSugarTrap() const override { return false; }
     virtual const GeneticProbability& GetSugarFeedKilling() const override { return m_Junk; }
 

@@ -1,0 +1,473 @@
+{
+    "Events": [
+        {
+            "Event_Coordinator_Config": {
+                "Intervention_Config": {
+                    "Intervention_Name": "SugarTrap1",
+                    "Cost_To_Consumer": 1.0,
+                    "Killing_Config": {
+                        "Initial_Effect": 0.1,
+                        "class": "WaningEffectConstant"
+                    },
+                    "Expiration_Period_Distribution": "CONSTANT_DISTRIBUTION",
+                    "Expiration_Period_Constant": 100,
+                    "class": "SugarTrap"
+                },
+                "class": "StandardInterventionDistributionEventCoordinator"
+            },
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            },
+            "Start_Day": 2,
+            "class": "CampaignEvent"
+        },
+        {
+            "Event_Coordinator_Config": {
+                "Note": "Previous SugarTrap should be discarded even though they have different Intervention_Name",
+                "Intervention_Config": {
+                    "Cost_To_Consumer": 1.0,
+                    "Intervention_Name": "SugarTrap2",
+                    "Killing_Config": {
+                        "Initial_Effect": 0,
+                        "class": "WaningEffectConstant"
+                    },
+                    "Expiration_Period_Distribution": "CONSTANT_DISTRIBUTION",
+                    "Expiration_Period_Constant": 100,
+                    "class": "SugarTrap"
+                },
+                "class": "StandardInterventionDistributionEventCoordinator"
+            },
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            },
+            "Start_Day": 4,
+            "class": "CampaignEvent"
+        },
+                {
+            "Event_Coordinator_Config": {
+                "Demographic_Coverage": 0.5, 
+                "Intervention_Config": {
+                    "Repelling_Config": {
+                        "class": "WaningEffectConstant",
+                        "Initial_Effect": 0.0
+                    }, 
+                    "Blocking_Config": {
+                        "Box_Duration": 3650, 
+                        "Initial_Effect": 1, 
+                        "class": "WaningEffectBox"
+                    }, 
+                    "Cost_To_Consumer": 3.75, 
+                    "Killing_Config": {
+                        "Box_Duration": 3650, 
+                        "Initial_Effect": 0.7, 
+                        "class": "WaningEffectBox"
+                    }, 
+                    "Usage_Config": {
+                        "class": "WaningEffectConstant",
+                        "Initial_Effect": 1.0
+                    }, 
+                    "class": "SimpleBednet"
+                }, 
+                "Target_Demographic": "Everyone", 
+                "class": "StandardInterventionDistributionEventCoordinator"
+            }, 
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            }, 
+            "Start_Day": 3, 
+            "class": "CampaignEvent"
+        }, 
+                {
+            "Event_Coordinator_Config": {
+                "Demographic_Coverage": 0.5, 
+                "Intervention_Config": {
+                    "Intervention_Name":"Bednet2",
+                    "Repelling_Config": {
+                        "class": "WaningEffectConstant",
+                        "Initial_Effect": 0.0
+                    }, 
+                    "Blocking_Config": {
+                        "Box_Duration": 3650, 
+                        "Initial_Effect": 1, 
+                        "class": "WaningEffectBox"
+                    }, 
+                    "Cost_To_Consumer": 3.75, 
+                    "Killing_Config": {
+                        "Box_Duration": 3650, 
+                        "Initial_Effect": 0.7, 
+                        "class": "WaningEffectBox"
+                    }, 
+                    "Usage_Config": {
+                        "class": "WaningEffectConstant",
+                        "Initial_Effect": 1.0
+                    }, 
+                    "class": "SimpleBednet"
+                }, 
+                "Target_Demographic": "Everyone", 
+                "class": "StandardInterventionDistributionEventCoordinator"
+            }, 
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            }, 
+            "Start_Day": 5, 
+            "class": "CampaignEvent"
+        }, 
+                        {
+            "Event_Coordinator_Config": {
+                "Demographic_Coverage": 0.5, 
+                "Intervention_Config": {
+                    "Intervention_Name":"Bednet2",
+                    "Repelling_Config": {
+                        "class": "WaningEffectConstant",
+                        "Initial_Effect": 0.0
+                    }, 
+                    "Blocking_Config": {
+                        "Box_Duration": 3650, 
+                        "Initial_Effect":0, 
+                        "class": "WaningEffectBox"
+                    }, 
+                    "Cost_To_Consumer": 1, 
+                    "Killing_Config": {
+                        "Box_Duration": 3650, 
+                        "Initial_Effect": 0, 
+                        "class": "WaningEffectBox"
+                    }, 
+                    "Usage_Config": {
+                        "class": "WaningEffectConstant",
+                        "Initial_Effect": 1.0
+                    }, 
+                    "class": "SimpleBednet"
+                }, 
+                "Target_Demographic": "Everyone", 
+                "class": "StandardInterventionDistributionEventCoordinator"
+            }, 
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            }, 
+            "Start_Day": 7, 
+            "class": "CampaignEvent"
+        }, 
+        {
+            "Start_Day": 5,
+            "class": "CampaignEvent",
+            "Event_Coordinator_Config": {
+                "Number_Repetitions": 1,
+                "class": "StandardInterventionDistributionEventCoordinator",
+                "Intervention_Config": {
+                    "Intervention_Name": "InputEIR1",
+                    "EIR_Type": "MONTHLY",
+                    "Monthly_EIR": [
+                        2,
+                        2,
+                        2,
+                        2,
+                        2,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "class": "InputEIR"
+                }
+            },
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            }
+        },
+        {
+            "Start_Day": 7,
+            "class": "CampaignEvent",
+            "Event_Coordinator_Config": {
+                "Number_Repetitions": 1,
+                "class": "StandardInterventionDistributionEventCoordinator",
+                "Intervention_Config": {
+                    "Note": "Due to different Intervention_Name, both InputEIR interventions coexist",
+                    "Intervention_Name": "InputEIR2",
+                    "EIR_Type": "MONTHLY",
+                    "Monthly_EIR": [
+                        2,
+                        2,
+                        2,
+                        2,
+                        2,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "class": "InputEIR"
+                }
+            },
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            }
+        },
+        {
+            "Start_Day": 9,
+            "class": "CampaignEvent",
+            "Event_Coordinator_Config": {
+                "Number_Repetitions": 1,
+                "class": "StandardInterventionDistributionEventCoordinator",
+                "Intervention_Config": {
+                    "Note": "InputEIR2 is replaced with this intervention.",
+                    "Intervention_Name": "InputEIR2",
+                    "EIR_Type": "MONTHLY",
+                    "Monthly_EIR": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "class": "InputEIR"
+                }
+            },
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            }
+        },
+        {
+            "Start_Day": 9,
+            "class": "CampaignEvent",
+            "Event_Coordinator_Config": {
+                "Number_Repetitions": 1,
+                "class": "StandardInterventionDistributionEventCoordinator",
+                "Intervention_Config": {
+                    "Note": "InputEIR1 is replaced with this intervention.",
+                    "Intervention_Name": "InputEIR1",
+                    "EIR_Type": "MONTHLY",
+                    "Monthly_EIR": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "class": "InputEIR"
+                }
+            },
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            }
+        },
+        {
+            "Event_Coordinator_Config": {
+                "Demographic_Coverage": 0.8,
+                "Intervention_Config": {
+                    "Intervention_Name": "SHM1",
+                    "Repelling_Config": {
+                        "Initial_Effect": 1,
+                        "class": "WaningEffectConstant"
+                    },
+                    "Cost_To_Consumer": 1.0,
+                    "Killing_Config": {
+                        "Box_Duration": 100,
+                        "Decay_Time_Constant": 150,
+                        "Initial_Effect": 0.0,
+                        "class": "WaningEffectBoxExponential"
+                    },
+                    "class": "ScreeningHousingModification"
+                },
+                "Target_Demographic": "Everyone",
+                "class": "StandardInterventionDistributionEventCoordinator"
+            },
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            },
+            "Start_Day": 10,
+            "class": "CampaignEvent"
+        },
+        {
+            "Event_Coordinator_Config": {
+                "Demographic_Coverage": 1,
+                "Intervention_Config": {
+                    "Intervention_Name": "SHM1",
+                    "Repelling_Config": {
+                        "Initial_Effect": 0.5,
+                        "class": "WaningEffectConstant"
+                    },
+                    "Cost_To_Consumer": 1.0,
+                    "Killing_Config": {
+                        "Box_Duration": 100,
+                        "Decay_Time_Constant": 150,
+                        "Initial_Effect": 0,
+                        "class": "WaningEffectBoxExponential"
+                    },
+                    "class": "ScreeningHousingModification"
+                },
+                "Target_Demographic": "Everyone",
+                "class": "StandardInterventionDistributionEventCoordinator"
+            },
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            },
+            "Start_Day": 12,
+            "class": "CampaignEvent"
+        },
+        {
+            "Event_Coordinator_Config": {
+                "Demographic_Coverage": 1,
+                "Intervention_Config": {
+                    "Note": "Both exist together because different Intervention_Name",
+                    "Intervention_Name": "SHM2",
+                    "Repelling_Config": {
+                        "Initial_Effect": 0,
+                        "class": "WaningEffectConstant"
+                    },
+                    "Cost_To_Consumer": 1.0,
+                    "Killing_Config": {
+                        "Initial_Effect": 0.5,
+                        "class": "WaningEffectConstant"
+                    },
+                    "class": "ScreeningHousingModification"
+                },
+                "Target_Demographic": "Everyone",
+                "class": "StandardInterventionDistributionEventCoordinator"
+            },
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            },
+            "Start_Day": 14,
+            "class": "CampaignEvent"
+        },
+        {
+            "Event_Coordinator_Config": {
+                "Demographic_Coverage": 1,
+                "Intervention_Config": {
+                    "Note": "Replace SHM2",
+                    "Intervention_Name": "SHM2",
+                    "Repelling_Config": {
+                        "Initial_Effect": 0,
+                        "class": "WaningEffectConstant"
+                    },
+                    "Cost_To_Consumer": 1.0,
+                    "Killing_Config": {
+                        "Initial_Effect": 0,
+                        "class": "WaningEffectConstant"
+                    },
+                    "class": "ScreeningHousingModification"
+                },
+                "Target_Demographic": "Everyone",
+                "class": "StandardInterventionDistributionEventCoordinator"
+            },
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            },
+            "Start_Day": 15,
+            "class": "CampaignEvent"
+        },
+        {
+            "Event_Coordinator_Config": {
+                "Demographic_Coverage": 1,
+                "Intervention_Config": {
+                    "Note": "Replace SHM1",
+                    "Intervention_Name": "SHM1",
+                    "Repelling_Config": {
+                        "Initial_Effect": 0,
+                        "class": "WaningEffectConstant"
+                    },
+                    "Cost_To_Consumer": 1.0,
+                    "Killing_Config": {
+                        "Initial_Effect": 0,
+                        "class": "WaningEffectConstant"
+                    },
+                    "class": "ScreeningHousingModification"
+                },
+                "Target_Demographic": "Everyone",
+                "class": "StandardInterventionDistributionEventCoordinator"
+            },
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            },
+            "Start_Day": 17,
+            "class": "CampaignEvent"
+        },
+        {
+            "class": "CampaignEvent",
+            "Start_Day": 19,
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            },
+            "Event_Coordinator_Config": {
+                "class": "StandardInterventionDistributionEventCoordinator",
+                "Target_Demographic": "Everyone",
+                "Demographic_Coverage": 1,
+                "Intervention_Config": {
+                    "class": "Ivermectin",
+                    "Intervention_Name": "Ivermectin1",
+                    "Cost_To_Consumer": 1,
+                    "Killing_Config": {
+                        "class": "WaningEffectBox",
+                        "Initial_Effect": 0.2,
+                        "Box_Duration": 100
+                    }
+                }
+            }
+        },
+        {
+            "class": "CampaignEvent",
+            "Start_Day": 21,
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            },
+            "Event_Coordinator_Config": {
+                "class": "StandardInterventionDistributionEventCoordinator",
+                "Target_Demographic": "Everyone",
+                "Demographic_Coverage": 1,
+                "Intervention_Config": {
+                    "class": "Ivermectin",
+                    "Cost_To_Consumer": 1,
+                    "Intervention_Name": "Ivermectin2",
+                    "Killing_Config": {
+                        "class": "WaningEffectBox",
+                        "Initial_Effect": 0.2,
+                        "Box_Duration": 100
+                    }
+                }
+            }
+        },
+        {
+            "class": "CampaignEvent",
+            "Start_Day": 23,
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            },
+            "Event_Coordinator_Config": {
+                "class": "StandardInterventionDistributionEventCoordinator",
+                "Target_Demographic": "Everyone",
+                "Demographic_Coverage": 1,
+                "Intervention_Config": {
+                    "class": "Ivermectin",
+                    "Cost_To_Consumer": 1,
+                    "Intervention_Name": "Ivermectin2",
+                    "Killing_Config": {
+                        "class": "WaningEffectBox",
+                        "Initial_Effect": 0.1,
+                        "Box_Duration": 100
+                    }
+                }
+            }
+        }
+    ],
+    "Use_Defaults": 1
+}
