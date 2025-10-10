@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "emod-common"
+dynamic = ["version"]
+description = "PyPI distribution of EMOD files for the Generic sim type"
+license = "MIT"
+authors = [
+]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+]
+classifiers = [
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: C++",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+
+[project.optional-dependencies]
+docs = [
+]
+tests = [
+]
+
+[project.urls]
+Homepage = "https://www.idmod.org/tool/emod-generic/"
+Documentation = "https://docs.idmod.org/projects/emod/en/latest/"
+Repository = "https://github.com/EMOD-Hub/EMOD"
+Issues = "https://github.com/EMOD-Hub/EMOD/issues"
+
+[tool.setuptools.package-data]
+"*" = ["*.zip"]
+
+[tool.setuptools.dynamic]
+version = {file = ["src/version"]}
