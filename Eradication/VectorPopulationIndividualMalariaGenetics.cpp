@@ -262,8 +262,7 @@ namespace Kernel
     {
         const VectorGenome& r_genome = pCohort->GetGenome();
         IndoorOutdoorProbabilities probs;
-        // we need to factor in this node-level probability
-        // returningmortality is related to OutdoorRestKill where the vector is resting after a feed
+
         if( routeVectorToHuman == TransmissionRoute::TRANSMISSIONROUTE_VECTOR_TO_HUMAN_INDOOR )
         {
             probs.die_during_feeding    = pIVIE->GetDieDuringFeeding().GetValue(    m_SpeciesIndex, r_genome );

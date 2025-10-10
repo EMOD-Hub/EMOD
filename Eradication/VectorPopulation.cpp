@@ -999,18 +999,18 @@ namespace Kernel
         feed_probs.successful_feed_attempt_outdoor = p_local_survivability * feed_attempt_outdoor;
         feed_probs.survive_without_feeding         = p_local_survivability * survive_without_feeding;
 
-        feed_probs.indoor.successful_feed_human    = probs()->indoor_successfulfeed_human.GetValue( m_SpeciesIndex, r_genome ) * x_infectiouscorrection;
         feed_probs.indoor.successful_feed_ad       = probs()->indoor_successfulfeed_AD.GetValue(    m_SpeciesIndex, r_genome );
         feed_probs.indoor.die_before_feeding       = probs()->indoor_diebeforefeeding.GetValue(     m_SpeciesIndex, r_genome );
         feed_probs.indoor.not_available            = probs()->indoor_hostnotavailable.GetValue(     m_SpeciesIndex, r_genome );
         feed_probs.indoor.die_during_feeding       = probs()->indoor_dieduringfeeding.GetValue(     m_SpeciesIndex, r_genome ) * x_infectioushfmortmod;
         feed_probs.indoor.die_after_feeding        = probs()->indoor_diepostfeeding.GetValue( m_SpeciesIndex, r_genome ) * x_infectiouscorrection;
+        feed_probs.indoor.successful_feed_human = probs()->indoor_successfulfeed_human.GetValue( m_SpeciesIndex, r_genome ) * x_infectiouscorrection;
 
-        feed_probs.outdoor.successful_feed_human   = probs()->outdoor_successfulfeed_human.GetValue( m_SpeciesIndex, r_genome ) * x_infectiouscorrection;
         feed_probs.outdoor.die_before_feeding      = probs()->outdoor_diebeforefeeding;
         feed_probs.outdoor.not_available           = probs()->outdoor_hostnotavailable.GetValue(     m_SpeciesIndex, r_genome );
         feed_probs.outdoor.die_during_feeding      = probs()->outdoor_dieduringfeeding.GetValue(     m_SpeciesIndex, r_genome ) * x_infectioushfmortmod;
         feed_probs.outdoor.die_after_feeding       = probs()->outdoor_diepostfeeding.GetValue( m_SpeciesIndex, r_genome ) * x_infectiouscorrection;
+        feed_probs.outdoor.successful_feed_human = probs()->outdoor_successfulfeed_human.GetValue( m_SpeciesIndex, r_genome ) * x_infectiouscorrection;
 
         UpdateSugarKilling( cohort, feed_probs );
 
