@@ -20,7 +20,18 @@ namespace Kernel
     class Insecticide;
     struct IBednetConsumer;
 
-    class AbstractBednet : public BaseIntervention
+    struct IAbstractBednet : public ISupports
+    {
+    public:
+        virtual bool  IsUsingBednet()       const = 0;
+        virtual void  UpdateUsage( float dt )     = 0;
+        virtual bool  CheckExpiration( float dt ) = 0;
+        virtual float GetEffectUsage()      const = 0;
+
+        IMPLEMENT_NO_REFERENCE_COUNTING()
+    };
+
+    class AbstractBednet : public BaseIntervention, public IAbstractBednet
     {
     public:
         AbstractBednet();
@@ -28,6 +39,12 @@ namespace Kernel
         virtual ~AbstractBednet();
 
         virtual bool Configure( const Configuration * config ) override;
+
+        // IAbstractBednet
+        virtual bool  IsUsingBednet() const { return false; };
+        virtual void  UpdateUsage( float dt ) {};
+        virtual bool  CheckExpiration( float dt ) { return true; };
+        virtual float GetEffectUsage() const { return 0.0f; };
 
         // IDistributableIntervention
         virtual bool Distribute( IIndividualHumanInterventionsContext *context, ICampaignCostObserver * const pCCO ) override;
@@ -44,16 +61,11 @@ namespace Kernel
         virtual bool ConfigureEvents( const Configuration* config ) { return true; } // should call JsonConfigurable::Configure()
 
         virtual void UpdateBlockingAndKilling( float dt );
-        virtual void UpdateUsage( float dt ) = 0;
-        virtual bool IsUsingBednet() const = 0;
-        virtual bool CheckExpiration( float dt ) = 0;
-
         virtual void UseBednet();
 
         virtual GeneticProbability GetEffectKilling() const;
         virtual GeneticProbability GetEffectBlocking() const;
         virtual GeneticProbability GetEffectRepelling() const;
-        virtual float GetEffectUsage() const = 0;
 
         void BroadcastEvent( const EventTrigger& trigger ) const;
 

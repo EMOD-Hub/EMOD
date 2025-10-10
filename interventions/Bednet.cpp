@@ -19,10 +19,11 @@ namespace Kernel
     // --- AbstractBednet
     // ------------------------------------------------------------------------
     BEGIN_QUERY_INTERFACE_BODY( AbstractBednet )
+        HANDLE_INTERFACE( IAbstractBednet )
         HANDLE_INTERFACE( IReportInterventionDataAccess )
         HANDLE_INTERFACE( IConfigurable )
-        HANDLE_INTERFACE(IDistributableIntervention)
-        HANDLE_ISUPPORTS_VIA(IDistributableIntervention)
+        HANDLE_INTERFACE( IDistributableIntervention )
+        HANDLE_ISUPPORTS_VIA( IDistributableIntervention )
     END_QUERY_INTERFACE_BODY( AbstractBednet )
 
     AbstractBednet::AbstractBednet()
@@ -119,10 +120,10 @@ namespace Kernel
         }
 
         // We do not want users to have multiple bednets.
-        AbstractBednet* abd;
+        IAbstractBednet* abd;
         for(auto* intervention : context->GetInterventions())
         {
-            if(s_OK != context->QueryInterface( GET_IID( AbstractBednet ), (void**)&abd ))
+            if(s_OK == intervention->QueryInterface( GET_IID( IAbstractBednet ), (void**)&abd ))
             {
                 intervention->SetExpired( true ); // so bednets that send out expiration events will do so
                 break; // the person will have only one bednet intervention max
