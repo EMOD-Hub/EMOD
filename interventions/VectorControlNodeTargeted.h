@@ -20,7 +20,6 @@ namespace Kernel
     struct IDistribution;
 
     ENUM_DEFINE(ArtificialDietTarget,
-        //ENUM_VALUE_SPEC(AD_WithinHouse             , 20) // to be handled as individual rather than node-targeted intervention
         ENUM_VALUE_SPEC(AD_WithinVillage             , 21)
         ENUM_VALUE_SPEC(AD_OutsideVillage            , 22))
 

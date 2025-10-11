@@ -20,6 +20,7 @@ namespace Kernel
     , larval_reduction( false, -FLT_MAX, FLT_MAX, 0.0f )
     , pLarvalHabitatReduction(0)
     , pVillageSpatialRepellent(0)
+    , pOutdoorNodeEmanatorKilling(0)
     , pVillageNotRepelledOrKilledOrAffected(1)
     , pADIVAttraction(0)
     , pADOVAttraction(0)
@@ -145,12 +146,13 @@ namespace Kernel
     }
 
     void
-    NodeVectorEventContextHost::UpdateOutdoorNodeEmanator( const float coverage,
-        const GeneticProbability& repelling, const GeneticProbability& killing
+    NodeVectorEventContextHost::UpdateOutdoorNodeEmanator(
+        const GeneticProbability& repelling, 
+        const GeneticProbability& killing
     )
     {
-        pVillageSpatialRepellent = pVillageSpatialRepellent + pVillageNotRepelledOrKilledOrAffected * coverage * repelling;  // all the vectors that have been repelled
-        pVillageNotRepelledOrKilledOrAffected = pVillageNotRepelledOrKilledOrAffected * ( 1 - coverage *  repelling - coverage * killing + coverage * repelling * killing ); // vectors that have not be repelled or killed and not affected by the intervention 
+        pVillageSpatialRepellent.CombineProbabilities( repelling );
+        pOutdoorNodeEmanatorKilling.CombineProbabilities( killing );
     }
 
     void
@@ -259,9 +261,9 @@ namespace Kernel
         return pVillageSpatialRepellent;
     }
 
-    const GeneticProbability& NodeVectorEventContextHost::GetVillageEmanatorNotRepelledOrKilledOrAffected()
+    const GeneticProbability& NodeVectorEventContextHost::GetVillageEmanatorKilling() const
     {
-        return pVillageNotRepelledOrKilledOrAffected;
+        return pOutdoorNodeEmanatorKilling;
     }
 
     float NodeVectorEventContextHost::GetADIVAttraction() const
@@ -304,7 +306,6 @@ namespace Kernel
 
     const GeneticProbability& NodeVectorEventContextHost::GetOutdoorRestKilling() const
     {
-        // affected by OutdoorRestKill and OutdoorNodeEmanator interventions
         return pOutdoorRestKilling;
     }
 

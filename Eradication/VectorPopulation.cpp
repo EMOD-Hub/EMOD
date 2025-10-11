@@ -18,6 +18,7 @@
 #include "IMigrationInfoVector.h"
 #include "RANDOM.h"
 #include <numeric>
+#include "IdmDateTime.h"
 
 SETUP_LOGGING( "VectorPopulation" )
 
@@ -708,6 +709,11 @@ namespace Kernel
 
     void VectorPopulation::Update_Lifecycle_Probabilities( float dt )
     {
+        if(m_context->GetTime().time > 200 )
+        {
+            bool here = true;
+        }
+
         // Update adult transition probabilities:
         // calculated for each queue entry up to human indoor and outdoor feeding attempts
         probs()->FinalizeTransitionProbabilites( species()->anthropophily, species()->indoor_feeding, species()->vsp_blood_meal_mortality ); 
@@ -998,19 +1004,23 @@ namespace Kernel
         feed_probs.successful_feed_attempt_indoor  = p_local_survivability * probs()->indoorattempttohumanfeed.GetValue(     m_SpeciesIndex, r_genome );
         feed_probs.successful_feed_attempt_outdoor = p_local_survivability * feed_attempt_outdoor;
         feed_probs.survive_without_feeding         = p_local_survivability * survive_without_feeding;
+        if(feed_probs.die_before_human_feeding > 0)
+        {
+            bool here = true;
+        }
 
         feed_probs.indoor.successful_feed_ad       = probs()->indoor_successfulfeed_AD.GetValue(    m_SpeciesIndex, r_genome );
         feed_probs.indoor.die_before_feeding       = probs()->indoor_diebeforefeeding.GetValue(     m_SpeciesIndex, r_genome );
         feed_probs.indoor.not_available            = probs()->indoor_hostnotavailable.GetValue(     m_SpeciesIndex, r_genome );
         feed_probs.indoor.die_during_feeding       = probs()->indoor_dieduringfeeding.GetValue(     m_SpeciesIndex, r_genome ) * x_infectioushfmortmod;
         feed_probs.indoor.die_after_feeding        = probs()->indoor_diepostfeeding.GetValue( m_SpeciesIndex, r_genome ) * x_infectiouscorrection;
-        feed_probs.indoor.successful_feed_human = probs()->indoor_successfulfeed_human.GetValue( m_SpeciesIndex, r_genome ) * x_infectiouscorrection;
+        feed_probs.indoor.successful_feed_human    = probs()->indoor_successfulfeed_human.GetValue( m_SpeciesIndex, r_genome ) * x_infectiouscorrection;
 
         feed_probs.outdoor.die_before_feeding      = probs()->outdoor_diebeforefeeding;
         feed_probs.outdoor.not_available           = probs()->outdoor_hostnotavailable.GetValue(     m_SpeciesIndex, r_genome );
         feed_probs.outdoor.die_during_feeding      = probs()->outdoor_dieduringfeeding.GetValue(     m_SpeciesIndex, r_genome ) * x_infectioushfmortmod;
         feed_probs.outdoor.die_after_feeding       = probs()->outdoor_diepostfeeding.GetValue( m_SpeciesIndex, r_genome ) * x_infectiouscorrection;
-        feed_probs.outdoor.successful_feed_human = probs()->outdoor_successfulfeed_human.GetValue( m_SpeciesIndex, r_genome ) * x_infectiouscorrection;
+        feed_probs.outdoor.successful_feed_human   = probs()->outdoor_successfulfeed_human.GetValue( m_SpeciesIndex, r_genome ) * x_infectiouscorrection;
 
         UpdateSugarKilling( cohort, feed_probs );
 
@@ -2583,12 +2593,15 @@ namespace Kernel
             float p_local_male_mortality = GetLocalMatureMortalityProbability( dt, cohort ); // can be age dependent
             float p_outdoor_killing = probs()->outdoorareakilling.GetValue( m_SpeciesIndex, cohort->GetGenome() ); // SpaceSpraying
             float p_sugar_trap_killing = GetSugarTrapKilling( cohort );
-            float p_outdoor_rest_killing = probs()->outdoorRestKilling.GetValue( m_SpeciesIndex, cohort->GetGenome() ); // OutdoorRestKill and OutdoorNodeEmanator 
+            float p_outdoor_rest_killing = probs()->outdoorRestKilling.GetValue( m_SpeciesIndex, cohort->GetGenome() ); // OutdoorRestKill
+            float p_node_emanator_killing = probs()->node_emanator_killing.GetValue( m_SpeciesIndex, cohort->GetGenome() ); // OutdoorNodeEmanator
+
 
             float p_male_mortality = p_local_male_mortality;
             p_male_mortality += (1.0f - p_male_mortality) * p_outdoor_killing;
             p_male_mortality += (1.0f - p_male_mortality) * p_sugar_trap_killing;
             p_male_mortality += (1.0f - p_male_mortality) * p_outdoor_rest_killing;
+            p_male_mortality += (1.0f - p_male_mortality) * p_node_emanator_killing;
 
             // adults die
             uint32_t new_pop = cohort->GetPopulation();

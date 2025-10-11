@@ -196,7 +196,7 @@ namespace Kernel
 
         // die due to outdoor resting after feed or interacting with emanator, from node-level interventions - OutdoorNodeEmanator, OutdoorRestKill
         // for both indoor and outdoor feeding vectors
-        GeneticProbability p_die_returning_to_outdoors = effects->GetOutdoorRestKilling();
+        GeneticProbability p_die_returning_to_outdoors = 1.0f - ( 1.0f - effects->GetOutdoorRestKilling() ) * ( 1.0 - effects->GetVillageEmanatorKilling() );
 
         // die due to internal vector issues (insecticides, blood meal mortality)
         GeneticProbability p_die_in_out_post_feed = 1.0f - (p_survive_insecticidal_drug * (1.0f - p_vp->blood_meal_mortality));

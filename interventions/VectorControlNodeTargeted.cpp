@@ -483,8 +483,8 @@ namespace Kernel
     {
         release_assert( m_pINVIC != nullptr );
 
-        GeneticProbability repelling = GetKilling( ResistanceType::REPELLING );
-        m_pINVIC->UpdateOutdoorNodeEmanator( m_Coverage , repelling, 0 );
+        GeneticProbability repelling = GetKilling( ResistanceType::REPELLING ) * m_Coverage;
+        m_pINVIC->UpdateOutdoorNodeEmanator(repelling, 0 );
     }
 
     ReportInterventionData SpatialRepellent::GetReportInterventionData() const
@@ -528,11 +528,12 @@ namespace Kernel
     {
         release_assert(m_pINVIC != nullptr);
 
-        GeneticProbability repelling = GetKilling(ResistanceType::REPELLING);
-        GeneticProbability killing = GetKilling(ResistanceType::KILLING);
+        GeneticProbability repelling = GetKilling(ResistanceType::REPELLING) * m_Coverage;
+        GeneticProbability killing = GetKilling(ResistanceType::KILLING) * m_Coverage;
 
-        m_pINVIC->UpdateOutdoorNodeEmanator(m_Coverage, repelling, killing);
-        m_pINVIC->UpdateOutdoorRestKilling( killing * m_Coverage );
+        // the emanator effects are combined by (1- (1 - effect*coverage)(1 - new_effect*coverage) ) 
+        // for both repelling and killing and then applied (1-repelling)(1-killing)= vectors that move on due to researcher ask
+        m_pINVIC->UpdateOutdoorNodeEmanator( repelling, killing);
     }
 
     ReportInterventionData OutdoorNodeEmanator::GetReportInterventionData() const

@@ -134,7 +134,7 @@ SUITE( VectorPopulationIndividualTest )
         CHECK_EQUAL( 0.0, p_vec_probs->sugarTrapKilling.GetDefaultValue() );
         CHECK_EQUAL( 0.0, p_vec_probs->kill_livestockfeed.GetDefaultValue() );
         CHECK_EQUAL( 0.0, p_vec_probs->outdoorRestKilling.GetDefaultValue() );
-        CHECK_EQUAL( 1.0, p_vec_probs->not_repelled_or_killed_or_affected.GetDefaultValue());
+        CHECK_EQUAL( 0.0, p_vec_probs->node_emanator_killing.GetDefaultValue());
 
 
         // Individual interventions
@@ -569,7 +569,7 @@ SUITE( VectorPopulationIndividualTest )
         CHECK_EQUAL( 0.0, p_vec_probs->sugarTrapKilling.GetDefaultValue() );
         CHECK_EQUAL( 0.0, p_vec_probs->kill_livestockfeed.GetDefaultValue() );
         CHECK_EQUAL( 0.0, p_vec_probs->outdoorRestKilling.GetDefaultValue() );
-        CHECK_EQUAL( 1.0, p_vec_probs->not_repelled_or_killed_or_affected.GetDefaultValue());
+        CHECK_EQUAL( 0.0, p_vec_probs->node_emanator_killing.GetDefaultValue());
 
         // Individual interventions
         VectorInterventionsContainer vic;
@@ -736,7 +736,7 @@ SUITE( VectorPopulationIndividualTest )
         CHECK_EQUAL( 0.0, p_vec_probs->sugarTrapKilling.GetDefaultValue() );
         CHECK_EQUAL( 0.0, p_vec_probs->kill_livestockfeed.GetDefaultValue() );
         CHECK_EQUAL( 0.0, p_vec_probs->outdoorRestKilling.GetDefaultValue() );
-        CHECK_EQUAL( 1.0, p_vec_probs->not_repelled_or_killed_or_affected.GetDefaultValue());
+        CHECK_EQUAL( 0.0, p_vec_probs->node_emanator_killing.GetDefaultValue());
 
         // Individual interventions
         VectorInterventionsContainer vic;
@@ -786,7 +786,7 @@ SUITE( VectorPopulationIndividualTest )
         CHECK_CLOSE( 0.100f, p_vec_probs->successfulfeed_animal.GetDefaultValue()        , EPSILON );
         CHECK_CLOSE( 0.000f, p_vec_probs->successfulfeed_AD.GetDefaultValue()            , 0.0f );
         CHECK_CLOSE( 0.675f, p_vec_probs->indoorattempttohumanfeed.GetDefaultValue()     , EPSILON ); //~anthropohily*indoor_feeding
-        CHECK_CLOSE( 0.225f, p_vec_probs->outdoorattempttohumanfeed.GetDefaultValue()    , EPSILON ); //~anythropohily*(1-indoor_feeding)
+        CHECK_CLOSE( 0.225f, p_vec_probs->outdoorattempttohumanfeed.GetDefaultValue()    , EPSILON ); //~anthropohily*(1-indoor_feeding)
 
         CHECK_CLOSE( 1.0f,
                      p_vec_probs->diebeforeattempttohumanfeed.GetDefaultValue() +
@@ -825,7 +825,7 @@ SUITE( VectorPopulationIndividualTest )
         // --- Add OutdoorNodeEmanator, No Killing
         // --------------------------------------------------
         p_vec_probs->spatial_repellent = 0.4f;
-        p_vec_probs->not_repelled_or_killed_or_affected = 0.6f;  //killing = 0, need to be set together since we pre-calculate repelled or killed inside the intervention
+        p_vec_probs->node_emanator_killing = 0.0f;  
         p_vec_probs->FinalizeTransitionProbabilites( anthropophily, indoor_feeding, bloodmeal_mortality );
 
         // main outputs used by VectorPopulation
@@ -834,8 +834,8 @@ SUITE( VectorPopulationIndividualTest )
         CHECK_CLOSE( 0.4f,   p_vec_probs->survivewithoutsuccessfulfeed.GetDefaultValue() , EPSILON );
         CHECK_CLOSE( 0.06f,  p_vec_probs->successfulfeed_animal.GetDefaultValue()        , EPSILON ); //(1.0f - anthropophily) * (1.0f - outdoorareakilling)
         CHECK_CLOSE( 0.000f, p_vec_probs->successfulfeed_AD.GetDefaultValue()            , 0.0f );
-        CHECK_CLOSE( 0.405f, p_vec_probs->indoorattempttohumanfeed.GetDefaultValue()     , EPSILON ); //~not_repelled_or_killed_or_affected*anthropohily*indoor_feeding
-        CHECK_CLOSE( 0.135f, p_vec_probs->outdoorattempttohumanfeed.GetDefaultValue()    , EPSILON ); //~anythropohily*(1-indoor_feeding)* not_repelled_or_killed_or_affected
+        CHECK_CLOSE( 0.405f, p_vec_probs->indoorattempttohumanfeed.GetDefaultValue()     , EPSILON ); 
+        CHECK_CLOSE( 0.135f, p_vec_probs->outdoorattempttohumanfeed.GetDefaultValue()    , EPSILON ); 
 
         CHECK_CLOSE( 1.0f,
                      p_vec_probs->diebeforeattempttohumanfeed.GetDefaultValue() +
@@ -874,10 +874,8 @@ SUITE( VectorPopulationIndividualTest )
         // --------------------------------------------------
         // --- Add OutdoorNodeEmanator with Killing
         // --------------------------------------------------
-        float killing = 0.1f;
         p_vec_probs->spatial_repellent = 0.4f;  // Repelling = 0.4
-        p_vec_probs->not_repelled_or_killed_or_affected = 0.54f;  //killing = 0.1, need to be set together since we pre-calculate repelled or killed inside the intervention
-        p_vec_probs->outdoorRestKilling = killing;
+        p_vec_probs->node_emanator_killing = 0.1f;  //killing = 0.1
         p_vec_probs->FinalizeTransitionProbabilites(anthropophily, indoor_feeding, bloodmeal_mortality );
 
         // main outputs used by VectorPopulation
@@ -930,8 +928,7 @@ SUITE( VectorPopulationIndividualTest )
         // --- Add SpatialRepellent no Repelling just Killing
         // --------------------------------------------------
         p_vec_probs->spatial_repellent = 0.0f; //Repelling = 0
-        p_vec_probs->not_repelled_or_killed_or_affected = 0.9f; // Killing = 0.1
-        p_vec_probs->outdoorRestKilling = 0.1;
+        p_vec_probs->node_emanator_killing = 0.1f; // Killing = 0.1
         p_vec_probs->FinalizeTransitionProbabilites(anthropophily, indoor_feeding, bloodmeal_mortality );
 
         // main outputs used by VectorPopulation
@@ -940,8 +937,8 @@ SUITE( VectorPopulationIndividualTest )
         CHECK_CLOSE(0.0f,   p_vec_probs->survivewithoutsuccessfulfeed.GetDefaultValue(), EPSILON);
         CHECK_CLOSE(0.09f,  p_vec_probs->successfulfeed_animal.GetDefaultValue(), EPSILON); //(1.0f - anthropophily) * (1.0f - outdoorareakilling)
         CHECK_CLOSE(0.000f, p_vec_probs->successfulfeed_AD.GetDefaultValue(), 0.0f);
-        CHECK_CLOSE(0.6075f, p_vec_probs->indoorattempttohumanfeed.GetDefaultValue(), EPSILON); //~not_repelled_or_killed_or_affected*anthropohily*indoor_feeding
-        CHECK_CLOSE(0.2025f, p_vec_probs->outdoorattempttohumanfeed.GetDefaultValue(), EPSILON); //~anythropohily*(1-indoor_feeding)* not_repelled_or_killed_or_affected
+        CHECK_CLOSE(0.6075f, p_vec_probs->indoorattempttohumanfeed.GetDefaultValue(), EPSILON); 
+        CHECK_CLOSE(0.2025f, p_vec_probs->outdoorattempttohumanfeed.GetDefaultValue(), EPSILON); 
 
         CHECK_CLOSE(1.0f,
                     p_vec_probs->diebeforeattempttohumanfeed.GetDefaultValue() +
@@ -984,9 +981,8 @@ SUITE( VectorPopulationIndividualTest )
         // --------------------------------------------------
         // --- Add SimpleIndividualRepellent
         // --------------------------------------------------
-        p_vec_probs->spatial_repellent = 0.4f;         // resetting repelling with no killing
-        p_vec_probs->not_repelled_or_killed_or_affected = 0.6f; // resetting repelling with no killing
-        p_vec_probs->outdoorRestKilling = 0.0f;  //resetting repelling with no killing
+        p_vec_probs->spatial_repellent = 0.4f;         // resetting to repelling with no killing
+        p_vec_probs->node_emanator_killing = 0.0f; // resetting to repelling with no killing
         p_vec_probs->FinalizeTransitionProbabilites( anthropophily, indoor_feeding, bloodmeal_mortality );
 
         vic.InfectiousLoopUpdate( 1.0 );
@@ -1025,8 +1021,8 @@ SUITE( VectorPopulationIndividualTest )
         CHECK_CLOSE(0.4f,   p_vec_probs->survivewithoutsuccessfulfeed.GetDefaultValue(), EPSILON);
         CHECK_CLOSE(0.06f,  p_vec_probs->successfulfeed_animal.GetDefaultValue(), EPSILON); //(1.0f - anthropophily) * (1.0f - outdoorareakilling)
         CHECK_CLOSE(0.000f, p_vec_probs->successfulfeed_AD.GetDefaultValue(), 0.0f);
-        CHECK_CLOSE(0.405f, p_vec_probs->indoorattempttohumanfeed.GetDefaultValue(), EPSILON); //~not_repelled_or_killed_or_affected*anthropohily*indoor_feeding
-        CHECK_CLOSE(0.135f, p_vec_probs->outdoorattempttohumanfeed.GetDefaultValue(), EPSILON); //~anythropohily*(1-indoor_feeding)* not_repelled_or_killed_or_affected
+        CHECK_CLOSE(0.405f, p_vec_probs->indoorattempttohumanfeed.GetDefaultValue(), EPSILON);
+        CHECK_CLOSE(0.135f, p_vec_probs->outdoorattempttohumanfeed.GetDefaultValue(), EPSILON); 
 
         CHECK_CLOSE( 1.0f,
                      p_vec_probs->diebeforeattempttohumanfeed.GetDefaultValue() +
@@ -1059,6 +1055,85 @@ SUITE( VectorPopulationIndividualTest )
         CHECK_CLOSE( 0.7f,     probs.outdoor.die_during_feeding           , EPSILON );
         CHECK_CLOSE( 0.7f,     probs.outdoor.die_after_feeding            , EPSILON );
         CHECK_CLOSE( 1.0f,     probs.outdoor.successful_feed_human        , 0.0f );
+
+        // --------------------------------------------------
+        // --- Add SimpleIndividualRepellent, bloodmeal_mortality
+        // --------------------------------------------------
+        p_vec_probs->spatial_repellent = 0.4f;         // resetting to repelling with no killing
+        p_vec_probs->node_emanator_killing = 0.0f; // resetting to repelling with no killing
+        bloodmeal_mortality = 0.15;
+        p_vec_probs->FinalizeTransitionProbabilites( anthropophily, indoor_feeding, bloodmeal_mortality );
+
+        vic.InfectiousLoopUpdate( 1.0 );
+        vic.UpdateProbabilityOfIndRep( GeneticProbability( 0.7f ) );
+        vic.Update( 1.0 );
+
+        p_vec_probs->indoor_diebeforefeeding = vic.GetDieBeforeFeeding();
+        p_vec_probs->indoor_hostnotavailable = vic.GetHostNotAvailable();
+        p_vec_probs->indoor_dieduringfeeding = vic.GetDieDuringFeeding();
+        p_vec_probs->indoor_diepostfeeding = vic.GetDiePostFeeding();
+        p_vec_probs->indoor_successfulfeed_human = vic.GetSuccessfulFeedHuman();
+        p_vec_probs->indoor_successfulfeed_AD = vic.GetSuccessfulFeedAD();
+
+        p_vec_probs->outdoor_diebeforefeeding = vic.GetOutdoorDieBeforeFeeding();
+        p_vec_probs->outdoor_hostnotavailable = vic.GetOutdoorHostNotAvailable();
+        p_vec_probs->outdoor_dieduringfeeding = vic.GetOutdoorDieDuringFeeding();
+        p_vec_probs->outdoor_diepostfeeding = vic.GetOutdoorDiePostFeeding();
+        p_vec_probs->outdoor_successfulfeed_human = vic.GetOutdoorSuccessfulFeedHuman();
+
+        CHECK_CLOSE( 0.0, p_vec_probs->indoor_diebeforefeeding.GetDefaultValue(), 0.0f );
+        CHECK_CLOSE( 0.7, p_vec_probs->indoor_hostnotavailable.GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.0, p_vec_probs->indoor_dieduringfeeding.GetDefaultValue(), 0.0f );
+        CHECK_CLOSE( 0.0, p_vec_probs->indoor_diepostfeeding.GetDefaultValue(), 0.0f );
+        CHECK_CLOSE( 0.0, p_vec_probs->indoor_successfulfeed_AD.GetDefaultValue(), 0.0f );
+        CHECK_CLOSE( 0.3, p_vec_probs->indoor_successfulfeed_human.GetDefaultValue(), EPSILON );
+
+        CHECK_CLOSE( 0.0, p_vec_probs->outdoor_diebeforefeeding, 0.0f );
+        CHECK_CLOSE( 0.7, p_vec_probs->outdoor_hostnotavailable.GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.0, p_vec_probs->outdoor_dieduringfeeding.GetDefaultValue(), 0.0f );
+        CHECK_CLOSE( 0.0, p_vec_probs->outdoor_diepostfeeding.GetDefaultValue(), 0.0f );
+        CHECK_CLOSE( 0.3, p_vec_probs->outdoor_successfulfeed_human.GetDefaultValue(), EPSILON );
+
+        // main outputs used by VectorPopulation
+        CHECK_CLOSE( 0.0f, p_vec_probs->diewithoutattemptingfeed.GetDefaultValue(), 0.0f );
+        CHECK_CLOSE( 0.00899994f, p_vec_probs->diebeforeattempttohumanfeed.GetDefaultValue(), EPSILON ); //1.0f - (successfulfeed_animal + indoorattempttohumanfeed + outdoorattempttohumanfeed)
+        CHECK_CLOSE( 0.4f, p_vec_probs->survivewithoutsuccessfulfeed.GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.051f, p_vec_probs->successfulfeed_animal.GetDefaultValue(), EPSILON ); //(1.0f - anthropophily) * (1.0f - outdoorareakilling)
+        CHECK_CLOSE( 0.000f, p_vec_probs->successfulfeed_AD.GetDefaultValue(), 0.0f );
+        CHECK_CLOSE( 0.405f, p_vec_probs->indoorattempttohumanfeed.GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.135f, p_vec_probs->outdoorattempttohumanfeed.GetDefaultValue(), EPSILON );
+
+        CHECK_CLOSE( 1.0f,
+                     p_vec_probs->diebeforeattempttohumanfeed.GetDefaultValue() +
+                     p_vec_probs->survivewithoutsuccessfulfeed.GetDefaultValue() +
+                     p_vec_probs->successfulfeed_animal.GetDefaultValue() +
+                     p_vec_probs->successfulfeed_AD.GetDefaultValue() +
+                     p_vec_probs->indoorattempttohumanfeed.GetDefaultValue() +
+                     p_vec_probs->outdoorattempttohumanfeed.GetDefaultValue(),
+                     EPSILON ); // these probs should sum to 1
+
+        probs = p_vp->CalculateFeedingProbabilities( 1.0, p_cohort.get() );
+
+        // adult_life_expectancy=10, dryheatmortality=0
+        CHECK_CLOSE( 0.09516f, probs.die_local_mortality, EPSILON );
+        CHECK_CLOSE( 0.09516f, probs.die_without_attempting_to_feed, EPSILON );
+        CHECK_CLOSE( 0.09516f, probs.die_sugar_feeding, EPSILON );
+        CHECK_CLOSE( 0.103306f, probs.die_before_human_feeding, EPSILON );
+        CHECK_CLOSE( 0.14945f, probs.successful_feed_animal, EPSILON );
+        CHECK_CLOSE( 0.14945f, probs.successful_feed_artifical_diet, EPSILON );
+        CHECK_CLOSE( 0.51591f, probs.successful_feed_attempt_indoor, EPSILON );
+        CHECK_CLOSE( 0.63807f, probs.successful_feed_attempt_outdoor, EPSILON );
+        CHECK_CLOSE( 0.0f, probs.indoor.successful_feed_ad, 0.0f );
+        CHECK_CLOSE( 0.0f, probs.indoor.die_before_feeding, 0.0f );
+        CHECK_CLOSE( 0.7f, probs.indoor.not_available, EPSILON );
+        CHECK_CLOSE( 0.7f, probs.indoor.die_during_feeding, EPSILON );
+        CHECK_CLOSE( 0.7f, probs.indoor.die_after_feeding, EPSILON );
+        CHECK_CLOSE( 1.0f, probs.indoor.successful_feed_human, 0.0f );
+        CHECK_CLOSE( 0.0f, probs.outdoor.die_before_feeding, 0.0f );
+        CHECK_CLOSE( 0.7f, probs.outdoor.not_available, EPSILON );
+        CHECK_CLOSE( 0.7f, probs.outdoor.die_during_feeding, EPSILON );
+        CHECK_CLOSE( 0.7f, probs.outdoor.die_after_feeding, EPSILON );
+        CHECK_CLOSE( 1.0f, probs.outdoor.successful_feed_human, 0.0f );
     }
 
 }
