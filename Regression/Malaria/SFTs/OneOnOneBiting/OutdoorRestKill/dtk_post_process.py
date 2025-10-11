@@ -29,29 +29,51 @@ def create_biting_report_file(param_obj,report_name, output_folder, report_vecto
         # with 730 day lifespan daily "natural" death rate for male is negligible for this test
         initial_effect = 0.25
         allowable_error = 0.01
-        for day in range(1, 4):
+        for day in range(2, 5):
             today_df = vectors_df[vectors_df["Time"] == day]
             outdoor_bites = today_df.iloc[0]["OutdoorBitesCount"]
+            indoor_bites = today_df.iloc[0]["IndoorBitesCount"]
             died_feeding_outdoor = today_df.iloc[0]["DiedDuringFeedingOutdoor"]
-            male_previous_day_pop = vectors_df[vectors_df["Time"] == day - 1].iloc[0]["STATE_MALE"]
-            male_pop = today_df.iloc[0]["STATE_MALE"]
+            died_feeding_indoor = today_df.iloc[0]["DiedDuringFeedingIndoor"]
             if abs(died_feeding_outdoor/outdoor_bites - initial_effect) > allowable_error:
                 success = False
                 outfile.write(f"BAD: We were expecting {initial_effect} of {outdoor_bites} outdoor bites "
-                              f"to end in death, but {died_feeding_outdoor} have \nand that's not close enough to"
+                              f"to end in death ({initial_effect*outdoor_bites}), but {died_feeding_outdoor} "
+                              f"have \nand that's not close enough to "
                               f"the right proportion. Please check.\n")
             else:
                 outfile.write(f"GOOD: We were expecting {initial_effect} of {outdoor_bites} outdoor bites "
-                              f"to end in death and {died_feeding_outdoor} have \nand that's close enough to"
+                              f"to end in death ({initial_effect*outdoor_bites}) and {died_feeding_outdoor} "
+                              f"have \nand that's close enough to "
                               f"the right proportion.\n")
+            if abs(died_feeding_indoor/indoor_bites - initial_effect) > allowable_error:
+                success = False
+                outfile.write(f"BAD: We were expecting {initial_effect} of {indoor_bites} indoor bites "
+                              f"to end in death ({initial_effect*indoor_bites}), but {died_feeding_indoor} "
+                              f"have \nand that's not close enough to "
+                              f"the right proportion. Please check.\n")
+            else:
+                outfile.write(f"GOOD: We were expecting {initial_effect} of {indoor_bites} indoor bites "
+                              f"to end in death ({initial_effect*indoor_bites}) and {died_feeding_indoor} "
+                              f"have \nand that's close enough to "
+                              f"the right proportion.\n")
+
+            # Male population gets affected by the intervention on the same timestep while the female feeding population
+            # does not get affected until the timestep after the intervention is applied
+            male_day = day - 1
+            today_df = vectors_df[vectors_df["Time"] == male_day]
+            male_previous_day_pop = vectors_df[vectors_df["Time"] == male_day - 1].iloc[0]["STATE_MALE"]
+            male_pop = today_df.iloc[0]["STATE_MALE"]
             if abs((male_previous_day_pop - male_pop)/male_previous_day_pop - initial_effect) > allowable_error:
                 success = False
                 outfile.write(f"BAD: We were expecting {initial_effect} of {male_previous_day_pop} male vectors "
-                              f"to die, but {died_feeding_outdoor} have \nand that's not close enough to"
+                              f"to die,({initial_effect*male_previous_day_pop}) but {male_previous_day_pop - male_pop} "
+                              f"have \nand that's not close enough to "
                               f"the right proportion. Please check.\n")
             else:
                 outfile.write(f"GOOD: We were expecting {initial_effect} of {outdoor_bites} male vectors "
-                              f"to die and {died_feeding_outdoor} have \nand that's close enough to"
+                              f"to die ({initial_effect*male_previous_day_pop}) and {male_previous_day_pop - male_pop} "
+                              f"have \nand that's close enough to "
                               f"the right proportion.\n")
 
         outfile.write(sft.format_success_msg(success))

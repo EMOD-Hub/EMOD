@@ -1,0 +1,33 @@
+{
+    "Events": [
+        {
+            "Event_Coordinator_Config": {
+                "Demographic_Coverage": 0.8, 
+                "Intervention_Config": {
+                    "Repelling_Config": {
+                        "Box_Duration": 100, 
+                        "Decay_Time_Constant": 150, 
+                        "Initial_Effect": 0.6, 
+                        "class": "WaningEffectBoxExponential"
+                    }, 
+                    "Cost_To_Consumer": 1.0, 
+                    "Killing_Config": {
+                        "Box_Duration": 100, 
+                        "Decay_Time_Constant": 150, 
+                        "Initial_Effect": 0.4, 
+                        "class": "WaningEffectBoxExponential"
+                    }, 
+                    "class": "IndoorIndividualEmanator"
+                }, 
+                "Target_Demographic": "Everyone", 
+                "class": "StandardInterventionDistributionEventCoordinator"
+            }, 
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            }, 
+            "Start_Day": 120, 
+            "class": "CampaignEvent"
+        }
+    ], 
+    "Use_Defaults": 1
+}

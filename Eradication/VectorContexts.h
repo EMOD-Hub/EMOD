@@ -100,6 +100,7 @@ namespace Kernel
         virtual const GeneticProbability& GetLarvalKilling(VectorHabitatType::Enum) const = 0;
         virtual float GetLarvalHabitatReduction(VectorHabitatType::Enum, const std::string& species) = 0;
         virtual const GeneticProbability& GetVillageSpatialRepellent() const = 0;
+        virtual const GeneticProbability& GetVillageEmanatorKilling() const = 0;
         virtual float GetADIVAttraction() const = 0;
         virtual float GetADOVAttraction() const = 0;
         virtual const GeneticProbability& GetOutdoorKilling() const = 0;

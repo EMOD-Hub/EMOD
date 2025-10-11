@@ -37,6 +37,7 @@ namespace Kernel
         // IHousingModificationConsumer
         virtual void UpdateProbabilityOfHouseRepelling( const GeneticProbability& prob ) override;
         virtual void UpdateProbabilityOfHouseKilling( const GeneticProbability& prob ) override;
+        virtual void UpdateProbabilityOfIndoorEmanatorKilling( const GeneticProbability& prob ) override;
 
         // IIndividualRepellentConsumer
         virtual void UpdateProbabilityOfIndRep( const GeneticProbability& prob ) override;
@@ -75,9 +76,9 @@ namespace Kernel
         GeneticProbability p_block_net;
         GeneticProbability p_kill_ITN;
         GeneticProbability p_penetrate_housingmod;
-        float              p_kill_IRSprefeed;
         bool               is_using_housingmod;
-        GeneticProbability p_survive_housingmod;
+        GeneticProbability p_survive_irshousingmod;
+        GeneticProbability p_survive_emanator;
         GeneticProbability p_indrep;
         float              p_attraction_ADIH;
         float              p_kill_ADIH;

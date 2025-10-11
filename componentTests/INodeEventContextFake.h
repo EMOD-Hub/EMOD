@@ -274,6 +274,7 @@ public:
     virtual const GeneticProbability& GetLarvalKilling( VectorHabitatType::Enum ) const override { return m_Junk; }
     virtual float GetLarvalHabitatReduction( VectorHabitatType::Enum, const std::string& species ) override  { return 0.0; }
     virtual const GeneticProbability& GetVillageSpatialRepellent() const override  { return m_Junk; }
+    virtual const GeneticProbability& GetVillageEmanatorKilling()  const override  { return m_Junk; }
     virtual float GetADIVAttraction() const override  { return 0.0; }
     virtual float GetADOVAttraction() const override  { return 0.0; }
     virtual const GeneticProbability& GetOutdoorKilling() const override  { return m_Junk; }

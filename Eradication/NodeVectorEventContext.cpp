@@ -20,6 +20,8 @@ namespace Kernel
     , larval_reduction( false, -FLT_MAX, FLT_MAX, 0.0f )
     , pLarvalHabitatReduction(0)
     , pVillageSpatialRepellent(0)
+    , pOutdoorNodeEmanatorKilling(0)
+    , pVillageNotRepelledOrKilledOrAffected(1)
     , pADIVAttraction(0)
     , pADOVAttraction(0)
     , pOutdoorKilling(0)
@@ -79,6 +81,7 @@ namespace Kernel
         larval_killing_list = std::vector<GeneticProbability>( VectorHabitatType::pairs::count(), GeneticProbability( 0.0f ) ); 
         oviposition_killing_list = std::vector<float>( VectorHabitatType::pairs::count(), 0.0f); 
         pVillageSpatialRepellent = GeneticProbability( 0.0f );
+        pVillageNotRepelledOrKilledOrAffected = GeneticProbability( 1.0f );
         pADIVAttraction = 0.0;
         pADOVAttraction = 0.0;
         pOutdoorKilling = GeneticProbability( 0.0f );
@@ -143,11 +146,13 @@ namespace Kernel
     }
 
     void
-    NodeVectorEventContextHost::UpdateVillageSpatialRepellent(
-        const GeneticProbability& repelling
+    NodeVectorEventContextHost::UpdateOutdoorNodeEmanator(
+        const GeneticProbability& repelling, 
+        const GeneticProbability& killing
     )
     {
         pVillageSpatialRepellent.CombineProbabilities( repelling );
+        pOutdoorNodeEmanatorKilling.CombineProbabilities( killing );
     }
 
     void
@@ -254,6 +259,11 @@ namespace Kernel
     const GeneticProbability& NodeVectorEventContextHost::GetVillageSpatialRepellent() const
     {
         return pVillageSpatialRepellent;
+    }
+
+    const GeneticProbability& NodeVectorEventContextHost::GetVillageEmanatorKilling() const
+    {
+        return pOutdoorNodeEmanatorKilling;
     }
 
     float NodeVectorEventContextHost::GetADIVAttraction() const

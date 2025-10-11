@@ -46,6 +46,8 @@ namespace Kernel
             ar.labelElement("spatial_repellent") & probabilities->spatial_repellent;
             ar.labelElement("nooutdoorhumanfound") & probabilities->nooutdoorhumanfound;
             ar.labelElement("outdoorRestKilling") & probabilities->outdoorRestKilling;
+            ar.labelElement("node_emanator_killing")& probabilities->node_emanator_killing;
+
         ar.endObject();
     }
 
@@ -75,6 +77,7 @@ namespace Kernel
         attraction_ADIV(0.0f),
         kill_livestockfeed(0.0f),
         spatial_repellent(0.0f),
+        node_emanator_killing(0.0f),
         nooutdoorhumanfound(0.0f),
         outdoorRestKilling(0.0f),
         sugarTrapKilling(),
@@ -98,14 +101,14 @@ namespace Kernel
         effective_host_population = 0;
 
         // probabilities from community-level interventions
-        outdoorareakilling      = GeneticProbability( 0.0f );
-        attraction_ADOV         = 0;
-        attraction_ADIV         = 0;
-        kill_livestockfeed      = GeneticProbability( 0.0f );
-        spatial_repellent       = GeneticProbability( 0.0f );
-        nooutdoorhumanfound     = 0;
-
-        outdoorRestKilling      = GeneticProbability( 0.0f );
+        outdoorareakilling    = GeneticProbability( 0.0f );
+        attraction_ADOV       = 0;
+        attraction_ADIV       = 0;
+        kill_livestockfeed    = GeneticProbability( 0.0f );
+        spatial_repellent     = GeneticProbability( 0.0f );
+        nooutdoorhumanfound   = 0;
+        node_emanator_killing = GeneticProbability( 0.0f );
+        outdoorRestKilling    = GeneticProbability( 0.0f );
 
         // reset indoor probabilities
         indoor_diebeforefeeding     = GeneticProbability( 0.0f );
@@ -171,32 +174,31 @@ namespace Kernel
 
     void VectorProbabilities::SetNodeProbabilities(INodeVectorInterventionEffects* invie, float dt)
     {
-        outdoorareakilling  = invie->GetOutdoorKilling();
-        attraction_ADIV     = invie->GetADIVAttraction();
-        attraction_ADOV     = invie->GetADOVAttraction();
-        spatial_repellent   = invie->GetVillageSpatialRepellent();
-        is_using_sugar_trap = invie->IsUsingSugarTrap();
-        sugarTrapKilling    = invie->GetSugarFeedKilling();
-        kill_livestockfeed  = invie->GetAnimalFeedKilling();
-        outdoorRestKilling  = invie->GetOutdoorRestKilling();
+        outdoorareakilling    = invie->GetOutdoorKilling(); // SpaceSpraying, MultiInsecticideSpaceSpraying
+        attraction_ADIV       = invie->GetADIVAttraction();  // Artificial Diet Inside Village
+        attraction_ADOV       = invie->GetADOVAttraction();  // Artificial Diet Outside Village
+        spatial_repellent     = invie->GetVillageSpatialRepellent();
+        is_using_sugar_trap   = invie->IsUsingSugarTrap();
+        sugarTrapKilling      = invie->GetSugarFeedKilling();
+        kill_livestockfeed    = invie->GetAnimalFeedKilling();
+        outdoorRestKilling    = invie->GetOutdoorRestKilling();
+        node_emanator_killing = invie->GetVillageEmanatorKilling(); // repelled or not repelled and then killed by spatial repellent, precalculated
     }
 
-    void VectorProbabilities::FinalizeTransitionProbabilites(float anthropophily, float indoor_feeding)
+    void VectorProbabilities::FinalizeTransitionProbabilites(float anthropophily, float indoor_feeding, const GeneticProbability& bloodmeal_mortality )
     {
         // Non-Feeding Branch
         diewithoutattemptingfeed      =  outdoorareakilling; // for those that do not attempt to feed
 
         // Feeding Branch
-        survivewithoutsuccessfulfeed  =  (1.0f - attraction_ADOV) * (spatial_repellent * (1.0f - outdoorareakilling) + (1.0f - spatial_repellent) * (1.0f - attraction_ADIV) * anthropophily * (1.0f - indoor_feeding) * (1.0f - outdoorareakilling) * nooutdoorhumanfound);
-        successfulfeed_animal         =  (1.0f - attraction_ADOV) * (1.0f - spatial_repellent) * (1.0f - attraction_ADIV) * (1.0f - anthropophily) * (1.0f - outdoorareakilling) * (1.0f - kill_livestockfeed);
-        successfulfeed_AD             =  (attraction_ADOV * (1.0f - outdoorareakilling) + (1.0f - attraction_ADOV) * (1.0f - spatial_repellent) * attraction_ADIV * (1.0f - outdoorareakilling));
-        indoorattempttohumanfeed      =  (1.0f - attraction_ADOV) * (1.0f - spatial_repellent) * (1.0f - attraction_ADIV) * anthropophily * indoor_feeding;
-        outdoorattempttohumanfeed     =  (1.0f - attraction_ADOV) * (1.0f - spatial_repellent) * (1.0f - attraction_ADIV) * anthropophily * (1.0f - indoor_feeding) * (1.0f - outdoorareakilling) * (1.0f - nooutdoorhumanfound);
+        survivewithoutsuccessfulfeed = ( 1.0f - attraction_ADOV ) * ( spatial_repellent * ( 1.0f - outdoorareakilling ) + ( 1 - spatial_repellent ) * ( 1 - node_emanator_killing ) * ( 1.0f - attraction_ADIV ) * anthropophily * ( 1.0f - indoor_feeding ) * ( 1.0f - outdoorareakilling ) * nooutdoorhumanfound );
+        successfulfeed_animal        = (1.0f - attraction_ADOV) * ( 1 - spatial_repellent ) * ( 1 - node_emanator_killing ) * (1.0f - attraction_ADIV) * (1.0f - anthropophily) * (1.0f - outdoorareakilling) * (1.0f - kill_livestockfeed) * (1.0f - bloodmeal_mortality);
+        successfulfeed_AD            = (attraction_ADOV * (1.0f - outdoorareakilling) + (1.0f - attraction_ADOV) * ( 1 - spatial_repellent ) * ( 1 - node_emanator_killing ) * attraction_ADIV * (1.0f - outdoorareakilling));
+        indoorattempttohumanfeed     = (1.0f - attraction_ADOV) * ( 1 - spatial_repellent ) * ( 1 - node_emanator_killing ) * (1.0f - attraction_ADIV) * anthropophily * indoor_feeding;
+        outdoorattempttohumanfeed    = (1.0f - attraction_ADOV) * ( 1 - spatial_repellent ) * ( 1 - node_emanator_killing ) * (1.0f - attraction_ADIV) * anthropophily * (1.0f - indoor_feeding) * (1.0f - outdoorareakilling) * (1.0f - nooutdoorhumanfound);
+
         diebeforeattempttohumanfeed   =  1.0f - (survivewithoutsuccessfulfeed + successfulfeed_animal + successfulfeed_AD + indoorattempttohumanfeed + outdoorattempttohumanfeed);
 
         release_assert( diebeforeattempttohumanfeed.GetDefaultValue() >= 0.0 );
-
-        // outdoor probabilities
-        outdoor_returningmortality = outdoorRestKilling;
     }
 }

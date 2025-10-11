@@ -30,6 +30,7 @@ namespace Kernel
     IMPLEMENT_FACTORY_REGISTERED(IndoorSpaceSpraying)
     IMPLEMENT_FACTORY_REGISTERED(MultiInsecticideIndoorSpaceSpraying)
     IMPLEMENT_FACTORY_REGISTERED(SpatialRepellent)
+    IMPLEMENT_FACTORY_REGISTERED(OutdoorNodeEmanator)
     IMPLEMENT_FACTORY_REGISTERED(ArtificialDiet)
     IMPLEMENT_FACTORY_REGISTERED(SugarTrap)
     IMPLEMENT_FACTORY_REGISTERED(OvipositionTrap)
@@ -91,7 +92,7 @@ namespace Kernel
     {
     }
 
-    bool SimpleVectorControlNode::ConfigureKilling( const Configuration* config )
+    bool SimpleVectorControlNode::ConfigureKilling( const Configuration* inputJson )
     {
         InsecticideName name;
 
@@ -99,7 +100,7 @@ namespace Kernel
         initConfigKilling();
         initConfigTypeMap( "Insecticide_Name", &name, INT_Insecticide_Name_DESC_TEXT );
 
-        bool configured = BaseNodeIntervention::Configure( config );
+        bool configured = BaseNodeIntervention::Configure( inputJson );
 
         if( configured && !JsonConfigurable::_dryrun )
         {
@@ -483,7 +484,7 @@ namespace Kernel
         release_assert( m_pINVIC != nullptr );
 
         GeneticProbability repelling = GetKilling( ResistanceType::REPELLING ) * m_Coverage;
-        m_pINVIC->UpdateVillageSpatialRepellent( repelling );
+        m_pINVIC->UpdateOutdoorNodeEmanator(repelling, 0 );
     }
 
     ReportInterventionData SpatialRepellent::GetReportInterventionData() const
@@ -492,6 +493,56 @@ namespace Kernel
         ReportInterventionData data = BaseNodeIntervention::GetReportInterventionData();
 
         data.efficacy_repelling = m_pInsecticideWaningEffect->GetCurrent( ResistanceType::REPELLING ).GetSum() * m_Coverage;
+
+        return data;
+    }
+
+    // ---------------------------------------------------------------------------------------------------------
+    // --------------------------------------------- OutdoorNodeEmanator ---------------------------------------
+    // ---------------------------------------------------------------------------------------------------------
+
+    OutdoorNodeEmanator::OutdoorNodeEmanator()
+        : SimpleVectorControlNode()
+        , m_Coverage(1.0)
+    {
+    }
+
+    OutdoorNodeEmanator::OutdoorNodeEmanator( const OutdoorNodeEmanator& rMaster )
+        : SimpleVectorControlNode( rMaster )
+        , m_Coverage( rMaster.m_Coverage )
+    {
+    }
+
+    OutdoorNodeEmanator::~OutdoorNodeEmanator()
+    {
+    }
+
+    void OutdoorNodeEmanator::initConfigRepelling()
+    {
+        initConfigTypeMap(     "Spray_Coverage",   &m_Coverage,        Spray_Coverage_DESC_TEXT, 0.0f, 1.0f, 1.0f);
+        initConfigComplexType( "Repelling_Config", &m_RepellingConfig, Repelling_Config_DESC_TEXT );
+    }
+
+
+    void OutdoorNodeEmanator::ApplyEffects(float dt)
+    {
+        release_assert(m_pINVIC != nullptr);
+
+        GeneticProbability repelling = GetKilling(ResistanceType::REPELLING) * m_Coverage;
+        GeneticProbability killing = GetKilling(ResistanceType::KILLING) * m_Coverage;
+
+        // the emanator effects are combined by (1- (1 - effect*coverage)(1 - new_effect*coverage) ) 
+        // for both repelling and killing and then applied (1-repelling)(1-killing)= vectors that move on due to researcher ask
+        m_pINVIC->UpdateOutdoorNodeEmanator( repelling, killing);
+    }
+
+    ReportInterventionData OutdoorNodeEmanator::GetReportInterventionData() const
+    {
+        // has coverage so SimpleVectorControlNode::GetReportInterventionData() doesn't work for this
+        ReportInterventionData data = BaseNodeIntervention::GetReportInterventionData();
+
+        data.efficacy_repelling = m_pInsecticideWaningEffect->GetCurrent( ResistanceType::REPELLING ).GetSum() * m_Coverage;
+        data.efficacy_killing   = m_pInsecticideWaningEffect->GetCurrent( ResistanceType::KILLING ).GetSum()   * m_Coverage;
 
         return data;
     }

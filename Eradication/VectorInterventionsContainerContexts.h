@@ -13,6 +13,7 @@ namespace Kernel
     {
         virtual void UpdateProbabilityOfHouseRepelling( const GeneticProbability& prob ) = 0;
         virtual void UpdateProbabilityOfHouseKilling( const GeneticProbability& prob ) = 0;
+        virtual void UpdateProbabilityOfIndoorEmanatorKilling( const GeneticProbability& prob ) = 0;
     };
 
     struct IBednetConsumer : public ISupports
