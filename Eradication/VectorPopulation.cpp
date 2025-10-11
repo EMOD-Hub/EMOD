@@ -709,11 +709,6 @@ namespace Kernel
 
     void VectorPopulation::Update_Lifecycle_Probabilities( float dt )
     {
-        if(m_context->GetTime().time > 200 )
-        {
-            bool here = true;
-        }
-
         // Update adult transition probabilities:
         // calculated for each queue entry up to human indoor and outdoor feeding attempts
         probs()->FinalizeTransitionProbabilites( species()->anthropophily, species()->indoor_feeding, species()->vsp_blood_meal_mortality ); 
@@ -1004,10 +999,6 @@ namespace Kernel
         feed_probs.successful_feed_attempt_indoor  = p_local_survivability * probs()->indoorattempttohumanfeed.GetValue(     m_SpeciesIndex, r_genome );
         feed_probs.successful_feed_attempt_outdoor = p_local_survivability * feed_attempt_outdoor;
         feed_probs.survive_without_feeding         = p_local_survivability * survive_without_feeding;
-        if(feed_probs.die_before_human_feeding > 0)
-        {
-            bool here = true;
-        }
 
         feed_probs.indoor.successful_feed_ad       = probs()->indoor_successfulfeed_AD.GetValue(    m_SpeciesIndex, r_genome );
         feed_probs.indoor.die_before_feeding       = probs()->indoor_diebeforefeeding.GetValue(     m_SpeciesIndex, r_genome );
