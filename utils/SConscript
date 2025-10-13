@@ -1,77 +1,84 @@
-# -*- mode: python; -*-
 # This Python script, SConscript, invoked by the SConscript in the upper directory,
 #
 # 1. builds utils static library
+
 import os
 from subprocess import Popen, PIPE
-import pdb
 import shutil
+import getpass
 
 Import("env")
-if os.sys.platform != 'win32':
-    # for getting commit/branch info either get the info directly (if we're building in a repo)
-    git_rev_handle = Popen( "git rev-list HEAD --count".encode('utf-8').split(), stdout=PIPE )
-    rev = str( git_rev_handle.stdout.read().rstrip() )[1:].replace( "'", "" )
-    # or look for and use an externally provided file
-    root = Dir('#').abspath
-    provided_version_info_file = '{0}/utils/version.provided.txt'.format(root)
-    
-    if rev  == "" and os.path.exists(provided_version_info_file):
-        # not a git repo but a version info file has been provided externally so use the info there
-        print("Using commit data supplied from: {}".format(provided_version_info_file))
-        with open(provided_version_info_file) as version_file:
-            version_lines = version_file.read().rstrip().splitlines()
-            if len(version_lines) == 5:
-                [localuser, branch, sha1, commit_date, rev] = version_lines
-            else:
-                os.sys.stderr.write("Unable to parse provided version info in file: {}\n".format(provided_version_info_file))
-                os.sys.exit(1)
-        git_date = commit_date.replace( ' ', '_' )
-    else:
-        git_branch_handle = Popen( "git rev-parse --abbrev-ref HEAD".split(), stdout=PIPE )
-        branch = str( git_branch_handle.stdout.read().rstrip() )[1:].strip( '"' ).strip( "'" )
 
-        git_sha_handle = Popen( "git log --pretty=format:'%h' -n 1".split(), stdout=PIPE )
-        sha1 = str( git_sha_handle.stdout.read().rstrip() )[1:].replace( " ", "_" ).strip( '"' ).strip( "'" )
-
-        git_date_handle = Popen( "git log -1 --pretty=%ai".encode("utf8").split(), stdout=PIPE )
-        git_date = str( git_date_handle.stdout.read().rstrip() )[1:].replace( ' ', '_' )
-
-    print( branch )
-    print( str( sha1 ) )
-
-    if rev == "":
-        rev = 0
-    if branch == "":
-        branch = "unknownbranch"
-    if sha1 == "":
-        sha1 = "unknownsha1"
-    if git_date == "":
-        git_date = "unknown_date_time"
-
-    REV_STR = "-DREVISION_NUMBER='" + str(rev) + "'"
-    env.Append( CCFLAGS=[ REV_STR ] )
-
-    BR_STR = str('-DSCCS_BRANCH=\'"') + str(branch) + str('(') + str(sha1) + str(')"\'')
-    env.Append( CCFLAGS=[ BR_STR ] )
-
-    GIT_DATE_STR = '-DSCCS_DATE=\'"' + git_date + '"\''
-    env.Append( CCFLAGS=[ GIT_DATE_STR ] )
-    
-    USER_STR = '-DBUILDER_NAME=\'"{0}"\''.format(os.environ['USER'])
-    env.Append( CCFLAGS=[ USER_STR ] )
-
-    version_info_path = os.path.join(root,"utils/version_info.h")
-    version_tmpl_path = os.path.join(root,"utils/version_info.tmpl")
-    if os.path.exists(version_info_path):
-        os.remove(version_info_path)
-    shutil.copy(version_tmpl_path, version_info_path )
-
+if os.sys.platform == 'win32':
+    ppf = '/D' # Visual Studio preprocessor define flag
+    edq = '\\"' # Need to escape double quote on Windows
+    esq = ''
+    username = getpass.getuser()
 else:
-    root = Dir('#').abspath
-    version_info = '{0}\\scripts\\gitversion.cmd {0}\\utils'.format(root)
-    print("Executing '{0}'".format(version_info))
-    os.system(version_info)
+    ppf = '-D' # GCC preprocessor define flag
+    edq = '"'
+    esq = '\'' # Linux uses an extra single quote
+    username = os.environ['USER']
+
+root = Dir('#').abspath
+version_info_path = os.path.join(root,"utils/version_info.h")
+version_tmpl_path = os.path.join(root,"utils/version_info.tmpl")
+if os.path.exists(version_info_path):
+    os.remove(version_info_path)
+shutil.copy(version_tmpl_path, version_info_path )
+
+# Extract major and minor versions from version info file
+with open(version_info_path) as fid01:
+    def_lines = [lval.strip().split() for lval in fid01.readlines() if lval.startswith('#define')]
+
+for lval in def_lines:
+    if (lval[1] == 'MAJOR_VERSION'):
+        ver_maj = lval[2]
+    if (lval[1] == 'MINOR_VERSION'):
+        ver_min = lval[2]
+
+ver_tag = "v{:s}.{:s}".format(ver_maj, ver_min)
+
+# commit/branch info
+git_rev_handle = Popen(["git","rev-list","{:s}..HEAD".format(ver_tag),"--count"], stdout=PIPE, stderr=PIPE)
+rev = git_rev_handle.stdout.read().decode().strip().strip( '"\'' ).replace(" ","_")
+git_err = git_rev_handle.stderr.read().decode()
+if git_err:
+    # Raising an error breaks the Jenkins build; should be an error once off of Jenkins
+    # raise Exception(git_err)
+    rev = '0'
+
+git_branch_handle = Popen( "git rev-parse --abbrev-ref HEAD".split(), stdout=PIPE )
+branch = git_branch_handle.stdout.read().decode().strip().strip( '"\'' ).replace(" ","_")
+if branch == "":
+    branch = "unknownbranch"
+
+git_sha_handle = Popen( "git log --pretty=format:'%h' -n 1".split(), stdout=PIPE )
+sha1 = git_sha_handle.stdout.read().decode().strip().strip( '"\'' ).replace(" ","_")
+if sha1 == "":
+    sha1 = "unknownsha1"
+sha1 = '(' + sha1 + ')'
+
+git_date_handle = Popen( "git log -1 --pretty=%ai".split(), stdout=PIPE )
+git_date = git_date_handle.stdout.read().decode().strip().strip( '"\'' ).replace(' ','_')
+if git_date == "":
+    git_date = "unknown_date_time"
+
+
+print( branch + sha1 )
+
+REV_STR = ppf + 'REVISION_NUMBER=' + esq + rev + esq
+env.Append( CCFLAGS=[ REV_STR ] )
+
+BRH_STR = ppf + 'SCCS_BRANCH='+ esq + edq + branch + sha1 + edq + esq
+env.Append( CCFLAGS=[ BRH_STR ] )
+
+GIT_STR = ppf + 'SCCS_DATE=' + esq + edq + git_date + edq + esq
+env.Append( CCFLAGS=[ GIT_STR ] )
+
+USR_STR = ppf + 'BUILDER_NAME='+ esq + edq + username + edq + esq
+env.Append( CCFLAGS=[ USR_STR ] )
+
 
 utilsSrcFiles = [
     "BaseProperties.cpp",
