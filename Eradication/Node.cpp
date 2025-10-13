@@ -1667,8 +1667,8 @@ namespace Kernel
 
     // This function adds newborns to the node according to behavior determined by the settings of various flags:
     // (1) ind_sampling_type: TRACK_ALL, FIXED_SAMPLING, ADAPTED_SAMPLING_BY_POPULATION_SIZE, ADAPTED_SAMPLING_BY_AGE_GROUP, ADAPTED_SAMPLING_BY_AGE_GROUP_AND_POP_SIZE
-    // (2) enable_maternal_infection_transmission
-    // (3) vital_birth_dependence: FIXED_BIRTH_RATE, POPULATION_DEP_RATE, DEMOGRAPHIC_DEP_RATE. (INDIVIDUAL_PREGNANCIES handled in PopulateNewIndividualFromPregnancy)
+    // (3) enable_maternal_infection_transmission
+    // (4) vital_birth_dependence: FIXED_BIRTH_RATE, POPULATION_DEP_RATE, DEMOGRAPHIC_DEP_RATE. (INDIVIDUAL_PREGNANCIES handled in PopulateNewIndividualFromPregnancy)
     void Node::populateNewIndividualsByBirth(int count_new_individuals)
     {
         // Set default values for configureAndAddIndividual arguments, sampling rate, etc.
@@ -1735,8 +1735,10 @@ namespace Kernel
                 continue;
             }
 
+            // N.B. temp_prevalence=0 without enable_maternal_infection_transmission flag
             IIndividualHuman* child = nullptr;
-            child = configureAndAddNewIndividual(1.0F / temp_sampling_rate, 0, float(temp_prevalence) * prob_maternal_infection_transmission, float(female_ratio)); // N.B. temp_prevalence=0 without enable_maternal_infection_transmission flag     
+            child = configureAndAddNewIndividual(1.0F / temp_sampling_rate, 0, float(temp_prevalence) * prob_maternal_infection_transmission, float(female_ratio)); 
+
 
             if( child != nullptr ) // valid in pymod
             {
@@ -1933,7 +1935,7 @@ namespace Kernel
         }
 
         // if individual *could* be infected, do a random draw to determine his/her initial infected state
-        if(enable_maternal_infection_transmission && GetRng()->SmartDraw( comm_init_prev ) )
+        if(GetRng()->SmartDraw( comm_init_prev ) )
         { 
             temp_infs = 1;
         }
