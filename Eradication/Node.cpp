@@ -1673,7 +1673,6 @@ namespace Kernel
     {
         // Set default values for configureAndAddIndividual arguments, sampling rate, etc.
         double temp_prevalence    = 0;
-        int    temp_infections    = 0;
         double female_ratio       = 0.5;   // TODO: it would be useful to add the possibility to read this from demographics (e.g. in India where there is a significant gender imbalance at birth)
         float  temp_sampling_rate = 1.0f;  // default sampling rate
 
@@ -1735,10 +1734,8 @@ namespace Kernel
                 continue;
             }
 
-            // N.B. temp_prevalence=0 without enable_maternal_infection_transmission flag
             IIndividualHuman* child = nullptr;
-            child = configureAndAddNewIndividual(1.0F / temp_sampling_rate, 0, float(temp_prevalence) * prob_maternal_infection_transmission, float(female_ratio)); 
-
+            child = configureAndAddNewIndividual( 1.0F / temp_sampling_rate, 0.0F, (float(temp_prevalence) * prob_maternal_infection_transmission), float( female_ratio ) ); // N.B. temp_prevalence=0 without enable_maternal_infection_transmission flag
 
             if( child != nullptr ) // valid in pymod
             {
