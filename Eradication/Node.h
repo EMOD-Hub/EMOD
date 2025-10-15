@@ -253,7 +253,6 @@ namespace Kernel
         ISimulationContext *parent;     // Access back to simulation methods
         ISimulation* parent_sim; //reduce access to RNG
 
-        bool demographics_birth;
         bool enable_demographics_risk;
 
         float base_sample_rate;        // Fraction of individuals in each node to sample;

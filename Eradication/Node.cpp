@@ -109,7 +109,6 @@ namespace Kernel
         , mInfectivity(0.0f)
         , parent( nullptr )
         , parent_sim( nullptr )
-        , demographics_birth(false)
         , enable_demographics_risk(false)
         , base_sample_rate(1.0f)
         , max_sampling_cell_pop(0.0f)
@@ -227,7 +226,6 @@ namespace Kernel
         , mInfectivity(0.0f)
         , parent(nullptr)
         , parent_sim( nullptr )
-        , demographics_birth(false)
         , enable_demographics_risk(false)
         , base_sample_rate(1.0f)
         , max_sampling_cell_pop(0.0f)
@@ -402,7 +400,6 @@ namespace Kernel
         initConfigTypeMap( "Enable_Maternal_Infection_Transmission",    &enable_maternal_infection_transmission,   Enable_Maternal_Infection_Transmission_DESC_TEXT,   false, "Enable_Birth" );
         initConfigTypeMap( "Maternal_Infection_Transmission_Probability", &prob_maternal_infection_transmission, Maternal_Infection_Transmission_Probability_DESC_TEXT, 0.0f, 1.0f,    0.0f, "Enable_Maternal_Infection_Transmission" );
 
-        initConfigTypeMap( "Enable_Demographics_Birth",       &demographics_birth,      Enable_Demographics_Birth_DESC_TEXT,      false, "Enable_Birth" );  // DJK*: Should be "Enable_Disease_Heterogeneity_At_Birth"
         initConfig( "Birth_Rate_Dependence", vital_birth_dependence, config, MetadataDescriptor::Enum(Birth_Rate_Dependence_DESC_TEXT, Birth_Rate_Dependence_DESC_TEXT, MDD_ENUM_ARGS(VitalBirthDependence)), "Enable_Birth" );
 
         initConfig( "Individual_Sampling_Type", ind_sampling_type, config, MetadataDescriptor::Enum("ind_sampling_type", Individual_Sampling_Type_DESC_TEXT, MDD_ENUM_ARGS(IndSamplingType)) );
@@ -1670,14 +1667,12 @@ namespace Kernel
 
     // This function adds newborns to the node according to behavior determined by the settings of various flags:
     // (1) ind_sampling_type: TRACK_ALL, FIXED_SAMPLING, ADAPTED_SAMPLING_BY_POPULATION_SIZE, ADAPTED_SAMPLING_BY_AGE_GROUP, ADAPTED_SAMPLING_BY_AGE_GROUP_AND_POP_SIZE
-    // (2) demographics_birth
     // (3) enable_maternal_infection_transmission
     // (4) vital_birth_dependence: FIXED_BIRTH_RATE, POPULATION_DEP_RATE, DEMOGRAPHIC_DEP_RATE. (INDIVIDUAL_PREGNANCIES handled in PopulateNewIndividualFromPregnancy)
     void Node::populateNewIndividualsByBirth(int count_new_individuals)
     {
         // Set default values for configureAndAddIndividual arguments, sampling rate, etc.
         double temp_prevalence    = 0;
-        int    temp_infections    = 0;
         double female_ratio       = 0.5;   // TODO: it would be useful to add the possibility to read this from demographics (e.g. in India where there is a significant gender imbalance at birth)
         float  temp_sampling_rate = 1.0f;  // default sampling rate
 
@@ -1739,23 +1734,8 @@ namespace Kernel
                 continue;
             }
 
-            // Configure and/or add new individual (EAW: there doesn't appear to be any significant difference between the two cases below)
             IIndividualHuman* child = nullptr;
-            if (demographics_birth)
-            {
-                child = configureAndAddNewIndividual(1.0F / temp_sampling_rate, 0, float(temp_prevalence) * prob_maternal_infection_transmission, float(female_ratio)); // N.B. temp_prevalence=0 without enable_maternal_infection_transmission flag
-            }
-            else
-            {
-                if (enable_maternal_infection_transmission && GetRng()->SmartDraw( temp_prevalence * prob_maternal_infection_transmission ) )
-                { 
-                    temp_infections = 1;
-                }
-
-                int gender = GetRng()->uniformZeroToN16(Gender::COUNT);
-
-                child = addNewIndividual(1.0F / temp_sampling_rate, 0.0F, gender, temp_infections, 1.0F, 1.0F, 1.0F);
-            }
+            child = configureAndAddNewIndividual( 1.0F / temp_sampling_rate, 0.0F, (float(temp_prevalence) * prob_maternal_infection_transmission), float( female_ratio ) ); // N.B. temp_prevalence=0 without enable_maternal_infection_transmission flag
 
             if( child != nullptr ) // valid in pymod
             {
@@ -1952,7 +1932,7 @@ namespace Kernel
         }
 
         // if individual *could* be infected, do a random draw to determine his/her initial infected state
-        if( GetRng()->SmartDraw( comm_init_prev ) )
+        if(GetRng()->SmartDraw( comm_init_prev ) )
         { 
             temp_infs = 1;
         }
@@ -2731,8 +2711,6 @@ namespace Kernel
             ar.labelElement("susceptibility_scaling_rate")  & node.susceptibility_scaling_rate;
 
             ar.labelElement("base_sample_rate") & node.base_sample_rate;
-
-            ar.labelElement("demographics_birth")                   & node.demographics_birth;
 
             ar.labelElement("enable_demographics_risk")             & node.enable_demographics_risk;
             ar.labelElement("max_sampling_cell_pop")                & node.max_sampling_cell_pop;
