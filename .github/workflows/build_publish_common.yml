@@ -80,8 +80,8 @@ jobs:
           cd pypi_common
           cd src
           mv     version_dir/version           version
-          zip -j emod_generic/Eradication.zip  eradication_dir/Eradication
-          zip -j emod_generic/schema.zip       schema_dir/schema.json
+          zip -j emod_common/Eradication.zip   eradication_dir/Eradication
+          zip -j emod_common/schema.zip        schema_dir/schema.json
           rm -r  version_dir
           rm -r  eradication_dir
           rm -r  schema_dir
