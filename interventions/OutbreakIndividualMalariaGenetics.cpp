@@ -56,9 +56,9 @@ namespace Kernel
                                               OIMG_Create_Nucleotide_Sequence_From_DESC_TEXT,
                                               MDD_ENUM_ARGS(CreateNucleotideSequenceFromType)) );
         
-        initConfigTypeMap( "Barcode_String",         &m_BarcodeString, OIMG_Barcode_String_DESC_TEXT,        "",           "Create_Nucleotide_Sequence_From", "NUCLEOTIDE_SEQUENCE,BARCODE_STRING" );
-        initConfigTypeMap( "Drug_Resistant_String",  &m_DrugString,    OIMG_Drug_Resistant_String_DESC_TEXT, "",           "Create_Nucleotide_Sequence_From", "NUCLEOTIDE_SEQUENCE,BARCODE_STRING" );
-        initConfigTypeMap( "HRP_String",             &m_HrpString,     OIMG_HRP_String_DESC_TEXT,            "",           "Create_Nucleotide_Sequence_From", "NUCLEOTIDE_SEQUENCE,BARCODE_STRING" );
+        initConfigTypeMap( "Barcode_String",         &m_BarcodeString, OIMG_Barcode_String_DESC_TEXT,        "",           "Create_Nucleotide_Sequence_From", "NUCLEOTIDE_SEQUENCE, BARCODE_STRING" );
+        initConfigTypeMap( "Drug_Resistant_String",  &m_DrugString,    OIMG_Drug_Resistant_String_DESC_TEXT, "",           "Create_Nucleotide_Sequence_From", "NUCLEOTIDE_SEQUENCE, BARCODE_STRING" );
+        initConfigTypeMap( "HRP_String",             &m_HrpString,     OIMG_HRP_String_DESC_TEXT,            "",           "Create_Nucleotide_Sequence_From", "NUCLEOTIDE_SEQUENCE, BARCODE_STRING" );
         initConfigTypeMap( "PfEMP1_Variants_Values", &m_MajorEpitopes, OIMG_PfEMP1_Variants_Values_DESC_TEXT, 0, 10000, 0, "Create_Nucleotide_Sequence_From", "NUCLEOTIDE_SEQUENCE" );
         initConfigTypeMap( "MSP_Variant_Value",      &m_MSP,           OIMG_MSP_Variant_Value_DESC_TEXT,      0,  1000, 0, "Create_Nucleotide_Sequence_From", "NUCLEOTIDE_SEQUENCE" );
 

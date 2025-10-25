@@ -711,6 +711,68 @@ SUITE( ParasiteGeneticsTest )
         }
     }
 
+    TEST_FIXTURE( ParasiteFixture, TestCreateGenomeFromBarcode_FIXED_RANDOM )
+    {
+        PSEUDO_DES rng( 42 );
+
+        EnvPtr->Config = Environment::LoadConfigurationFile( "testdata/ParasiteGeneticsTest/TestCreateGenomeFromBarcode_FIXED_RANDOM.json" );
+
+        ParasiteGenetics::CreateInstance()->Configure( EnvPtr->Config );
+
+        // ------------------------------------------------------------------------------------------------------------------
+        // --- Test the creation of a genome from a barcode
+        // --- All the new genomes should have MSP and PfEMP1 variant values uniformly distributed across their entire ranges
+        // ------------------------------------------------------------------------------------------------------------------
+        std::string barcode_1 = "ACGTTGCAACGTTGCAACGTTGCA";
+        std::string drug_1 = "";
+        std::string hrp_1 = "";
+
+        std::vector<ParasiteGenome> genomes;
+        int32_t msp_values_total = 0;
+        std::vector< std::vector<int32_t> > pfemp1_values;
+        int32_t pfemp1_values_total = 0;
+        int total = 1000;
+        for (int i = 0; i < total; ++i)
+        {
+            ParasiteGenome pg = ParasiteGenetics::GetInstance()->CreateGenomeFromBarcode( &rng, barcode_1, drug_1, hrp_1 );
+            genomes.push_back( pg );
+            CHECK_EQUAL( barcode_1, pg.GetBarcode() );
+            CHECK_EQUAL( drug_1, pg.GetDrugResistantString() );
+            CHECK_EQUAL( hrp_1, pg.GetHrpString() );
+            CHECK( ( 0 <= pg.GetMSP() ) && ( pg.GetMSP() <= SusceptibilityMalariaConfig::falciparumMSPVars ) );
+            std::vector<int32_t> pfemp1_values1 = pg.GetPfEMP1EpitopesMajor();
+            CHECK_EQUAL( 50, pfemp1_values1.size() ); //CLONAL_PfEMP1_VARIANTS
+            int major_epitopes_total = 0;
+            for(auto val : pfemp1_values1)
+            {
+                CHECK( ( 0 <= val ) && ( val <= SusceptibilityMalariaConfig::falciparumPfEMP1Vars ) );
+                pfemp1_values_total += val;
+                major_epitopes_total += val;
+            }
+            // If uniformly distributed, the average value should be about half the max value
+            CHECK_CLOSE( (major_epitopes_total/50 - SusceptibilityMalariaConfig::falciparumPfEMP1Vars/2) / (SusceptibilityMalariaConfig::falciparumPfEMP1Vars/2), 0, 0.05 ); // just looking to be within 5% of middle
+            msp_values_total += pg.GetMSP();
+            pfemp1_values.push_back( pg.GetPfEMP1EpitopesMajor() );
+        }
+
+        // If uniformly distributed, the average value should be about half the max value
+        CHECK_CLOSE( (msp_values_total / total - SusceptibilityMalariaConfig::falciparumMSPVars / 2)/ SusceptibilityMalariaConfig::falciparumMSPVars / 2, 0, 0.005 );
+        
+        CHECK_CLOSE( ((pfemp1_values_total / ( total * 50 )) - (SusceptibilityMalariaConfig::falciparumPfEMP1Vars / 2))/ (SusceptibilityMalariaConfig::falciparumPfEMP1Vars / 2), 0, 0.001 ); // just looking to be within 0.1% of middle
+        for (int i = 0; i < 50; i++)
+        {
+            // check each epitope position across all genomes, just in case there is some bias
+            int total_pfemp1_vals = 0;
+            for (auto pfemp1_vector : pfemp1_values)
+            {
+                total_pfemp1_vals += pfemp1_vector[i];
+            }
+            // If uniformly distributed, the average value should be about half the max value
+            CHECK_CLOSE( ( total_pfemp1_vals / total - SusceptibilityMalariaConfig::falciparumPfEMP1Vars / 2 ) / ( SusceptibilityMalariaConfig::falciparumPfEMP1Vars / 2 ), 0, 0.005 );
+        }
+    
+    }
+
     TEST_FIXTURE( ParasiteFixture, TestCreateGenomeFromSequence )
     {
         // --------------------------------

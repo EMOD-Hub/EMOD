@@ -204,7 +204,7 @@ namespace Kernel
                 }
                 break;
 
-            // limited to CLONAL_PfEMP1_VARIANTS variants and 5 nonspec minorepitopes
+            // limited to CLONAL_PfEMP1_VARIANTS variants and 5 nonspec minor epitopes
             case MalariaStrains::FALCIPARUM_RANDOM50_STRAIN:
                 m_MSPtype = 0;
                 m_nonspectype = 0;

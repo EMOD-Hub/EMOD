@@ -12,9 +12,13 @@ namespace Kernel
     // This is used to determine what portion of the VarGenes (MSP & Major) are random for each infection
     // The minor epitopes are random all the time
     ENUM_DEFINE(VarGeneRandomnessType, 
-        ENUM_VALUE_SPEC(FIXED_NEIGHBORHOOD , 0) // MSP and Major are fixed for the genome and only change due to recombination
-        ENUM_VALUE_SPEC(FIXED_MSP          , 1) // MSP if fixed by the Major epitopes are random in every infection
+        ENUM_VALUE_SPEC(FIXED_NEIGHBORHOOD , 0) // MSP and Major are fixed for the genome and only change due to recombination, 
+                                                //  at outbreak uses genome neighborhood to determine initial MSP and PfEMP1 variant values
+        ENUM_VALUE_SPEC(FIXED_MSP          , 1) // MSP if fixed by the Major epitopes are random in every infection,
+                                                //  at oubreak uses genome neighborhood to determine initial MSP value
         ENUM_VALUE_SPEC(ALL_RANDOM         , 2) // MSP and Major are random with every infection
+        ENUM_VALUE_SPEC(FIXED_RANDOM       , 3) // MSP and Major are fixed for the genome and only change due to recombination, 
+                                                //  at outbreak initial MSP and PfEMP1 variant values are random from entire MSP and PfEMP1 variant spaces
     )
 
     struct LocationIndex

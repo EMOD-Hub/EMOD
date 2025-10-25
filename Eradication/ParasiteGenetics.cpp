@@ -220,14 +220,14 @@ namespace Kernel
 
         initConfig("Var_Gene_Randomness_Type", m_VarGeneRandomnessType, inputJson, MetadataDescriptor::Enum("Var_Gene_Randomness_Type", Var_Gene_Randomness_Type_DESC_TEXT, MDD_ENUM_ARGS(VarGeneRandomnessType)));
 
-        initConfigTypeMap( "Neighborhood_Size_MSP",            &m_NeighborhoodSizeMSP,      Neighborhood_Size_MSP_DESC_TEXT,      0,   1000,  4, "Var_Gene_Randomness_Type", "FIXED_NEIGHBORHOOD,FIXED_MSP" );
+        initConfigTypeMap( "Neighborhood_Size_MSP",            &m_NeighborhoodSizeMSP,      Neighborhood_Size_MSP_DESC_TEXT,      0,   1000,  4, "Var_Gene_Randomness_Type", "FIXED_NEIGHBORHOOD, FIXED_MSP" );
         initConfigTypeMap( "Neighborhood_Size_PfEMP1",         &m_NeighborhoodSizeMajor,    Neighborhood_Size_PfEMP1_DESC_TEXT,   0, 100000, 10, "Var_Gene_Randomness_Type", "FIXED_NEIGHBORHOOD" );
 
         initConfigTypeMap( "Barcode_Genome_Locations",         &m_LocationsBarcode, Barcode_Genome_Locations_DESC_TEXT,         1, MAX_LOCATIONS, true );
         initConfigTypeMap( "Drug_Resistant_Genome_Locations",  &m_LocationsDrug,    Drug_Resistant_Locations_DESC_TEXT,         1, MAX_LOCATIONS, true );
         initConfigTypeMap( "HRP_Genome_Locations",             &m_LocationsHRP,     HRP_Locations_DESC_TEXT,                    1, MAX_LOCATIONS, true );
-        initConfigTypeMap( "MSP_Genome_Location",              &m_LocationMSP,      MSP_Genome_Location_DESC_TEXT,              1, MAX_LOCATIONS,    1, "Var_Gene_Randomness_Type", "FIXED_NEIGHBORHOOD,FIXED_MSP" );
-        initConfigTypeMap( "PfEMP1_Variants_Genome_Locations", &m_LocationsMajor,   PfEMP1_Variants_Genome_Locations_DESC_TEXT, 1, MAX_LOCATIONS, true, "Var_Gene_Randomness_Type", "FIXED_NEIGHBORHOOD" );
+        initConfigTypeMap( "MSP_Genome_Location",              &m_LocationMSP,      MSP_Genome_Location_DESC_TEXT,              1, MAX_LOCATIONS,    1, "Var_Gene_Randomness_Type", "FIXED_NEIGHBORHOOD, FIXED_MSP, FIXED_RANDOM" );
+        initConfigTypeMap( "PfEMP1_Variants_Genome_Locations", &m_LocationsMajor,   PfEMP1_Variants_Genome_Locations_DESC_TEXT, 1, MAX_LOCATIONS, true, "Var_Gene_Randomness_Type", "FIXED_NEIGHBORHOOD, FIXED_RANDOM" );
 
         bool ret = JsonConfigurable::Configure( inputJson );
         if( ret && !JsonConfigurable::_dryrun )
@@ -648,38 +648,49 @@ namespace Kernel
 
     void ParasiteGenetics::AddVarGenes( RANDOMBASE* pRNG, float barcodeDistance, std::vector<int32_t>& rSequence ) const
     {
-        float MAX_DISTANCE = sqrt( 3 * 3 * m_LocationsBarcode.size() );
-        float MSP_DistanceRatio    = SusceptibilityMalariaConfig::falciparumMSPVars    / MAX_DISTANCE;
-        float PfEMP1_DistanceRatio = SusceptibilityMalariaConfig::falciparumPfEMP1Vars / MAX_DISTANCE;
-
-        float barcode_delta = barcodeDistance - (MAX_DISTANCE / 2);
-
-        int32_t  barcode_val_msp    = int32_t(  std::round( MSP_DistanceRatio    * barcode_delta ) );
-        uint32_t barcode_val_pfemp1 = uint32_t( std::round( PfEMP1_DistanceRatio * barcode_delta ) );
-
-        if( !IsRandomMSP() )
+        if((m_VarGeneRandomnessType == VarGeneRandomnessType::FIXED_MSP) || (m_VarGeneRandomnessType == VarGeneRandomnessType::FIXED_NEIGHBORHOOD))
         {
-            int32_t MSP_Max    = SusceptibilityMalariaConfig::falciparumMSPVars - m_NeighborhoodSizeMSP;
-            int32_t MSP_Center = SusceptibilityMalariaConfig::falciparumMSPVars / 2;
+            float MAX_DISTANCE = sqrt( 3 * 3 * m_LocationsBarcode.size() );
+            float MSP_DistanceRatio = SusceptibilityMalariaConfig::falciparumMSPVars / MAX_DISTANCE;
+            float PfEMP1_DistanceRatio = SusceptibilityMalariaConfig::falciparumPfEMP1Vars / MAX_DISTANCE;
 
-            int32_t msp_center_adj = MSP_Center + barcode_val_msp;
-            msp_center_adj = msp_center_adj % SusceptibilityMalariaConfig::falciparumMSPVars;
-            rSequence[ m_IndexMSP ] = CalculateVariant( pRNG, MSP_Max, m_NeighborhoodSizeMSP, msp_center_adj );
-        }
+            float barcode_delta = barcodeDistance - ( MAX_DISTANCE / 2 );
 
-        if( !IsRandomPfEMP1Major() )
-        {
-            uint32_t PfEMP1_Max = SusceptibilityMalariaConfig::falciparumPfEMP1Vars - m_NeighborhoodSizeMajor;
+            int32_t  barcode_val_msp = int32_t( std::round( MSP_DistanceRatio * barcode_delta ) );
+            uint32_t barcode_val_pfemp1 = uint32_t( std::round( PfEMP1_DistanceRatio * barcode_delta ) );
 
-            uint32_t stride_position = barcode_val_pfemp1 % SusceptibilityMalariaConfig::falciparumPfEMP1Vars;
-            uint32_t temp            = barcode_val_pfemp1 / SusceptibilityMalariaConfig::falciparumPfEMP1Vars;
-            uint32_t stride_length = InfectionMalaria::STRIDE_LENGTHS[ temp % InfectionMalaria::STRIDE_LENGTHS.size() ];
-
-            for (int i = 0; i < CLONAL_PfEMP1_VARIANTS; i++)
+            if(!IsRandomMSP())
             {
-                rSequence[ m_IndexesMajor[ i ] ] = CalculateVariant( pRNG, PfEMP1_Max, m_NeighborhoodSizeMajor, stride_position );;
+                int32_t MSP_Max = SusceptibilityMalariaConfig::falciparumMSPVars - m_NeighborhoodSizeMSP;
+                int32_t MSP_Center = SusceptibilityMalariaConfig::falciparumMSPVars / 2;
 
-                stride_position = (stride_position + stride_length) % SusceptibilityMalariaConfig::falciparumPfEMP1Vars;
+                int32_t msp_center_adj = MSP_Center + barcode_val_msp;
+                msp_center_adj = msp_center_adj % SusceptibilityMalariaConfig::falciparumMSPVars;
+                rSequence[m_IndexMSP] = CalculateVariant( pRNG, MSP_Max, m_NeighborhoodSizeMSP, msp_center_adj );
+            }
+
+            if(!IsRandomPfEMP1Major())
+            {
+                uint32_t PfEMP1_Max = SusceptibilityMalariaConfig::falciparumPfEMP1Vars - m_NeighborhoodSizeMajor;
+
+                uint32_t stride_position = barcode_val_pfemp1 % SusceptibilityMalariaConfig::falciparumPfEMP1Vars;
+                uint32_t temp = barcode_val_pfemp1 / SusceptibilityMalariaConfig::falciparumPfEMP1Vars;
+                uint32_t stride_length = InfectionMalaria::STRIDE_LENGTHS[temp % InfectionMalaria::STRIDE_LENGTHS.size()];
+
+                for(int i = 0; i < CLONAL_PfEMP1_VARIANTS; i++)
+                {
+                    rSequence[m_IndexesMajor[i]] = CalculateVariant( pRNG, PfEMP1_Max, m_NeighborhoodSizeMajor, stride_position );;
+
+                    stride_position = ( stride_position + stride_length ) % SusceptibilityMalariaConfig::falciparumPfEMP1Vars;
+                }
+            }
+        }
+        else if(m_VarGeneRandomnessType == VarGeneRandomnessType::FIXED_RANDOM)
+        {
+            rSequence[m_IndexMSP] = pRNG->uniformZeroToN16( SusceptibilityMalariaConfig::falciparumMSPVars );
+            for(int i = 0; i < CLONAL_PfEMP1_VARIANTS; i++)
+            {
+                rSequence[m_IndexesMajor[i]] = pRNG->uniformZeroToN16( SusceptibilityMalariaConfig::falciparumPfEMP1Vars );
             }
         }
     }
@@ -812,10 +823,10 @@ namespace Kernel
                                                                int32_t mspValue,
                                                                const std::vector<int32_t>& rPfEMP1MajorValues ) const
     {
-        if( m_VarGeneRandomnessType != VarGeneRandomnessType::FIXED_NEIGHBORHOOD )
+        if( !(m_VarGeneRandomnessType == VarGeneRandomnessType::FIXED_NEIGHBORHOOD || m_VarGeneRandomnessType == VarGeneRandomnessType::FIXED_RANDOM))
         {
             std::stringstream ss;
-            ss << "It is invalid for 'Parasite_Genetics.Var_Gene_Randomness_Type' != 'FIXED_NEIGHBORHOOD' and\n"
+            ss << "It is invalid for 'Parasite_Genetics.Var_Gene_Randomness_Type' to not be 'FIXED_NEIGHBORHOOD' or 'FIXED_RANDOM' and\n"
                 << "'OutbreakIndividualMalariaGenetics.Create_Nucleotide_Sequence_From' = 'NUCLEOTIDE_SEQUENCE'.";
             throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }
