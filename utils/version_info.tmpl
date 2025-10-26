@@ -87,10 +87,44 @@
 //                                    Removed "Age_Dependence" parameter from InputEIR intervention, Age_Dependent_Biting_Risk_Type parameter 
 //                                    from config will be used going forward to indicate whether age-dependent biting will be used
 //                               Fixed MalariaSummaryReport bug where HRP2 channels were not being reported correctly.
+// 2.29 - 10/21/2025 -  Default setting changes: Enable_Default_Reporting and Enable_Demographics_Reporting are now false (0) by 
+//                          default. This supports emodpy users as the system is better designed to turn on (or add) the reports, 
+//                          rather than turn them off. 
+//                   -  Malaria: 
+//                      Default behavior changes to receiving multiple of same intervention:
+//                          Bednets - new bednet of any bednet class will replace any existing bednet. Individual will not be able 
+//                              to have multiple bednets. 
+//                          HousingModifications - new housing modifications are combined with already existing housing modifications 
+//                              of the same class.
+//                          Larivices - new larvices are combined with already existing larvicides.
+//                          Ivermectin - new Ivermectin is combined with already existing Ivermectin.
+//                          Other node-level vector interventions - new intervention replaces existing intervention of the same
+//                             class unless they have different Intervention_Name parameters.
+//                      Added OutdoorNodeEmanator intervention and IndoorIndividualEmanator interventions.
+//                      Outdoor returning mortality:
+//                          Added "outdoor returning mortality" (contributed to by OutdoorRestKill and OutdoorNodeEmanator) 
+//                              to indoor biting vectors as well. Vectors that have fed indoors and outdoors are now subject 
+//                              to those interventions.                                 
+//                          Fixed issue where "outdoor returning mortality" was applied after we calculated newly-infected-vector 
+//                              numbers, so you could get into a situation where even if your "outdoor returning mortality" is 100%, 
+//                              your vectors population would still get newly-infected vectors as if some of the vectors successfully
+//                              survived feeding on an infected human.
+//                      Bloodmeal mortality:  
+//                          Fixed issue where bloodmeal mortality and Ivermectin mortality were applied to vectors that fed on a sugar 
+//                              trap instead of a human.
+//                          Added bloodmeal mortality to animal feeding. Vectors that feed on animals are now also affected by bloodmeal
+//                              mortality parameter.
+//                      Enable_Demographics_Birth parameter has been removed. If you have Enable_Demographics_Risk and/or 
+//                          Enable_Migration_Heterogeneity enabled (set to 1) and have births, the newborns in your simulation will
+//                          automatically receive parameters based on demographics risk and migration settings.
+//                   -  HIV:
+//                      Fixed issue where newborns had higher rate of HIV at birth than they should have. The infection flag was not 
+//                          being reset for each new newborn and once a newborn was flagged to be infected, all the following newborns
+//                          in that time step were flagged as infected as well.
 
 
 #define    MAJOR_VERSION    2
-#define    MINOR_VERSION    28
+#define    MINOR_VERSION    29
 
 #ifndef REVISION_NUMBER
 #define    REVISION_NUMBER  $REVISION$

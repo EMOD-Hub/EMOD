@@ -56,7 +56,7 @@
 #define Region_DESC_TEXT "Indicates whether or not the node has a road network for regional migration from (not to) the node."
 #define Seaport_DESC_TEXT "Indicates whether or not the node is connected by sea migration from (not to) the node."
 #define BirthRate_DESC_TEXT "The birth rate, in births per person per day."
-#define InitialPopulation_DESC_TEXT "The number of people that will be populated into the node at the beginning of the simulation. You can scale this number using Base_Population_Scale_Factor in the configuration file."
+#define InitialPopulation_DESC_TEXT "The number of people that will be populated into the node at the beginning of the simulation. You can scale this number using **x_Base_Population** in the configuration file."
 #define InfectivityReservoirSize_DESC_TEXT "The quantity-per-timestep added to the total infectivity present in a node; it is equivalent to the expected number of additional infections in a node, per timestep."
 #define InfectivityReservoirStartTime_DESC_TEXT "The beginning of the exogeneous reservoir of infectivity."
 #define InfectivityReservoirEndTime_DESC_TEXT "The ending of the exogeneous reservoir of infectivity."

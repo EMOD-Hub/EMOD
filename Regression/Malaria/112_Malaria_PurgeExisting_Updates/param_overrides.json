@@ -1,0 +1,42 @@
+{
+    "Default_Config_Path": "../../defaults/malaria_default_config.json",
+    "parameters": {
+        "CLIMATE": {
+            "Base_Air_Temperature": 25.0,
+            "Enable_Climate_Stochasticity": 0,
+            "Climate_Model": "CLIMATE_CONSTANT"
+        },
+        "DEMOGRAPHICS": {
+            "Migration_Model": "NO_MIGRATION",
+            "Enable_Demographics_Initial": 1,
+            "Demographics_Filenames": [
+                "Demographics.json"
+            ]
+        },
+        "PRIMARY": {
+            "Config_Name": "112_Malaria_PurgeExisting_Updates",
+            "Geography": "",
+            "Enable_Default_Reporting": 1,
+            "Enable_Demographics_Reporting": 0,
+            "Enable_Disease_Mortality": 0,
+            "Custom_Reports_Filename": "custom_reports.json",
+            "Load_Balance_Filename": "",
+            "Num_Cores": 1,
+            "Run_Number": 1,
+            "Simulation_Timestep": 1,
+            "Simulation_Duration": 30
+        },
+        "Wolbachia_Mortality_Modification": 0.0,
+        "Human_Feeding_Mortality": 0.0,
+        "Enable_Vector_Aging": 1,
+        "Enable_Vector_Mortality": 1,
+        "Vector_Sampling_Type": "TRACK_ALL_VECTORS",
+        "x_Temporary_Larval_Habitat": 1,
+        "Vector_Species_Params": [
+            {
+                "Name": "arabiensis",
+                "Vector_Sugar_Feeding_Frequency": "VECTOR_SUGAR_FEEDING_EVERY_DAY"
+            }
+        ]
+    }
+}

@@ -24,11 +24,13 @@ namespace Kernel
     IMPLEMENT_FACTORY_REGISTERED(IRSHousingModification)
     IMPLEMENT_FACTORY_REGISTERED(ScreeningHousingModification)
     IMPLEMENT_FACTORY_REGISTERED(SpatialRepellentHousingModification)
+    IMPLEMENT_FACTORY_REGISTERED(IndoorIndividualEmanator)
     IMPLEMENT_FACTORY_REGISTERED(MultiInsecticideIRSHousingModification)
 
     REGISTER_SERIALIZABLE(IRSHousingModification);
     REGISTER_SERIALIZABLE(ScreeningHousingModification);
     REGISTER_SERIALIZABLE(SpatialRepellentHousingModification);
+    REGISTER_SERIALIZABLE(IndoorIndividualEmanator);
     REGISTER_SERIALIZABLE(MultiInsecticideIRSHousingModification);
 
     // ------------------------------------------------------------------------
@@ -120,8 +122,6 @@ namespace Kernel
         {
             throw QueryInterfaceException( __FILE__, __LINE__, __FUNCTION__, "context", "IHousingModificationConsumer", "IIndividualHumanInterventionsContext" );
         }
-
-        context->PurgeExisting( typeid(*this).name() );
 
         return BaseIntervention::Distribute( context, pCCO );
     }
@@ -256,5 +256,24 @@ namespace Kernel
     {
         SimpleHousingModification::serialize(ar, obj);
     }
+
+    // ------------------------------------------------------------------------
+    // --- IndoorIndividualEmanator
+    // ------------------------------------------------------------------------
+
+    void IndoorIndividualEmanator::ApplyEffectsKilling( float dt )
+    {
+        GeneticProbability current_killingrate = m_pInsecticideWaningEffect->GetCurrent( ResistanceType::KILLING );
+
+        release_assert( m_pIHMC != nullptr );
+
+        m_pIHMC->UpdateProbabilityOfIndoorEmanatorKilling( current_killingrate ); // folded into p_kill_emanator, only for pre- and post- feed killing
+    }
+
+    void IndoorIndividualEmanator::serialize( IArchive& ar, IndoorIndividualEmanator* obj )
+    {
+        SimpleHousingModification::serialize( ar, obj );
+    }
+
 }
 

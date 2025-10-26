@@ -314,37 +314,41 @@ namespace Kernel
         return true;
     }
 
-    std::list<INodeDistributableIntervention*> NodeEventContextHost::GetInterventionsByType(const std::string& type_name)
+    void NodeEventContextHost::PurgeExistingByType( const std::string& type_name )
     {
-        std::list<INodeDistributableIntervention*> interventions_of_type;
-        LOG_INFO_F("Looking for intervention of type %s", type_name.c_str());
-        for (auto intervention : node_interventions)
-        {
-            std::string cur_iv_type_name = typeid( *intervention ).name();
-            if( cur_iv_type_name == type_name )
-            {
-                LOG_INFO( "Found one..." );
-                interventions_of_type.push_back( intervention );
-            }
-        }
+        // returns the first element that satisfies the condition or .end() if no such element is found.
+        auto it = std::find_if( node_interventions.begin(), node_interventions.end(),
+                                [&]( INodeDistributableIntervention* intervention ) {
+                                    return typeid( *intervention ).name() == type_name;
+                                } );
 
-        return interventions_of_type;
-    }
+        if(it != node_interventions.end()) {
+            LOG_INFO_F( "Found an existing intervention '%s' in node %d. Purging.\n",
+                        type_name.c_str(), GetId() );
 
-    void NodeEventContextHost::PurgeExisting( const std::string& iv_name )
-    {
-        for (auto intervention : node_interventions)
-        {
-            std::string cur_iv_type_name = typeid( *intervention ).name();
-            if( cur_iv_type_name == iv_name )
-            {
-                LOG_INFO_F("Found an existing intervention by that name (%s) which we are purging\n", iv_name.c_str());
-                node_interventions.remove( intervention );
-                delete intervention;
-                break;
-            }
+            delete* it;    // destroy the intervention
+            node_interventions.erase( it ); // remove the pointer from the list
         }
     }
+
+
+    void NodeEventContextHost::PurgeExistingByName( const std::string& type_name, const InterventionName& iv_name)
+    {
+        // returns the first element that satisfies the condition or .end() if no such element is found.
+        auto it = std::find_if( node_interventions.begin(), node_interventions.end(),
+                                [&]( INodeDistributableIntervention* intervention ) {
+                                    return ( type_name == typeid( *intervention ).name() && intervention->GetName() == iv_name );
+                                } );
+
+        if(it != node_interventions.end()) {
+            LOG_INFO_F( "Found an existing intervention with name '%s' in node %d. Purging.\n",
+                        iv_name.c_str(), GetId() );
+
+            delete* it;    // destroy the intervention
+            node_interventions.erase( it ); // remove the pointer from the list
+        }
+    }
+
 
     const std::list<INodeDistributableIntervention*>& NodeEventContextHost::GetNodeInterventions() const
     {

@@ -17,7 +17,7 @@ namespace Kernel
         void AccumulateIndividualProbabilities(IVectorInterventionsEffects* ivie, float weight);
         void NormalizeIndividualProbabilities();
         void SetNodeProbabilities(INodeVectorInterventionEffects* invie, float dt);
-        void FinalizeTransitionProbabilites(float anthropophily, float indoor_feeding);
+        void FinalizeTransitionProbabilites(float anthropophily, float indoor_feeding, const GeneticProbability& bloodmeal_mortality );
 
         // vector-feeding and MC weighted population
         float effective_host_population;
@@ -55,6 +55,7 @@ namespace Kernel
         float attraction_ADIV;
         GeneticProbability kill_livestockfeed;
         GeneticProbability spatial_repellent;
+        GeneticProbability node_emanator_killing;
         float nooutdoorhumanfound;
         GeneticProbability outdoorRestKilling;
         GeneticProbability sugarTrapKilling;

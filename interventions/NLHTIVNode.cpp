@@ -188,7 +188,7 @@ namespace Kernel
 
         if( distributed )
         {
-            LOG_INFO_F("Distributed '%s' intervention to node %d\n", m_ClassName.c_str(), parent->GetExternalId() );
+            LOG_INFO_F("Distributed '%s' intervention to node %d.\n", ndi->GetName().empty() ? m_ClassName.c_str() : ndi->GetName().c_str(), parent->GetExternalId());
         }
         ndi->Release();
 

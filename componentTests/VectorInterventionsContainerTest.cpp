@@ -120,6 +120,78 @@ SUITE( VectorInterventionsContainerTest )
         CHECK_CLOSE( 0.00f, vic.GetSuccessfulFeedAD().GetDefaultValue()   , EPSILON );
 
         // ------------------------------------
+        // --- Test Calculations
+        // --- 
+        // --- IndoorIndividualEmanator
+        // ------------------------------------
+        vic.InfectiousLoopUpdate( 1.0f );  // reset 
+        GeneticProbability ii_emanator_repelling = 0.4f;
+        GeneticProbability ii_emanator_killing = 0.1f;
+
+        vic.UpdateProbabilityOfIndoorEmanatorKilling( ii_emanator_killing );
+        vic.UpdateProbabilityOfHouseRepelling( ii_emanator_repelling );
+
+        vic.Update( 1.0f );
+
+        CHECK_CLOSE( 0.06f, vic.GetDieBeforeFeeding().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.40f, vic.GetHostNotAvailable().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.00f, vic.GetDieDuringFeeding().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.054f, vic.GetDiePostFeeding().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.486f, vic.GetSuccessfulFeedHuman().GetDefaultValue(), EPSILON );
+
+        CHECK_CLOSE( 0.00f, vic.GetOutdoorDieBeforeFeeding(), EPSILON );
+        CHECK_CLOSE( 0.00f, vic.GetOutdoorHostNotAvailable().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.00f, vic.GetOutdoorDieDuringFeeding().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.00f, vic.GetOutdoorDiePostFeeding().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 1.00f, vic.GetOutdoorSuccessfulFeedHuman().GetDefaultValue(), EPSILON );
+
+        // repelling only
+        vic.InfectiousLoopUpdate( 1.0f ); // reset 
+
+        ii_emanator_repelling = 0.4f;
+        ii_emanator_killing = 0.0f;
+
+        vic.UpdateProbabilityOfIndoorEmanatorKilling( ii_emanator_killing );
+        vic.UpdateProbabilityOfHouseRepelling( ii_emanator_repelling );
+
+        vic.Update( 1.0f );
+
+        CHECK_CLOSE( 0.00f, vic.GetDieBeforeFeeding().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.40f, vic.GetHostNotAvailable().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.00f, vic.GetDieDuringFeeding().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.00f, vic.GetDiePostFeeding().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.60f, vic.GetSuccessfulFeedHuman().GetDefaultValue(), EPSILON );
+
+        CHECK_CLOSE( 0.00f, vic.GetOutdoorDieBeforeFeeding(), EPSILON );
+        CHECK_CLOSE( 0.00f, vic.GetOutdoorHostNotAvailable().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.00f, vic.GetOutdoorDieDuringFeeding().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.00f, vic.GetOutdoorDiePostFeeding().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 1.00f, vic.GetOutdoorSuccessfulFeedHuman().GetDefaultValue(), EPSILON );
+
+        // killing only
+        vic.InfectiousLoopUpdate( 1.0f ); // reset 
+
+        ii_emanator_repelling = 0.0f;
+        ii_emanator_killing = 0.05f;
+
+        vic.UpdateProbabilityOfIndoorEmanatorKilling( ii_emanator_killing );
+        vic.UpdateProbabilityOfHouseRepelling( ii_emanator_repelling );
+
+        vic.Update( 1.0f );
+
+        CHECK_CLOSE( 0.05f, vic.GetDieBeforeFeeding().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.00f, vic.GetHostNotAvailable().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.00f, vic.GetDieDuringFeeding().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.0475f, vic.GetDiePostFeeding().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.9025f, vic.GetSuccessfulFeedHuman().GetDefaultValue(), EPSILON );
+
+        CHECK_CLOSE( 0.00f, vic.GetOutdoorDieBeforeFeeding(), EPSILON );
+        CHECK_CLOSE( 0.00f, vic.GetOutdoorHostNotAvailable().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.00f, vic.GetOutdoorDieDuringFeeding().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.00f, vic.GetOutdoorDiePostFeeding().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 1.00f, vic.GetOutdoorSuccessfulFeedHuman().GetDefaultValue(), EPSILON );
+
+        // ------------------------------------
         // --- Test Die Post Feed Calculations
         // --- 
         // --- Insecticidal Drug
@@ -405,6 +477,39 @@ SUITE( VectorInterventionsContainerTest )
         CHECK_CLOSE( 0.00f, vic.GetOutdoorHostNotAvailable().GetDefaultValue()   , EPSILON );
         CHECK_CLOSE( 0.00f, vic.GetOutdoorDieDuringFeeding().GetDefaultValue()   , EPSILON );
         CHECK_CLOSE( 0.75f, vic.GetOutdoorDiePostFeeding().GetDefaultValue()     , EPSILON );
+        CHECK_CLOSE( 0.25f, vic.GetOutdoorSuccessfulFeedHuman().GetDefaultValue(), EPSILON );
+
+        // ----------------------------------------------------------------------------
+        // --- Test Die Post Feed Calculations
+        // ---
+        // --- combine IRS house killing, insecticidal drug, blood meal mortality, bed net, individual indoor emanator
+        // ------------------------------------
+        vic.InfectiousLoopUpdate( 1.0f );
+        irs_killing_gp = 0.5;
+        insect_drug_killing_gp = 0.5;
+        m_pSimulationConfig->vector_params->blood_meal_mortality = 0.5;
+        ii_emanator_repelling = 0.4f;
+        ii_emanator_killing = 0.1f;
+
+        vic.UpdateProbabilityOfHouseKilling( irs_killing_gp );
+        vic.UpdateInsecticidalDrugKillingProbability( insect_drug_killing_gp );
+        vic.UpdateProbabilityOfBlocking( 0.6f );
+        vic.UpdateProbabilityOfKilling( 0.3f );
+        vic.UpdateProbabilityOfIndoorEmanatorKilling( ii_emanator_killing );
+        vic.UpdateProbabilityOfHouseRepelling( ii_emanator_repelling );
+
+        vic.Update( 1.0f );
+
+        CHECK_CLOSE( 0.1572f, vic.GetDieBeforeFeeding().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.6268f, vic.GetHostNotAvailable().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.00f,   vic.GetDieDuringFeeding().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.1917f, vic.GetDiePostFeeding().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.0243f, vic.GetSuccessfulFeedHuman().GetDefaultValue(), EPSILON );
+
+        CHECK_CLOSE( 0.00f, vic.GetOutdoorDieBeforeFeeding(), EPSILON );
+        CHECK_CLOSE( 0.00f, vic.GetOutdoorHostNotAvailable().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.00f, vic.GetOutdoorDieDuringFeeding().GetDefaultValue(), EPSILON );
+        CHECK_CLOSE( 0.75f, vic.GetOutdoorDiePostFeeding().GetDefaultValue(), EPSILON );
         CHECK_CLOSE( 0.25f, vic.GetOutdoorSuccessfulFeedHuman().GetDefaultValue(), EPSILON );
     }
 }

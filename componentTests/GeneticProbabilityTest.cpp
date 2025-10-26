@@ -1655,156 +1655,27 @@ SUITE( GeneticProbabilityTest )
         gpx3 = gpx2 * 0.8f;
         CHECK_CLOSE( 0.2f, gpx2.GetValue( m_SpeciesIndexGambiae, m_Genome_a1b1c1_a1b1c1 ), FLT_EPSILON );
         CHECK_CLOSE( 0.4f, gpx2.GetValue( m_SpeciesIndexGambiae, m_Genome_a2b1c1_a2b1c1 ), FLT_EPSILON );
-    }
-
-    TEST_FIXTURE( GeneticFixture, TestVectorInterventionsContainerProbabilities )
-    {
-        // ---------------
-        // --- Create a2a2
-        // ---------------
-        VectorGameteBitPair_t genome_bit_mask;
-        std::vector<VectorGameteBitPair_t> possible_genomes;
-        CreateAlleleComboInput( m_GenesGambiae, "a2", "a2", "", "", &genome_bit_mask, &possible_genomes );
-        AlleleCombo a2a2( m_SpeciesIndexGambiae, genome_bit_mask, possible_genomes );
-
-        CreateAlleleComboInput( m_GenesGambiae, "b1", "b1", "", "", &genome_bit_mask, &possible_genomes );
-        AlleleCombo b1b1( m_SpeciesIndexGambiae, genome_bit_mask, possible_genomes );
-
-        //** Fix so all species supported
-        //** IRS
-        GeneticProbability irs_a2a2( AlleleComboProbability( a2a2, 0.3f ) );
-        GeneticProbability p_kill_IRSpostfeed_effective = 0.5f - irs_a2a2;
-
-         //** SimpleBednet
-        GeneticProbability itn_b1b1( AlleleComboProbability( b1b1, 0.6f ) );
-        GeneticProbability p_kill_ITN = 0.7f - itn_b1b1;
-
-        float p_kill_PFH                                = 0.1f;
-        float p_block_housing                           = 0.2f;
-        float p_kill_IRSprefeed                         = 0.0f; // always zero - not hooked up
-        float p_attraction_ADIH                         = 0.3f;
-        GeneticProbability p_kill_ADIH                  = 0.4f; //** SugarTrap - currently multi-species
-        float p_block_net                               = 0.6f;
-        float p_block_indrep                            = 0.9f;
-        float p_dieduringfeeding                        = 0.1f;
-
-        GeneticProbability pBlockNet = p_block_net * ((1 - p_kill_ITN) * p_kill_PFH + p_kill_ITN)
-                                     + ((1.0f - p_block_net) * p_block_indrep * p_kill_PFH);
-        CHECK_CLOSE( 0.4740f, pBlockNet.GetValue( m_SpeciesIndexGambiae,  m_Genome_a1b2c1_a1b2c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.4740f, pBlockNet.GetValue( m_SpeciesIndexGambiae,  m_Genome_a2b2c1_a2b2c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.1500f, pBlockNet.GetValue( m_SpeciesIndexGambiae,  m_Genome_a1b1c1_a1b1c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.1500f, pBlockNet.GetValue( m_SpeciesIndexGambiae,  m_Genome_a2b1c1_a2b1c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.4740f, pBlockNet.GetValue( m_SpeciesIndexFunestus, m_Genome_d1e1_d1e1     ), FLT_EPSILON );
-
-        GeneticProbability pIRS = p_kill_IRSpostfeed_effective + (1 - p_kill_IRSpostfeed_effective) * p_kill_PFH;
-        CHECK_CLOSE( 0.55f, pIRS.GetValue( m_SpeciesIndexGambiae,  m_Genome_a1b2c1_a1b2c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.28f, pIRS.GetValue( m_SpeciesIndexGambiae,  m_Genome_a2b2c1_a2b2c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.55f, pIRS.GetValue( m_SpeciesIndexGambiae,  m_Genome_a1b1c1_a1b1c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.28f, pIRS.GetValue( m_SpeciesIndexGambiae,  m_Genome_a2b1c1_a2b1c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.55f, pIRS.GetValue( m_SpeciesIndexFunestus, m_Genome_d1e1_d1e1     ), FLT_EPSILON );
-
-        GeneticProbability pAttractionADIH = p_attraction_ADIH 
-                                           * (p_kill_ADIH + (1 - p_kill_ADIH) * pIRS )
-                                           + (1 - p_attraction_ADIH) * pBlockNet;
-        CHECK_CLOSE( 0.55080f, pAttractionADIH.GetValue( m_SpeciesIndexGambiae,  m_Genome_a1b2c1_a1b2c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.50220f, pAttractionADIH.GetValue( m_SpeciesIndexGambiae,  m_Genome_a2b2c1_a2b2c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.32400f, pAttractionADIH.GetValue( m_SpeciesIndexGambiae,  m_Genome_a1b1c1_a1b1c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.27540f, pAttractionADIH.GetValue( m_SpeciesIndexGambiae,  m_Genome_a2b1c1_a2b1c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.55080f, pAttractionADIH.GetValue( m_SpeciesIndexFunestus, m_Genome_d1e1_d1e1     ), FLT_EPSILON );
-
-        GeneticProbability pDieBeforeFeeding = p_kill_PFH
-                                             + (1-p_kill_PFH) * (1-p_block_housing)
-                                                * (p_kill_IRSprefeed + (1-p_kill_IRSprefeed * pAttractionADIH) );
-        CHECK_CLOSE( 0.82f, pDieBeforeFeeding.GetValue( m_SpeciesIndexGambiae,  m_Genome_a1b2c1_a1b2c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.82f, pDieBeforeFeeding.GetValue( m_SpeciesIndexGambiae,  m_Genome_a2b2c1_a2b2c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.82f, pDieBeforeFeeding.GetValue( m_SpeciesIndexGambiae,  m_Genome_a1b1c1_a1b1c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.82f, pDieBeforeFeeding.GetValue( m_SpeciesIndexGambiae,  m_Genome_a2b1c1_a2b1c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.82f, pDieBeforeFeeding.GetValue( m_SpeciesIndexFunestus, m_Genome_d1e1_d1e1     ), FLT_EPSILON );
-
-        GeneticProbability pHostNotAvailable = (1-p_kill_PFH)
-                                             * ( p_block_housing 
-                                                 + (1-p_block_housing)
-                                                   * (1-p_kill_IRSprefeed)
-                                                   * (1-p_attraction_ADIH)
-                                                   * (p_block_net * (1-p_kill_ITN) * (1-p_kill_PFH)
-                                                       + (1.0f-p_block_net) * p_block_indrep * (1.0f-p_kill_PFH)
-                                                      )
-                                                 );
-        CHECK_CLOSE( 0.4249440f, pHostNotAvailable.GetValue( m_SpeciesIndexGambiae,  m_Genome_a1b2c1_a1b2c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.4249440f, pHostNotAvailable.GetValue( m_SpeciesIndexGambiae,  m_Genome_a2b2c1_a2b2c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.5882400f, pHostNotAvailable.GetValue( m_SpeciesIndexGambiae,  m_Genome_a1b1c1_a1b1c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.5882400f, pHostNotAvailable.GetValue( m_SpeciesIndexGambiae,  m_Genome_a2b1c1_a2b1c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.4249440f, pHostNotAvailable.GetValue( m_SpeciesIndexFunestus, m_Genome_d1e1_d1e1     ), FLT_EPSILON );
-
-        GeneticProbability pDieDuringFeeding = (1-p_kill_PFH)
-                                             * (1-p_block_housing)
-                                             * (1-p_kill_IRSprefeed)
-                                             * (1-p_attraction_ADIH)
-                                             * (1-p_block_net)
-                                             * (1-p_block_indrep)
-                                             * p_dieduringfeeding;
-        CHECK_CLOSE( 0.002016f, pDieDuringFeeding.GetValue( m_SpeciesIndexGambiae,  m_Genome_a1b2c1_a1b2c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.002016f, pDieDuringFeeding.GetValue( m_SpeciesIndexGambiae,  m_Genome_a2b2c1_a2b2c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.002016f, pDieDuringFeeding.GetValue( m_SpeciesIndexGambiae,  m_Genome_a1b1c1_a1b1c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.002016f, pDieDuringFeeding.GetValue( m_SpeciesIndexGambiae,  m_Genome_a2b1c1_a2b1c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.002016f, pDieDuringFeeding.GetValue( m_SpeciesIndexFunestus, m_Genome_d1e1_d1e1     ), FLT_EPSILON );
-
-        GeneticProbability pDiePostFeeding = (1-p_kill_PFH)
-                                           * (1-p_block_housing)
-                                           * (1-p_kill_IRSprefeed)
-                                           * (1-p_attraction_ADIH)
-                                           * (1-p_block_net)
-                                           * (1-p_block_indrep)
-                                           * (1-p_dieduringfeeding)
-                                           * (p_kill_IRSpostfeed_effective + (1-p_kill_IRSpostfeed_effective) * p_kill_PFH);
-        CHECK_CLOSE( 0.00997920f, pDiePostFeeding.GetValue( m_SpeciesIndexGambiae,  m_Genome_a1b2c1_a1b2c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.00508032f, pDiePostFeeding.GetValue( m_SpeciesIndexGambiae,  m_Genome_a2b2c1_a2b2c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.00997920f, pDiePostFeeding.GetValue( m_SpeciesIndexGambiae,  m_Genome_a1b1c1_a1b1c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.00508032f, pDiePostFeeding.GetValue( m_SpeciesIndexGambiae,  m_Genome_a2b1c1_a2b1c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.00997920f, pDiePostFeeding.GetValue( m_SpeciesIndexFunestus, m_Genome_d1e1_d1e1     ), FLT_EPSILON );
-
-        GeneticProbability pSuccessfulFeedHuman = (1-p_kill_PFH)
-                                                * (1-p_block_housing)
-                                                * (1-p_kill_IRSprefeed)
-                                                * (1-p_attraction_ADIH)
-                                                * (1-p_block_net)
-                                                * (1-p_block_indrep)
-                                                * (1-p_dieduringfeeding)
-                                                * (1-p_kill_IRSpostfeed_effective)
-                                                * (1-p_kill_PFH);
-        CHECK_CLOSE( 0.0081648f, pSuccessfulFeedHuman.GetValue( m_SpeciesIndexGambiae,  m_Genome_a1b2c1_a1b2c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.0130637f, pSuccessfulFeedHuman.GetValue( m_SpeciesIndexGambiae,  m_Genome_a2b2c1_a2b2c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.0081648f, pSuccessfulFeedHuman.GetValue( m_SpeciesIndexGambiae,  m_Genome_a1b1c1_a1b1c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.0130637f, pSuccessfulFeedHuman.GetValue( m_SpeciesIndexGambiae,  m_Genome_a2b1c1_a2b1c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.0081648f, pSuccessfulFeedHuman.GetValue( m_SpeciesIndexFunestus, m_Genome_d1e1_d1e1     ), FLT_EPSILON );
-
-        GeneticProbability pSuccessfulFeedAD  = (1-p_kill_PFH)
-                                              * (1-p_block_housing)
-                                              * (1-p_kill_IRSprefeed)
-                                              * p_attraction_ADIH
-                                              * (1-p_kill_ADIH)
-                                              * (1-p_kill_IRSpostfeed_effective)
-                                              * (1-p_kill_PFH);
-        CHECK_CLOSE( 0.058320f, pSuccessfulFeedAD.GetValue( m_SpeciesIndexGambiae,  m_Genome_a1b2c1_a1b2c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.093312f, pSuccessfulFeedAD.GetValue( m_SpeciesIndexGambiae,  m_Genome_a2b2c1_a2b2c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.058320f, pSuccessfulFeedAD.GetValue( m_SpeciesIndexGambiae,  m_Genome_a1b1c1_a1b1c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.093312f, pSuccessfulFeedAD.GetValue( m_SpeciesIndexGambiae,  m_Genome_a2b1c1_a2b1c1 ), FLT_EPSILON );
-        CHECK_CLOSE( 0.058320f, pSuccessfulFeedAD.GetValue( m_SpeciesIndexFunestus, m_Genome_d1e1_d1e1     ), FLT_EPSILON );
 
         // -----------------------
         // --- Test serialization
         // -----------------------
         JsonFullWriter json_writer;
         IArchive* p_json_writer = &json_writer;
-        p_json_writer->labelElement("Test") & pDieBeforeFeeding;
+        p_json_writer->labelElement( "Test" )& gpx3;
         //PrintDebug( p_json_writer->GetBuffer() );
 
         GeneticProbability gp_read;
         JsonFullReader json_reader( p_json_writer->GetBuffer() );
         IArchive* p_json_reader = &json_reader;
-        p_json_reader->labelElement("Test") & gp_read;
+        p_json_reader->labelElement( "Test" )& gp_read;
 
-        CHECK( pDieBeforeFeeding == gp_read );
+        CHECK_CLOSE( gpx3.GetValue( m_SpeciesIndexGambiae, m_Genome_a2b1c1_a2b1c1 ), gp_read.GetValue( m_SpeciesIndexGambiae, m_Genome_a2b1c1_a2b1c1 ), FLT_EPSILON );
+        CHECK_CLOSE( gpx3.GetDefaultValue(), gp_read.GetDefaultValue(), FLT_EPSILON);
+
+        // only changing default value to make sure everything else matches because otherwise fails due to floating point
+        gpx3.SetDefaultValue( 0 );
+        gp_read.SetDefaultValue( 0 );
+        CHECK( gpx3 == gp_read );
 
     }
 }

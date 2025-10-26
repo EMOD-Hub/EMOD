@@ -319,9 +319,8 @@ namespace Kernel
             distributed = di->Distribute( pIndiv->GetInterventionsContext(), iCCO );
             if( distributed )
             {
-                std::string classname = GetInterventionClassName();
-                LOG_DEBUG_F("A Node level health-triggered intervention (%s) was successfully distributed to individual %d\n",
-                            classname.c_str(),
+                LOG_DEBUG_F("A Node level health-triggered intervention '%s' was successfully distributed to individual %d\n",
+                            di->GetName().empty()? GetInterventionClassName().c_str() : di->GetName().c_str(),
                             pIndiv->GetInterventionsContext()->GetParent()->GetSuid().data
                            );
             }
@@ -344,8 +343,7 @@ namespace Kernel
 
             if( distributed )
             {
-                std::string classname = GetInterventionClassName();
-                LOG_INFO_F("Distributed '%s' intervention to node %d\n", classname.c_str(), parent->GetExternalId() );
+                LOG_INFO_F("Distributed '%s' intervention to node %d.\n", ndi->GetName().empty() ? GetInterventionClassName().c_str() : ndi->GetName().c_str(), parent->GetExternalId());
             }
             ndi->Release();
         }

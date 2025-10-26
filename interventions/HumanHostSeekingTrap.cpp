@@ -90,7 +90,9 @@ namespace Kernel
         {
             return false;
         }
-        context->PurgeExisting( typeid(*this).name() );
+        // only one allowed at a time since the effects are assigned directly,
+        // is not cumulative, and with multiples the last one wins
+        context->PurgeExistingByName( typeid( *this ).name(), name );
 
         bool distributed = BaseIntervention::Distribute( context, pCCO );
         if( distributed )

@@ -88,4 +88,14 @@ namespace Kernel
         virtual void initConfigKilling( WaningConfig* pKillingConfig );
         virtual void ApplyEffectsKilling( float dt ) override;
     };
+
+    class IndoorIndividualEmanator : public SimpleHousingModification
+    {
+        DECLARE_FACTORY_REGISTERED(IndividualIVFactory, IndoorIndividualEmanator, IDistributableIntervention)
+
+        DECLARE_SERIALIZABLE(IndoorIndividualEmanator);
+
+    protected:
+        virtual void ApplyEffectsKilling( float dt ) override;
+    };
 }

@@ -3,24 +3,69 @@
         {
             "Event_Coordinator_Config": {
                 "Intervention_Config": {
-                    "Cost_To_Consumer": 1.0, 
-                    "Habitat_Target": "ALL_HABITATS", 
+                    "Cost_To_Consumer": 1.0,
+                    "Habitat_Target": "TEMPORARY_RAINFALL",
                     "Killing_Config": {
-                        "Box_Duration": 100, 
-                        "Decay_Time_Constant": 150, 
-                        "Initial_Effect": 0.2, 
+                        "Box_Duration": 100,
+                        "Decay_Time_Constant": 150,
+                        "Initial_Effect": 0.2,
                         "class": "WaningEffectBoxExponential"
-                    }, 
+                    },
                     "class": "OvipositionTrap"
-                }, 
+                },
                 "class": "StandardInterventionDistributionEventCoordinator"
-            }, 
+            },
             "Nodeset_Config": {
                 "class": "NodeSetAll"
-            }, 
-            "Start_Day": 120, 
+            },
+            "Start_Day": 120,
+            "class": "CampaignEvent"
+        },
+        {
+            "Event_Coordinator_Config": {
+                "Intervention_Config": {
+                    "Cost_To_Consumer": 1.0,
+                    "Habitat_Target": "ALL_HABITATS",
+                    "Killing_Config": {
+                        "Box_Duration": 100,
+                        "Decay_Time_Constant": 150,
+                        "Initial_Effect": 0.1,
+                        "class": "WaningEffectBoxExponential"
+                    },
+                    "class": "OvipositionTrap",
+                    "Intervention_Name": "secondTrap"
+                },
+                "class": "StandardInterventionDistributionEventCoordinator"
+            },
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            },
+            "Start_Day": 200,
+            "class": "CampaignEvent"
+        },
+        {
+            "Event_Coordinator_Config": {
+                "Intervention_Config": {
+                    "Cost_To_Consumer": 1.0,
+                    "Habitat_Target": "ALL_HABITATS",
+                    "Killing_Config": {
+                        "Box_Duration": 100,
+                        "Decay_Time_Constant": 150,
+                        "Initial_Effect": 0,
+                        "class": "WaningEffectBoxExponential"
+                    },
+                    "class": "OvipositionTrap",
+                    "Intervention_Name": "secondTrap",
+                    "Note": "This will purge the previous secontTrap intervention"
+                },
+                "class": "StandardInterventionDistributionEventCoordinator"
+            },
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            },
+            "Start_Day": 220,
             "class": "CampaignEvent"
         }
-    ], 
+    ],
     "Use_Defaults": 1
 }
