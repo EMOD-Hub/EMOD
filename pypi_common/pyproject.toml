@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "emod-common"
 dynamic = ["version"]
-description = "PyPI distribution of EMOD files for the Generic sim type"
+description = "PyPI distribution of EMOD files for testing common to all sim types"
 license = "MIT"
 authors = [
 ]
@@ -26,7 +26,6 @@ tests = [
 ]
 
 [project.urls]
-Homepage = "https://www.idmod.org/tool/emod-generic/"
 Documentation = "https://docs.idmod.org/projects/emod/en/latest/"
 Repository = "https://github.com/EMOD-Hub/EMOD"
 Issues = "https://github.com/EMOD-Hub/EMOD/issues"
