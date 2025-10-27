@@ -19,17 +19,22 @@
         "Falciparum_MSP_Variants": 150,
         "Falciparum_Nonspecific_Types": 32,
         "Falciparum_PfEMP1_Variants": 1500,
-        "Parasite_Genetics" : {
-            "Barcode_Genome_Locations" : [
-                5656667,  6123333,
-                8423333,  8856667,
-               11356667, 11923333,
-               15256667, 16023333,
-               20590000, 21690000
-            ]
-            "Var_Gene_Randomness_Type" : "FIXED_RANDOM",
-            "Neighborhood_Size_MSP" : 5,
-            "Neighborhood_Size_PfEMP1" : 10
+        "Parasite_Genetics": {
+            "Barcode_Genome_Locations": [
+                5656667,
+                6123333,
+                8423333,
+                8856667,
+                11356667,
+                11923333,
+                15256667,
+                16023333,
+                20590000,
+                21690000
+            ],
+            "Var_Gene_Randomness_Type": "FIXED_RANDOM",
+            "Neighborhood_Size_MSP": 5,
+            "Neighborhood_Size_PfEMP1": 10
         }
     }
 }
