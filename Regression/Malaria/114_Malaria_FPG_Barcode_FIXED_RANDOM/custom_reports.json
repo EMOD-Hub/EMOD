@@ -1,0 +1,12 @@
+{
+    "Reports": [
+        {
+            "Age_Bins": [],
+            "Stratify_By_Gender": 0,
+            "Barcodes" : [ ],
+            "Include_Identity_By_XXX": 1,
+            "class": "ReportNodeDemographicsMalariaGenetics"
+        }
+    ],
+    "Use_Defaults": 1
+}

@@ -1,0 +1,28 @@
+{
+    "Use_Defaults": 1,
+    "Events": [
+        {
+            "class": "CampaignEvent",
+            "Start_Day": 10,
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            },
+            "Event_Coordinator_Config": {
+                "class": "StandardInterventionDistributionEventCoordinator",
+                "Target_Demographic": "Everyone",
+                "Individual_Selection_Type": "TARGET_NUM_INDIVIDUALS",
+                "Target_Num_Individuals": 5,
+                "Intervention_Config": {
+                    "class": "MultiInterventionDistributor",
+                    "Intervention_List": [
+                        {
+                            "class": "OutbreakIndividualMalariaGenetics",
+                            "Create_Nucleotide_Sequence_From": "BARCODE_STRING",
+                            "Barcode_String": "AAAAAAA"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
