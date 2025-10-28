@@ -60,7 +60,7 @@ else:
         "ReportUtilitiesTest.cpp",
         "SerializationParametersTest.cpp",
         "SerializationTest.cpp",
-        "SerializationPopulationTest.cpp",
+        "SerializedPopulationTest.cpp",
         "SigmoidTest.cpp",
         "STIIsPostDebutTest.cpp",
         "SugarTrapTest.cpp",
