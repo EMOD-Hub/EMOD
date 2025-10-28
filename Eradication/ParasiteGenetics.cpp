@@ -769,7 +769,7 @@ namespace Kernel
     {
         std::vector<int32_t> sequence( m_NumBasePairs, 0 );
 
-        int barcode_distance = AddBarcodeValues( rBarcodeString, sequence );
+        AddBarcodeValues( rBarcodeString, sequence );
 
         ParasiteGenome genome( sequence, rRoots );
         return genome;
@@ -780,7 +780,7 @@ namespace Kernel
     {
         std::vector<int32_t> sequence( m_NumBasePairs, 0 );
 
-        int barcode_distance = AddBarcodeValues( rBarcodeString, sequence );
+        AddBarcodeValues( rBarcodeString, sequence );
 
         ParasiteGenomeInner* p_inner = new ParasiteGenomeInner( sequence, rRoots );
         return p_inner;
@@ -793,10 +793,7 @@ namespace Kernel
     {
         std::vector<int32_t> sequence( m_NumBasePairs, 0 );
 
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // FPG-TODO - I think this distance should be a float
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        int barcode_distance = AddBarcodeValues( rBarcodeString, sequence );
+        float barcode_distance = AddBarcodeValues( rBarcodeString, sequence );
         AddVarGenes( pRNG, barcode_distance, sequence );
         AddDrugResistantValues( rDrugString, sequence );
         AddHrpValues( rHrpString, sequence );
@@ -975,11 +972,7 @@ namespace Kernel
                                                      m_IndexesHRP,
                                                      sequence );
 
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // FPG-TODO - Passing barcode_distance as integer to make it like 
-        // CreateGenomeFromBarcode() but I think it should be float.
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        AddVarGenes( pRNG, int(barcode_distance), sequence );
+        AddVarGenes( pRNG, barcode_distance, sequence );
 
         ParasiteGenome genome( sequence );
         return genome;
