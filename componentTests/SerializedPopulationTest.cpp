@@ -13,6 +13,12 @@
 
 using namespace Kernel;
 
+// Need lambda function because isspace is overloaded
+auto is_a_space = [](const unsigned char c) 
+{
+    return std::isspace(c);
+};
+
 SUITE( SerializedPopulationTest )
 {   
     TEST( TestHeader_Version5_ToString )
@@ -57,14 +63,14 @@ SUITE( SerializedPopulationTest )
                                 << "}                                                                           ";
 
             std::string expected_json_header = json_header_temp.str();
-            expected_json_header.erase( std::remove_if( expected_json_header.begin(), expected_json_header.end(), isspace ), expected_json_header.end() );
+            expected_json_header.erase( std::remove_if( expected_json_header.begin(), expected_json_header.end(), is_a_space ), expected_json_header.end() );
 
             Kernel::RapidJsonObj rapjo;
             rapjo.Parse( json_header_temp.str().c_str() );
             header.emod_info = ProgDllVersion( rapjo.GetJsonObject( "emod_info" ) );
 
             std::string actual_header = header.ToString();
-            actual_header.erase( std::remove_if( actual_header.begin(), actual_header.end(), isspace ), actual_header.end() );
+            actual_header.erase( std::remove_if( actual_header.begin(), actual_header.end(), is_a_space ), actual_header.end() );
 
             CHECK_EQUAL( expected_json_header, actual_header );
         }
@@ -488,14 +494,14 @@ SUITE( SerializedPopulationTest )
                 << "}                                                                       ";
 
             std::string emod_info_expected = emod_info_str.str();
-            emod_info_expected.erase( std::remove_if( emod_info_expected.begin(), emod_info_expected.end(), isspace ), emod_info_expected.end() );
+            emod_info_expected.erase( std::remove_if( emod_info_expected.begin(), emod_info_expected.end(), is_a_space ), emod_info_expected.end() );
 
             Kernel::RapidJsonObj rapjo;
             rapjo.Parse( emod_info_str.str().c_str() );
             ProgDllVersion emod_info( &rapjo );
 
             std::string emod_info_actual = emod_info.toString();
-            emod_info_actual.erase( std::remove_if( emod_info_actual.begin(), emod_info_actual.end(), isspace ), emod_info_actual.end() );
+            emod_info_actual.erase( std::remove_if( emod_info_actual.begin(), emod_info_actual.end(), is_a_space ), emod_info_actual.end() );
 
             CHECK_EQUAL( emod_info_expected, emod_info_actual );
 
