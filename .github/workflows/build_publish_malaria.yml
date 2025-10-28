@@ -5,15 +5,10 @@ on:
 
 jobs:
   build:
-    name: Build executable
-    runs-on: ubuntu-latest
-    env:
-      USER: GHA-Workflow
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+    name: Build and create artifacts
+    uses: ./.github/workflows/build_archive.yml
+    with:
+      disease_type: Malaria
 
   publish:
     name: Publish distribution to PyPI

@@ -6,12 +6,12 @@ on:
     inputs:
       disease_type:
         description: 'Disease type in SCons build'
-        type: choice  # String
+        type: choice
         options:
-          - All
-          - Generic
-          - HIV
-          - Malaria
+          - 'All'
+          - 'Generic'
+          - 'HIV'
+          - 'Malaria'
 
 jobs:
   build_artifacts:
