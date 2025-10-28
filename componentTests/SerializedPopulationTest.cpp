@@ -57,14 +57,14 @@ SUITE( SerializedPopulationTest )
                                 << "}                                                                           ";
 
             std::string expected_json_header = json_header_temp.str();
-            expected_json_header.erase( remove_if( expected_json_header.begin(), expected_json_header.end(), isspace ), expected_json_header.end() );
+            expected_json_header.erase( std::remove_if( expected_json_header.begin(), expected_json_header.end(), isspace ), expected_json_header.end() );
 
             Kernel::RapidJsonObj rapjo;
             rapjo.Parse( json_header_temp.str().c_str() );
             header.emod_info = ProgDllVersion( rapjo.GetJsonObject( "emod_info" ) );
 
             std::string actual_header = header.ToString();
-            actual_header.erase( remove_if( actual_header.begin(), actual_header.end(), isspace ), actual_header.end() );
+            actual_header.erase( std::remove_if( actual_header.begin(), actual_header.end(), isspace ), actual_header.end() );
 
             CHECK_EQUAL( expected_json_header, actual_header );
         }
@@ -488,14 +488,14 @@ SUITE( SerializedPopulationTest )
                 << "}                                                                       ";
 
             std::string emod_info_expected = emod_info_str.str();
-            emod_info_expected.erase( remove_if( emod_info_expected.begin(), emod_info_expected.end(), isspace ), emod_info_expected.end() );
+            emod_info_expected.erase( std::remove_if( emod_info_expected.begin(), emod_info_expected.end(), isspace ), emod_info_expected.end() );
 
             Kernel::RapidJsonObj rapjo;
             rapjo.Parse( emod_info_str.str().c_str() );
             ProgDllVersion emod_info( &rapjo );
 
             std::string emod_info_actual = emod_info.toString();
-            emod_info_actual.erase( remove_if( emod_info_actual.begin(), emod_info_actual.end(), isspace ), emod_info_actual.end() );
+            emod_info_actual.erase( std::remove_if( emod_info_actual.begin(), emod_info_actual.end(), isspace ), emod_info_actual.end() );
 
             CHECK_EQUAL( emod_info_expected, emod_info_actual );
 
