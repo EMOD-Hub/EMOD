@@ -21,6 +21,8 @@ jobs:
           fetch-depth: 0
       - name: Update build type
         if: ${{ inputs.disease_type != 'All' }}
+        run: |
+          echo "Update environmental variable"
         env:
           scons_option: '--Disease=${{ inputs.disease_type }}'
       - name: Check python; build executable; strip symbols; make schema; extract version
