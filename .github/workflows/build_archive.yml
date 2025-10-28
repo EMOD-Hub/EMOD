@@ -1,0 +1,59 @@
+name: Build and create artifacts
+
+on:
+  # Allows re-use in other workflows
+  workflow_call:
+    inputs:
+      disease_type:
+        required: true
+        type: string
+
+jobs:
+  build:
+    name: Build
+    env:
+      scons_option: ''
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Update build type
+        if: ${{ inputs.disease_type != 'All' }}
+        env:
+          scons_option: '--Disease=${{ inputs.disease_type }}'
+      - name: Check python; build executable; strip symbols; make schema; extract version
+        uses: addnab/docker-run-action@v3
+        with:
+          image: docker-production.packages.idmod.org:443/idm/dtk-centos-buildenv:3.0
+          options: --mount type=bind,src=/home/runner/work/EMOD/EMOD,dst=/EMOD
+          run: |
+            python3 --version
+            python3 -m pip list
+            cd EMOD
+            scons --Release --jobs=4 $scons_option
+            strip build/x64/Release/Eradication/Eradication
+            ./build/x64/Release/Eradication/Eradication --get-schema --schema-path schema.json
+            grep DTK_Version schema.json | sed 's/[^0-9.]//g' > version
+      - name: Archive binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: Eradication
+          path: ./build/x64/Release/Eradication/Eradication
+      - name: Archive schema
+        uses: actions/upload-artifact@v4
+        with:
+          name: schema.json
+          path: schema.json
+      - name: Archive version
+        uses: actions/upload-artifact@v4
+        with:
+          name: version
+          path: version
+      - name: Archive component tests
+        if: ${{ inputs.disease_type == 'All' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: componentTests
+          path: ./build/x64/Release/componentTests/componentTests

@@ -1,0 +1,20 @@
+name: Build only
+
+on:
+  # Allows manual run from the Actions tab
+  workflow_dispatch:
+    inputs:
+      disease_type:
+        description: 'Disease type in SCons build'
+        type: choice  # String
+        options:
+          - All
+          - Generic
+          - HIV
+          - Malaria
+
+jobs:
+  build_artifacts:
+    name: Build and create artifacts
+    uses: ./.github/workflows/build_archive.yml
+    with: ${{ inputs.disease_type }}
