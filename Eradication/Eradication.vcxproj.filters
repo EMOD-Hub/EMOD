@@ -58,7 +58,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Eradication.rc" />
     <ResourceCompile Include="..\baseReportLib\report_params.rc" />
     <ResourceCompile Include="..\utils\demographic_params.rc" />
   </ItemGroup>

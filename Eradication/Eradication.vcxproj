@@ -260,9 +260,6 @@
   <ItemGroup>
     <ResourceCompile Include="..\baseReportLib\report_params.rc" />
     <ResourceCompile Include="..\utils\demographic_params.rc" />
-    <ResourceCompile Include="Eradication.rc">
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\utils</AdditionalIncludeDirectories>
-    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\cajun\include\cast.inl" />
