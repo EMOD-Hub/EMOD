@@ -1061,7 +1061,7 @@ SUITE( VectorPopulationIndividualTest )
         // --------------------------------------------------
         p_vec_probs->spatial_repellent = 0.4f;         // resetting to repelling with no killing
         p_vec_probs->node_emanator_killing = 0.0f; // resetting to repelling with no killing
-        bloodmeal_mortality = 0.15;
+        bloodmeal_mortality = 0.15f;
         p_vec_probs->FinalizeTransitionProbabilites( anthropophily, indoor_feeding, bloodmeal_mortality );
 
         vic.InfectiousLoopUpdate( 1.0 );

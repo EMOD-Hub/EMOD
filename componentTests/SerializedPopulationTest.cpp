@@ -378,7 +378,7 @@ SUITE( SerializedPopulationTest )
             emod_info_json["emod_builder_name"] = json::String( BUILDER_NAME );
             emod_info_json["emod_sccs_branch"] = json::String( SCCS_BRANCH );
             emod_info_json["emod_sccs_date"] = json::String( SCCS_DATE );
-            emod_info_json["emod_build_number"] = json::Uint64( BUILD_NUMBER );
+            emod_info_json["emod_build_number"] = json::Uint64( 0 );
 
             ProgDllVersion emod_info_from_json( emod_info_json );
 

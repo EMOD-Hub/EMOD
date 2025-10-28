@@ -1,24 +1,16 @@
-# -*- mode: python; -*-
-# This Python script, SConscript, invoked by the SConscript in the upper directory,
-#
-# 1. builds main DTK core files and generate Eradication program
-import pdb
 import os
-import re
-import xml.etree.ElementTree as et
 
 Import('env')
 
 if env['AllDlls'] or ( 'DiseaseDll' in env and env[ 'DiseaseDll' ] !="" ):
-
     print("ERROR: component tests only supported in monolithic")
 else:
-
     print( env["Disease"] )
 
     testsSrcFiles = [
         "AdditionalRestrictionsTest.cpp",
         "AdherentDrugTest.cpp",
+        "AntimalarialDrugTest.cpp",
         "ARTMortalityTableTest.cpp",
         "AssortivityTest.cpp",
         "BaseEventReportTest.cpp",
@@ -32,15 +24,16 @@ else:
         "FakeLogger.cpp",
         "FileSystemTest.cpp",
         "FlowControllerImplTest.cpp",
+        "GeneticProbabilityConfigTest.cpp",
         "GeneticProbabilityTest.cpp",
         "HIVARTStagingByCD4DiagnosticTest.cpp",
         "HIVARTStagingCD4AgnosticDiagnosticTest.cpp",
         "HIVDrawBloodTest.cpp",
         "HIVSimpleDiagnosticTest.cpp",
-        "InterventionForCurrentPartnersTest.cpp",
         "IncidenceEventCoordinatorTest.cpp",
         "InsecticidesTest.cpp",
         "InterpolatedValueMapTest.cpp",
+        "InterventionForCurrentPartnersTest.cpp",
         "JsonObjectDemogTest.cpp",
         "LarvalHabitatMultiplierTest.cpp",
         "LoadBalanceSchemeTest.cpp",
@@ -67,12 +60,14 @@ else:
         "ReportUtilitiesTest.cpp",
         "SerializationParametersTest.cpp",
         "SerializationTest.cpp",
+        "SerializationPopulationTest.cpp",
         "SigmoidTest.cpp",
         "STIIsPostDebutTest.cpp",
         "SugarTrapTest.cpp",
         "TestChiSquare.cpp",
         "TransmissionGroupsTest.cpp",
         "VectorCohortCollectionTest.cpp",
+        "VectorCohortMaleTest.cpp",
         "VectorCohortTest.cpp",
         "VectorFertilizerTest.cpp",
         "VectorGameteTest.cpp",
@@ -80,6 +75,7 @@ else:
         "VectorGeneTest.cpp",
         "VectorGenomeTest.cpp",
         "VectorInterventionsContainerTest.cpp",
+        "VectorMaternalDepositionTest.cpp",
         "VectorPopulationHelper.cpp",
         "VectorPopulationIndividualTest.cpp",
         "VectorPopulationTest.cpp",
@@ -87,17 +83,6 @@ else:
         "VectorTraitModifiersTest.cpp",
         "WaningEffectComboTest.cpp",
         "WaningEffectMapTest.cpp"
-    ]
-
-    testsIncFiles = [
-        'common.h',
-        'ICampaignCostObserverFake.h',
-        'IndividualHumanContextFake.h',
-        'IndividualHumanInterventionsContextFake.h',
-        'INodeContextFake.h',
-        'INodeEventContextFake.h',
-        'ISusceptibilityHIVFake.h',
-        'RandomFake.h',
     ]
 
 
@@ -119,7 +104,6 @@ else:
         erad_env.Append(LIBS=["/WHOLEARCHIVE:coreLib"])
         erad_env.Append(LIBS=["/WHOLEARCHIVE:reporters"])
     else:
-        #erad_env.Append(LINKFLAGS=["-Wl,--whole-archive,$BUILD_DIR/Eradication/libcoreLib.a,--no-whole-archive"])
         if env["Debug"]:
             erad_env.Append(LINKFLAGS=["-Wl,--whole-archive,build/x64/Debug/Eradication/libcoreLib.a,build/x64/Debug/reporters/libreporters.a,--no-whole-archive"])
         else:
