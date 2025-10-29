@@ -13,7 +13,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     env:
-      scons_option: ${{ inputs.disease_type != 'All' && '--Disease=inputs.disease_type' || ' ' }}
+      scons_option: ${{ inputs.disease_type != 'All' && '--Disease=${{inputs.disease_type}}' || ' ' }}
     steps:
       - name: Check env value
         run: |
