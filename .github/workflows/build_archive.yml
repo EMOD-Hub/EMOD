@@ -22,9 +22,7 @@ jobs:
       - name: Update build type
         if: ${{ inputs.disease_type != 'All' }}
         run: |
-          echo "Update environmental variable"
-        env:
-          scons_option: '--Disease=${{ inputs.disease_type }}'
+          echo "scons_option=${{ inputs.disease_type }}" >> $GITHUB_ENV
       - name: Check python; build executable; strip symbols; make schema; extract version
         uses: addnab/docker-run-action@v3
         with:
