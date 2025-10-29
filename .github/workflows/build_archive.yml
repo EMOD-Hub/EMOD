@@ -12,19 +12,13 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    env:
+      scons_option: ${{ inputs.disease_type != 'All' && '--Disease=${{inputs.disease_type}' || ' ' }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - name: Update build type
-        if: ${{ inputs.disease_type != 'All' }}
-        run: |
-          echo "scons_option=\"--Disease=${{ inputs.disease_type }}\"" >> $GITHUB_ENV
-      - name: Update build type
-        if: ${{ inputs.disease_type == 'All' }}
-        run: |
-          echo "scons_option=\" \"" >> $GITHUB_ENV
       - name: Check python; build executable; strip symbols; make schema; extract version
         uses: addnab/docker-run-action@v3
         with:
