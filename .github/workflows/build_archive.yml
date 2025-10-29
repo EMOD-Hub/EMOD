@@ -11,8 +11,6 @@ on:
 jobs:
   build:
     name: Build
-    env:
-      scons_option: ''
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -22,7 +20,11 @@ jobs:
       - name: Update build type
         if: ${{ inputs.disease_type != 'All' }}
         run: |
-          echo "scons_option=${{ inputs.disease_type }}" >> $GITHUB_ENV
+          echo "scons_option=\"--Disease=${{ inputs.disease_type }}\"" >> $GITHUB_ENV
+      - name: Update build type
+        if: ${{ inputs.disease_type == 'All' }}
+        run: |
+          echo "scons_option=\" \"" >> $GITHUB_ENV
       - name: Check python; build executable; strip symbols; make schema; extract version
         uses: addnab/docker-run-action@v3
         with:
