@@ -30,6 +30,7 @@ namespace Kernel
         , m_antigen_count(0)
         , m_active_index(-1)
         , m_time_last_active(-1.0)
+        , m_duration_not_active_serialization(0.0)
         , m_antibody_type( MalariaAntibodyType::CSP )
         , m_antibody_variant(0)
     {
@@ -61,13 +62,24 @@ namespace Kernel
                 m_antibody_concentration = m_antibody_concentration * exp( -dt * TWENTY_DAY_DECAY_CONSTANT );
 	        }
 
-	        // antibody capacity decays to a medium value (.3) dropping below .4 in ~120 days from 1.0
-	        if ( m_antibody_capacity > SusceptibilityMalariaConfig::memory_level )
-	        {
-                m_antibody_capacity = (m_antibody_capacity - SusceptibilityMalariaConfig::memory_level) 
+            if( m_antibody_capacity > SusceptibilityMalariaConfig::memory_level )
+            {
+                // antibody capacity decays to a medium value (.3) dropping below .4 in ~120 days from 1.0
+                m_antibody_capacity = (m_antibody_capacity - SusceptibilityMalariaConfig::memory_level)
                                     * exp( -dt * SusceptibilityMalariaConfig::hyperimmune_decay_rate )
                                     + SusceptibilityMalariaConfig::memory_level;
-	        }
+            }
+
+            // --------------------------------------------------------------------------------
+            // --- If the antibody has been dormant for a long time, start a gradual decay.
+            // --- This is to help reduce the issue where older people have too much immunity.
+            // --------------------------------------------------------------------------------
+            if( (dt >= SusceptibilityMalariaConfig::antibody_days_to_long_term_decay) &&
+                (m_antibody_capacity > FLT_EPSILON) )
+            {
+                float delta_time = dt - SusceptibilityMalariaConfig::antibody_days_to_long_term_decay;
+                m_antibody_capacity = m_antibody_capacity * exp( -delta_time / SusceptibilityMalariaConfig::antibody_long_term_decay_days);
+            }
         }
     }
 
@@ -207,16 +219,33 @@ namespace Kernel
         // --- would give us the duration of three time steps but the antibody was only inactive
         // --- for two of them.  It is active this time step so we don't want to count it.
         // --------------------------------------------------------------------------------------------
-        float decay_time = currentTime - m_time_last_active - dt;
+        float decay_time = currentTime - m_time_last_active - dt + m_duration_not_active_serialization;
         if( (m_time_last_active != -1.0) && (decay_time > 0.0) )
         {
             Decay( decay_time );
         }
         m_time_last_active = currentTime;
+
+        // ---------------------------------------------------------------------------------
+        // --- Need to clear this every time it is active due to the case where the
+        // --- antibody was active, but we serialized and called PrepareForSerialization()
+        // ---------------------------------------------------------------------------------
+        m_duration_not_active_serialization = 0.0;
     }
 
     void MalariaAntibody::SetTimeLastActive( float time )
     {
+        m_time_last_active = time;
+    }
+
+    void MalariaAntibody::PrepareForSerialization( float time, float dt )
+    {
+        float temp_dt = time - m_time_last_active;
+        if( (time - m_time_last_active) >= dt )
+        {
+            // this is "+=" incase someone saves multiple serialized files.
+            m_duration_not_active_serialization += (time - m_time_last_active);
+        }
         m_time_last_active = time;
     }
 
@@ -284,6 +313,7 @@ namespace Kernel
             //m_active_index is at most cleared and set each timestep so don't need to serialize
             //ar.labelElement("m_active_index"         ) & antibody.m_active_index;
             ar.labelElement("m_time_last_active"      ) & antibody.m_time_last_active;
+            ar.labelElement("m_duration_not_active_serialization") & antibody.m_duration_not_active_serialization;
             ar.labelElement("m_antibody_type"         ) & (uint32_t&)antibody.m_antibody_type;
             ar.labelElement("m_antibody_variant"      ) & antibody.m_antibody_variant;
         ar.endObject();

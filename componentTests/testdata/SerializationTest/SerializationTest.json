@@ -578,6 +578,7 @@
                     "m_antibody_concentration" : 2.2,
                     "m_antigen_count"          : 6,
                     "m_time_last_active"       : 123.0,
+                    "m_duration_not_active_serialization": 7.0,
                     "m_antibody_type"          : 0,
                     "m_antibody_variant"       : 101
                 },
@@ -587,6 +588,7 @@
                         "m_antibody_concentration" : 4.4,
                         "m_antigen_count"          : 77,
                         "m_time_last_active"       : 123.0,
+                        "m_duration_not_active_serialization": 6.0,
                         "m_antibody_type"          : 1,
                         "m_antibody_variant"       : 123
                     }
@@ -597,6 +599,7 @@
                         "m_antibody_concentration" : 6.6,
                         "m_antigen_count"          : 88,
                         "m_time_last_active"       : 123.0,
+                        "m_duration_not_active_serialization": 5.0,
                         "m_antibody_type"          : 2,
                         "m_antibody_variant"       : 345
                     },
@@ -605,6 +608,7 @@
                         "m_antibody_concentration" : 8.8,
                         "m_antigen_count"          : 99,
                         "m_time_last_active"       : 123.0,
+                        "m_duration_not_active_serialization": 4.0,
                         "m_antibody_type"          : 2,
                         "m_antibody_variant"       : 456
                     }
@@ -615,6 +619,7 @@
                         "m_antibody_concentration" : 1.1,
                         "m_antigen_count"          : 11,
                         "m_time_last_active"       : 123.0,
+                        "m_duration_not_active_serialization": 3.0,
                         "m_antibody_type"          : 3,
                         "m_antibody_variant"       : 567
                     },
@@ -623,6 +628,7 @@
                         "m_antibody_concentration" : 3.3,
                         "m_antigen_count"          : 22,
                         "m_time_last_active"       : 123.0,
+                        "m_duration_not_active_serialization": 2.0,
                         "m_antibody_type"          : 3,
                         "m_antibody_variant"       : 678
                     },
@@ -631,6 +637,7 @@
                         "m_antibody_concentration" : 5.5,
                         "m_antigen_count"          : 99,
                         "m_time_last_active"       : 123.0,
+                        "m_duration_not_active_serialization": 1.0,
                         "m_antibody_type"          : 3,
                         "m_antibody_variant"       : 789
                     }
