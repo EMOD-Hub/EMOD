@@ -13,7 +13,6 @@
         ],
         "Population_Scale_Type": "FIXED_SCALING",
         "x_Base_Population": 2,
-        "Enable_Demographics_Birth": 1,
 
         "Enable_Property_Output": 1,
         "Enable_Natural_Mortality": 0,

@@ -7,7 +7,6 @@
         "Default_Config_Path": "../../defaults/minimum_default_config.json",
         "Enable_Aging": 0,
         "Enable_Birth": 1,
-        "Enable_Demographics_Birth": 0,
         "Enable_Maternal_Infection_Transmission": 1,
         "Enable_Maternal_Protection": 0,
         "Enable_Natural_Mortality": 0,

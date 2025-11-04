@@ -28,16 +28,13 @@
         "Default_Geography_Torus_Size": 10,
         "Enable_Aging": 1,
         "Enable_Birth": 0,
-        "Enable_Demographics_Birth": 0,
         "Enable_Demographics_Builtin": 0,
         "Enable_Demographics_Reporting": 0,
         "Enable_Demographics_Risk": 0,
         "Enable_Disease_Mortality": 0,
         "Enable_Natural_Mortality": 0,
-        "Enable_Susceptibility_Scaling": 0,
         "Enable_Vital_Dynamics": 1,
-        "Minimum_Adult_Age_Years": 15,
-        "Population_Scale_Type": "FIXED_SCALING"
+        "Minimum_Adult_Age_Years": 15
     },
     "EXECUTION": {
         "CLUSTER": {

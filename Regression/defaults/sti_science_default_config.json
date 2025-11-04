@@ -31,7 +31,6 @@
         "Enable_Birth": 1,
         "Enable_Coital_Dilution": 1,
         "Enable_Default_Reporting": 1,
-        "Enable_Demographics_Birth": 0,
         "Enable_Demographics_Builtin": 0,
         "Enable_Demographics_Gender": 1,
         "Enable_Demographics_Reporting": 0,

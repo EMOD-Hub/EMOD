@@ -13,9 +13,7 @@
             ],
             "Enable_Aging": 1,
             "Enable_Birth": 0,
-            "Enable_Demographics_Birth": 0,
             "Enable_Demographics_Initial": 1,
-            "Enable_Demographics_Risk": 0,
             "Enable_Vital_Dynamics": 0,
             "IMMUNITY": {
                 "Enable_Immunity": 0

@@ -14,7 +14,6 @@
                 "PFA_overlay_scenario5_rates.json"
             ],
             "Enable_Birth": 1,
-            "Enable_Demographics_Birth": 0,
             "Enable_Demographics_Builtin": 0,
             "Enable_Disease_Mortality": 1,
             "Enable_Maternal_Protection": 0,
