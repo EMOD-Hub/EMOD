@@ -34,6 +34,7 @@
         "Enable_Disease_Mortality": 0,
         "Enable_Natural_Mortality": 0,
         "Enable_Vital_Dynamics": 1,
+        "Population_Scale_Type": "FIXED_SCALING",
         "Minimum_Adult_Age_Years": 15
     },
     "EXECUTION": {

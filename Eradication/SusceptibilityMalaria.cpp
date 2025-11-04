@@ -91,6 +91,7 @@ namespace Kernel
     )
     {
         SusceptibilityConfig::enable_initial_susceptibility_distribution = false;
+        SusceptibilityConfig::enable_immune_decay = false;
 
         initConfigTypeMap( "Anemia_Mortality_Threshold",              &anemiaMortalityLevel,              Anemia_Mortality_Threshold_DESC_TEXT,              0.0, 100.0f,      DEFAULT_ANEMIA_MORTALITY_LEVEL );
         initConfigTypeMap( "Parasite_Mortality_Threshold",            &parasiteMortalityLevel,            Parasite_Mortality_Threshold_DESC_TEXT,            0.0, FLT_MAX,     DEFAULT_PARASITE_MORTALITY_LEVEL );
