@@ -1,0 +1,21 @@
+{
+  "Reports": [
+    {
+      "class": "ReportInfectionStatsMalaria",
+      "End_Day": 365000,
+      "Include_Column_Gametocyte": 1,
+      "Include_Column_Hepatocyte": 1,
+      "Include_Column_IRBC": 1,
+      "Include_Data_Threshold_Gametocytes": 0,
+      "Include_Data_Threshold_Hepatocytes": 0,
+      "Include_Data_Threshold_IRBC": 0,
+      "Reporting_Interval": 1,
+      "Start_Day": 18999,
+      "Enabled": 1,
+      "Pretty_Format": 1
+    }
+  ],
+  "Custom_Reports": {
+    "Use_Explicit_Dlls": 1
+  }
+}
