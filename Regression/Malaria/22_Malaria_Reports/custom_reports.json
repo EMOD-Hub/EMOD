@@ -1,6 +1,13 @@
 {
     "Reports": [
         {
+            "class": "ReportAntibodies",
+            "Start_Day": 1,
+            "End_Day": 1095,
+            "Reporting_Interval": 182.5,
+            "Contain_Capacity_Data": 1
+        },
+        {
             "class": "ReportEventCounter",
             "Filename_Suffix": "",
             "Start_Day": 0,
