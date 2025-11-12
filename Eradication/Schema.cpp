@@ -10,7 +10,6 @@
 #endif
 
 #include "Schema.h"
-#include "IdmString.h"
 #include "Log.h"
 #include "ProgVersion.h"
 #include "DllLoader.h"
@@ -34,23 +33,23 @@ SETUP_LOGGING( "Schema" )
 
 const std::vector<std::string> getSimTypeList()
 {
-    const char * simTypeListC[] = { "GENERIC_SIM"
+    std::vector<std::string> simTypeList;
+
+    simTypeList.push_back("GENERIC_SIM");
+
 #ifndef DISABLE_VECTOR
-        , "VECTOR_SIM"
+    simTypeList.push_back("VECTOR_SIM");
 #endif
 #ifndef DISABLE_MALARIA
-        , "MALARIA_SIM"
+    simTypeList.push_back("MALARIA_SIM");
 #endif
 #ifndef DISABLE_STI
-        , "STI_SIM"
+    simTypeList.push_back("STI_SIM");
 #endif
 #ifndef DISABLE_HIV
-        , "HIV_SIM"
+    simTypeList.push_back("HIV_SIM");
 #endif
-    };
 
-#define KNOWN_SIM_COUNT (sizeof(simTypeListC)/sizeof(simTypeListC[0]))
-    std::vector<std::string> simTypeList( simTypeListC, simTypeListC + KNOWN_SIM_COUNT );
     return simTypeList;
 }
 
@@ -59,16 +58,16 @@ const std::string getSupportedSimsString()
 {
     const auto sims = getSimTypeList();
     std::string sim_types_str;
-    sim_types_str.reserve( sims.size() * 20 ); // Reserve space to avoid multiple reallocations
-    for( size_t i = 0; i < sims.size(); ++i ) {
-        const std::string sim_type_prefix = IdmString( sims[i] ).split( '_' )[0];
-        sim_types_str += sim_type_prefix;
 
-        if( i < sims.size() - 1 ) // Avoids trailing comma
-        {
-            sim_types_str += ", ";
-        }
+    for( size_t i = 0; i < sims.size(); ++i )
+    {
+        sim_types_str += sims[i].substr(0, sims[i].find("_"));
+        sim_types_str += ", ";
     }
+
+    sim_types_str.pop_back();  // Remove last comma and space
+    sim_types_str.pop_back();
+
     return sim_types_str;
 }
 
@@ -76,6 +75,7 @@ void writeInputSchemas( const char* output_path )
 {
     json::Object jsonRoot;
     json::QuickBuilder total_schema( jsonRoot );
+
     Kernel::JsonConfigurable::_dryrun = true;
 
     // --- Create Metadata Schema
@@ -174,7 +174,7 @@ void writeInputSchemas( const char* output_path )
     idmtypes_schema["idmAbstractType:NodeSet"] = nds_schema.As<json::Object>();
     idmtypes_schema["idmType:IReport"] = rpt_schema.As<json::Object>();  // Should be abstract type!
     idmtypes_schema["idmType:WaningEffect"] = we_schema.As<json::Object>();  // Should be abstract type!
-    idmtypes_schema["idmType:AdditionalRestrictions"] = ar_schema.As<json::Object>();
+    idmtypes_schema["idmType:AdditionalRestrictions"] = ar_schema.As<json::Object>();  // Should be abstract type!
 
     total_schema[ "idmTypes" ] = idmtypes_schema.As<json::Object>();
 
