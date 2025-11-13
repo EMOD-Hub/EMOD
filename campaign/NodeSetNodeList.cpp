@@ -8,7 +8,7 @@ SETUP_LOGGING( "NodeSetNodeList" )
 
 namespace Kernel
 {
-    using namespace std;
+    IMPLEMENT_FACTORY_REGISTERED(NodeSetNodeList)
     IMPL_QUERY_INTERFACE2(NodeSetNodeList, INodeSet, IConfigurable)
 
     void NodeListConfig::ConfigureFromJsonAndKey(const Configuration* inputJson, const std::string& key)
@@ -116,13 +116,3 @@ namespace Kernel
         return difference;
     }
 }
-
-#if 0
-namespace Kernel {
-    template<class Archive>
-    void serialize( Archive &ar, NodeSetNodeList& nodeset, const unsigned int v )
-    {
-        ar & nodeset.nodelist_config;
-    }
-}
-#endif
