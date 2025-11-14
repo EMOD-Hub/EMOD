@@ -1,67 +1,69 @@
 {
-    "Campaign_Name": "Generic Seattle with CoverageByNode SimpleVaccine distribution", 
+    "Campaign_Name": "Generic Seattle with CoverageByNode SimpleVaccine distribution",
     "Events": [
         {
             "Event_Coordinator_Config": {
                 "Intervention_Config": {
-                    "Antigen": 0, 
-                    "Genome": 0, 
+                    "Antigen": 0,
+                    "Genome": 0,
                     "class": "Outbreak"
-                }, 
-                "Target_Demographic": "Everyone", 
-                "Travel_Linked": 0, 
+                },
+                "Target_Demographic": "Everyone",
+                "Travel_Linked": 0,
                 "class": "StandardInterventionDistributionEventCoordinator"
-            }, 
+            },
             "Nodeset_Config": {
-                "Polygon_Format": "SHAPE", 
-                "Vertices": "-122.320726936496,47.6597902588541 -122.320406460197,47.6520988276782 -122.308388598985,47.6471314450438 -122.301658596706,47.6541819236217 -122.315118601264,47.6644371651896 -122.320726936496,47.6597902588541", 
-                "class": "NodeSetPolygon"
-            }, 
-            "Start_Day": 40, 
+                "Node_List": [
+                    52,
+                    53
+                ],
+                "class": "NodeSetNodeList"
+            },
+            "Start_Day": 40,
             "class": "CampaignEvent"
-        }, 
+        },
         {
             "Event_Coordinator_Config": {
                 "Coverage_By_Node": [
                     {
-                        "Node_Id" : 1, 
-                        "Coverage" : 0.6
-                    }, 
+                        "Node_Id": 1,
+                        "Coverage": 0.6
+                    },
                     {
-                        "Node_Id" : 2, 
-                        "Coverage" : 0.9
-                    }, 
+                        "Node_Id": 2,
+                        "Coverage": 0.9
+                    },
                     {
-                        "Node_Id" : 3, 
-                        "Coverage" : 0.1
+                        "Node_Id": 3,
+                        "Coverage": 0.1
                     }
-                ], 
+                ],
                 "Intervention_Config": {
-                    "Cost_To_Consumer": 10.0, 
-                    "Reduced_Transmit": 0, 
-                    "Vaccine_Take": 1, 
-                    "Vaccine_Type": "AcquisitionBlocking", 
+                    "Cost_To_Consumer": 10.0,
+                    "Reduced_Transmit": 0,
+                    "Vaccine_Take": 1,
+                    "Vaccine_Type": "AcquisitionBlocking",
                     "Waning_Config": {
-                        "Box_Duration": 3650, 
-                        "Initial_Effect": 1, 
+                        "Box_Duration": 3650,
+                        "Initial_Effect": 1,
                         "class": "WaningEffectBox"
-                    }, 
+                    },
                     "class": "SimpleVaccine"
-                }, 
-                "Target_Demographic": "Everyone", 
+                },
+                "Target_Demographic": "Everyone",
                 "class": "CoverageByNodeEventCoordinator"
-            }, 
+            },
             "Nodeset_Config": {
                 "Node_List": [
-                    1, 
-                    2, 
+                    1,
+                    2,
                     3
-                ], 
+                ],
                 "class": "NodeSetNodeList"
-            }, 
-            "Start_Day": 0, 
+            },
+            "Start_Day": 0,
             "class": "CampaignEvent"
         }
-    ], 
+    ],
     "Use_Defaults": 1
 }
