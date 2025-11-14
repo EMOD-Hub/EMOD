@@ -2397,7 +2397,7 @@ namespace Kernel
         return inside;
     }
 
-    bool Node::IsInExternalIdSet( const std::list<ExternalNodeId_t> &nodelist )
+    bool Node::IsInExternalIdSet( const std::vector<ExternalNodeId_t> &nodelist )
     {
         if( std::find( nodelist.begin(), nodelist.end(), externalId ) == nodelist.end() )
         {

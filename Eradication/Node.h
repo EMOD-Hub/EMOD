@@ -88,7 +88,7 @@ namespace Kernel
         // Campaign event-related
         bool IsInPolygon(float* vertex_coords, int numcoords); // might want to create a real polygon object at some point
         bool IsInPolygon( const json::Array &poly );
-        bool IsInExternalIdSet( const std::list<ExternalNodeId_t>& nodelist );
+        bool IsInExternalIdSet( const std::vector<ExternalNodeId_t>& nodelist );
 
         // Reporting to higher levels (intermediate form)
         // Possible TODO: refactor into common interfaces if there is demand

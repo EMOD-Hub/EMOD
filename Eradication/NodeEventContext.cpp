@@ -432,7 +432,7 @@ namespace Kernel
         return node->IsInPolygon( poly );
     }
 
-    bool NodeEventContextHost::IsInExternalIdSet( const std::list<ExternalNodeId_t>& nodelist )
+    bool NodeEventContextHost::IsInExternalIdSet( const std::vector<ExternalNodeId_t>& nodelist )
     {
         return node->IsInExternalIdSet( nodelist );
     }

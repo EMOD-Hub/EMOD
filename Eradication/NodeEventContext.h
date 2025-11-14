@@ -19,7 +19,7 @@ namespace Kernel
     struct INodeContext;
     struct IIndividualEventBroadcaster;
     struct NodeDemographics;
-    class Node;
+    class  Node;
     struct IStrainIdentity;
     
     class IndividualHuman;
@@ -52,13 +52,12 @@ namespace Kernel
     struct IDMAPI INodeEventContext : public ISupports 
     {
         // If you prefer lambda functions/functors, you can use this.
-        typedef std::function<void (/*suids::suid, */IIndividualHumanEventContext*)> individual_visit_function_t;
+        typedef std::function<void (IIndividualHumanEventContext*)> individual_visit_function_t;
         virtual void VisitIndividuals(individual_visit_function_t func) = 0;
         virtual int VisitIndividuals(IVisitIndividual* pIndividualVisitImpl) = 0;
 
         virtual const NodeDemographics& GetDemographics() = 0;
         virtual const IdmDateTime& GetTime() const = 0;
-        //virtual float GetYear() const = 0;
 
         // to update any node-owned interventions
         virtual void UpdateInterventions(float = 0.0f) = 0;
@@ -77,7 +76,7 @@ namespace Kernel
 
         virtual bool IsInPolygon(float* vertex_coords, int numcoords) = 0;
         virtual bool IsInPolygon( const json::Array &poly ) = 0;
-        virtual bool IsInExternalIdSet( const std::list<ExternalNodeId_t>& nodelist ) = 0;
+        virtual bool IsInExternalIdSet( const std::vector<ExternalNodeId_t>& nodelist ) = 0;
         virtual RANDOMBASE* GetRng() = 0;
         virtual INodeContext* GetNodeContext() = 0;
 

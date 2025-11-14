@@ -32,6 +32,7 @@ namespace Kernel
 
     public:
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
+        DECLARE_QUERY_INTERFACE()
 
         virtual bool Configure(const Configuration* config);
 
@@ -42,25 +43,12 @@ namespace Kernel
         DECLARE_SERIALIZABLE(NodeSetAll);
     };
 
-    class IDMAPI NodeListConfig : public JsonConfigurable, public IComplexJsonConfigurable
-    {
-        IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
-        virtual QueryResult QueryInterface(iid_t iid, void **ppvObject) { return e_NOINTERFACE; }
-
-        public:
-            NodeListConfig() {}
-            virtual void ConfigureFromJsonAndKey( const Configuration* inputJson, const std::string& key ) override;
-            virtual json::QuickBuilder GetSchema() override;
-            virtual bool  HasValidDefault() const override { return false; }
-            std::list< ExternalNodeId_t > nodelist;
-    };
-
     class IDMAPI NodeSetNodeList : public INodeSet, public JsonConfigurable
     {
-        DECLARE_FACTORY_REGISTERED(NodeSetFactory, NodeSetNodeList, INodeSet)
+        DECLARE_FACTORY_REGISTERED_EXPORT(NodeSetFactory, NodeSetNodeList, INodeSet)
 
     public:
-        IMPLEMENT_DEFAULT_REFERENCE_COUNTING()  
+        IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
         DECLARE_QUERY_INTERFACE()
 
         virtual bool Configure(const Configuration* config);
@@ -69,6 +57,6 @@ namespace Kernel
         virtual std::vector<ExternalNodeId_t> IsSubset(const std::vector<ExternalNodeId_t>& demographic_node_ids);
 
     protected:
-        NodeListConfig nodelist_config;
+        std::vector<ExternalNodeId_t> nodelist;
     };
 };

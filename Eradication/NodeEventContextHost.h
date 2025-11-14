@@ -39,7 +39,7 @@ namespace Kernel
         virtual const IdmDateTime& GetTime() const override;
         virtual bool IsInPolygon(float* vertex_coords, int numcoords) override; // might want to create a real polygon object at some point
         virtual bool IsInPolygon( const json::Array &poly ) override;
-        virtual bool IsInExternalIdSet( const std::list<ExternalNodeId_t>& nodelist ) override;
+        virtual bool IsInExternalIdSet( const std::vector<ExternalNodeId_t>& nodelist ) override;
         virtual RANDOMBASE* GetRng() override;
         virtual INodeContext* GetNodeContext() override;
         virtual int GetIndividualHumanCount() const override;
