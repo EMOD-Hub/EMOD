@@ -42,8 +42,8 @@ SUITE( MalariaAntibodyTest )
             SusceptibilityMalariaConfig::minimum_adapted_response              =    0.050f;
             SusceptibilityMalariaConfig::non_specific_growth                   =    0.500f;
             SusceptibilityMalariaConfig::antibody_csp_decay_days               =   90.000f;
-            SusceptibilityMalariaConfig::antibody_days_to_long_term_decay =  730.000f;
-            SusceptibilityMalariaConfig::antibody_long_term_decay_days    = 7300.000f;
+            SusceptibilityMalariaConfig::antibody_days_to_long_term_decay      =  730.000f;
+            SusceptibilityMalariaConfig::antibody_long_term_decay_days         = 7300.000f;
 
             inv_microliters_blood = float(1 / ( (0.225 * (7300/DAYSPERYEAR) + 0.5) * 1e6 )); // 5 liters
 

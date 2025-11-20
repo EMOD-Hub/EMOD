@@ -70,7 +70,7 @@
       {
          "IndividualAttributes": {},
          "NodeAttributes": {
-            "InitialPopulation": 100,
+            "InitialPopulation": 10,
             "Latitude": 0,
             "Longitude": 0
          },

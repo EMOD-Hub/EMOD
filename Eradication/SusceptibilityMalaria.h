@@ -120,8 +120,8 @@ namespace Kernel
 
         virtual void UpdateIRBC( int64_t irbcFromInfection, int64_t irbcFromInfectionWithHRP ) override;
 
-        virtual const std::vector<MalariaAntibody>& GetMSPAntibodies( float currentTime, float dt ) override;
-        virtual const std::vector<MalariaAntibody>& GetPfEMP1MajorAntibodies( float currentTime, float dt ) override;
+        virtual const std::vector<MalariaAntibody>& GetMSPAntibodiesForReporting( float currentTime, float dt ) override;
+        virtual const std::vector<MalariaAntibody>& GetPfEMP1MajorAntibodiesForReporting( float currentTime, float dt ) override;
 
     protected:
 

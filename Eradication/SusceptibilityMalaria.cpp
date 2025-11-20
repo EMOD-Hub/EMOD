@@ -781,26 +781,34 @@ namespace Kernel
         }
     }
 
-    const std::vector<MalariaAntibody>& SusceptibilityMalaria::GetMSPAntibodies( float currentTime, float dt )
+    const std::vector<MalariaAntibody>& SusceptibilityMalaria::GetMSPAntibodiesForReporting( float currentTime, float dt )
     {
-        static std::vector<MalariaAntibody> msp_copy;
-        msp_copy = m_MSP_antibodies;
-        for( int i = 0; i < m_MSP_antibodies.size(); ++i )
+        // only use this for reporting
+        static std::vector<MalariaAntibody> msp_all_sorted( SusceptibilityMalariaConfig::falciparumMSPVars );
+        std::fill( msp_all_sorted.begin(), msp_all_sorted.end(), MalariaAntibody() ); //reset the elements
+        for(const auto& msp_antibody : m_MSP_antibodies )
         {
-            msp_copy[ i ].IncreaseAntigenCount( 0, currentTime, dt );
+            int variant = msp_antibody.GetAntibodyVariant();
+            msp_all_sorted[variant] = msp_antibody;
+            msp_all_sorted[variant].IncreaseAntigenCount( 0, currentTime, dt );
+            msp_all_sorted[variant].SetActiveIndex( 314159 ); // to indicate antibody for reporting
         }
-        return msp_copy;
+        return msp_all_sorted;
     }
 
-    const std::vector<MalariaAntibody>& SusceptibilityMalaria::GetPfEMP1MajorAntibodies( float currentTime, float dt )
+    const std::vector<MalariaAntibody>& SusceptibilityMalaria::GetPfEMP1MajorAntibodiesForReporting( float currentTime, float dt )
     {
-        static std::vector<MalariaAntibody> major_copy;
-        major_copy = m_PfEMP1_major_antibodies;
-        for( int i = 0; i < m_PfEMP1_major_antibodies.size(); ++i )
+        // only use this for reporting
+        static std::vector<MalariaAntibody> major_all_sorted( SusceptibilityMalariaConfig::falciparumPfEMP1Vars);
+        std::fill( major_all_sorted.begin(), major_all_sorted.end(), MalariaAntibody() ); //reset the elements
+        for( const auto& major_antibody : m_PfEMP1_major_antibodies )
         {
-            major_copy[ i ].IncreaseAntigenCount( 0, currentTime, dt );
+            int variant = major_antibody.GetAntibodyVariant();
+            major_all_sorted[variant] = major_antibody;
+            major_all_sorted[variant].IncreaseAntigenCount( 0, currentTime, dt );
+            major_all_sorted[variant].SetActiveIndex( 314159 ); // to indicate antibody for reporting
         }
-        return major_copy;
+        return major_all_sorted;
     }
 
     MalariaAntibody* SusceptibilityMalaria::RegisterAntibody(MalariaAntibodyType::Enum type, int variant, float capacity)

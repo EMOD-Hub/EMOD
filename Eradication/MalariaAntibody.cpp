@@ -44,41 +44,52 @@ namespace Kernel
         m_antibody_concentration = concentration;
     }
 
-    void MalariaAntibody::Decay( float dt )
+    void MalariaAntibody::Decay( float decay_time )
     {
+        // decay_time - time (in days) the antibody has spent being inactive, see IncreaseAntigenCount for details
+        // this is only called when antibodies are activated, we calculate how much they would have decayed and then grow them
+
         // allow the decay of anti-CSP concentrations greater than unity (e.g. after boosting by vaccine)
         // TODO: this might become the default when boosting extends to other antibody types?
         if( (m_antibody_type == MalariaAntibodyType::CSP) && (m_antibody_concentration > m_antibody_capacity) )
         {
-            m_antibody_concentration -= m_antibody_concentration * dt / SusceptibilityMalariaConfig::antibody_csp_decay_days;
+            m_antibody_concentration -= m_antibody_concentration * decay_time / SusceptibilityMalariaConfig::antibody_csp_decay_days;
         }
         else
         {
             // otherwise do the normal behavior of decaying antibody concentration based on capacity
 
-	        // don't do multiplication and subtraction unless antibody levels non-trivial
-	        if ( m_antibody_concentration > NON_TRIVIAL_ANTIBODY_THRESHOLD )
-	        {
-                m_antibody_concentration = m_antibody_concentration * exp( -dt * TWENTY_DAY_DECAY_CONSTANT );
-	        }
-
-            if( m_antibody_capacity > SusceptibilityMalariaConfig::memory_level )
+            // don't do multiplication and subtraction unless antibody levels non-trivial
+            if(m_antibody_concentration > NON_TRIVIAL_ANTIBODY_THRESHOLD)
             {
-                // antibody capacity decays to a medium value (.3) dropping below .4 in ~120 days from 1.0
-                m_antibody_capacity = (m_antibody_capacity - SusceptibilityMalariaConfig::memory_level)
-                                    * exp( -dt * SusceptibilityMalariaConfig::hyperimmune_decay_rate )
-                                    + SusceptibilityMalariaConfig::memory_level;
+                m_antibody_concentration = m_antibody_concentration * exp( -decay_time * TWENTY_DAY_DECAY_CONSTANT );
             }
 
-            // --------------------------------------------------------------------------------
-            // --- If the antibody has been dormant for a long time, start a gradual decay.
-            // --- This is to help reduce the issue where older people have too much immunity.
-            // --------------------------------------------------------------------------------
-            if( (dt >= SusceptibilityMalariaConfig::antibody_days_to_long_term_decay) &&
-                (m_antibody_capacity > FLT_EPSILON) )
+            // nothing to decay if already zero
+            if(m_antibody_capacity > 0.0f)
             {
-                float delta_time = dt - SusceptibilityMalariaConfig::antibody_days_to_long_term_decay;
-                m_antibody_capacity = m_antibody_capacity * exp( -delta_time / SusceptibilityMalariaConfig::antibody_long_term_decay_days);
+                if(m_antibody_capacity > SusceptibilityMalariaConfig::memory_level)
+                {
+                    // antibody capacity decays to a medium value (.3) dropping below .4 in ~120 days from 1.0
+                    m_antibody_capacity = ( m_antibody_capacity - SusceptibilityMalariaConfig::memory_level )
+                        * exp( -decay_time * SusceptibilityMalariaConfig::hyperimmune_decay_rate )
+                        + SusceptibilityMalariaConfig::memory_level;
+                } // stays around memory level until antibody_days_to_long_term_decay kicks in
+
+                // --------------------------------------------------------------------------------
+                // --- If the antibody has been dormant for a long time, start a gradual decay.
+                // --- This is to help reduce the issue where older people have too much immunity.
+                // --------------------------------------------------------------------------------
+                if(( decay_time >= SusceptibilityMalariaConfig::antibody_days_to_long_term_decay ) &&
+                    ( m_antibody_capacity > FLT_EPSILON ))
+                {
+                    float delta_time = decay_time - SusceptibilityMalariaConfig::antibody_days_to_long_term_decay;
+                    m_antibody_capacity = m_antibody_capacity * exp( -delta_time / SusceptibilityMalariaConfig::antibody_long_term_decay_days );
+                }
+                if(m_antibody_capacity <= FLT_EPSILON)
+                {
+                    m_antibody_capacity = 0.0f; // to avoid lingering tiny values
+                }
             }
         }
     }
@@ -138,7 +149,7 @@ namespace Kernel
                 m_antibody_capacity += (1.0f - m_antibody_capacity) * B_CELL_PROLIFERATION_CONSTANT * dt;
             }
         }
-        else
+        else //MSP1
         {
             float growth_rate = SusceptibilityMalariaConfig::MSP1_antibody_growthrate;
             float threshold   = SusceptibilityMalariaConfig::antibody_stimulation_c50;

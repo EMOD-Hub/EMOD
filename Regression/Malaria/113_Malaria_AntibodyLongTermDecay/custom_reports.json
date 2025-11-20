@@ -1,0 +1,35 @@
+{
+    "Reports": [
+        {
+            "class": "ReportAntibodies",
+            "Start_Day": 0,
+            "End_Day": 5000,
+            "Node_IDs_Of_Interest": [],
+            "Min_Age_Years": 0,
+            "Max_Age_Years": 130,
+            "Must_Have_IP_Key_Value": "",
+            "Must_Have_Intervention": "",
+            "Reporting_Interval": 50,
+            "Contain_Capacity_Data": 0,
+            "Infected_Only": 0,
+            "Filename_Suffix": ""
+        },
+        {
+            "class": "ReportAntibodies",
+            "Start_Day": 0,
+            "End_Day": 5000,
+            "Node_IDs_Of_Interest": [],
+            "Min_Age_Years": 0,
+            "Max_Age_Years": 130,
+            "Must_Have_IP_Key_Value": "",
+            "Must_Have_Intervention": "",
+            "Reporting_Interval": 50,
+            "Contain_Capacity_Data": 1,
+            "Infected_Only": 0,
+            "Filename_Suffix": ""
+        }
+    ],
+    "Custom_Reports": {
+        "Use_Explicit_Dlls": 1
+    }
+}
