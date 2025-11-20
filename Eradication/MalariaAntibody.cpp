@@ -65,32 +65,25 @@ namespace Kernel
                 m_antibody_concentration = m_antibody_concentration * exp( -decay_time * TWENTY_DAY_DECAY_CONSTANT );
             }
 
-            // nothing to decay if already zero
-            if(m_antibody_capacity > 0.0f)
+            if(m_antibody_capacity > SusceptibilityMalariaConfig::memory_level)
             {
-                if(m_antibody_capacity > SusceptibilityMalariaConfig::memory_level)
-                {
-                    // antibody capacity decays to a medium value (.3) dropping below .4 in ~120 days from 1.0
-                    m_antibody_capacity = ( m_antibody_capacity - SusceptibilityMalariaConfig::memory_level )
-                        * exp( -decay_time * SusceptibilityMalariaConfig::hyperimmune_decay_rate )
-                        + SusceptibilityMalariaConfig::memory_level;
-                } // stays around memory level until antibody_days_to_long_term_decay kicks in
+                // antibody capacity decays to a medium value (.3) dropping below .4 in ~120 days from 1.0
+                m_antibody_capacity = ( m_antibody_capacity - SusceptibilityMalariaConfig::memory_level )
+                    * exp( -decay_time * SusceptibilityMalariaConfig::hyperimmune_decay_rate )
+                    + SusceptibilityMalariaConfig::memory_level;
+            } // stays around memory level until antibody_days_to_long_term_decay kicks in
 
-                // --------------------------------------------------------------------------------
-                // --- If the antibody has been dormant for a long time, start a gradual decay.
-                // --- This is to help reduce the issue where older people have too much immunity.
-                // --------------------------------------------------------------------------------
-                if(( decay_time >= SusceptibilityMalariaConfig::antibody_days_to_long_term_decay ) &&
-                    ( m_antibody_capacity > FLT_EPSILON ))
-                {
-                    float delta_time = decay_time - SusceptibilityMalariaConfig::antibody_days_to_long_term_decay;
-                    m_antibody_capacity = m_antibody_capacity * exp( -delta_time / SusceptibilityMalariaConfig::antibody_long_term_decay_days );
-                }
-                if(m_antibody_capacity <= FLT_EPSILON)
-                {
-                    m_antibody_capacity = 0.0f; // to avoid lingering tiny values
-                }
+            // --------------------------------------------------------------------------------
+            // --- If the antibody has been dormant for a long time, start a gradual decay.
+            // --- This is to help reduce the issue where older people have too much immunity.
+            // --------------------------------------------------------------------------------
+            if(( decay_time >= SusceptibilityMalariaConfig::antibody_days_to_long_term_decay ) &&
+                ( m_antibody_capacity > FLT_EPSILON ))
+            {
+                float delta_time = decay_time - SusceptibilityMalariaConfig::antibody_days_to_long_term_decay;
+                m_antibody_capacity = m_antibody_capacity * exp( -delta_time / SusceptibilityMalariaConfig::antibody_long_term_decay_days );
             }
+
         }
     }
 
