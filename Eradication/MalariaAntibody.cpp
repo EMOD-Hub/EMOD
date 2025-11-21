@@ -112,11 +112,6 @@ namespace Kernel
                 //rapid B cell proliferation above a threshold given stimulation
                 m_antibody_capacity += (1.0f - m_antibody_capacity) * B_CELL_PROLIFERATION_CONSTANT * dt;
             }
-
-            if (m_antibody_capacity > 1.0)
-            {
-                m_antibody_capacity = 1.0;
-            }
         }
         else if( m_antibody_type == MalariaAntibodyType::PfEMP1_major )
         {
@@ -129,12 +124,6 @@ namespace Kernel
             {
                 //ability and number of B-cells to produce antibodies, with saturation
                 m_antibody_capacity += growth_rate * dt * (1.0f - m_antibody_capacity) * float(Sigmoid::basic_sigmoid(threshold, float(m_antigen_count) * inv_uL_blood + min_stimulation));
-
-                // check for antibody capacity out of range
-                if (m_antibody_capacity > 1.0)
-                {
-                    m_antibody_capacity = 1.0;
-                }
             }
             else
             {
@@ -154,11 +143,10 @@ namespace Kernel
             {
                 m_antibody_capacity += ( 1.0f - m_antibody_capacity ) * B_CELL_PROLIFERATION_CONSTANT * dt;
             }
-
-            if (m_antibody_capacity > 1.0)
-            {
-                m_antibody_capacity = 1.0;
-            }
+        }
+        if(m_antibody_capacity > 1.0)
+        {
+            m_antibody_capacity = 1.0;
         }
     }
 
