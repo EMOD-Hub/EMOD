@@ -18,12 +18,8 @@
         "Run_Number": 1,
         "Simulation_Duration": 2000,
         "Enable_Demographics_Reporting": 0,
-        "Inset_Chart_Reporting_Include_30Day_Avg_Infection_Duration": 1,
-
         "Antibody_Days_To_Long_Term_Decay": 1000,
         "Antibody_Long_Term_Decay_Days": 100,
-
-
         "COMMENT": "Do not include because we cannot have a queue of previous days infections when starting from serialized file.",
         "Inset_Chart_Reporting_Include_30Day_Avg_Infection_Duration": 0,
         

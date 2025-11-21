@@ -244,7 +244,6 @@ namespace Kernel
 
     void MalariaAntibody::PrepareForSerialization( float time, float dt )
     {
-        float temp_dt = time - m_time_last_active;
         if( (time - m_time_last_active) >= dt )
         {
             // this is "+=" incase someone saves multiple serialized files.
