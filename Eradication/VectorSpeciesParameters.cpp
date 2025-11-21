@@ -127,8 +127,7 @@ namespace Kernel
         delete p_config;
     }
 
-    json::QuickBuilder
-    LarvalHabitatParams::GetSchema()
+    json::QuickBuilder LarvalHabitatParams::GetSchema()
     {
         LinearSplineHabitat ls_habitat;
         if( JsonConfigurable::_dryrun )
@@ -146,9 +145,7 @@ namespace Kernel
         schema[ "item_type" ] = json::String( object_schema_name );
 
         // Add the schema for the objects to be retrieved by JsonConfigurable::Configure()
-        // Also add the "class" parameter so the python classes will be generated
         schema[ ts ] = ls_habitat.GetSchema();
-        schema[ ts ][ "class" ] = json::String( object_schema_name );
 
         return schema;
     }

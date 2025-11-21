@@ -61,9 +61,8 @@ namespace Kernel
         IMPLEMENT_NO_REFERENCE_COUNTING()
         virtual QueryResult QueryInterface(iid_t iid, void **ppvObject) { return e_NOINTERFACE; }
 
-
         // JsonConfigurable methods
-        virtual bool Configure( const Configuration * inputJson ) override;
+        virtual bool Configure( const Configuration* inputJson ) override;
 
         // other methods
         const std::string& GetDrugResistantString() const;
@@ -144,7 +143,7 @@ namespace Kernel
         float drug_dose_interval;
         float bodyweight_exponent;
         DoseMap dose_map;
-        
+
         DrugResistanceModifierCollection m_Modifiers;
     };
 
@@ -170,5 +169,4 @@ namespace Kernel
 
         jsonConfigurable::tDynamicStringSet m_DrugNames;
     };
-
 }

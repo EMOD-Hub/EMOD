@@ -21,7 +21,7 @@ namespace Kernel
 
     AntimalarialDrug::AntimalarialDrug()
         : GenericDrug( JsonConfigurable::default_string, new DrugModelAntiMalarial() )
-        , imda( nullptr )
+        , imda(nullptr)
     {
         initSimTypes( 1, "MALARIA_SIM" );
     }
@@ -37,8 +37,7 @@ namespace Kernel
     {
     }
 
-    float
-    AntimalarialDrug::get_drug_IRBC_killrate( const IStrainIdentity& rStrain )
+    float AntimalarialDrug::get_drug_IRBC_killrate( const IStrainIdentity& rStrain )
     {
         return static_cast<DrugModelAntiMalarial*>(p_drug_model)->get_drug_IRBC_killrate( rStrain );
     }
@@ -48,20 +47,17 @@ namespace Kernel
         return static_cast<DrugModelAntiMalarial*>(p_drug_model)->get_drug_hepatocyte( rStrain );
     }
 
-    float
-    AntimalarialDrug::get_drug_gametocyte02( const IStrainIdentity& rStrain )
+    float AntimalarialDrug::get_drug_gametocyte02( const IStrainIdentity& rStrain )
     {
         return static_cast<DrugModelAntiMalarial*>(p_drug_model)->get_drug_gametocyte02( rStrain );
     }
 
-    float
-    AntimalarialDrug::get_drug_gametocyte34( const IStrainIdentity& rStrain )
+    float AntimalarialDrug::get_drug_gametocyte34( const IStrainIdentity& rStrain )
     {
         return static_cast<DrugModelAntiMalarial*>(p_drug_model)->get_drug_gametocyte34( rStrain );
     }
 
-    float
-    AntimalarialDrug::get_drug_gametocyteM( const IStrainIdentity& rStrain )
+    float AntimalarialDrug::get_drug_gametocyteM( const IStrainIdentity& rStrain )
     {
         return static_cast<DrugModelAntiMalarial*>(p_drug_model)->get_drug_gametocyteM( rStrain );
     }
@@ -78,7 +74,7 @@ namespace Kernel
         initConfigTypeMap( "Drug_Type", &tmp_drug_name, Drug_Type_DESC_TEXT );
     }
 
-    void AntimalarialDrug::CheckConfigureDrugType( const Configuration *inputJson )
+    void AntimalarialDrug::CheckConfigureDrugType( const Configuration* inputJson )
     {
         if( tmp_drug_name.empty() || !inputJson->Exist( "Drug_Type" ) )
         {
@@ -104,11 +100,7 @@ namespace Kernel
         return ret;
     }
 
-    bool
-    AntimalarialDrug::Distribute(
-        IIndividualHumanInterventionsContext *context,
-        ICampaignCostObserver * pCCO
-    )
+    bool AntimalarialDrug::Distribute(IIndividualHumanInterventionsContext* context, ICampaignCostObserver* pCCO)
     {
         if (s_OK != context->QueryInterface(GET_IID(IMalariaDrugEffectsApply), (void**)&imda) )
         {
@@ -119,10 +111,7 @@ namespace Kernel
         return GenericDrug::Distribute( context, pCCO );
     }
 
-    void
-    AntimalarialDrug::SetContextTo(
-        IIndividualHumanContext *context
-    )
+    void AntimalarialDrug::SetContextTo(IIndividualHumanContext* context)
     {
         release_assert( context );
         release_assert( context->GetInterventionsContext() );
@@ -149,8 +138,7 @@ namespace Kernel
         return p_drug_model_malaria->GetDrugParams()->GetDoseInterval();
     }
 
-
-    void AntimalarialDrug::ConfigureDrugTreatment( IIndividualHumanInterventionsContext * ivc )
+    void AntimalarialDrug::ConfigureDrugTreatment( IIndividualHumanInterventionsContext* ivc )
     {
         remaining_doses = GetNumDoses();
         time_between_doses = GetDoseInterval();

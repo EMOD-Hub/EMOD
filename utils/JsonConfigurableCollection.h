@@ -17,8 +17,7 @@ namespace Kernel
             : JsonConfigurable()
             , m_IdmTypeName( rIdmTypeName )
             , m_Collection()
-        {
-        }
+        { }
 
         JsonConfigurableCollection( const JsonConfigurableCollection& rMaster )
             : JsonConfigurable( rMaster )
@@ -69,9 +68,7 @@ namespace Kernel
             schema[ "item_type" ] = json::String( object_schema_name );
 
             // Add the schema for the objects to be retrieved by JsonConfigurable::Configure()
-            // Also add the "class" parameter so the python classes will be generated
             schema[ ts ] = p_jcc->GetSchema();
-            schema[ ts ][ "class" ] = json::String( object_schema_name );
 
             delete p_jcc;
 
@@ -83,10 +80,9 @@ namespace Kernel
             // Exist(key) should have been called before calling this
             Configuration* p_config = Configuration::CopyFromElement( (*inputJson)[ key ], inputJson->GetDataLocation() );
 
-            if( p_config->operator const json::Element &().Type() != json::ARRAY_ELEMENT )
+            if( p_config->GetElement().Type() != json::ARRAY_ELEMENT )
             {
-                throw Kernel::JsonTypeConfigurationException( __FILE__, __LINE__, __FUNCTION__,
-                                                              key.c_str(), (*inputJson)[key], "Expected ARRAY of OBJECTs" );
+                throw Kernel::JsonTypeConfigurationException( __FILE__, __LINE__, __FUNCTION__, key.c_str(), (*inputJson)[key], "Expected ARRAY of OBJECTs" );
             }
 
             const auto& json_array = json_cast<const json::Array&>((*p_config));
@@ -96,15 +92,11 @@ namespace Kernel
 
                 JsonConfigurableClass* p_jcc = CreateObject();
 
-                if( p_object_config->operator const json::Element &().Type() != json::OBJECT_ELEMENT )
+                if( p_object_config->GetElement().Type() != json::OBJECT_ELEMENT )
                 {
-                    // I'm passing (*inputJson)[key] in to the exception instead of p_object_config because
-                    // I had someone give a 2D vector and they only saw the inner vector.  Showing the whole
-                    // element for this message seems to provide more information.
                     std::stringstream ss;
                     ss << "Expected ARRAY of OBJECTs of type '" << p_jcc->GetTypeName() << "'";
-                    throw Kernel::JsonTypeConfigurationException( __FILE__, __LINE__, __FUNCTION__,
-                                                                  key.c_str(), (*inputJson)[key], ss.str().c_str() );
+                    throw Kernel::JsonTypeConfigurationException( __FILE__, __LINE__, __FUNCTION__, key.c_str(), (*inputJson)[key], ss.str().c_str() );
                 }
 
                 try
@@ -115,8 +107,7 @@ namespace Kernel
                 {
                     std::stringstream ss;
                     ss << "JSON Error while reading OBECT of type '" << p_jcc->GetTypeName() << "'";
-                    throw Kernel::JsonTypeConfigurationException( __FILE__, __LINE__, __FUNCTION__,
-                                                                  key.c_str(), (*p_object_config), ss.str().c_str() );
+                    throw Kernel::JsonTypeConfigurationException( __FILE__, __LINE__, __FUNCTION__, key.c_str(), (*p_object_config), ss.str().c_str() );
                 }
                 Add( p_jcc );
 

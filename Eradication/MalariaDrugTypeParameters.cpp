@@ -115,7 +115,7 @@ namespace Kernel
     {
     }
 
-    bool DrugModifier::Configure( const Configuration * inputJson )
+    bool DrugModifier::Configure(const Configuration* inputJson)
     {
         initConfigTypeMap( "Drug_Resistant_String",  &m_DrugString, DM_Drug_Resistant_String_DESC_TEXT,  "" );
         initConfigTypeMap( "PKPD_C50_Modifier",      &m_C50,        DM_PKPD_C50_Modifier_DESC_TEXT,      0.0f, 1000.0f, 1.0f );
@@ -241,7 +241,7 @@ namespace Kernel
     {
     }
 
-    bool MalariaDrugTypeParameters::Configure( const ::Configuration *config )
+    bool MalariaDrugTypeParameters::Configure(const ::Configuration* config)
     {
         LOG_DEBUG( "Configure\n" );
 
@@ -253,24 +253,24 @@ namespace Kernel
         initConfigTypeMap( "Drug_Gametocyte02_Killrate", &drug_gametocyte02_killrate, Drug_Gametocyte02_Killrate_DESC_TEXT, 0.0f, 100000.0f, 0.0f );
         initConfigTypeMap( "Drug_Gametocyte34_Killrate", &drug_gametocyte34_killrate, Drug_Gametocyte34_Killrate_DESC_TEXT, 0.0f, 100000.0f, 0.0f );
         initConfigTypeMap( "Drug_GametocyteM_Killrate",  &drug_gametocyteM_killrate,  Drug_GametocyteM_Killrate_DESC_TEXT,  0.0f, 100000.0f, 0.0f );
-        initConfigTypeMap( "Drug_PKPD_C50",              &drug_pkpd_c50,              Drug_PKPD_C50_DESC_TEXT,              0.0f, 100000.0f,  100.0f, "PKPD_Model", "CONCENTRATION_VERSUS_TIME" );
+        initConfigTypeMap( "Drug_PKPD_C50",              &drug_pkpd_c50,              Drug_PKPD_C50_DESC_TEXT,              0.0f, 100000.0f, 100.0f, "PKPD_Model", "CONCENTRATION_VERSUS_TIME" );
         initConfigTypeMap( "Drug_Cmax",                  &drug_Cmax,                  Drug_Cmax_DESC_TEXT,                  0.0f, 100000.0f, 1000.0f, "PKPD_Model", "CONCENTRATION_VERSUS_TIME" );
-        initConfigTypeMap( "Drug_Vd",                    &drug_Vd,                    Drug_Vd_DESC_TEXT,                    0.0f, 100000.0f,   10.0f, "PKPD_Model", "CONCENTRATION_VERSUS_TIME" );
+        initConfigTypeMap( "Drug_Vd",                    &drug_Vd,                    Drug_Vd_DESC_TEXT,                    0.0f, 100000.0f, 10.0f, "PKPD_Model", "CONCENTRATION_VERSUS_TIME" );
         initConfigTypeMap( "Drug_Decay_T1",              &drug_decay_T1,              Drug_Decay_T1_DESC_TEXT,              0.0f, 100000.0f, 1.0f );
         initConfigTypeMap( "Drug_Decay_T2",              &drug_decay_T2,              Drug_Decay_T2_DESC_TEXT,              0.0f, 100000.0f, 1.0f );
         initConfigTypeMap( "Drug_Fulltreatment_Doses",   &drug_fulltreatment_doses,   Drug_Fulltreatment_Doses_DESC_TEXT,   1,    100000,    3 );
         initConfigTypeMap( "Drug_Dose_Interval",         &drug_dose_interval,         Drug_Dose_Interval_DESC_TEXT,         0.0f, 100000.0f, 1.0f );
         initConfigTypeMap( "Bodyweight_Exponent",        &bodyweight_exponent,        DRUG_Bodyweight_Exponent_DESC_TEXT,   0.0f, 100000.0f, 0.0f );
 
-        initConfigComplexCollectionType( "Resistances", &m_Modifiers, Resistance_DESC_TEXT,
-                                         "Malaria_Model", "MALARIA_MECHANISTIC_MODEL_WITH_PARASITE_GENETICS" );
-                                         
-        if( JsonConfigurable::_dryrun || config->Exist( "Fractional_Dose_By_Upper_Age" ) ) // :(
+        initConfigComplexCollectionType( "Resistances", &m_Modifiers, Resistance_DESC_TEXT, "Malaria_Model", "MALARIA_MECHANISTIC_MODEL_WITH_PARASITE_GENETICS" );
+
+        if(JsonConfigurable::_dryrun || config->Exist("Fractional_Dose_By_Upper_Age")) // :(
         {
             initConfigComplexCollectionType( "Fractional_Dose_By_Upper_Age", &dose_map, Fractional_Dose_By_Upper_Age_DESC_TEXT );
         }
 
         bool is_configured = JsonConfigurable::Configure( config );
+
         if( is_configured && !JsonConfigurable::_dryrun )
         {
             if( drug_name.empty() )

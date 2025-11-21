@@ -206,6 +206,9 @@ namespace Kernel
         typedef std::map< std::string, get_schema_funcptr_t > name2CreatorMapType;
         static name2CreatorMapType &get_registration_map();
 
+        static const char* _typename_label() { return "type_name"; }
+        static const char* _typeschema_label()  { return "type_schema"; }
+
         struct IDMAPI Registrator
         {
             Registrator( const char* class_name, get_schema_funcptr_t gs_callback );
@@ -836,8 +839,6 @@ namespace Kernel
 
         virtual bool Configure( const Configuration* inputJson );
 
-        static const char * _typename_label() { return "type_name"; }
-        static const char * _typeschema_label()  { return "type_schema"; }
         void handleMissingParam( const std::string& key, const std::string& rDataLocation );
     };
 
