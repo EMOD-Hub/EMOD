@@ -150,7 +150,7 @@
 #define Enable_Rainfall_Stochasticity_DESC_TEXT "Controls whether or not there is stochastic variation in rainfall."
 #define Enable_Random_Generator_From_Serialized_Population_DESC_TEXT "Determines if the random number generator(s) should be extracted from a serialized population file. Enabling this will start a simulation from this file with the exact same random number stream and location in that stream as when the file was serialized."
 #define Enable_Regional_Migration_DESC_TEXT "Controls whether or not there is migration by road or rail network into and out of nodes in the simulation."
-#define Enable_Sea_Migration_DESC_TEXT "Controls whether or not there is migration on ships into and out of coastal cities with seaports."
+#define Enable_Sea_Migration_DESC_TEXT "Controls whether or not there is migration via routes defined in sea migration."
 #define Enable_Skipping_DESC_TEXT "Controls whether or not the simulation uses an optimization that can increase performance by up to 50% in some cases by probabilistically exposing individuals rather than exposing every single person. Useful in low-prevalence, high-population scenarios"
 #define Enable_Spatial_Output_DESC_TEXT "Controls whether or not spatial output reports are created."
 #define Enable_Superinfection_DESC_TEXT "Controls whether or not an individual can have multiple infections simultaneously."

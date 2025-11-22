@@ -2422,11 +2422,12 @@ namespace Kernel
     {
         std::vector<bool> demog_enabled ;
 
-        demog_enabled.push_back( true ) ; // local
-        demog_enabled.push_back( demographics["NodeAttributes"]["Airport"].AsUint64() != 0 );
-        demog_enabled.push_back( demographics["NodeAttributes"]["Region" ].AsUint64() != 0 );
-        demog_enabled.push_back( demographics["NodeAttributes"]["Seaport"].AsUint64() != 0 );
-        demog_enabled.push_back( true ) ; // family
+        // Booleans from demographics; should be removed
+        demog_enabled.push_back( true );
+        demog_enabled.push_back( true );
+        demog_enabled.push_back( true );
+        demog_enabled.push_back( true );
+        demog_enabled.push_back( true );
 
         return demog_enabled ;
     }

@@ -37,9 +37,6 @@ const std::string NodeDemographicsFactory::default_node_demographics_str = strin
         \"Latitude\": -1, \n\
         \"Longitude\": -1, \n\
         \"Altitude\": 0, \n\
-        \"Airport\": 0, \n\
-        \"Region\": 0, \n\
-        \"Seaport\": 0, \n\
         \"BirthRate\": 0.00008715 \n\
     }, \n\
     \"IndividualAttributes\": { \n\

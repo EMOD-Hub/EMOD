@@ -435,9 +435,6 @@ SUITE(NodeDemographicsTest)
 
         unique_ptr<NodeDemographics> p_node_demo_1( factory->CreateNodeDemographics(&ncf_1) );
         unique_ptr<NodeDemographics> p_node_demo_2( factory->CreateNodeDemographics(&ncf_2) );
-
-        int32_t sea_1 = (*p_node_demo_1)["NodeAttributes"]["Seaport"].AsInt();
-        CHECK_EQUAL(1, sea_1 );
     }
 
     TEST_FIXTURE(NodeDemographicsFactoryFixture, TestTwoFileGoodDefaultOverlayOneNode)
@@ -469,33 +466,21 @@ SUITE(NodeDemographicsTest)
         double  lat_1 = (*p_node_demo_1)["NodeAttributes"]["Latitude"         ].AsDouble();
         double  lon_1 = (*p_node_demo_1)["NodeAttributes"]["Longitude"        ].AsDouble();
         double  alt_1 = (*p_node_demo_1)["NodeAttributes"]["Altitude"         ].AsDouble();
-        int32_t air_1 = (*p_node_demo_1)["NodeAttributes"]["Airport"          ].AsInt();
-        int32_t reg_1 = (*p_node_demo_1)["NodeAttributes"]["Region"           ].AsInt();
-        int32_t sea_1 = (*p_node_demo_1)["NodeAttributes"]["Seaport"          ].AsInt();
         int32_t pop_1 = (*p_node_demo_1)["NodeAttributes"]["InitialPopulation"].AsInt();
 
         CHECK_EQUAL( -8.5, lat_1 );
         CHECK_EQUAL( 36.5, lon_1 );
         CHECK_EQUAL(  1.0, alt_1 );
-        CHECK_EQUAL(    2, air_1 );
-        CHECK_EQUAL(    3, reg_1 );
-        CHECK_EQUAL(    4, sea_1 );
         CHECK_EQUAL( 1000, pop_1 );
 
         double  lat_2 = (*p_node_demo_2)["NodeAttributes"]["Latitude"         ].AsDouble();
         double  lon_2 = (*p_node_demo_2)["NodeAttributes"]["Longitude"        ].AsDouble();
         double  alt_2 = (*p_node_demo_2)["NodeAttributes"]["Altitude"         ].AsDouble();
-        int32_t air_2 = (*p_node_demo_2)["NodeAttributes"]["Airport"          ].AsInt();
-        int32_t reg_2 = (*p_node_demo_2)["NodeAttributes"]["Region"           ].AsInt();
-        int32_t sea_2 = (*p_node_demo_2)["NodeAttributes"]["Seaport"          ].AsInt();
         int32_t pop_2 = (*p_node_demo_2)["NodeAttributes"]["InitialPopulation"].AsInt();
 
         CHECK_EQUAL( -9.5, lat_2 );
         CHECK_EQUAL( 37.5, lon_2 );
         CHECK_EQUAL(  5.0, alt_2 );
-        CHECK_EQUAL(    6, air_2 );
-        CHECK_EQUAL(    7, reg_2 );
-        CHECK_EQUAL(    8, sea_2 );
         CHECK_EQUAL(  999, pop_2 );
 
         // -----------------------------------------------------------
