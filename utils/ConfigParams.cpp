@@ -46,6 +46,7 @@ namespace Kernel
         // finalize method for the config file, all logLevel_<module_name> parameters are removed if they are equal to
         // the value of logLevel_default. This process simplifies the config file, but requires that absent parameters for
         // logging do not cause an exception.
+        bool use_defaults_prior_setting = JsonConfigurable::_useDefaults;
         JsonConfigurable::_useDefaults = true;
 
         // Logging parameters
@@ -80,7 +81,7 @@ namespace Kernel
             logging_params.module_name_to_level_map[mod_name] = static_cast<std::string>(log_config_str);
         }
 
-        JsonConfigurable::_useDefaults = false;
+        JsonConfigurable::_useDefaults = use_defaults_prior_setting;
         return bRet;
     }
 
