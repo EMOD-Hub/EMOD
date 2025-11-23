@@ -6,7 +6,6 @@
 import os
 import sys
 import shutil
-import pdb
 
 Import('env')
 
@@ -37,7 +36,6 @@ if dst_path != "":
     print("Finished installing.\n")
     sys.exit(0)
 
-
 env.Prepend( CPPPATH=[
               "#/Eradication",
               "#/interventions",
@@ -50,7 +48,7 @@ env.Prepend( CPPPATH=[
               "#/rapidjson/modp",
               "#/snappy",
               "#/lz4/lib"])
-              
+
 # set the common libraries
 env.Prepend( LIBPATH = [
               "$BUILD_DIR/reporters", 

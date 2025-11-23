@@ -31,17 +31,3 @@ lib_report_Dll = report_env.SharedLibrary( report_dir, lib_report_dllSrcFiles )
 # take lib_report.dll (exclude .lib, .exp) out to be the building target
 # to match the number of building variant
 lib_report_dllTarget = lib_report_Dll[0]
-
-msvc = GetOption( "MSVC" )
-if msvc is not None and msvc != False and msvc != "":
-
-    bvar = report_env['BUILD_VARIANT'] + '|x64'
-    print( str(lib_report_dllTarget) + ": Generating MSVS" + report_env['MSVS_VERSION'] + " project files for '%s'" % bvar )
-    
-    report_env.MSVSProject(target = 'Lib_report_dllScons' + report_env['MSVSPROJECTSUFFIX'],
-                    srcs = lib_report_dllSrcFiles,
-                    incs = lib_report_dllIncFiles,
-                    localincs = lib_report_dllLocalInc,
-                    buildtarget = lib_report_dllTarget,
-                    auto_build_solution = 0,
-                    variant = bvar)

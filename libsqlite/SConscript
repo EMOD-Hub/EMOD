@@ -5,24 +5,6 @@
 
 Import("env")
 
-sqliteSrcFiles = ["sqlite3.c"
-                 ]
-
-sqliteIncFiles = [ 'sqlite3.h']
-sqliteLocalInc = []
+sqliteSrcFiles = ["sqlite3.c"]
 
 sqliteLib = env.StaticLibrary('libsqlite', sqliteSrcFiles)
-
-msvc = GetOption( "MSVC" )
-if msvc is not None and msvc != False and msvc != "":
-
-    bvar = env['BUILD_VARIANT'] + '|x64'
-    print( "sqlite: Generating MSVS" + env['MSVS_VERSION'] + " project files for '%s'" % bvar )
-
-    env.MSVSProject(target = 'sqliteScons' + env['MSVSPROJECTSUFFIX'],
-		srcs = sqliteSrcFiles,
-		incs = sqliteIncFiles,
-		localincs = sqliteLocalInc,
-		buildtarget = sqliteLib,
-                auto_build_solution = 0,
-                variant = bvar)

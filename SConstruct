@@ -1,27 +1,14 @@
-# -*- mode: python; -*-
-# This Python script, SConstruct, requires
-# 1. python V2.4 or above. you can get from http://www.python.org
-# 2. scons V2.1 or above. you can get from  http://www.scons.org
-#
 # This file configures the build environment, and then delegates to
 # several subordinate SConscript files, which describe specific build rules.
 #
 # Simply type scons to build everything in DTK
-#
-#
-import datetime
+
 import os
 import re
-import shutil
-import stat
 import sys
-import types
-import pdb
 import platform
 
-
-#later
-#import libdeps
+import SCons.Tool.MSCommon.vc  as  scons_vc
 
 def findSettingsSetup():
     sys.path.append( "." )
@@ -35,8 +22,6 @@ msarch = "amd64"
 options = {}
 
 options_topass = {}
-
-#print "THIS BETTER NOT WORK"
 
 
 def add_option( name, help, nargs, contributesToVariantDir,
@@ -122,25 +107,16 @@ def get_build_var():
     else:
         bv = "Release"
 
-    #if has_option( "Dlls" ):
-        #bv = bv + "Dll"
-
     return bv
-
-# General options
-add_option( "MSVC" , "Generate Microsoft Visual Studio solution and project files" , 0 , False)
 
 # compiling options
 add_option( "Release" , "release build" , 0 , True)
 add_option( "Debug" , "debug build" , 0 , True )
 
 # module/linking options
-#add_option( "Dlls" , "build all dlls" , 0 , True )
-#add_option( "Interventions" , "build all intervention dlls" , 0 , True )
 add_option( "DllDisease" , "build disease target dll" , 1 , True) #, Disease="Generic" )
 add_option( "Disease" , "build only files for disease target " , 1 , True) #, Disease="Generic" )
 add_option( "Report" , "build report target dll" , 1 , True) #, Report="Spatial" )
-#add_option( "Campaign" , "build all campaign target dll" , 1 , True) #, Campaign=Bednet
  
 # installation options
 add_option( "Install" , "install target dll into given directory" , 1 , True) #, Install="install dir" )
@@ -151,13 +127,8 @@ add_option( "TestSugar" , "Build in additional logging for scientific or other v
 Dbg = has_option( "Debug" )
 Rel = has_option( "Release" )
 
-# print "Release = {0}".format(release)
-# print "Debug = {0}".format(debug)
-
 
 # --- environment setup ---
-
-#variantDir = get_variant_dir()
 
 s = "#build/${PYSYSPLATFORM}/"
 bvar = get_build_var()
@@ -166,10 +137,21 @@ buildDir = s + bvar + "/"
 def printLocalInfo():
     import sys, SCons
     print( "scons version: " + SCons.__version__ )
-    #print( sys.version_info )
     print( "python version: " + " ".join( [ str(i) for i in sys.version_info ] ) )
 
 printLocalInfo()
+
+
+MSVC_ver = None
+if os.sys.platform == 'win32':
+    msvc_list = scons_vc.get_installed_vcs()
+
+    if('14.5' in msvc_list):
+        MSVC_ver = '14.5'
+    elif('14.3' in msvc_list):
+        MSVC_ver = '14.3'
+    else:
+        raise RuntimeError("No compatable version of MSVC Build Tools found.")
 
 pa = platform.architecture()
 pi = os.sys.platform
@@ -182,7 +164,7 @@ env = Environment( BUILD_DIR=buildDir,
                    TARGET_ARCH=msarch ,
                    PYSYSPLATFORM=pi,
                    MSVSPROJECTSUFFIX='.vcxproj' ,
-                   MSVC_VERSION='14.3'
+                   MSVC_VERSION=MSVC_ver
                    )
 
 if not(Dbg) and not(Rel):
@@ -212,6 +194,8 @@ if os.sys.platform == 'win32':
         print( "----------------------------------------------------" )
         Exit(-1)
 
+    print('MSVC Version: ',env['MSVC_VERSION'])
+
     env['OS_FAMILY'] = 'win'
     
     # Boost
@@ -220,13 +204,10 @@ if os.sys.platform == 'win32':
     env.Append( EXTRACPPPATH=[ os.environ['IDM_PYTHON3X_PATH']+"/include" ] )
     env.Append( EXTRALIBPATH=[ os.environ['IDM_PYTHON3X_PATH']+"/libs" ] )
     env.Append( LIBS=["python3.lib"] )
-    # There is still a python setting in Eradication\SConsript & componentTests\SConscript to delay the loading of the DLL
-    
-    # MPI
     env.Append( EXTRACPPPATH=[ "#/Dependencies/ComputeClusterPack/include" ] )
     env.Append( EXTRALIBPATH=[ "#/Dependencies/ComputeClusterPack/Lib/amd64" ] )
     env.Append( LIBS=["msmpi.lib"] )
-    
+
 else:
     env['ENV']['PATH'] = path
     env['OS_FAMILY'] = 'posix'
@@ -238,36 +219,25 @@ else:
     env.Append( CCFLAGS=["-ffloat-store"] )
     env.Append( CCFLAGS=["-Wno-unknown-pragmas"] )
     env.Append( CCFLAGS=["-mavx2"] )
-    #env.Append( CCFLAGS=["-save-temps"] )
 
-    # Boost
-    # we don't need a special path for boost on linux
-    
     # Python
-    if(sys.version_info.major == 2):  # Bamboo linux build still uses python 2
-        env.Append( LIBS=["python3.6m"] )
-        env.Append( EXTRACPPPATH=["/opt/python/python3.6.3/include/python3.6m"] )
-        env.Append( EXTRALIBPATH=["/opt/python/python3.6.3/lib"] )
-    elif(sys.version_info.minor == 6):
-        env.Append( LIBS=["python3.6m"] )
-        env.Append( EXTRACPPPATH=["/usr/include/python3.6m"] )
-    elif(sys.version_info.minor == 7):
-        env.Append( LIBS=["python3.7m"] )
-        env.Append( EXTRACPPPATH=["/usr/include/python3.7m"] )
-    elif(sys.version_info.minor == 8):
-        env.Append( LIBS=["python3.8"] )
-        env.Append( EXTRACPPPATH=["/usr/include/python3.8"] )
-    elif(sys.version_info.minor == 9):
+    if(sys.version_info.minor == 9):
         env.Append( LIBS=["python3.9"] )
         env.Append( EXTRACPPPATH=["/usr/include/python3.9"] )
+    elif(sys.version_info.minor == 10):
+        env.Append( LIBS=["python3.10"] )
+        env.Append( EXTRACPPPATH=["/usr/include/python3.10"] )
+    elif(sys.version_info.minor == 11):
+        env.Append( LIBS=["python3.11"] )
+        env.Append( EXTRACPPPATH=["/usr/include/python3.11"] )
+    elif(sys.version_info.minor == 12):
+        env.Append( LIBS=["python3.12"] )
+        env.Append( EXTRACPPPATH=["/usr/include/python3.12"] )
+    elif(sys.version_info.minor == 13):
+        env.Append( LIBS=["python3.13"] )
+        env.Append( EXTRACPPPATH=["/usr/include/python3.13"] )
     else:
-        raise RuntimeError("Only supports python 3.6, 3.7, 3.8, and 3.9")
-
-    #
-    # MPICH
-    #
-    env.Append( EXTRALIBPATH=[ "/usr/lib64/mpich/lib" ] )
-        
+        raise RuntimeError("Unsupported python version")
 
 # ---- other build setup -----
 
@@ -275,7 +245,6 @@ platform = os.sys.platform
 if "uname" in dir(os):
     processor = os.uname()[4]
 else:
-#    processor = "i386"
     processor = "x86_64"
 
 env['PROCESSOR_ARCHITECTURE'] = processor
@@ -304,8 +273,8 @@ if os.sys.platform.startswith("linux"):
         nixLibPrefix = "lib64"
         env.Append( EXTRALIBPATH=["/usr/lib64" , "/lib64" ] )
 
-    env.Append( LIBS=["pthread", "dl", "m" ] )
-    env.Append( EXTRALIBPATH=[ "/usr/local/lib" ] )
+    env.Append( LIBS=["pthread", "dl", "m", "sqlite3"] )
+    env.Append( EXTRALIBPATH=[ "/usr/local/lib", "/usr/lib64/mpich/lib" ] )
 
     if static:
         #env.Append( LINKFLAGS=" -static " )
@@ -330,18 +299,12 @@ elif "win32" == os.sys.platform:
 
     # PSAPI_VERSION relates to process api dll Psapi.dll.
     env.Append( CPPDEFINES=["_CONSOLE"] )
-
     env.Append( CPPDEFINES=[ "BOOST_ALL_NO_LIB" ] )
     env.Append( CPPDEFINES=[ "IDM_EXPORT"] )
     env.Append( CPPDEFINES=[ "NDEBUG"] )
     env.Append( CPPDEFINES=[ "_UNICODE" ] )
     env.Append( CPPDEFINES=[ "UNICODE" ] )
     env.Append( CPPDEFINES=[ "WIN32" ] )
-
-    # this is for MSVC >= 11.0
-    #winSDKHome = "C:/Program Files (x86)/Windows Kits/8.0/"
-    #env.Append( EXTRACPPPATH=[ winSDKHome + "/Include/um" ] )
-    #env.Append( EXTRALIBPATH=[ winSDKHome + "Lib/win8/um/x64" ] )
 
     # some warnings we don't like:
     # c4355
@@ -387,37 +350,13 @@ elif "win32" == os.sys.platform:
     env.Append( CCFLAGS= [ "/W3", "/WX-"] )
     env.Append( CCFLAGS= [ "/Zc:inline", "/Zc:forScope", "/Zc:wchar_t" ] )
 
-    # Disable these two for faster generation of codes
-    #env.Append( CCFLAGS= ["/GL"] ) # /GL whole program optimization
-    #env.Append( LINKFLAGS=" /LTCG " )         # /LTCG link time code generation
-    #env.Append( ARFLAGS=" /LTCG " ) # for the Library Manager
-
     # /Zi    : debug info goes into a PDB file
     # /FS    : force to use MSPDBSRV.EXE (serializes access to .pdb files which is needed for multi-core builds)
     # /DEBUG : linker to create a .pdb file which WinDbg and Visual Studio will use to resolve symbols if you want to debug a release-mode image.
     # NOTE1: This means we can't do parallel links in the build.
     # NOTE2: /DEBUG and Dbghelp.lib go together with changes in Exception.cpp which adds the ability to print a stack trace.
-    #
-    # DMB - 2/21/2017
-    # Commenting out debug options since they don't work when doing scons multithreaded build.
-    # The compiler creates a vc140.pdb file in the root directory but the linker looks for it
-    # in the build\x64\Release\Eradication directory.  However, when you do a single threaded
-    # build, we don't have this issue.
-    #env.Append( CCFLAGS= [ "/Zi" ] )
-    #env.Append( CCFLAGS= [ "/FS" ] )
-    #env.Append( LINKFLAGS=" /DEBUG " )
-
-    # For MSVC <= 10.0
-    #env.Append( LINKFLAGS=[ "/NODEFAULTLIB:LIBCPMT", "/NODEFAULTLIB:LIBCMT", "/MACHINE:X64"] )
-        
-    # For MSVC >= 11.0
-    # /OPT:REF : eliminates functions and data that are never referenced
-    # /OPT:ICF : to perform identical COMDAT folding
-    # /DYNAMICBASE:NO : Don't Use address space layout randomization
-    # /SUBSYSTEM:CONSOLE : Win32 character-mode application.
     env.Append( LINKFLAGS=[ "/MACHINE:X64", "/MANIFEST", "/HEAP:\"100000000\"\",100000000\" ", "/OPT:REF", "/OPT:ICF ", "/DYNAMICBASE:NO", "/SUBSYSTEM:CONSOLE"] )
     env.Append( LINKFLAGS=[ "/ERRORREPORT:NONE", "/NOLOGO", "/TLBID:1" ] )
-    #env.Append( LINKFLAGS=[ "/VERBOSE:Lib" ] )
 
     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     # !!! See SConscript file for linker flags that are specific to the EXE and not the DLLS !!!
@@ -435,7 +374,6 @@ env['STATIC_AND_SHARED_OBJECTS_ARE_THE_SAME'] = 1
 env.Append( CPPPATH=['$EXTRACPPPATH'] )
 env.Append( LIBPATH=['$EXTRALIBPATH'] )
 
-#print env['EXTRACPPPATH']
 
 # --- check system ---
 
@@ -502,15 +440,6 @@ def setEnvAttrs(myenv):
     else:
         myenv['Report'] = ""
 
-    #if dllcampaign:
-    #    myenv['Campaign'] = get_option( 'Campaign' )
-    #    print "Campaign=" + myenv['Campaign']
-    #    if myenv['Campaign'] not in campaigndlls:
-    #        print "Unknown campaign type: " + myenv['Campaign']
-    #        exit(1)
-    #else:
-    #    myenv['Campaign'] = ""
-    
     if has_option('Install'):
         myenv['Install'] = get_option( 'Install' )
     else:
