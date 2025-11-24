@@ -28,8 +28,7 @@ namespace Kernel
         json::Object m_JsonSchemaBase;
     };
 
-    class TargetingLogic : public JsonConfigurable
-                         , public IAdditionalRestrictions
+    class TargetingLogic : public JsonConfigurable, public IAdditionalRestrictions
     {
         IMPLEMENT_NO_REFERENCE_COUNTING()
         DECLARE_FACTORY_REGISTERED(AdditionalRestrictionsFactory,

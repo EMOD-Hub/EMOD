@@ -96,20 +96,21 @@ namespace Kernel
     json::QuickBuilder OrAndCollection::GetSchema()
     {
         json::QuickBuilder schema = json::QuickBuilder( m_JsonSchemaBase );
-        auto tn = "type_name";// JsonConfigurable::_typename_label();
-        auto ts = "type_schema"; // JsonConfigurable::_typeschema_label();
-        schema[ tn ] = json::String( "Vector2d idmType:AdditionalRestrictions" );
-        schema[ ts ] = json::Array();
-        schema[ ts ][0] = json::Object();
-        schema[ ts ][0]["type"] = json::String( "Vector idmType:AdditionalRestrictions" );
-        schema[ ts ][0]["description"] = json::String( "Two dimensional array of AdditionalRestrictions objects." );
-        schema[ ts ][0]["default"] = json::Array();
+        auto tn = JsonConfigurable::_typename_label();
+        auto ts = JsonConfigurable::_typeschema_label();
+        schema[ tn ] = json::String( "idmType:AdditionalRestrictionsMatrix" );
+
+        schema[ ts ] = json::Object();
+        schema[ ts ]["default"] = json::Array();
+        schema[ ts ]["description"] = json::String( "Two dimensional array of configuration objects of type idmAbstractType:AdditionalRestrictions." );
+        schema[ ts ]["type"] = json::String( "Vector2d idmAbstractType:AdditionalRestrictions" );
+
         return schema;
     }
 
     bool OrAndCollection::HasValidDefault() const
     {
-        return false;
+        return true;
     }
 
     // ------------------------------------------------------------------------
