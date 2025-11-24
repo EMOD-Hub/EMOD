@@ -12,8 +12,8 @@ namespace Kernel
 {
     template<class Key, class KeyValue, class Container>
     PropertyRestrictions<Key,KeyValue,Container>::PropertyRestrictions()
-    : JsonConfigurable()
-    , _restrictions()
+        : JsonConfigurable()
+        , _restrictions()
     {
     }
 
@@ -107,16 +107,15 @@ namespace Kernel
         {
             schema[ tn ] = json::String( "idmType:NodePropertyRestrictions" );
         }
-        schema[ ts ] = json::Array();
-        schema[ ts ][0] = json::Object();
-        schema[ ts ][0]["<key>"] = json::Object();
-        schema[ ts ][0]["<key>"][ "type" ] = json::String( "Constrained String" );
-        schema[ ts ][0]["<key>"][ "constraints" ] = json::String( Key::GetConstrainedStringConstraintKey() );
-        schema[ ts ][0]["<key>"][ "description" ] = json::String( Key::GetConstrainedStringDescriptionKey() );
-        schema[ ts ][0]["<value>"] = json::Object();
-        schema[ ts ][0]["<value>"][ "type" ] = json::String( "String" );
-        schema[ ts ][0]["<value>"][ "constraints" ] = json::String( Key::GetConstrainedStringConstraintValue()  );
-        schema[ ts ][0]["<value>"][ "description" ] = json::String( Key::GetConstrainedStringDescriptionValue() );
+
+        std::string type_desc = "List of objects containing key:value pairs of properties. Intersection of key:value pairs within object; union across objects in list.";
+        std::string type_type = "Vector PropertyRestrictions";
+
+        schema[ ts ] = json::Object();
+        schema[ ts ][ "default" ] = json::Array();
+        schema[ ts ][ "description" ] = json::String(type_desc);
+        schema[ ts ][ "type" ] = json::String(type_type);
+
         return schema;
     }
 
