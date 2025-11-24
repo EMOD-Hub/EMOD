@@ -4,10 +4,10 @@
 #include "Bednet.h"
 #include "Timers.h"
 #include "IDistribution.h"
+#include "WaningEffectCombo.h"
 
 namespace Kernel
 {
-
     struct IBednetConsumer;
 
     class UsageDependentBednet : public AbstractBednet
@@ -36,7 +36,7 @@ namespace Kernel
 
         virtual void Callback( float dt );
 
-        std::vector<IWaningEffect*> m_UsageEffectList;
+        WaningEffectCollection m_EffectCollection;
         EventTrigger m_TriggerReceived;
         EventTrigger m_TriggerUsing;
         EventTrigger m_TriggerDiscard;

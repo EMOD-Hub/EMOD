@@ -1194,6 +1194,11 @@ namespace Kernel
             if( s_check.Exist(_typeschema_label()) )
             {
                 jsonSchemaBase[ custom_type_label ] = custom_schema[ _typeschema_label() ];
+
+                if (pVariable->HasValidDefault())
+                {
+                    newParamSchema["default"] = custom_schema[_typeschema_label()]["default"];
+                }
             }
         }
 

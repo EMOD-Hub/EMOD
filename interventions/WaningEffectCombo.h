@@ -22,7 +22,7 @@ namespace Kernel
         virtual ~WaningEffectCollection();
 
         // IComplexJsonConfigurable methods
-        virtual bool  HasValidDefault() const override { return false; }
+        virtual bool  HasValidDefault() const override { return true; }
         virtual json::QuickBuilder GetSchema() override;
         virtual void ConfigureFromJsonAndKey( const Configuration* inputJson, const std::string& key ) override;
 
