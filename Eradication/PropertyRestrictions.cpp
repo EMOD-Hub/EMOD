@@ -108,13 +108,10 @@ namespace Kernel
             schema[ tn ] = json::String( "idmType:NodePropertyRestrictions" );
         }
 
-        std::string type_desc = "List of objects containing key:value pairs of properties. Intersection of key:value pairs within object; union across objects in list.";
-        std::string type_type = "Vector PropertyRestrictions";
-
         schema[ ts ] = json::Object();
         schema[ ts ][ "default" ] = json::Array();
-        schema[ ts ][ "description" ] = json::String(type_desc);
-        schema[ ts ][ "type" ] = json::String(type_type);
+        schema[ ts ][ "description" ] = json::String(PR_Schema_Type_DESC_TEXT);
+        schema[ ts ][ "type" ] = json::String("Vector PropertyRestrictions");
 
         return schema;
     }

@@ -422,3 +422,7 @@
 #define WEM_Expire_At_Durability_Map_End_DESC_TEXT "Set to 1 to let the intervention expire when the end of the map is reached."
 #define WEM_Reference_Timer_DESC_TEXT "The timestamp at which linear-map should be anchored."
 #define WERB_Expected_Discard_Time_DESC_TEXT "The mean time, in days, of an exponential distribution of the duration of the effect of an intervention (such as a vaccine or bed net). Specify how this effect decays over time using one of the :doc:`parameter-campaign-waningeffects`."
+
+#define AR_Schema_Type_DESC_TEXT "Two dimensional array of configuration objects of type idmAbstractType:AdditionalRestrictions."
+#define PR_Schema_Type_DESC_TEXT "List of objects containing key:value pairs of properties. Intersection of key:value pairs within object; union across objects in list."
+#define WEC_Schema_Type_DESC_TEXT "List of configuration objects for parameterizing waning effects."

@@ -31,19 +31,15 @@ namespace Kernel
     {
         WaningConfig waning_config;
 
-        std::string type_name = "idmType:WaningEffectCollection";
-        std::string type_desc = "List of configuration objects for parameterizing waning effects.";
-        std::string type_type = "Vector idmAbstractType:WaningEffect";
-
         json::QuickBuilder schema( GetSchemaBase() );
         auto tn = JsonConfigurable::_typename_label();
         auto ts = JsonConfigurable::_typeschema_label();
-        schema[ tn ] = json::String( type_name );
+        schema[ tn ] = json::String( "idmType:WaningEffectCollection" );
 
         schema[ ts ] = json::Object();
         schema[ ts ][ "default" ] = json::Array();
-        schema[ ts ][ "description" ] = json::String(type_desc);
-        schema[ ts ][ "type" ] = json::String(type_type);
+        schema[ ts ][ "description" ] = json::String(WEC_Schema_Type_DESC_TEXT);
+        schema[ ts ][ "type" ] = json::String("Vector idmAbstractType:WaningEffect");
 
         return schema;
     }

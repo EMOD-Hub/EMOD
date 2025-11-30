@@ -102,7 +102,7 @@ namespace Kernel
 
         schema[ ts ] = json::Object();
         schema[ ts ]["default"] = json::Array();
-        schema[ ts ]["description"] = json::String( "Two dimensional array of configuration objects of type idmAbstractType:AdditionalRestrictions." );
+        schema[ ts ]["description"] = json::String(AR_Schema_Type_DESC_TEXT);
         schema[ ts ]["type"] = json::String( "Vector2d idmAbstractType:AdditionalRestrictions" );
 
         return schema;
