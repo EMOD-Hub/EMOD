@@ -443,8 +443,4 @@ intersphinx_mapping = {'python': ('https://docs.python.org/3', None),
                        'pycomps': ('https://docs.idmod.org/projects/pycomps/en/latest/', None),
                        'emodpy-malaria': ('https://docs.idmod.org/projects/emodpy-malaria/en/latest/', None),
                        'emodpy-hiv': ('https://docs.idmod.org/projects/emodpy-hiv/en/latest/', None),
-                       'emod-generic-scripts': ('https://docs.idmod.org/projects/emod-generic-scripts/en/latest/', None)
                        }
-
-
-

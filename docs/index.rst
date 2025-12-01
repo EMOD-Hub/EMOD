@@ -28,4 +28,4 @@ simulations, see one of the documentation sets linked below.
    EMOD/emodpy malaria <https://docs.idmod.org/projects/emodpy-malaria/en/latest/>
    EMOD/emodpy HIV <https://docs.idmod.org/projects/emodpy-hiv/en/latest/>
    EMOD generic <https://docs.idmod.org/projects/emod-generic/en/latest/>
-   EMOD generic scripts <https://docs.idmod.org/projects/emod-generic-scripts/en/latest/>
+   EMOD generic scripts <https://emod-hub.github.io/EMOD-Generic-Scripts/>
