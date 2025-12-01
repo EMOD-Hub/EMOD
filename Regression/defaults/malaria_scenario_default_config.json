@@ -51,7 +51,6 @@
         "Default_Geography_Torus_Size": 10,
         "Enable_Aging": 1,
         "Enable_Birth": 0,
-        "Enable_Demographics_Birth": 0,
         "Enable_Demographics_Builtin": 0,
         "Enable_Demographics_Reporting": 1,
         "Enable_Demographics_Risk": 0,
@@ -59,7 +58,6 @@
         "Enable_Initial_Prevalence": 0,
         "Enable_Maternal_Protection": 0,
         "Enable_Natural_Mortality": 0,
-        "Enable_Susceptibility_Scaling": 0,
         "Enable_Vital_Dynamics": 1,
         "Minimum_Adult_Age_Years": 15,
         "Population_Scale_Type": "USE_INPUT_FILE"
@@ -79,8 +77,6 @@
         "x_Temporary_Larval_Habitat": 1
     },
     "GENERAL_DISEASE": {
-        "Acquisition_Blocking_Immunity_Decay_Rate": 0.01,
-        "Acquisition_Blocking_Immunity_Duration_Before_Decay": 90,
         "Base_Mortality": 0,
         "Enable_Infectivity_Reservoir": 0,
         "Enable_Maternal_Infection_Transmission": 0,
@@ -91,17 +87,9 @@
         "Infectivity_Scale_Type": "CONSTANT_INFECTIVITY",
         "Maternal_Infection_Transmission_Probability": 0,
         "Max_Individual_Infections": 5,
-        "Mortality_Blocking_Immunity_Decay_Rate": 0.001,
-        "Mortality_Blocking_Immunity_Duration_Before_Decay": 90,
         "Mortality_Time_Course": "DAILY_MORTALITY",
         "Population_Density_C50": 30,
         "Population_Density_Infectivity_Correction": "CONSTANT_INFECTIVITY",
-        "Post_Infection_Acquisition_Multiplier": 1,
-        "Post_Infection_Mortality_Multiplier": 1,
-        "Post_Infection_Transmission_Multiplier": 1,
-        "Susceptibility_Scale_Type": "CONSTANT_SUSCEPTIBILITY",
-        "Transmission_Blocking_Immunity_Decay_Rate": 0.01,
-        "Transmission_Blocking_Immunity_Duration_Before_Decay": 90,
         "Incubation_Period_Constant": 7
     },
     "MALARIA": {
@@ -117,6 +105,8 @@
         "Antibody_Memory_Level": 0.2,
         "Antibody_Stimulation_C50": 10,
         "Antigen_Switch_Rate": 0,
+        "Antibody_Days_To_Long_Term_Decay": 7300000,
+        "Antibody_Long_Term_Decay_Days": 3650,
         "Base_Gametocyte_Fraction_Male": 0.2,
         "Base_Gametocyte_Mosquito_Survival_Rate": 0.01,
         "Base_Gametocyte_Production_Rate": 0.02,

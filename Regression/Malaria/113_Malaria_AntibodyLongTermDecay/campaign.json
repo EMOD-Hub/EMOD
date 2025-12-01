@@ -1,0 +1,40 @@
+{
+    "Campaign_Name": "Unnamed Campaign",
+    "Events": [
+        {
+            "class": "CampaignEvent",
+            "Event_Coordinator_Config": {
+                "class": "StandardInterventionDistributionEventCoordinator",
+                "Target_Num_Individuals": 2,
+                "Individual_Selection_Type": "TARGET_NUM_INDIVIDUALS",
+                "Intervention_Config": {
+                    "class": "OutbreakIndividual",
+                    "Antigen": 0,
+                    "Genome": 0,
+                    "Ignore_Immunity": 1,
+                    "Incubation_Period_Override": -1
+                },
+                "Node_Property_Restrictions": [],
+                "Number_Repetitions": 30,
+                "Property_Restrictions": [],
+                "Property_Restrictions_Within_Node": [],
+                "Target_Demographic": "Everyone",
+                "Target_Gender": "All",
+                "Target_Residents_Only": 0,
+                "Targeting_Config": {
+                    "HasIP": {},
+                    "HasIntervention": {},
+                    "IsPregnant": {},
+                    "TargetingLogic": {}
+                },
+                "Timesteps_Between_Repetitions": 200
+            },
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            },
+            "Start_Day": 0
+        }
+
+    ],
+    "Use_Defaults": 1
+}

@@ -89,6 +89,9 @@ void SimulationConfig::SetFixedParameters(Configuration * inputJson)
     switch (sim_type)
     {
     case SimType::MALARIA_SIM:
+        inputJson->Add( "Enable_Initial_Susceptibility_Distribution", 0 ); //must exist because Enable_Immunity: 1
+        inputJson->Add( "Enable_Susceptibility_Scaling", 0 ); // not used in Malaria
+        inputJson->Add( "Enable_Immune_Decay", 0 ); //not used in Malaria
         break;
     case SimType::HIV_SIM:
         // inputJson->Add("Enable_Immunity", 1);    // Immunity is already enabled in the code. Setting it here adds parameter

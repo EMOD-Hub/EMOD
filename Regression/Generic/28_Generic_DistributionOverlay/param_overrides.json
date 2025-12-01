@@ -24,8 +24,7 @@
             },
             "SAMPLING": {
                 "Sample_Rate_Birth": 1
-            },
-            "Enable_Demographics_Birth": 1
+            }
         },
         "DISEASE": {
             "INFECTIOUSNESS": {

@@ -28,16 +28,14 @@
         "Default_Geography_Torus_Size": 10,
         "Enable_Aging": 1,
         "Enable_Birth": 0,
-        "Enable_Demographics_Birth": 0,
         "Enable_Demographics_Builtin": 0,
         "Enable_Demographics_Reporting": 0,
         "Enable_Demographics_Risk": 0,
         "Enable_Disease_Mortality": 0,
         "Enable_Natural_Mortality": 0,
-        "Enable_Susceptibility_Scaling": 0,
         "Enable_Vital_Dynamics": 1,
-        "Minimum_Adult_Age_Years": 15,
-        "Population_Scale_Type": "FIXED_SCALING"
+        "Population_Scale_Type": "FIXED_SCALING",
+        "Minimum_Adult_Age_Years": 15
     },
     "EXECUTION": {
         "CLUSTER": {
@@ -95,6 +93,8 @@
         "Antibody_Memory_Level": 0.2,
         "Antibody_Stimulation_C50": 10,
         "Antigen_Switch_Rate": 0,
+        "Antibody_Days_To_Long_Term_Decay": 7300000,
+        "Antibody_Long_Term_Decay_Days": 3650,
         "Base_Gametocyte_Fraction_Male": 0.2,
         "Base_Gametocyte_Mosquito_Survival_Rate": 0.01,
         "Base_Gametocyte_Production_Rate": 0.02,

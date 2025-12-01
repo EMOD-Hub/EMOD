@@ -167,6 +167,7 @@
     <ClCompile Include="InterventionForCurrentPartnersTest.cpp" />
     <ClCompile Include="LarvalHabitatMultiplierTest.cpp" />
     <ClCompile Include="LoadBalanceSchemeTest.cpp" />
+    <ClCompile Include="MalariaAntibodyTest.cpp" />
     <ClCompile Include="MalariaDrugTypeParametersTest.cpp" />
     <ClCompile Include="MigrateIndividualsTest.cpp" />
     <ClCompile Include="MigrationTest.cpp" />

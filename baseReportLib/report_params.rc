@@ -108,6 +108,8 @@
 #define RVM_Must_Be_To_Node_DESC_TEXT "A list of node IDs. A vector must be traveling TO one of these nodes to be recorded into the report. Empty list means vectors traveling to any/all nodes will be recorded."
 #define RVM_Include_Genome_Data_DESC_TEXT "If set to true (1), adds a Genome column for migrating vectors. Vectors with no custom alleles will still have their sex alleles listed."
 
-
+#define RA_Contain_Capacity_Data_DESC_TEXT "If true (1), the data for each antibody is the capacity of the antibody, otherwise it's the concentration."
+#define RA_Reporting_Interval_DESC_TEXT "Defines the cadence of the report in days (not timesteps). Data will be recorded every **Reporting_Interval** days starting with the **Start_Day**. This will limit system memory usage and is advised when large output files are expected."
+#define RA_Infected_Only_DESC_TEXT "If true (1), only individuals currently infected will be added to the report."
 
 

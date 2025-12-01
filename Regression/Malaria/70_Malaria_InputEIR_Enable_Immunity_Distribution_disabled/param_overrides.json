@@ -14,7 +14,6 @@
             "demographics/calibration_challenge.json"
         ],
         "Enable_Birth": 1,
-        "Enable_Demographics_Birth": 1,
         "Enable_Demographics_Reporting": 0,
         "Enable_Demographics_Risk": 1,
         "Population_Scale_Type": "FIXED_SCALING"

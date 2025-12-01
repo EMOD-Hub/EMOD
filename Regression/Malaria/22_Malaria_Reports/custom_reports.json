@@ -1,6 +1,19 @@
 {
     "Reports": [
         {
+            "class": "ReportAntibodies",
+            "Filename_Suffix": "2",
+            "Start_Day": 44,
+            "End_Day": 54,
+            "Node_IDs_Of_Interest": [],
+            "Min_Age_Years": 4,
+            "Max_Age_Years": 5,
+            "Must_Have_IP_Key_Value": "",
+            "Must_Have_Intervention": "",
+            "Reporting_Interval": 1,
+            "Contain_Capacity_Data": 1
+        },
+        {
             "class": "ReportEventCounter",
             "Filename_Suffix": "",
             "Start_Day": 0,
