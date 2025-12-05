@@ -781,34 +781,37 @@ namespace Kernel
         }
     }
 
-    const std::vector<MalariaAntibody>& SusceptibilityMalaria::GetMSPAntibodiesForReporting( float currentTime, float dt )
+    std::vector<MalariaAntibody>& SusceptibilityMalaria::GetAntibodiesForReporting( float currentTime, float dt, MalariaAntibodyType::Enum antibody_type)
     {
-        // only use this for reporting
-        static std::vector<MalariaAntibody> msp_all_sorted( SusceptibilityMalariaConfig::falciparumMSPVars );
-        std::fill( msp_all_sorted.begin(), msp_all_sorted.end(), MalariaAntibody() ); //reset the elements
-        for(const auto& msp_antibody : m_MSP_antibodies )
+        static std::vector<MalariaAntibody> antibodies_for_reporting;
+        if(antibody_type == MalariaAntibodyType::MSP1)
         {
-            int variant = msp_antibody.GetAntibodyVariant();
-            msp_all_sorted[variant] = msp_antibody;
-            msp_all_sorted[variant].IncreaseAntigenCount( 0, currentTime, dt );
-            msp_all_sorted[variant].SetActiveIndex( 314159 ); // to indicate antibody for reporting
+            antibodies_for_reporting = m_MSP_antibodies;
         }
-        return msp_all_sorted;
-    }
+        else if(antibody_type == MalariaAntibodyType::PfEMP1_major)
+        {
+            antibodies_for_reporting = m_PfEMP1_major_antibodies;
+        }
+        else
+        {
+            throw NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "Only implemented antibody reporting for MSP1 and PfEMP1 major so far." );
+        }
 
-    const std::vector<MalariaAntibody>& SusceptibilityMalaria::GetPfEMP1MajorAntibodiesForReporting( float currentTime, float dt )
-    {
-        // only use this for reporting
-        static std::vector<MalariaAntibody> major_all_sorted( SusceptibilityMalariaConfig::falciparumPfEMP1Vars);
-        std::fill( major_all_sorted.begin(), major_all_sorted.end(), MalariaAntibody() ); //reset the elements
-        for( const auto& major_antibody : m_PfEMP1_major_antibodies )
+        for(auto& antibody : antibodies_for_reporting)
         {
-            int variant = major_antibody.GetAntibodyVariant();
-            major_all_sorted[variant] = major_antibody;
-            major_all_sorted[variant].IncreaseAntigenCount( 0, currentTime, dt );
-            major_all_sorted[variant].SetActiveIndex( 314159 ); // to indicate antibody for reporting
+            antibody.IncreaseAntigenCount( 0, currentTime, dt );
         }
-        return major_all_sorted;
+
+        // sort by variant for reporting
+        std::sort(
+            antibodies_for_reporting.begin(),
+            antibodies_for_reporting.end(),
+            []( const MalariaAntibody& a, const MalariaAntibody& b )
+            {
+                return a.GetAntibodyVariant() < b.GetAntibodyVariant();
+            }
+        );
+        return antibodies_for_reporting;
     }
 
     MalariaAntibody* SusceptibilityMalaria::RegisterAntibody(MalariaAntibodyType::Enum type, int variant, float capacity)

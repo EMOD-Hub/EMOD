@@ -78,8 +78,7 @@ namespace Kernel
         virtual void init_maternal_antibodies(float mother_factor) = 0;
         virtual void remove_RBCs( int64_t infectedAsexual, int64_t infectedGametocytes, double RBC_destruction_multiplier ) = 0;
         virtual void UpdateIRBC( int64_t irbcFromInfection, int64_t irbcFromInfectionWithHRP ) = 0;
-        virtual const std::vector<MalariaAntibody>& GetMSPAntibodiesForReporting( float currentTime, float dt ) = 0;
-        virtual const std::vector<MalariaAntibody>& GetPfEMP1MajorAntibodiesForReporting( float currentTime, float dt ) = 0;
+        virtual std::vector<MalariaAntibody>& GetAntibodiesForReporting( float currentTime, float dt, MalariaAntibodyType::Enum antibody_type ) = 0;
     };
 
     struct IMalariaHumanContext : public ISupports

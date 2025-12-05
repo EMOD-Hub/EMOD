@@ -164,37 +164,34 @@ namespace Kernel
             << "," << age_years
             << "," << is_infected;
 
-        const std::vector<MalariaAntibody>& r_msp_antibodies = susceptibility_malaria->GetMSPAntibodiesForReporting( current_time, dt );
-        for( auto& r_msp_antibody : r_msp_antibodies )
+
+        for(int t = 0; t < 2; ++t) // do MSP1 first, then PfEMP1
         {
-            if(r_msp_antibody.GetActiveIndex() != 314159) // filler antibody, no actual data
+            MalariaAntibodyType::Enum antibody_type = ( t == 0 ) ? MalariaAntibodyType::MSP1 : MalariaAntibodyType::PfEMP1_major;
+            int num_variants = ( t == 0 ) ? SusceptibilityMalariaConfig::falciparumMSPVars : SusceptibilityMalariaConfig::falciparumPfEMP1Vars;
+
+            std::vector<MalariaAntibody>& r_antibodies = susceptibility_malaria->GetAntibodiesForReporting( current_time, dt, antibody_type );
+            for(int i = 0; i < num_variants; ++i)
             {
-                GetOutputStream() << ",";
-            }
-            else
-            {
-                if(m_IsCapacityData)
-                    GetOutputStream() << "," << r_msp_antibody.GetAntibodyCapacity();
-                else
-                    GetOutputStream() << "," << r_msp_antibody.GetAntibodyConcentration();
+                if (!r_antibodies.empty() && r_antibodies[0].GetAntibodyVariant() == i) 
+                {
+                    if(m_IsCapacityData)
+                        GetOutputStream() << "," << r_antibodies[0].GetAntibodyCapacity();
+                    else
+                        GetOutputStream() << "," << r_antibodies[0].GetAntibodyConcentration();
+                    // remove matched antibody to speed up next search
+                    r_antibodies.erase( r_antibodies.begin() );
+                    continue;
+                }
+                else // antibody not found for this variant
+                {
+                    GetOutputStream() << ",";
+                    break;
+                }
             }
         }
 
-        const std::vector<MalariaAntibody>& r_pfemp1_antibodies = susceptibility_malaria->GetPfEMP1MajorAntibodiesForReporting( current_time, dt );
-        for( auto& r_pfemp1_antibody : r_pfemp1_antibodies )
-        {
-            if(r_pfemp1_antibody.GetActiveIndex() != 314159 ) // filler antibody, no actual data
-            {
-                GetOutputStream() << ",";
-            }
-            else
-            {
-                if(m_IsCapacityData)
-                    GetOutputStream() << "," << r_pfemp1_antibody.GetAntibodyCapacity();
-                else
-                    GetOutputStream() << "," << r_pfemp1_antibody.GetAntibodyConcentration();
-            }
-        }
         GetOutputStream() << endl;
     }
+
 }
