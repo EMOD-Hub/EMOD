@@ -435,8 +435,6 @@ texinfo_documents = [
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {'python': ('https://docs.python.org/3', None),
-                       'emod-api': ('https://docs.idmod.org/projects/emod-api/en/latest/', None),
-                       'emodpy': ('https://docs.idmod.org/projects/emodpy/en/latest/', None),
                        'idmtools': ('https://docs.idmod.org/projects/idmtools/en/latest/', None),
                        'calibra': ('https://docs.idmod.org/projects/idmtools_calibra/en/latest/', None),
                        'emod-generic': ('https://docs.idmod.org/projects/emod-generic/en/latest/', None),

@@ -25,11 +25,9 @@
 .. |COMPS_s| replace:: COMPS
 .. |DTM| replace:: DTK-Tools-Malaria
 .. |DT| replace:: DTK-Tools
-.. |emod_api| replace:: emod-api
 .. |EMOD_l| replace:: Epidemiological MODeling software (EMOD)
 .. |EMOD_s| replace:: EMOD
 .. |EMODPY_hiv| replace:: emodpy-hiv
-.. |EMODPY_s| replace:: emodpy
 .. |Excel| replace:: Excel Front End
 .. |exe_l| replace:: EMOD executable (Eradication.exe)
 .. |exe_s| replace:: Eradication.exe
