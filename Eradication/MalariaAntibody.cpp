@@ -30,6 +30,7 @@ namespace Kernel
         , m_antigen_count(0)
         , m_active_index(-1)
         , m_time_last_active(-1.0)
+        , m_duration_not_active_serialization(0.0)
         , m_antibody_type( MalariaAntibodyType::CSP )
         , m_antibody_variant(0)
     {
@@ -43,31 +44,46 @@ namespace Kernel
         m_antibody_concentration = concentration;
     }
 
-    void MalariaAntibody::Decay( float dt )
+    void MalariaAntibody::Decay( float decay_time )
     {
+        // decay_time - time (in days) the antibody has spent being inactive, see IncreaseAntigenCount for details
+        // this is only called when antibodies are activated, we calculate how much they would have decayed and then grow them
+
         // allow the decay of anti-CSP concentrations greater than unity (e.g. after boosting by vaccine)
         // TODO: this might become the default when boosting extends to other antibody types?
         if( (m_antibody_type == MalariaAntibodyType::CSP) && (m_antibody_concentration > m_antibody_capacity) )
         {
-            m_antibody_concentration -= m_antibody_concentration * dt / SusceptibilityMalariaConfig::antibody_csp_decay_days;
+            m_antibody_concentration -= m_antibody_concentration * decay_time / SusceptibilityMalariaConfig::antibody_csp_decay_days;
         }
         else
         {
             // otherwise do the normal behavior of decaying antibody concentration based on capacity
 
-	        // don't do multiplication and subtraction unless antibody levels non-trivial
-	        if ( m_antibody_concentration > NON_TRIVIAL_ANTIBODY_THRESHOLD )
-	        {
-                m_antibody_concentration = m_antibody_concentration * exp( -dt * TWENTY_DAY_DECAY_CONSTANT );
-	        }
+            // don't do multiplication and subtraction unless antibody levels non-trivial
+            if(m_antibody_concentration > NON_TRIVIAL_ANTIBODY_THRESHOLD)
+            {
+                m_antibody_concentration = m_antibody_concentration * exp( -decay_time * TWENTY_DAY_DECAY_CONSTANT );
+            }
 
-	        // antibody capacity decays to a medium value (.3) dropping below .4 in ~120 days from 1.0
-	        if ( m_antibody_capacity > SusceptibilityMalariaConfig::memory_level )
-	        {
-                m_antibody_capacity = (m_antibody_capacity - SusceptibilityMalariaConfig::memory_level) 
-                                    * exp( -dt * SusceptibilityMalariaConfig::hyperimmune_decay_rate )
-                                    + SusceptibilityMalariaConfig::memory_level;
-	        }
+            if(m_antibody_capacity > SusceptibilityMalariaConfig::memory_level)
+            {
+                // antibody capacity decays to a medium value (.3) dropping below .4 in ~120 days from 1.0
+                m_antibody_capacity = ( m_antibody_capacity - SusceptibilityMalariaConfig::memory_level )
+                    * exp( -decay_time * SusceptibilityMalariaConfig::hyperimmune_decay_rate )
+                    + SusceptibilityMalariaConfig::memory_level;
+            } // stays around memory level until antibody_days_to_long_term_decay kicks in
+
+            // --------------------------------------------------------------------------------
+            // --- If the antibody has been dormant for a long time, start a gradual decay.
+            // --- This is to help reduce the issue where older people have too much immunity.
+            // --------------------------------------------------------------------------------
+            if(( decay_time >= SusceptibilityMalariaConfig::antibody_days_to_long_term_decay ) &&
+                ( m_antibody_capacity > FLT_EPSILON ))
+            {
+                float delta_time = decay_time - SusceptibilityMalariaConfig::antibody_days_to_long_term_decay;
+                m_antibody_capacity = m_antibody_capacity * exp( -delta_time / SusceptibilityMalariaConfig::antibody_long_term_decay_days );
+            }
+
         }
     }
 
@@ -96,11 +112,6 @@ namespace Kernel
                 //rapid B cell proliferation above a threshold given stimulation
                 m_antibody_capacity += (1.0f - m_antibody_capacity) * B_CELL_PROLIFERATION_CONSTANT * dt;
             }
-
-            if (m_antibody_capacity > 1.0)
-            {
-                m_antibody_capacity = 1.0;
-            }
         }
         else if( m_antibody_type == MalariaAntibodyType::PfEMP1_major )
         {
@@ -113,12 +124,6 @@ namespace Kernel
             {
                 //ability and number of B-cells to produce antibodies, with saturation
                 m_antibody_capacity += growth_rate * dt * (1.0f - m_antibody_capacity) * float(Sigmoid::basic_sigmoid(threshold, float(m_antigen_count) * inv_uL_blood + min_stimulation));
-
-                // check for antibody capacity out of range
-                if (m_antibody_capacity > 1.0)
-                {
-                    m_antibody_capacity = 1.0;
-                }
             }
             else
             {
@@ -126,7 +131,7 @@ namespace Kernel
                 m_antibody_capacity += (1.0f - m_antibody_capacity) * B_CELL_PROLIFERATION_CONSTANT * dt;
             }
         }
-        else
+        else //MSP1
         {
             float growth_rate = SusceptibilityMalariaConfig::MSP1_antibody_growthrate;
             float threshold   = SusceptibilityMalariaConfig::antibody_stimulation_c50;
@@ -138,11 +143,10 @@ namespace Kernel
             {
                 m_antibody_capacity += ( 1.0f - m_antibody_capacity ) * B_CELL_PROLIFERATION_CONSTANT * dt;
             }
-
-            if (m_antibody_capacity > 1.0)
-            {
-                m_antibody_capacity = 1.0;
-            }
+        }
+        if(m_antibody_capacity > 1.0)
+        {
+            m_antibody_capacity = 1.0;
         }
     }
 
@@ -207,16 +211,32 @@ namespace Kernel
         // --- would give us the duration of three time steps but the antibody was only inactive
         // --- for two of them.  It is active this time step so we don't want to count it.
         // --------------------------------------------------------------------------------------------
-        float decay_time = currentTime - m_time_last_active - dt;
+        float decay_time = currentTime - m_time_last_active - dt + m_duration_not_active_serialization;
         if( (m_time_last_active != -1.0) && (decay_time > 0.0) )
         {
             Decay( decay_time );
         }
         m_time_last_active = currentTime;
+
+        // ---------------------------------------------------------------------------------
+        // --- Need to clear this every time it is active due to the case where the
+        // --- antibody was active, but we serialized and called PrepareForSerialization()
+        // ---------------------------------------------------------------------------------
+        m_duration_not_active_serialization = 0.0;
     }
 
     void MalariaAntibody::SetTimeLastActive( float time )
     {
+        m_time_last_active = time;
+    }
+
+    void MalariaAntibody::PrepareForSerialization( float time, float dt )
+    {
+        if( (time - m_time_last_active) >= dt )
+        {
+            // this is "+=" incase someone saves multiple serialized files.
+            m_duration_not_active_serialization += (time - m_time_last_active);
+        }
         m_time_last_active = time;
     }
 
@@ -284,6 +304,7 @@ namespace Kernel
             //m_active_index is at most cleared and set each timestep so don't need to serialize
             //ar.labelElement("m_active_index"         ) & antibody.m_active_index;
             ar.labelElement("m_time_last_active"      ) & antibody.m_time_last_active;
+            ar.labelElement("m_duration_not_active_serialization") & antibody.m_duration_not_active_serialization;
             ar.labelElement("m_antibody_type"         ) & (uint32_t&)antibody.m_antibody_type;
             ar.labelElement("m_antibody_variant"      ) & antibody.m_antibody_variant;
         ar.endObject();

@@ -21,7 +21,6 @@
             ],
             "Enable_Aging": 1,
             "Enable_Birth": 1,
-            "Enable_Demographics_Birth": 0,
             "Enable_Demographics_Builtin": 0,
             "Enable_Demographics_Reporting": 0,
             "Enable_Initial_Prevalence": 0,

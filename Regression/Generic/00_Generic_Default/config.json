@@ -26,7 +26,6 @@
         "Enable_Birth": 1,
         "Enable_Default_Reporting": 1,
         "Enable_Default_Shedding_Function": 1,
-        "Enable_Demographics_Birth": 0,
         "Enable_Demographics_Builtin": 0,
         "Enable_Demographics_Reporting": 1,
         "Enable_Disease_Mortality": 0,

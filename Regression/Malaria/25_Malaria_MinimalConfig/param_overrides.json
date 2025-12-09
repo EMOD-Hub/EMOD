@@ -101,6 +101,8 @@
         "Anemia_Severe_Inverse_Width": 10, 
         "Anemia_Severe_Threshold": 10, 
         "Antibody_Memory_Level": 0.2, 
+        "Antibody_Days_To_Long_Term_Decay": 7300000,
+        "Antibody_Long_Term_Decay_Days": 3650,
         "Enable_Sexual_Combination": 0, 
         "Erythropoiesis_Anemia_Effect": 3.5, 
         "Fever_IRBC_Kill_Rate": 0.15, 

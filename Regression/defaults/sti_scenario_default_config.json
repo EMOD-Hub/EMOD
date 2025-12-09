@@ -13,7 +13,6 @@
                 "pfa_simple.json"
             ],
             "Enable_Birth": 1,
-            "Enable_Demographics_Birth": 0,
             "Enable_Demographics_Builtin": 0,
             "Enable_Disease_Mortality": 0,
             "Enable_Initial_Prevalence": 0,

@@ -50,7 +50,6 @@
         "Enable_Default_Reporting": 1,
         "Enable_Default_Shedding_Function": 1,
         "Enable_Delayed_Hatching_When_Habitat_Dries_Up": 0,
-        "Enable_Demographics_Birth": 0,
         "Enable_Demographics_Builtin": 0,
         "Enable_Demographics_Gender": 1,
         "Enable_Demographics_Reporting": 0,

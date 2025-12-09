@@ -11,8 +11,8 @@
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerCommandArguments>-C config.json -I .;c:\EMOD\input_data\SamplesInput -O testing --dll-path $(SolutionDir)$(Platform)\$(Configuration)</LocalDebuggerCommandArguments>
-    <LocalDebuggerWorkingDirectory>..\Regression\Scenarios\STIAndHIV\03_Transmission\B_Effect_of_VMMC</LocalDebuggerWorkingDirectory>
+    <LocalDebuggerCommandArguments>-C config.json -I .;c:\EMOD\input_data\Namawala -O testing --dll-path $(SolutionDir)$(Platform)\$(Configuration) &gt; float_maternal.txt</LocalDebuggerCommandArguments>
+    <LocalDebuggerWorkingDirectory>C:\GitHub\EMOD1\Regression\Malaria\113_Malaria_AntibodyLongTermDecay</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>

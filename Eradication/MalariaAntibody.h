@@ -45,6 +45,7 @@ namespace Kernel
         int GetAntibodyVariant() const;
 
         void  SetTimeLastActive( float time );
+        void  PrepareForSerialization( float time, float dt );
 
         void SetActiveIndex( int32_t index );
         int32_t GetActiveIndex() const;
@@ -55,6 +56,7 @@ namespace Kernel
         int64_t m_antigen_count;
         int32_t m_active_index;
         float   m_time_last_active;         // sim time since the antibody was last active not just decaying
+        float   m_duration_not_active_serialization;
 
         MalariaAntibodyType::Enum m_antibody_type;
         int m_antibody_variant;

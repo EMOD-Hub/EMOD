@@ -18,7 +18,6 @@
         "Base_Relative_Humidity": 0.75,
         "Birth_Rate_Dependence": "FIXED_BIRTH_RATE",
         "Enable_Climate_Stochasticity": 0,
-        "Enable_Demographics_Birth": 1,
         "Enable_Demographics_Reporting": 0,
         "Enable_Initial_Prevalence": 1,
         "Enable_Nondisease_Mortality": 1,

@@ -22,6 +22,6 @@ Time,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness
 730,340461476,HappyBirthday,8,2190.51,M,0,0
 735,340461476,HappyBirthday,6,1825.3,F,0,0
 745,340461476,HappyBirthday,5,5475.6,M,0,0
-761,340461476,HappyBirthday,12,365,F,0,0
+761,340461476,HappyBirthday,12,365,M,0,0
 792,340461476,HappyBirthday,2,10585.9,F,0,0
 798,340461476,HappyBirthday,11,27010.1,F,0,0

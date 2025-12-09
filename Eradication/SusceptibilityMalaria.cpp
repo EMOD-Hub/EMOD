@@ -54,6 +54,8 @@ namespace Kernel
     float  SusceptibilityMalariaConfig::MSP1_antibody_growthrate          = 0.0f;
     float  SusceptibilityMalariaConfig::antibody_stimulation_c50          = 0.0f;
     float  SusceptibilityMalariaConfig::antibody_capacity_growthrate      = 0.0f;
+    float  SusceptibilityMalariaConfig::antibody_days_to_long_term_decay  = 0.0f;
+    float  SusceptibilityMalariaConfig::antibody_long_term_decay_days     = 0.0f;
     float  SusceptibilityMalariaConfig::minimum_adapted_response          = 0.0f;
     float  SusceptibilityMalariaConfig::non_specific_growth               = 0.0f;
     float  SusceptibilityMalariaConfig::antibody_csp_decay_days           = 0.0f;
@@ -88,6 +90,9 @@ namespace Kernel
         const Configuration* config
     )
     {
+        SusceptibilityConfig::enable_initial_susceptibility_distribution = false;
+        SusceptibilityConfig::enable_immune_decay = false;
+
         initConfigTypeMap( "Anemia_Mortality_Threshold",              &anemiaMortalityLevel,              Anemia_Mortality_Threshold_DESC_TEXT,              0.0, 100.0f,      DEFAULT_ANEMIA_MORTALITY_LEVEL );
         initConfigTypeMap( "Parasite_Mortality_Threshold",            &parasiteMortalityLevel,            Parasite_Mortality_Threshold_DESC_TEXT,            0.0, FLT_MAX,     DEFAULT_PARASITE_MORTALITY_LEVEL );
         initConfigTypeMap( "Fever_Mortality_Threshold",               &feverMortalityLevel,               Fever_Mortality_Threshold_DESC_TEXT,               0.0, 1000.0,      DEFAULT_FEVER_MORTALITY_LEVEL );
@@ -116,14 +121,16 @@ namespace Kernel
         initConfigTypeMap( "PfHRP2_Boost_Rate",                       &PfHRP2_boost_rate,                 PfHRP2_Boost_Rate_DESC_TEXT,                       0.0f, 1000.0f,    0.07f );
         initConfigTypeMap( "PfHRP2_Decay_Rate",                       &PfHRP2_decay_rate,                 PfHRP2_Decay_Rate_DESC_TEXT,                       0.0f, 1.0f,       0.172f );
 
-        initConfigTypeMap("Enable_Maternal_Antibodies_Transmission", &enable_maternal_antibodies_transmission, Enable_Maternal_Antibodies_Transmission_DESC_TEXT, false, "Simulation_Type","MALARIA_SIM");
+        initConfigTypeMap( "Antibody_Days_To_Long_Term_Decay",        &antibody_days_to_long_term_decay,  Antibody_Days_To_Long_Term_Decay_DESC_TEXT,        1.0f, FLT_MAX,    FLT_MAX );
+        initConfigTypeMap( "Antibody_Long_Term_Decay_Days",           &antibody_long_term_decay_days,     Antibody_Long_Term_Decay_Days_DESC_TEXT,           1.0f, FLT_MAX,    3650 );
+        initConfigTypeMap("Enable_Maternal_Antibodies_Transmission",  &enable_maternal_antibodies_transmission, Enable_Maternal_Antibodies_Transmission_DESC_TEXT, false, "Simulation_Type","MALARIA_SIM");
         initConfig( "Maternal_Antibodies_Type", maternal_antibodies_type, config, MetadataDescriptor::Enum("maternal_antibodies_type", Maternal_Antibodies_Type_DESC_TEXT, MDD_ENUM_ARGS(MaternalAntibodiesType)), "Enable_Maternal_Antibodies_Transmission" );
         initConfigTypeMap( "Maternal_Antibody_Protection",        &maternal_antibody_protection,      Maternal_Antibody_Protection_DESC_TEXT,            0.0f, 1.0f,       0.1f, "Maternal_Antibodies_Type", "SIMPLE_WANING,CONSTANT_INITIAL_IMMUNITY" );
         initConfigTypeMap( "Maternal_Antibody_Decay_Rate",        &maternal_antibody_decay_rate,      Maternal_Antibody_Decay_Rate_DESC_TEXT,            0.0f, FLT_MAX,    0.01f, "Maternal_Antibodies_Type", "SIMPLE_WANING,CONSTANT_INITIAL_IMMUNITY" );
 
         initConfig( "Innate_Immune_Variation_Type", innate_immune_variation_type, config, MetadataDescriptor::Enum("innate_immune_variation_type", Innate_Immune_Variation_Type_DESC_TEXT, MDD_ENUM_ARGS(InnateImmuneVariationType)) );
         initConfigTypeMap( "Pyrogenic_Threshold", &pyrogenic_threshold, Pyrogenic_Threshold_DESC_TEXT, 0.1f, 20000.0f, 1000.0f );
-        initConfigTypeMap( "Fever_IRBC_Kill_Rate", &fever_IRBC_killrate, Fever_IRBC_Kill_Rate_DESC_TEXT, 0.0, 1000.0, DEFAULT_FEVER_IRBC_KILL_RATE );
+        initConfigTypeMap( "Fever_IRBC_Kill_Rate",  &fever_IRBC_killrate, Fever_IRBC_Kill_Rate_DESC_TEXT, 0.0f, 1000.0f, DEFAULT_FEVER_IRBC_KILL_RATE );
 
         bool configured = JsonConfigurable::Configure( config );
 
@@ -323,10 +330,9 @@ namespace Kernel
 
     void SusceptibilityMalaria::Update(float dt)
     {
-        LOG_VALID("\n--------------------------------------------------\n\n");
         release_assert( params() );
 
-        age += dt;
+        age += dt; // age in days
         m_age_dependent_biting_risk = BitingRiskAgeFactor(age);
         recalculateBloodCapacity(age);
 
@@ -775,6 +781,39 @@ namespace Kernel
         }
     }
 
+    std::vector<MalariaAntibody>& SusceptibilityMalaria::GetAntibodiesForReporting( float currentTime, float dt, MalariaAntibodyType::Enum antibody_type)
+    {
+        static std::vector<MalariaAntibody> antibodies_for_reporting;
+        if(antibody_type == MalariaAntibodyType::MSP1)
+        {
+            antibodies_for_reporting = m_MSP_antibodies;
+        }
+        else if(antibody_type == MalariaAntibodyType::PfEMP1_major)
+        {
+            antibodies_for_reporting = m_PfEMP1_major_antibodies;
+        }
+        else
+        {
+            throw NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "Only implemented antibody reporting for MSP1 and PfEMP1 major so far." );
+        }
+
+        for(auto& antibody : antibodies_for_reporting)
+        {
+            antibody.IncreaseAntigenCount( 0, currentTime, dt );
+        }
+
+        // sort by variant for reporting
+        std::sort(
+            antibodies_for_reporting.begin(),
+            antibodies_for_reporting.end(),
+            []( const MalariaAntibody& a, const MalariaAntibody& b )
+            {
+                return a.GetAntibodyVariant() < b.GetAntibodyVariant();
+            }
+        );
+        return antibodies_for_reporting;
+    }
+
     MalariaAntibody* SusceptibilityMalaria::RegisterAntibody(MalariaAntibodyType::Enum type, int variant, float capacity)
     {
         std::vector<MalariaAntibody> *variant_vector;
@@ -1014,15 +1053,15 @@ namespace Kernel
 
                 for( int i = 0; i < obj->m_MSP_antibodies.size(); ++i )
                 {
-                    obj->m_MSP_antibodies[ i ].IncreaseAntigenCount( 0, current_time, dt );
+                    obj->m_MSP_antibodies[ i ].PrepareForSerialization( current_time, dt );
                 }
                 for( int i = 0; i < obj->m_PfEMP1_major_antibodies.size(); ++i )
                 {
-                    obj->m_PfEMP1_major_antibodies[ i ].IncreaseAntigenCount( 0, current_time, dt );
+                    obj->m_PfEMP1_major_antibodies[ i ].PrepareForSerialization( current_time, dt );
                 }
                 for( int i = 0; i < obj->m_PfEMP1_minor_antibodies.size(); ++i )
                 {
-                    obj->m_PfEMP1_minor_antibodies[ i ].IncreaseAntigenCount( 0, current_time, dt );
+                    obj->m_PfEMP1_minor_antibodies[ i ].PrepareForSerialization( current_time, dt );
                 }
             }
         }

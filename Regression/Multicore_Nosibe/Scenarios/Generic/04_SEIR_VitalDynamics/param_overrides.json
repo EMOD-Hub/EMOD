@@ -6,7 +6,6 @@
             "Demographics_Filenames": [
                 "Madagascar_Nosibe_2.5arcmin_demographics.json"
             ],
-            "Enable_Demographics_Birth": 1,
             "Enable_Initial_Prevalence": 1,
             "IMMUNITY": {
                 "Acquisition_Blocking_Immunity_Decay_Rate": 0.01,

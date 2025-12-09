@@ -146,6 +146,7 @@
     <ClInclude Include="VectorHabitatReport.h" />
     <ClInclude Include="ReportVectorMigration.h" />
     <ClInclude Include="ReportVectorStats.h" />
+    <ClInclude Include="ReportAntibodies.h" />
     <ClInclude Include="ReportVectorStatsMalariaGenetics.h" />
     <ClInclude Include="ReportDrugStatus.h" />
     <ClInclude Include="ReportFpgOutputForObservationalModel.h" />
@@ -185,6 +186,7 @@
     <ClCompile Include="VectorHabitatReport.cpp" />
     <ClCompile Include="ReportVectorMigration.cpp" />
     <ClCompile Include="ReportVectorStats.cpp" />
+    <ClCompile Include="ReportAntibodies.cpp" />
     <ClCompile Include="ReportVectorStatsMalariaGenetics.cpp" />
     <ClCompile Include="ReportDrugStatus.cpp" />
     <ClCompile Include="ReportFpgOutputForObservationalModel.cpp" />

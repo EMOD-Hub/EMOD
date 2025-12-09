@@ -38,7 +38,6 @@
         "Death_Rate_Dependence": "NONDISEASE_MORTALITY_BY_AGE_AND_GENDER",
         "Enable_Birth": 1,
         "Enable_Climate_Stochasticity": 0,
-        "Enable_Demographics_Birth": 1,
         "Enable_Demographics_Reporting": 0,
         "Enable_Immunity_Distribution": 0,
         "Enable_Immunity_Initialization_Distribution": 0,

@@ -24,6 +24,8 @@ namespace Kernel
         static float MSP1_antibody_growthrate;
         static float antibody_stimulation_c50;
         static float antibody_capacity_growthrate;
+        static float antibody_days_to_long_term_decay;
+        static float antibody_long_term_decay_days;
         static float minimum_adapted_response;
         static float non_specific_growth;
         static float antibody_csp_decay_days;
@@ -117,6 +119,8 @@ namespace Kernel
         virtual void remove_RBCs(int64_t infectedAsexual, int64_t infectedGametocytes, double RBC_destruction_multiplier) override;
 
         virtual void UpdateIRBC( int64_t irbcFromInfection, int64_t irbcFromInfectionWithHRP ) override;
+
+        virtual std::vector<MalariaAntibody>& GetAntibodiesForReporting( float currentTime, float dt, MalariaAntibodyType::Enum antibody_type ) override;
 
     protected:
 

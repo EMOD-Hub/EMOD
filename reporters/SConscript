@@ -45,6 +45,7 @@ vector_h = [
 
 malaria_cpp = [
     "MalariaImmunityReport.cpp",
+    "ReportAntibodies.cpp",
     "MalariaPatientJSONReport.cpp",
     "SqlReportMalaria.cpp",
     "SqlReportMalariaGenetics.cpp",
@@ -65,6 +66,7 @@ malaria_cpp = [
 ]
 malaria_h = [
     "MalariaImmunityReport.h",
+    "ReportAntibodies.h",
     "MalariaPatientJSONReport.h",
     "SqlReportMalaria.h",
     "SqlReportMalariaGenetics.h",
