@@ -68,9 +68,6 @@
     <ClCompile Include="NodeSetNodeList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NodeSetPolygon.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="InterventionName.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -136,7 +136,6 @@
     <ClCompile Include="NodeSetAll.cpp" />
     <ClCompile Include="NodeSetFactory.cpp" />
     <ClCompile Include="NodeSetNodeList.cpp" />
-    <ClCompile Include="NodeSetPolygon.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
