@@ -64,6 +64,8 @@ namespace Kernel
     float  SusceptibilityMalariaConfig::maternal_antibody_decay_rate      = 0.0f;
     float  SusceptibilityMalariaConfig::erythropoiesis_anemia_effect      = 0.0f;
     float  SusceptibilityMalariaConfig::pyrogenic_threshold               = 0.0f;
+    float  SusceptibilityMalariaConfig::pyrogenic_threshold_max           = 0.0f;
+    float  SusceptibilityMalariaConfig::pyrogenic_threshold_min           = 0.0f; 
     float  SusceptibilityMalariaConfig::fever_IRBC_killrate               = 0.0f;
     float  SusceptibilityMalariaConfig::PfHRP2_boost_rate                 = 0.0f;
     float  SusceptibilityMalariaConfig::PfHRP2_decay_rate                 = 0.0f;
@@ -128,9 +130,11 @@ namespace Kernel
         initConfigTypeMap( "Maternal_Antibody_Protection",        &maternal_antibody_protection,      Maternal_Antibody_Protection_DESC_TEXT,            0.0f, 1.0f,       0.1f, "Maternal_Antibodies_Type", "SIMPLE_WANING,CONSTANT_INITIAL_IMMUNITY" );
         initConfigTypeMap( "Maternal_Antibody_Decay_Rate",        &maternal_antibody_decay_rate,      Maternal_Antibody_Decay_Rate_DESC_TEXT,            0.0f, FLT_MAX,    0.01f, "Maternal_Antibodies_Type", "SIMPLE_WANING,CONSTANT_INITIAL_IMMUNITY" );
 
-        initConfig( "Innate_Immune_Variation_Type", innate_immune_variation_type, config, MetadataDescriptor::Enum("innate_immune_variation_type", Innate_Immune_Variation_Type_DESC_TEXT, MDD_ENUM_ARGS(InnateImmuneVariationType)) );
-        initConfigTypeMap( "Pyrogenic_Threshold", &pyrogenic_threshold, Pyrogenic_Threshold_DESC_TEXT, 0.1f, 20000.0f, 1000.0f );
-        initConfigTypeMap( "Fever_IRBC_Kill_Rate",  &fever_IRBC_killrate, Fever_IRBC_Kill_Rate_DESC_TEXT, 0.0f, 1000.0f, DEFAULT_FEVER_IRBC_KILL_RATE );
+        initConfig( "Innate_Immune_Variation_Type",      innate_immune_variation_type, config, MetadataDescriptor::Enum("innate_immune_variation_type", Innate_Immune_Variation_Type_DESC_TEXT, MDD_ENUM_ARGS(InnateImmuneVariationType)) );
+        initConfigTypeMap( "Pyrogenic_Threshold",        &pyrogenic_threshold, Pyrogenic_Threshold_DESC_TEXT,  0.1f, 100000.0f, 1000.0f );
+        initConfigTypeMap( "Fever_IRBC_Kill_Rate",       &fever_IRBC_killrate, Fever_IRBC_Kill_Rate_DESC_TEXT, 0.0f, 1000.0,     DEFAULT_FEVER_IRBC_KILL_RATE );
+        initConfigTypeMap( "Pyrogenic_Threshold_Max",    &pyrogenic_threshold_max, Pyrogenic_Threshold_Max_DESC_TEXT, 0.1f, 100000.0f, 50000.0f );
+        initConfigTypeMap( "Pyrogenic_Threshold_Min",    &pyrogenic_threshold_min, Pyrogenic_Threshold_Min_DESC_TEXT, 0.1f, 100000.0f, 0.1f );
 
         bool configured = JsonConfigurable::Configure( config );
 
@@ -141,6 +145,18 @@ namespace Kernel
             // This sets the decay rate towards memory level so that the decay from antibody levels of 1 to levels of 0.4 is consistent
             hyperimmune_decay_rate = -log((0.4f - memory_level) / (1.0f - memory_level)) / 120.0f;
             // this is part of the new intrahost model explained in the Intrahost paper by Eckhoff
+            if(pyrogenic_threshold_max < pyrogenic_threshold_min)
+            {
+                throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, "Pyrogenic_Threshold_Max must be greater than Pyrogenic_Threshold_Min." );
+            }
+            if (pyrogenic_threshold_max < pyrogenic_threshold)
+            {
+                throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, "Pyrogenic_Threshold_Max must be greater than or equal to Pyrogenic_Threshold." );
+            }
+            if (pyrogenic_threshold_min > pyrogenic_threshold)
+            {
+                throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, "Pyrogenic_Threshold_Min must be less than or equal to Pyrogenic_Threshold." );
+            }
         }
 
         return configured;
@@ -173,6 +189,7 @@ namespace Kernel
         m_ind_fever_kill_rate(0.0f),
         m_cytokine_stimulation(0.0f),
         m_parasite_density(0.0f),
+        m_variation_modifier(1.0f),
         m_PfHRP2_pg( 0 ),
         m_antibodies_to_n_variations( MalariaAntibodyType::N_MALARIA_ANTIBODY_TYPES ),
         m_max_fever_in_tstep(0.0f),
@@ -210,6 +227,7 @@ namespace Kernel
         m_ind_fever_kill_rate(0.0f),
         m_cytokine_stimulation(0.0f),
         m_parasite_density(0.0f),
+        m_variation_modifier(1.0f),
         m_PfHRP2_pg( 0 ),
         m_antibodies_to_n_variations(MalariaAntibodyType::N_MALARIA_ANTIBODY_TYPES),
         m_max_fever_in_tstep(0.0f),
@@ -229,41 +247,32 @@ namespace Kernel
     {
         SusceptibilityVector::Initialize(_age, immmod, riskmod);
 
-        // how many RBC's a person should have determined by age
-        if (_age > (20 * DAYSPERYEAR))
-        {
-            // This initializes the daily production of red blood cells for adults to maintain standard equilibrium RBC concentrations given RBC lifetime
-            // N.B. Heavily caveated, because not all adults are same size.  However, this keeps consistent equilibrium RBC densities, allowing study of anemia, etc...
-            m_RBCproduction = ADULT_RBC_PRODUCTION;// 2.0*10^11 (RBCs/day)*(120 days) = 2.4x10^13 RBCs ~= 5 liters * 5x10^6 RBCs/microliter
+        recalculateBloodCapacity( _age );
+        m_RBC  = m_RBCcapacity;
 
-            // This equation tracks the blood volume separately from the equilibrium number of RBCs, allowing for non-constant RBC concentration.
-            // m_inv_microliters_blood is 1/(microliters of blood in body)--this allows easy calculation of pathogen densities from pathogen numbers
-            m_inv_microliters_blood = float(1 / ( (0.225 * (7300/DAYSPERYEAR) + 0.5) * 1e6 )); // 5 liters
+        if(SusceptibilityMalariaConfig::innate_immune_variation_type ==
+            InnateImmuneVariationType::PYROGENIC_THRESHOLD_VS_AGE_INCREASING_AND_CYTOKINE_KILLING_INVERSE)
+        {
+            // for this variation type, we restrict m_variation_modifier to being uniformly distributed between 0 and 1
+            std::unique_ptr<IDistribution> distribution( DistributionFactory::CreateDistribution( DistributionFunction::UNIFORM_DISTRIBUTION ));
+            distribution->SetParameters( 0.0, 1.0, 0.0 );
+
+            m_variation_modifier = distribution->Calculate( parent->GetRng() );
         }
-        else
+        else if(SusceptibilityMalariaConfig::innate_immune_variation_type != InnateImmuneVariationType::NONE)
         {
-            // Initializes daily production of red blood cells for children to grow linearly from INFANT_RBC_PRODUCTION to ADULT_RBC_PRODUCTION by age 20
-            // Only approximate due to linear increase in blood volume from 0.5 to 5 liters from birth to age 20 years.  Non-linear growth model might be better...
-            m_RBCproduction = int64_t(INFANT_RBC_PRODUCTION + (_age * 0.000137) * (ADULT_RBC_PRODUCTION - INFANT_RBC_PRODUCTION)); //*.000137==/7300 (linear growth to age 20)
-            m_inv_microliters_blood = float(1 / ( (0.225 * (_age/DAYSPERYEAR) + 0.5 ) * 1e6)); // linear growth from 0.5 liters at birth to 5 liters at age 20
-        }
 
-        m_RBCcapacity = m_RBCproduction * AVERAGE_RBC_LIFESPAN;  // Health equilibrium of RBC is production*lifetime.  This is the total number of RBC per human
-        m_RBC         = m_RBCcapacity;
-
-        // Set up variable pyrogenic thresholds + fever killing rates
-        m_ind_pyrogenic_threshold = SusceptibilityMalariaConfig::pyrogenic_threshold;
-        m_ind_fever_kill_rate = SusceptibilityMalariaConfig::fever_IRBC_killrate;
-
-        float variation_modifier = 1.0;
-        if( (SusceptibilityMalariaConfig::innate_immune_variation_type == InnateImmuneVariationType::CYTOKINE_KILLING) ||
-            (SusceptibilityMalariaConfig::innate_immune_variation_type == InnateImmuneVariationType::PYROGENIC_THRESHOLD) )
-        {
-            // ------------------------------------------------------------------------------------
-            // --- NOTE:  This is not very performant, but it is nice that all of the code for this
-            // --- feature is located in spot.
-            // ------------------------------------------------------------------------------------
             const NodeDemographics& r_demographics = parent->GetEventContext()->GetNodeEventContext()->GetDemographics();
+            if(!r_demographics["IndividualAttributes"].Contains( "InnateImmuneDistributionFlag" ) ||
+               !r_demographics["IndividualAttributes"].Contains( "InnateImmuneDistribution1" ) ||
+               !r_demographics["IndividualAttributes"].Contains( "InnateImmuneDistribution2" ))
+            {
+                std::string msg = "InnateImmuneDistributionFlag, InnateImmuneDistribution1, or InnateImmuneDistribution1 ";
+                msg += "were not found in demographics in IndividualAttributes section.\n";
+                msg += "This is required when Innate_Immune_Variation_Type is set to anything but NONE.\n";
+                msg += "Hint: If you want to use this Innate_Immune_Variation_Type but without variation, set InnateImmuneDistributionFlag to 0 and InnateImmuneDistribution1 to 1.\n";
+                throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, msg.c_str() );
+            }
 
             DistributionFunction::Enum innate_immune_dist_type = DistributionFunction::Enum( r_demographics[ "IndividualAttributes" ][ "InnateImmuneDistributionFlag" ].AsInt() );
             float innate_immune_dist1 = float( r_demographics[ "IndividualAttributes" ][ "InnateImmuneDistribution1" ].AsDouble() );
@@ -272,45 +281,13 @@ namespace Kernel
             std::unique_ptr<IDistribution> distribution( DistributionFactory::CreateDistribution( innate_immune_dist_type ) );
             distribution->SetParameters( innate_immune_dist1, innate_immune_dist2, 0.0 );
 
-            variation_modifier = distribution->Calculate( parent->GetRng() );
+            m_variation_modifier = distribution->Calculate( parent->GetRng() );
         }
 
-        switch( SusceptibilityMalariaConfig::innate_immune_variation_type )
-        {
-            case InnateImmuneVariationType::NONE:
-                // no additional variation
-                break;
+        m_ind_pyrogenic_threshold = SusceptibilityMalariaConfig::pyrogenic_threshold; // set base values
+        m_ind_fever_kill_rate = SusceptibilityMalariaConfig::fever_IRBC_killrate;     // set base values
 
-            case InnateImmuneVariationType::PYROGENIC_THRESHOLD:
-                m_ind_pyrogenic_threshold *= variation_modifier;
-                break;
-
-            case InnateImmuneVariationType::CYTOKINE_KILLING:
-                m_ind_fever_kill_rate *= variation_modifier;
-                break;
-
-            case InnateImmuneVariationType::PYROGENIC_THRESHOLD_VS_AGE:
-                // Roucher et al., Changing Malaria Epidemiology and Diagnostic Criteria for Plasmodium falciparum Clinical Malaria, PLoS One, 2012; 7(9): e46188
-                // KM:10/15/2013 - TODO: Promote these function parameters to config variables: 
-                //                 age of max threshold, max threshold, min threshold, threshold at 0, exponential decay rate
-                if (_age < (2 * DAYSPERYEAR))
-                {
-                    m_ind_pyrogenic_threshold = 15000 + 500*_age/DAYSPERYEAR;
-                }
-                else
-                {
-                    m_ind_pyrogenic_threshold = 14500 * exp(-.09*(_age/DAYSPERYEAR - 2)) + 1500;
-                }
-                break;
-
-            default:
-                throw BadEnumInSwitchStatementException( __FILE__, __LINE__, __FUNCTION__,
-                                                         "innate_immune_variation_type", SusceptibilityMalariaConfig::innate_immune_variation_type,
-                                                         InnateImmuneVariationType::pairs::lookup_key( SusceptibilityMalariaConfig::innate_immune_variation_type ) );
-        }
-
-        LOG_DEBUG_F("Individual pyrogenic threshold = %0.2f\n", m_ind_pyrogenic_threshold);
-        LOG_DEBUG_F("Individual maximum fever killing rate = %0.2f\n", m_ind_fever_kill_rate);
+        SetPyrogenicThresholdAndFeverKillRate( _age );
 
         m_CSP_antibody = MalariaAntibody::CreateAntibody( MalariaAntibodyType::CSP, 0 );
     }
@@ -334,7 +311,28 @@ namespace Kernel
 
         age += dt; // age in days
         m_age_dependent_biting_risk = BitingRiskAgeFactor(age);
-        recalculateBloodCapacity(age);
+
+        if( age <= (20 * DAYSPERYEAR) ) // recalculate kids every day
+        {
+            recalculateBloodCapacity( age ); 
+        }
+        else if(age <= 20 * DAYSPERYEAR + dt) // recalculate once when they turn 20
+        {
+            // set adult blood capacity once when they turn 20, it remains constant after that, no need to update again
+            recalculateBloodCapacity( age ); 
+        }
+
+
+        // approximately every 3 months, within the first timestep once three months have passed
+        if(SusceptibilityMalariaConfig::innate_immune_variation_type == InnateImmuneVariationType::PYROGENIC_THRESHOLD_VS_AGE_CONCAVE ||
+           SusceptibilityMalariaConfig::innate_immune_variation_type == InnateImmuneVariationType::PYROGENIC_THRESHOLD_VS_AGE_INCREASING_AND_CYTOKINE_KILLING_INVERSE)
+        {
+            float every_3months = 91;
+            if(fmod( age, every_3months ) < dt)
+            {
+                SetPyrogenicThresholdAndFeverKillRate( age );
+            }
+        }
 
         // Red blood cell dynamics
         if (SusceptibilityMalariaConfig::erythropoiesis_anemia_effect > 0)
@@ -573,24 +571,88 @@ namespace Kernel
         // standard equilibrium RBC concentrations given RBC lifetime
         if ( _age > (20 * DAYSPERYEAR) )
         {
-            // Update adults every year.  TODO: this presumes DAYSPERYEAR is a multiple of dt
-            if ( int(_age) % DAYSPERYEAR == 0 )
-            {
-                // 2.0*10^11 (RBCs/day)*(120 days)=2.4x10^13 RBCs ~= 5 liters * 5x10^6 RBCs/microliter
-                m_RBCproduction         = ADULT_RBC_PRODUCTION;
-                m_inv_microliters_blood = float(1 / ( (0.225 * (7300/DAYSPERYEAR) + 0.5) * 1e6 )); 
-                m_RBCcapacity           = m_RBCproduction * AVERAGE_RBC_LIFESPAN; // Health equilibrium of RBC is production*lifetime
-            }
+            // This initializes the daily production of red blood cells for adults to maintain standard equilibrium RBC concentrations given RBC lifetime
+            // N.B. Heavily caveated, because not all adults are same size.  However, this keeps consistent equilibrium RBC densities, allowing study of anemia, etc...
+            m_RBCproduction         = ADULT_RBC_PRODUCTION; // 2.0*10^11 (RBCs/day)*(120 days) = 2.4x10^13 RBCs ~= 5 liters * 5x10^6 RBCs/microliter
+            // This equation tracks the blood volume separately from the equilibrium number of RBCs, allowing for non-constant RBC concentration.
+            // m_inv_microliters_blood is 1/(microliters of blood in body)--this allows easy calculation of pathogen densities from pathogen numbers
+            m_inv_microliters_blood = float(1 / ( (0.225 * (7300/DAYSPERYEAR) + 0.5) * 1e6 )); 
         }
         else
         {
-            // Update children every day.
+            // Update children
             // Sets daily production of red blood cells for children to set their equilibrium RBC concentrations and blood volume given an RBC lifetime
             // Only approximate due to linear increase in blood volume from 0.5 to 5 liters with age, a better growth model would be nonlinear
             m_RBCproduction         = int64_t(INFANT_RBC_PRODUCTION + (_age * .000137) * (ADULT_RBC_PRODUCTION - INFANT_RBC_PRODUCTION)); //*.000137==/(20*DAYSPERYEAR)
             m_inv_microliters_blood = float(1 / ( (0.225 * (_age/DAYSPERYEAR) + 0.5 ) * 1e6 )); 
-            m_RBCcapacity           = m_RBCproduction * AVERAGE_RBC_LIFESPAN; // Health equilibrium of RBC is production*lifetime
         }
+        m_RBCcapacity = m_RBCproduction * AVERAGE_RBC_LIFESPAN; // Health equilibrium of RBC is production*lifetime
+    }
+
+    void SusceptibilityMalaria::SetPyrogenicThresholdAndFeverKillRate( float _age )
+    {
+        // for initialization, assumes m_ind_pyrogenic_threshold and m_ind_fever_kill_rate are set outside this function to base values
+        switch(SusceptibilityMalariaConfig::innate_immune_variation_type)
+        {
+            case InnateImmuneVariationType::NONE:
+                // no variation, use set values
+                break;
+
+            case InnateImmuneVariationType::PYROGENIC_THRESHOLD:
+                m_ind_pyrogenic_threshold = m_variation_modifier * SusceptibilityMalariaConfig::pyrogenic_threshold;
+                break;
+
+            case InnateImmuneVariationType::CYTOKINE_KILLING:
+                m_ind_fever_kill_rate     = m_variation_modifier * SusceptibilityMalariaConfig::fever_IRBC_killrate;
+                break;
+
+            case InnateImmuneVariationType::PYROGENIC_THRESHOLD_VS_AGE_CONCAVE:
+                // Roucher et al., Changing Malaria Epidemiology and Diagnostic Criteria for Plasmodium falciparum Clinical Malaria, PLoS One, 2012; 7(9): e46188
+                m_ind_pyrogenic_threshold = m_variation_modifier * SusceptibilityMalariaConfig::pyrogenic_threshold; // reset to individual base value
+                if(_age < ( 2 * DAYSPERYEAR ))
+                {
+                    m_ind_pyrogenic_threshold = m_ind_pyrogenic_threshold + 0.035 * m_ind_pyrogenic_threshold * _age / DAYSPERYEAR;
+                }
+                else
+                {
+                    m_ind_pyrogenic_threshold = m_ind_pyrogenic_threshold * 0.965 * exp( -.09 * ( _age / DAYSPERYEAR - 2 ) ) + ( m_ind_pyrogenic_threshold * 0.1 );
+                }
+                break;
+
+            case InnateImmuneVariationType::PYROGENIC_THRESHOLD_VS_AGE_INCREASING_AND_CYTOKINE_KILLING_INVERSE:
+                // Rodriguez-Barraquer et al., Quantification of anti-parasite and anti-disease immunity to malaria as a function of age and exposure, eLife, 2018; 7:e35832
+
+                //----------------------------------------------------------------
+                // pyrogenic_threshold from config expected to be around 15,000
+                // pyrogenic_threshold_max around 50,000
+                // m_variation_modifier uniformly distributed between 0 and 1
+                // fever_IRBC_killrate from config expected to be around 1.4
+                //----------------------------------------------------------------
+                if(m_ind_pyrogenic_threshold < SusceptibilityMalariaConfig::pyrogenic_threshold_max)
+                {
+                    m_ind_pyrogenic_threshold = m_variation_modifier * SusceptibilityMalariaConfig::pyrogenic_threshold;
+                    m_ind_pyrogenic_threshold = m_ind_pyrogenic_threshold * pow( 10, ( 0.132 * _age / DAYSPERYEAR ) );
+                }
+               
+                m_ind_fever_kill_rate = ( 2 - m_variation_modifier ) * SusceptibilityMalariaConfig::fever_IRBC_killrate;
+                break;
+
+            default:
+                throw BadEnumInSwitchStatementException( __FILE__, __LINE__, __FUNCTION__,
+                                                         "Innate_Immune_Variation_Type", SusceptibilityMalariaConfig::innate_immune_variation_type,
+                                                         InnateImmuneVariationType::pairs::lookup_key( SusceptibilityMalariaConfig::innate_immune_variation_type ) );
+        }
+
+        // Enforce min/max limits
+        if(m_ind_pyrogenic_threshold < SusceptibilityMalariaConfig::pyrogenic_threshold_min)
+        {
+            m_ind_pyrogenic_threshold = SusceptibilityMalariaConfig::pyrogenic_threshold_min; //enforce minimum
+        }
+        else if(m_ind_pyrogenic_threshold > SusceptibilityMalariaConfig::pyrogenic_threshold_max)
+        {
+            m_ind_pyrogenic_threshold = SusceptibilityMalariaConfig::pyrogenic_threshold_max; //enforce maximum
+        }
+        LOG_DEBUG_F( "Individual %d: pyrogenic threshold = %0.2f, fever kill rate = %0.2f \n", parent->GetSuid().data, m_ind_pyrogenic_threshold, m_ind_fever_kill_rate );
     }
 
     void SusceptibilityMalaria::countAntibodyVariations()

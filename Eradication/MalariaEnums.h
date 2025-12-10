@@ -51,10 +51,11 @@ namespace Kernel
         ENUM_VALUE_SPEC(CONSTANT_INITIAL_IMMUNITY, 2))
 
     ENUM_DEFINE(InnateImmuneVariationType,
-        ENUM_VALUE_SPEC(NONE, 0)
-        ENUM_VALUE_SPEC(PYROGENIC_THRESHOLD, 1)
-        ENUM_VALUE_SPEC(CYTOKINE_KILLING, 2)
-        ENUM_VALUE_SPEC(PYROGENIC_THRESHOLD_VS_AGE, 3))
+        ENUM_VALUE_SPEC(NONE,                                                               0)
+        ENUM_VALUE_SPEC(PYROGENIC_THRESHOLD,                                                1)
+        ENUM_VALUE_SPEC(CYTOKINE_KILLING,                                                   2)
+        ENUM_VALUE_SPEC(PYROGENIC_THRESHOLD_VS_AGE_CONCAVE,                                 4)
+        ENUM_VALUE_SPEC(PYROGENIC_THRESHOLD_VS_AGE_INCREASING_AND_CYTOKINE_KILLING_INVERSE, 5))
 
     // CSP:    Circumsporozoite protein
     // MSP1:   Merozoite surface protein

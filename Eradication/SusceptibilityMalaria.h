@@ -57,6 +57,8 @@ namespace Kernel
         static float feverSevereInvWidth;
         static float erythropoiesis_anemia_effect;
         static float pyrogenic_threshold;
+        static float pyrogenic_threshold_max;
+        static float pyrogenic_threshold_min;
         static float fever_IRBC_killrate;
         static float PfHRP2_boost_rate; // Picograms/iRBC/day: 1.4e-13 grams per 48h / 2 (48h cycle to daily)
         static float PfHRP2_decay_rate; // Fraction Per Day - fraction removed after each day (based on 3.67 day half-life)
@@ -131,6 +133,7 @@ namespace Kernel
         void  updateImmunityPfEMP1Minor( float dt );
         void  updateImmunityPfEMP1Major( float dt );
         void  recalculateBloodCapacity( float _age );
+        void  SetPyrogenicThresholdAndFeverKillRate( float _age );
         void  countAntibodyVariations();
 
         // Clinical outcome calculations
@@ -175,6 +178,7 @@ namespace Kernel
         float m_cytokines;
         float m_ind_pyrogenic_threshold;
         float m_ind_fever_kill_rate;
+        float m_variation_modifier;
         float m_cytokine_stimulation;
         float m_parasite_density;
         float m_PfHRP2_pg; //picograms
