@@ -27,3 +27,38 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
+      - name: Download executable
+        uses: actions/download-artifact@v5
+        with:
+          name: Eradication
+          path: pypi_hiv/src/eradication_dir
+      - name: Download schema
+        uses: actions/download-artifact@v5
+        with:
+          name: schema.json
+          path: pypi_hiv/src/schema_dir
+      - name: Download version
+        uses: actions/download-artifact@v5
+        with:
+          name: version
+          path: pypi_hiv/src/version_dir
+      - name: Prep files
+        run: |
+          cd pypi_hiv
+          cd src
+          mv     version_dir/version           version
+          zip -j emod_hiv/Eradication.zip   eradication_dir/Eradication
+          zip -j emod_hiv/schema.zip        schema_dir/schema.json
+          rm -r  version_dir
+          rm -r  eradication_dir
+          rm -r  schema_dir
+      - name: Build PyPI distribution
+        run: |
+          python3 -m pip install build
+          cd pypi_hiv
+          python3 -m build
+      - name: Upload files to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          verbose: true
+          packages-dir: pypi_hiv/dist
