@@ -148,12 +148,13 @@ namespace Kernel
         // check that individual has any antibodies at all
         if(!is_infected)
         {
-            // if not infected, skip if we only want infected or if no antibodies present
+            // skip this person if we only want infected or if no antibodies present
+            // MSP1 antibodies are always generated first, so checking them is sufficient
             if(m_InfectedOnly || susceptibility_malaria->get_fraction_of_variants_with_antibodies( MalariaAntibodyType::MSP1 ) == 0.0f) return;
         }
 
         float current_time = p_nec->GetTime().time;
-        float dt = 1.0; // hm, maybe we shouldn't assume
+        float dt = 1.0; // malaria simulation dt=1
         uint32_t node_id = p_nec->GetExternalId();
         uint32_t ind_id = individual->GetSuid().data;
         const char* gender = ( individual->GetGender() == Gender::FEMALE ) ? "F" : "M";
@@ -192,9 +193,9 @@ namespace Kernel
             if(antibody_index < r_antibodies.size() && r_antibodies[antibody_index].GetAntibodyVariant() == i)
             {
                 if(m_IsCapacityData)
-                    GetOutputStream() << r_antibodies[0].GetAntibodyCapacity();
+                    GetOutputStream() << r_antibodies[antibody_index].GetAntibodyCapacity();
                 else
-                    GetOutputStream() << r_antibodies[0].GetAntibodyConcentration();
+                    GetOutputStream() << r_antibodies[antibody_index].GetAntibodyConcentration();
                 antibody_index++;
             }
         }
