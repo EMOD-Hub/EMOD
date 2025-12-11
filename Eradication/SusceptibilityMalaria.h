@@ -91,6 +91,7 @@ namespace Kernel
         virtual float   get_fever()                 const override;
         virtual float   get_fever_celsius()         const override;
         virtual float   get_fever_killing_rate()    const override;
+        virtual float   get_pyrogenic_threshold()   const override;
         virtual float   get_cytokines()             const override;
         virtual double  get_RBC_availability()      const override;
         virtual int64_t get_RBC_count()             const override;
@@ -120,7 +121,7 @@ namespace Kernel
 
         virtual void UpdateIRBC( int64_t irbcFromInfection, int64_t irbcFromInfectionWithHRP ) override;
 
-        virtual std::vector<MalariaAntibody>& GetAntibodiesForReporting( float currentTime, float dt, MalariaAntibodyType::Enum antibody_type ) override;
+        virtual void GetAntibodiesForReporting( std::vector<MalariaAntibody>& r_antibodies, float currentTime, float dt, MalariaAntibodyType::Enum antibody_type ) override;
 
     protected:
 

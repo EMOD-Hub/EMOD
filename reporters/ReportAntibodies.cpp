@@ -5,6 +5,9 @@
 #include "NodeEventContext.h"
 #include "IIndividualHuman.h"
 #include "IdmDateTime.h"
+#include "MalariaContexts.h"
+#include "SusceptibilityMalaria.h"
+#include "SimulationEventContext.h"
 
 
 SETUP_LOGGING( "ReportAntibodies" )
@@ -91,7 +94,9 @@ namespace Kernel
                << ",IndividualID"
                << ",Gender"
                << ",AgeYears"
-               << ",IsInfected";
+               << ",IsInfected"
+               << ",PyrogenicThreshold"
+               << ",FeverKillingRate";
 
         for( int i = 0; i < SusceptibilityMalariaConfig::falciparumMSPVars; ++i )
         {
@@ -153,6 +158,8 @@ namespace Kernel
         uint32_t ind_id = individual->GetSuid().data;
         const char* gender = ( individual->GetGender() == Gender::FEMALE ) ? "F" : "M";
         float age_years = individual->GetAge() / DAYSPERYEAR;
+        float pyrogenic_threshold = susceptibility_malaria->get_pyrogenic_threshold();
+        float fever_killing_rate  = susceptibility_malaria->get_fever_killing_rate();
 
         GetOutputStream()
             << current_time
@@ -160,36 +167,35 @@ namespace Kernel
             << "," << ind_id
             << "," << gender
             << "," << age_years
-            << "," << is_infected;
+            << "," << is_infected
+            << "," << pyrogenic_threshold
+            << "," << fever_killing_rate;
 
+        std::vector<MalariaAntibody> r_antibodies; // comes back sorted by variant value
         // log MSP1 antibodies
-        std::vector<MalariaAntibody>& r_antibodies = susceptibility_malaria->GetAntibodiesForReporting( current_time, dt, MalariaAntibodyType::MSP1 );
+        susceptibility_malaria->GetAntibodiesForReporting( r_antibodies, current_time, dt, MalariaAntibodyType::MSP1 );
         LogAntibodyData( r_antibodies, SusceptibilityMalariaConfig::falciparumMSPVars );
 
         // log PfEMP1_major antibodies
-        r_antibodies = susceptibility_malaria->GetAntibodiesForReporting( current_time, dt, MalariaAntibodyType::PfEMP1_major );
+        susceptibility_malaria->GetAntibodiesForReporting( r_antibodies, current_time, dt, MalariaAntibodyType::PfEMP1_major );
         LogAntibodyData( r_antibodies, SusceptibilityMalariaConfig::falciparumPfEMP1Vars );
 
         GetOutputStream() << endl;
     }
 
-    void ReportAntibodies::LogAntibodyData( std::vector<MalariaAntibody>& r_antibodies, int num_variants )
+    void ReportAntibodies::LogAntibodyData( const std::vector<MalariaAntibody>& r_antibodies, int num_variants )
     {
+        int antibody_index = 0; // works because r_antibodies is sorted by variant value
         for(int i = 0; i < num_variants; ++i) 
         {
-            if(!r_antibodies.empty() && r_antibodies[0].GetAntibodyVariant() == i)
+            GetOutputStream() << ",";
+            if(antibody_index < r_antibodies.size() && r_antibodies[antibody_index].GetAntibodyVariant() == i)
             {
                 if(m_IsCapacityData)
-                    GetOutputStream() << "," << r_antibodies[0].GetAntibodyCapacity();
+                    GetOutputStream() << r_antibodies[0].GetAntibodyCapacity();
                 else
-                    GetOutputStream() << "," << r_antibodies[0].GetAntibodyConcentration();
-                // remove matched antibody to speed up next search
-                // we can do this because r_antibodies is sorted by variant
-                r_antibodies.erase( r_antibodies.begin() );
-            }
-            else // antibody not found for this variant
-            {
-                GetOutputStream() << ",";
+                    GetOutputStream() << r_antibodies[0].GetAntibodyConcentration();
+                antibody_index++;
             }
         }
     }

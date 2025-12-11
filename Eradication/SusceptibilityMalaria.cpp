@@ -781,37 +781,35 @@ namespace Kernel
         }
     }
 
-    std::vector<MalariaAntibody>& SusceptibilityMalaria::GetAntibodiesForReporting( float currentTime, float dt, MalariaAntibodyType::Enum antibody_type)
+    void SusceptibilityMalaria::GetAntibodiesForReporting( std::vector<MalariaAntibody>& r_antibodies, float currentTime, float dt, MalariaAntibodyType::Enum antibody_type)
     {
-        static std::vector<MalariaAntibody> antibodies_for_reporting;
         if(antibody_type == MalariaAntibodyType::MSP1)
         {
-            antibodies_for_reporting = m_MSP_antibodies;
+            r_antibodies = m_MSP_antibodies;
         }
         else if(antibody_type == MalariaAntibodyType::PfEMP1_major)
         {
-            antibodies_for_reporting = m_PfEMP1_major_antibodies;
+            r_antibodies = m_PfEMP1_major_antibodies;
         }
         else
         {
             throw NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "Only implemented antibody reporting for MSP1 and PfEMP1 major so far." );
         }
 
-        for(auto& antibody : antibodies_for_reporting)
+        for(auto& antibody : r_antibodies)
         {
             antibody.IncreaseAntigenCount( 0, currentTime, dt );
         }
 
         // sort by variant for reporting
         std::sort(
-            antibodies_for_reporting.begin(),
-            antibodies_for_reporting.end(),
+            r_antibodies.begin(),
+            r_antibodies.end(),
             []( const MalariaAntibody& a, const MalariaAntibody& b )
             {
                 return a.GetAntibodyVariant() < b.GetAntibodyVariant();
             }
         );
-        return antibodies_for_reporting;
     }
 
     MalariaAntibody* SusceptibilityMalaria::RegisterAntibody(MalariaAntibodyType::Enum type, int variant, float capacity)
@@ -942,6 +940,7 @@ namespace Kernel
     // This factor is not a necessary free parameter in the dynamics, but is just added to keep things simple
     float SusceptibilityMalaria::get_fever()                 const { return FEVER_DEGREES_CELSIUS_PER_UNIT_CYTOKINES * m_cytokines; }
     float SusceptibilityMalaria::get_fever_celsius()         const { return 37.0f + get_fever(); }
+    float SusceptibilityMalaria::get_pyrogenic_threshold()   const { return m_ind_pyrogenic_threshold; }
     float SusceptibilityMalaria::get_cytokines()             const { return m_cytokines; }
     float SusceptibilityMalaria::get_parasite_density()      const { return m_parasite_density; }
     float SusceptibilityMalaria::get_fever_killing_rate()    const { return m_ind_fever_kill_rate; }

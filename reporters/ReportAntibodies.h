@@ -3,9 +3,7 @@
 #include "BaseTextReport.h"
 #include "ReportFactory.h"
 #include "ReportFilter.h"
-#include "MalariaContexts.h"
-#include "SusceptibilityMalaria.h"
-#include "SimulationEventContext.h"
+#include "MalariaAntibody.h"
 
 namespace Kernel
 {
@@ -36,7 +34,7 @@ namespace Kernel
 
     protected:
         ReportAntibodies( const std::string& rReportName );
-        void LogAntibodyData( std::vector<MalariaAntibody>& r_antibodies, int num_variants );
+        void LogAntibodyData( const std::vector<MalariaAntibody>& r_antibodies, int num_variants );
         
         ReportFilter m_ReportFilter;
         float m_ReportingInterval;

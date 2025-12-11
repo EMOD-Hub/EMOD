@@ -55,6 +55,7 @@ namespace Kernel
         virtual float   get_fever()                 const = 0;
         virtual float   get_fever_celsius()         const = 0;
         virtual float   get_fever_killing_rate()    const = 0;
+        virtual float   get_pyrogenic_threshold()   const = 0;
         virtual float   get_cytokines()             const = 0;
         virtual double  get_RBC_availability()      const = 0;
         virtual int64_t get_RBC_count()             const = 0;
@@ -78,7 +79,7 @@ namespace Kernel
         virtual void init_maternal_antibodies(float mother_factor) = 0;
         virtual void remove_RBCs( int64_t infectedAsexual, int64_t infectedGametocytes, double RBC_destruction_multiplier ) = 0;
         virtual void UpdateIRBC( int64_t irbcFromInfection, int64_t irbcFromInfectionWithHRP ) = 0;
-        virtual std::vector<MalariaAntibody>& GetAntibodiesForReporting( float currentTime, float dt, MalariaAntibodyType::Enum antibody_type ) = 0;
+        virtual void GetAntibodiesForReporting( std::vector<MalariaAntibody>& r_antibodies, float currentTime, float dt, MalariaAntibodyType::Enum antibody_type ) = 0;
     };
 
     struct IMalariaHumanContext : public ISupports
