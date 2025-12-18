@@ -3,9 +3,9 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "emod-common"
+name = "emod-hiv"
 dynamic = ["version"]
-description = "PyPI distribution of EMOD for testing features common to all sim types"
+description = "PyPI distribution of EMOD for the HIV sim type"
 license = "MIT"
 authors = [
 ]

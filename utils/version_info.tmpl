@@ -121,10 +121,17 @@
 //                      Fixed issue where newborns had higher rate of HIV at birth than they should have. The infection flag was not 
 //                          being reset for each new newborn and once a newborn was flagged to be infected, all the following newborns
 //                          in that time step were flagged as infected as well.
+// 2.30 - 12/16/2025 -  Campaign Nodeset_Config option of NodeSetPolygon was removed from the codebase.
+//                      Cleaned up and updated versioning.
+//                      Schema improvements.
+//                      Malaria: Added long term decay for malaria antibodies. 
+//                               Added ReportAntibodies report.
+//                               New serialization version 8 due to addition of long term decay for malaria antibodies.
+//
 
 
 #define    MAJOR_VERSION    2
-#define    MINOR_VERSION    29
+#define    MINOR_VERSION    30
 
 #ifndef REVISION_NUMBER
 #define    REVISION_NUMBER  $REVISION$
@@ -153,7 +160,7 @@ static const char* BUILD_DATE = __DATE__ " " __TIME__;
 //5.0.0 - 07/09/2023 - GH-4792 - Added m_OocystDuration to ParasiteCohort
 //6.0.0 - 10/17/2024 - Vector_Migration_Improvements - New VectorCohortMale class
 //7.0.0 - 06/09/2025 - https://github.com/EMOD-Hub/EMOD/issues/89 - new data for ReportFPGNewInfections
-//8.0.0 - 11/05/2025 - new serialized parameters to support Antibody decay after inactivity
+//8.0.0 - 11/05/2025 - New serialized parameters to support Antibody decay after inactivity
 
 #define SER_POP_MAJOR_VERSION   8
 #define SER_POP_MINOR_VERSION   0
