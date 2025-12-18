@@ -96,54 +96,59 @@ namespace Kernel
     // Let's use the MSP version of antibody growth in the base class ...
     void MalariaAntibody::UpdateAntibodyCapacity( float dt, float inv_uL_blood )
     {
+        float min_stimulation = SusceptibilityMalariaConfig::antibody_stimulation_c50 * SusceptibilityMalariaConfig::minimum_adapted_response;
         if( m_antibody_type == MalariaAntibodyType::PfEMP1_minor )
         {
             // The minor PfEMP1 version is similar but not exactly the same...
-            float min_stimulation = SusceptibilityMalariaConfig::antibody_stimulation_c50 * SusceptibilityMalariaConfig::minimum_adapted_response;
             float growth_rate     = SusceptibilityMalariaConfig::antibody_capacity_growthrate * SusceptibilityMalariaConfig::non_specific_growth;
-            float threshold       = SusceptibilityMalariaConfig::antibody_stimulation_c50;
-
-            if (m_antibody_capacity <= B_CELL_PROLIFERATION_THRESHOLD)
-            {
-                m_antibody_capacity += growth_rate * dt * (1.0f - m_antibody_capacity) * float(Sigmoid::basic_sigmoid(threshold, float(m_antigen_count) * inv_uL_blood + min_stimulation));
-            }
-            else
-            {
-                //rapid B cell proliferation above a threshold given stimulation
-                m_antibody_capacity += (1.0f - m_antibody_capacity) * B_CELL_PROLIFERATION_CONSTANT * dt;
-            }
+            UpdateAntibodyCapacityFunction( growth_rate, min_stimulation, dt, inv_uL_blood );
         }
         else if( m_antibody_type == MalariaAntibodyType::PfEMP1_major )
         {
             // The major PfEMP1 version is slightly different again...
-            float min_stimulation = SusceptibilityMalariaConfig::antibody_stimulation_c50 * SusceptibilityMalariaConfig::minimum_adapted_response;
             float growth_rate     = SusceptibilityMalariaConfig::antibody_capacity_growthrate;
-            float threshold       = SusceptibilityMalariaConfig::antibody_stimulation_c50;
-
-            if (m_antibody_capacity <= B_CELL_PROLIFERATION_THRESHOLD)
-            {
-                //ability and number of B-cells to produce antibodies, with saturation
-                m_antibody_capacity += growth_rate * dt * (1.0f - m_antibody_capacity) * float(Sigmoid::basic_sigmoid(threshold, float(m_antigen_count) * inv_uL_blood + min_stimulation));
-            }
-            else
-            {
-                //rapid B cell proliferation above a threshold given stimulation
-                m_antibody_capacity += (1.0f - m_antibody_capacity) * B_CELL_PROLIFERATION_CONSTANT * dt;
-            }
+            UpdateAntibodyCapacityFunction( growth_rate, min_stimulation, dt, inv_uL_blood );
         }
         else //MSP1
         {
             float growth_rate = SusceptibilityMalariaConfig::MSP1_antibody_growthrate;
-            float threshold   = SusceptibilityMalariaConfig::antibody_stimulation_c50;
-
-            m_antibody_capacity += growth_rate  * (1.0f - m_antibody_capacity) * float(Sigmoid::basic_sigmoid( threshold, float(m_antigen_count) * inv_uL_blood));
-
-            // rapid B cell proliferation above a threshold given stimulation
-            if (m_antibody_capacity > B_CELL_PROLIFERATION_THRESHOLD)
+            if(SusceptibilityMalariaConfig::msp1_growth_aligned)
             {
-                m_antibody_capacity += ( 1.0f - m_antibody_capacity ) * B_CELL_PROLIFERATION_CONSTANT * dt;
+                UpdateAntibodyCapacityFunction( growth_rate, 0, dt, inv_uL_blood ); //MSP1 has no minimum stimulation
+            }
+            else
+            {
+                float threshold = SusceptibilityMalariaConfig::antibody_stimulation_c50;
+
+                m_antibody_capacity += growth_rate * ( 1.0f - m_antibody_capacity ) * float( Sigmoid::basic_sigmoid( threshold, float( m_antigen_count ) * inv_uL_blood ) );
+
+                // rapid B cell proliferation above a threshold given stimulation
+                if(m_antibody_capacity > B_CELL_PROLIFERATION_THRESHOLD)
+                {
+                    m_antibody_capacity += ( 1.0f - m_antibody_capacity ) * B_CELL_PROLIFERATION_CONSTANT * dt;
+                }
+                if(m_antibody_capacity > 1.0)
+                {
+                    m_antibody_capacity = 1.0;
+                }
             }
         }
+    }
+
+    void MalariaAntibody::UpdateAntibodyCapacityFunction(float growth_rate, float min_stimulation, float dt, float inv_uL_blood )
+    {
+        float threshold = SusceptibilityMalariaConfig::antibody_stimulation_c50;
+        if(m_antibody_capacity <= B_CELL_PROLIFERATION_THRESHOLD)
+        {
+            m_antibody_capacity += growth_rate * dt * ( 1.0f - m_antibody_capacity ) 
+                                   * float( Sigmoid::basic_sigmoid( threshold, float( m_antigen_count ) * inv_uL_blood + min_stimulation ) );
+        }
+        else
+        {
+            //rapid B cell proliferation above a threshold given stimulation
+            m_antibody_capacity += ( 1.0f - m_antibody_capacity ) * B_CELL_PROLIFERATION_CONSTANT * dt;
+        }
+
         if(m_antibody_capacity > 1.0)
         {
             m_antibody_capacity = 1.0;

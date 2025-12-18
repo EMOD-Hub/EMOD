@@ -29,6 +29,7 @@ namespace Kernel
         static float minimum_adapted_response;
         static float non_specific_growth;
         static float antibody_csp_decay_days;
+        static bool  msp1_growth_aligned;
 
         // antigen population
         static int falciparumMSPVars;

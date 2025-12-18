@@ -280,6 +280,8 @@
 #define Post_Infection_Mortality_Multiplier_DESC_TEXT "Multiplicative reduction in probability of dying from infection after getting re-infected."
 #define Post_Infection_Transmission_Multiplier_DESC_TEXT "Multiplicative reduction in probability of transmitting infection after getting re-infected."
 #define Pyrogenic_Threshold_DESC_TEXT "Level of bloodstream infection, measured in IRBC per microliter, at which stimulation of the innate inflammatory immune response is half its maximum value."
+#define Pyrogenic_Threshold_Max_DESC_TEXT "Value at which individual pyrogenic threshold will be capped from above. Used when Innate_Immune_Variation_Type affects individual pyrogenic threshold calculation."
+#define Pyrogenic_Threshold_Min_DESC_TEXT "Value at which individual pyrogenic threshold will be capped from below. Used when Innate_Immune_Variation_Type affects individual pyrogenic threshold calculation."
 #define Rainfall_Filename_DESC_TEXT "Path of input file defining rainfall data."
 #define Rainfall_Scale_Factor_DESC_TEXT "The scale factor used in multiplying rainfall value(s)."
 #define Random_Number_Generator_Policy_DESC_TEXT "The policy that determines if random numbers are generated for objects in a simulation on a per-core or per-node basis."
@@ -595,3 +597,5 @@
 
 #define Antibody_Days_To_Long_Term_Decay_DESC_TEXT "The number of days since the antibody (MSP & EMP1) was last active to start the long term decay of the concentration."
 #define Antibody_Long_Term_Decay_Days_DESC_TEXT "The exponential decay time for an antibody (MSP & EMP1) concentration (in days) after the time since the antibody was last active exceeds Antibody_Days_To_Long_Term_Decay."
+
+#define MSP1_Aligned_DESC_TEXT "If true(1), the formula for calculating the MSP1 antibody capacity growth is aligned with the formula for calculating the PfEMP1 antibody capacity growth. If false(0), the original formula for calculating MSP1 antibody capacity growth is used."

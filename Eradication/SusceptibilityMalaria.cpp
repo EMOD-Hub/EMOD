@@ -31,6 +31,7 @@ SETUP_LOGGING( "SusceptibilityMalaria" )
 namespace Kernel
 {
     bool   SusceptibilityMalariaConfig::enable_maternal_antibodies_transmission  = false;
+    bool   SusceptibilityMalariaConfig::msp1_growth_aligned                      = false;
     InnateImmuneVariationType::Enum SusceptibilityMalariaConfig::innate_immune_variation_type = InnateImmuneVariationType::NONE;
     float  SusceptibilityMalariaConfig::base_gametocyte_mosquito_survival = 1.0f;
     float  SusceptibilityMalariaConfig::cytokine_gametocyte_inactivation  = 1.0f;
@@ -64,8 +65,8 @@ namespace Kernel
     float  SusceptibilityMalariaConfig::maternal_antibody_decay_rate      = 0.0f;
     float  SusceptibilityMalariaConfig::erythropoiesis_anemia_effect      = 0.0f;
     float  SusceptibilityMalariaConfig::pyrogenic_threshold               = 0.0f;
-    float  SusceptibilityMalariaConfig::pyrogenic_threshold_max           = 0.0f;
-    float  SusceptibilityMalariaConfig::pyrogenic_threshold_min           = 0.0f; 
+    float  SusceptibilityMalariaConfig::pyrogenic_threshold_max           = 100000.0f;
+    float  SusceptibilityMalariaConfig::pyrogenic_threshold_min           = 0.1f; 
     float  SusceptibilityMalariaConfig::fever_IRBC_killrate               = 0.0f;
     float  SusceptibilityMalariaConfig::PfHRP2_boost_rate                 = 0.0f;
     float  SusceptibilityMalariaConfig::PfHRP2_decay_rate                 = 0.0f;
@@ -133,8 +134,13 @@ namespace Kernel
         initConfig( "Innate_Immune_Variation_Type",      innate_immune_variation_type, config, MetadataDescriptor::Enum("innate_immune_variation_type", Innate_Immune_Variation_Type_DESC_TEXT, MDD_ENUM_ARGS(InnateImmuneVariationType)) );
         initConfigTypeMap( "Pyrogenic_Threshold",        &pyrogenic_threshold, Pyrogenic_Threshold_DESC_TEXT,  0.1f, 100000.0f, 1000.0f );
         initConfigTypeMap( "Fever_IRBC_Kill_Rate",       &fever_IRBC_killrate, Fever_IRBC_Kill_Rate_DESC_TEXT, 0.0f, 1000.0,     DEFAULT_FEVER_IRBC_KILL_RATE );
-        initConfigTypeMap( "Pyrogenic_Threshold_Max",    &pyrogenic_threshold_max, Pyrogenic_Threshold_Max_DESC_TEXT, 0.1f, 100000.0f, 50000.0f );
-        initConfigTypeMap( "Pyrogenic_Threshold_Min",    &pyrogenic_threshold_min, Pyrogenic_Threshold_Min_DESC_TEXT, 0.1f, 100000.0f, 0.1f );
+        initConfigTypeMap( "Pyrogenic_Threshold_Max",    &pyrogenic_threshold_max, Pyrogenic_Threshold_Max_DESC_TEXT, 0.1f, 100000.0f, 100000.0f, "Innate_Immune_Variation_Type", "PYROGENIC_THRESHOLD,PYROGENIC_THRESHOLD_VS_AGE_CONCAVE,PYROGENIC_THRESHOLD_VS_AGE_INCREASING_AND_CYTOKINE_KILLING_INVERSE");
+        initConfigTypeMap( "Pyrogenic_Threshold_Min",    &pyrogenic_threshold_min, Pyrogenic_Threshold_Min_DESC_TEXT, 0.1f, 100000.0f,      0.1f, "Innate_Immune_Variation_Type", "PYROGENIC_THRESHOLD,PYROGENIC_THRESHOLD_VS_AGE_CONCAVE,PYROGENIC_THRESHOLD_VS_AGE_INCREASING_AND_CYTOKINE_KILLING_INVERSE" );
+
+        if(JsonConfigurable::_dryrun || config->Exist( "MSP1_Growth_Aligned" ))
+        {
+            initConfigTypeMap( "MSP1_Growth_Aligned", &msp1_growth_aligned, MSP1_Aligned_DESC_TEXT, false, "Simulation_Type", "MALARIA_SIM" );
+        }
 
         bool configured = JsonConfigurable::Configure( config );
 
@@ -145,17 +151,10 @@ namespace Kernel
             // This sets the decay rate towards memory level so that the decay from antibody levels of 1 to levels of 0.4 is consistent
             hyperimmune_decay_rate = -log((0.4f - memory_level) / (1.0f - memory_level)) / 120.0f;
             // this is part of the new intrahost model explained in the Intrahost paper by Eckhoff
+
             if(pyrogenic_threshold_max < pyrogenic_threshold_min)
             {
                 throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, "Pyrogenic_Threshold_Max must be greater than Pyrogenic_Threshold_Min." );
-            }
-            if (pyrogenic_threshold_max < pyrogenic_threshold)
-            {
-                throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, "Pyrogenic_Threshold_Max must be greater than or equal to Pyrogenic_Threshold." );
-            }
-            if (pyrogenic_threshold_min > pyrogenic_threshold)
-            {
-                throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, "Pyrogenic_Threshold_Min must be less than or equal to Pyrogenic_Threshold." );
             }
         }
 
