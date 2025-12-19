@@ -31,7 +31,7 @@ jobs:
             scons --Release --jobs=4 ${{ env.scons_option }}
             strip build/x64/Release/Eradication/Eradication
             ./build/x64/Release/Eradication/Eradication --get-schema --schema-path schema.json
-            grep DTK_Version schema.json | sed 's/[^0-9.]//g' | sed 's/$/.dev1/' > version
+            grep DTK_Version schema.json | sed 's/[^0-9.]//g' > version
       - name: Archive binary
         uses: actions/upload-artifact@v4
         with:
