@@ -110,6 +110,8 @@
         { "path": "Malaria/112_Malaria_PurgeExisting_Updates" },
         { "path": "Malaria/113_Malaria_AntibodyLongTermDecay" },
         { "path": "Malaria/114_Malaria_Serialization_AntibodyLongTermDecay" },
+        { "path": "Malaria/115_Malaria_New_Pyrogenic_Threshold" },
+        { "path": "Malaria/116_Malaria_MSP1_Antibody_Growth_Aligned" },
         { "path": "Multicore_Nosibe/23_Malaria_Intervention_RTSSVaccine" },
         { "path": "Malaria/fpg_vs_base/1_Mort-1" },
         { "path": "Malaria/fpg_vs_base/2_Mort-2" },

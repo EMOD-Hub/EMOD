@@ -1,0 +1,32 @@
+{
+    "Default_Config_Path": "../../defaults/malaria_default_config.json",
+    "CLIMATE": {
+        "Enable_Climate_Stochasticity": 0,
+        "Climate_Model": "CLIMATE_CONSTANT"
+    },
+    "DEMOGRAPHICS": {
+        "Enable_Birth": 0,
+        "Enable_Natural_Mortality": 0,
+        "Demographics_Filenames": [
+            "demographics.json"
+        ],
+        "Enable_Initial_Prevalence": 0
+    },
+    "PRIMARY": {
+        "Config_Name": "116_Malaria_MSP1_Antibody_Growth_Aligned",
+        "Custom_Reports_Filename": "custom_reports.json",
+        "Geography": "Namawala",
+        "Run_Number": 1,
+        "Simulation_Duration": 50,
+        "Enable_Demographics_Reporting": 0,
+        "Inset_Chart_Reporting_Include_30Day_Avg_Infection_Duration": 1,
+        "Age_Dependent_Biting_Risk_Type": "SURFACE_AREA_DEPENDENT",
+        "Age_Initialization_Distribution_Type": "DISTRIBUTION_SIMPLE",
+        "Pyrogenic_Threshold": 15000.0,
+        "MSP1_Growth_Aligned": 1,
+        "Max_MSP1_Antibody_Growthrate": 0.45,
+        "Falciparum_MSP_Variants": 5,
+        "Falciparum_PfEMP1_Variants": 10,
+        "Vector_Species_Params":[]
+    }
+}

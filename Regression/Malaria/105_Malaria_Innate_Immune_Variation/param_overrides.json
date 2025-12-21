@@ -4,6 +4,8 @@
     "Config_Name": "105_Malaria_Innate_Immune_Variation",
     ".Innate_Immune_Variation_Type": "NONE",
     "Innate_Immune_Variation_Type": "PYROGENIC_THRESHOLD",
+    "Pyrogenic_Threshold_Min":100,
+    "Pyrogenic_Threshold_Max":50000,
     "Geography": "Namawala",
     "Run_Number": 1,
     "Simulation_Duration": 730,

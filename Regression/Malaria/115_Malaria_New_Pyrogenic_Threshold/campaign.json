@@ -1,0 +1,32 @@
+{
+    "Use_Defaults": 1,
+    "Events": [
+        {
+            "class": "CampaignEvent",
+            "Start_Day": 1,
+            "Nodeset_Config": {
+                "class": "NodeSetNodeList",
+                "Node_List": [
+                    1
+                ]
+            },
+            "Event_Coordinator_Config": {
+                "class": "StandardInterventionDistributionEventCoordinator",
+                "Target_Demographic": "Everyone",
+                "Individual_Selection_Type": "TARGET_NUM_INDIVIDUALS",
+                "Target_Num_Individuals": 20,
+                "Timesteps_Between_Repetitions": 1000,
+                "Number_Repetitions": 10,
+                "Property_Restrictions_Within_Node": [],
+                "Intervention_Config": {
+                    "class": "MultiInterventionDistributor",
+                    "Intervention_List": [
+                        {
+                            "class": "OutbreakIndividual"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
