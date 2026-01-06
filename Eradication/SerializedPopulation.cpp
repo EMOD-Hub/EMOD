@@ -17,10 +17,12 @@
 #include "Node.h"
 #include <snappy.h>
 #include "Sugar.h"  // EnvPtr
+#include "NodeEventContext.h"
+#include "Memory.h"
+#include "SerializationParameters.h"
 
 // Version info for created file
 #include "ProgVersion.h"
-
 
 /********************************************************************************************************
 Header versions
@@ -69,42 +71,256 @@ Header versions
             "chunkcount": #,
             "chunksizes": [ #, #, #, ..., # ]
         }
-
+    
+    Version 6
+    Changed layout so nodes and humans are separate.
+    - Human lists have a maximum of 2000 (Serialization_Max_Humans_Per_Collection).
+    - Each compression chunk has its own compression type.
+    - Header has a fixed size based on the number of nodes and human groups.
+    - This fixed size means that the size values have to be placed in strings.
+    - Using HEX so that the number of characters in the header is constant
+    so that we can overwrite it once we get all of the info.
+    - Compression string is always three characters.
+    schema:
+        {
+            "version": 6,
+            "author": "IDM",
+            "tool": "DTK",
+            "date": "Day Mon day HH:MM:SS year",
+            "emod_info": {},
+            "sim_compression": "LZ4",
+            "sim_chunk_size": "FFFFFFFF",
+            "node_compressions": [ "NON", "LZ4", "SNA", ..., "SNA" ]
+            "node_suids": [ "00000001", "00000002" ],
+            "node_chunk_sizes": [ "FFFFFFFF", "FFFFFFFF", "FFFFFFFF", ..., "FFFFFFFF" ],
+            "human_compressions": [      "NON",      "LZ4",      "SNA", ...,      "SNA" ]
+            "human_node_suids":   [ "00000001", "00000002", "00000002", ..., "00000002" ],
+            "human_num_humans":   [ "000000FF", "00000FFF", "00000FFF", ..., "0000000A" ],
+            "human_chunk_sizes":  [ "FFFFFFFF", "FFFFFFFF", "FFFFFFFF", ..., "FFFFFFFF" ]
+        }
+        NOTE: I took an FPG simulation of JoshS where it created one node with 10K people.
+        In version 5 (all humans in node chunk    ), Peak Working Set reached 17,331-MB.
+        In version 6 (humans in max groups of 1000), Peak Working Set reached  5,417-MB.
 */
 
-
+// Each type must be the same number of characters so that we can replace them
+// but use the exact same number of chacters in the JSON.
+static std::string COMPRESSION_STR_NONE   = "NON";
+static std::string COMPRESSION_STR_LZ4    = "LZ4";
+static std::string COMPRESSION_STR_SNAPPY = "SNA";
 
 SETUP_LOGGING( "SerializedPopulation" )
 
-namespace SerializedState {
+#define FILE_HEADER_VERSION (6)
+
+namespace SerializedState
+{
+    // ------------------------------------------------------------------------
+    // --- Helper methods for Header
+    // ------------------------------------------------------------------------
+
+    std::string Uint64ToHexString( uint64_t value )
+    {
+        std::stringstream ss;
+        ss << std::hex << std::setfill( '0' ) << std::setw( 16 ) << value;
+        return ss.str();
+    }
+
+    uint64_t HexStringToUint64( const std::string& rHexString )
+    {
+        uint64_t num = 0;
+        sscanf_s( rHexString.c_str(), "%llx", &num );
+        return num;
+    }
+
+    void ValidateCompressionString( const char* pFor, size_t index, const std::string& compression_str )
+    {
+        if( (compression_str != COMPRESSION_STR_NONE) &&
+            (compression_str != COMPRESSION_STR_LZ4) &&
+            (compression_str != COMPRESSION_STR_SNAPPY) )
+        {
+            std::stringstream ss;
+            ss << "INVALID COMPRESSION TYPE: The header's '" << pFor << "_compressions[" << index << "]' = '" << compression_str << "'\n";
+            ss << "The value must be one of: " << COMPRESSION_STR_NONE << ", " << COMPRESSION_STR_LZ4 << ", or " << COMPRESSION_STR_SNAPPY;
+            throw SerializationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
+
+        }
+    }
+
+    json::Array ConvertStringArrayToJson( const std::vector<std::string>& rStringArray )
+    {
+        json::Array json_array;
+        for( size_t i = 0; i < rStringArray.size(); ++i )
+        {
+            json_array.Insert( json::String( rStringArray[ i ] ) );
+        }
+        return json_array;
+    }
+
+    template<typename T>
+    json::Array ConvertIntgerArrayToJson( const std::vector<T>& rIntegerArray )
+    {
+        json::Array json_array;
+        for( size_t i = 0; i < rIntegerArray.size(); ++i )
+        {
+            std::string str = Uint64ToHexString( uint64_t( rIntegerArray[ i ] ) );
+            json_array.Insert( json::String( str ) );
+        }
+
+        return json_array;
+    }
+
+    std::vector<std::string> ConvertCompressionStringsJsonArray( IJsonObjectAdapter& rJsonObject,
+                                                                 const char* pObjTypeStr,
+                                                                 const char* pjsonKeyStr )
+    {
+        std::vector<std::string> compression_str_array;
+
+        IJsonObjectAdapter* p_adapter = rJsonObject.GetJsonArray( pjsonKeyStr );
+        IJsonObjectAdapter& r_adapter = *p_adapter;
+
+        for( size_t i = 0; i < r_adapter.GetSize(); ++i )
+        {
+            auto& item = *(r_adapter[ Kernel::IndexType( i ) ] );
+
+            std::string compression_str = std::string( item.AsString() );
+
+            ValidateCompressionString( pObjTypeStr, i, compression_str );
+
+            compression_str_array.push_back( compression_str );
+        }
+        delete p_adapter;
+
+        return compression_str_array;
+    }
+
+    template<typename T>
+    std::vector<typename T> ConvertIntegerJsonArray( IJsonObjectAdapter& rJsonObject,
+                                                     const char* pObjTypeStr,
+                                                     const char* pjsonKeyStr )
+    {
+        std::vector<T> integer_array;
+
+        IJsonObjectAdapter* p_adapter = rJsonObject.GetJsonArray( pjsonKeyStr );
+        IJsonObjectAdapter& r_adapter = *p_adapter;
+
+        for( size_t i = 0; i < r_adapter.GetSize(); ++i )
+        {
+            auto& item = *(r_adapter[ Kernel::IndexType( i ) ]);
+
+            std::string integer_str = std::string( item.AsString() );
+            T integer_val = T( HexStringToUint64( integer_str ) );
+
+            integer_array.push_back( integer_val );
+        }
+        delete p_adapter;
+
+        return integer_array;
+    }
+
+    template<typename T>
+    void CheckArrayLengths( const std::vector<std::string>& rCompressionArray,
+                            const std::vector<T>& rIntegerArray,
+                            const char* pCompressionArrayName,
+                            const char* pIntegerArrayName )
+    {
+        if( rCompressionArray.size() != rIntegerArray.size() )
+        {
+            std::stringstream ss;
+            ss << "INVALID HEADER: ";
+            ss << pCompressionArrayName << ".size()[=" << rCompressionArray.size() << "]";
+            ss << " != ";
+            ss << pIntegerArrayName     << ".size()[=" << rIntegerArray.size()     << "]\n";
+            ss << "They must have the same number of items.";
+            throw SerializationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // --- Header
+    // ------------------------------------------------------------------------
 
     Header::Header() :
-        version( 0 ),
-        date(), 
-        compressed( false ),
-        byte_count( 0 ),
-        compression(),
-        chunk_count( 0 ),
-        chunk_sizes(),
+        version( FILE_HEADER_VERSION ),
+        date(),
+        sim_compression(),
+        sim_chunk_size( 0 ),
+        node_compressions(),
+        node_suids(),
+        node_chunk_sizes(),
+        human_compressions(),
+        human_node_suids(),
+        human_num_humans(),
+        human_chunk_sizes(),
         emod_info()
-    {};
+    {
+        std::time_t now = std::time( nullptr );
+        struct tm gmt;
+        gmtime_s( &gmt, &now );
+        char asc_time[ 256 ];
+        strftime( asc_time, sizeof( asc_time ), "%a %b %d %H:%M:%S %Y", &gmt );
+        date = asc_time;
+    }
 
-    Header::Header(const string& engine, const vector<size_t>& chunk_sizes)
-            : version(SERIAL_POP_VERSION)
-            , compressed(engine != "NONE")
-            , byte_count(std::accumulate(chunk_sizes.begin(), chunk_sizes.end(), size_t(0)))
-            , compression(engine)
-            , chunk_count(chunk_sizes.size())
-            , chunk_sizes(chunk_sizes)
-            , emod_info()
+    bool Header::operator==( const Header& rThat ) const
+    {
+        if( this->version != rThat.version ) return false;
+        if( this->date    != rThat.date    ) return false;
+
+        if( this->emod_info.toString() != rThat.emod_info.toString() ) return false;
+
+        if( this->sim_compression != rThat.sim_compression ) return false;
+        if( this->sim_chunk_size  != rThat.sim_chunk_size  ) return false;
+
+        if( this->node_compressions.size() != rThat.node_compressions.size() ) return false;
+        for( int i = 0; i < this->node_compressions.size(); ++i )
         {
-            std::time_t now = std::time(nullptr);
-            struct tm gmt;
-            gmtime_s(&gmt, &now);
-            char asc_time[256];
-            strftime(asc_time, sizeof( asc_time ), "%a %b %d %H:%M:%S %Y", &gmt);
-            date = asc_time;
+            if( this->node_compressions[ i ] != rThat.node_compressions[ i ] ) return false;
         }
+
+        if( this->node_suids.size() != rThat.node_suids.size() ) return false;
+        for( int i = 0; i < this->node_suids.size(); ++i )
+        {
+            if( this->node_suids[ i ] != rThat.node_suids[ i ] ) return false;
+        }
+
+        if( this->node_chunk_sizes.size() != rThat.node_chunk_sizes.size() ) return false;
+        for( int i = 0; i < this->node_chunk_sizes.size(); ++i )
+        {
+            if( this->node_chunk_sizes[ i ] != rThat.node_chunk_sizes[ i ] ) return false;
+        }
+
+        if( this->human_compressions.size() != rThat.human_compressions.size() ) return false;
+        for( int i = 0; i < this->human_compressions.size(); ++i )
+        {
+            if( this->human_compressions[ i ] != rThat.human_compressions[ i ] ) return false;
+        }
+
+        if( this->human_node_suids.size() != rThat.human_node_suids.size() ) return false;
+        for( int i = 0; i < this->human_node_suids.size(); ++i )
+        {
+            if( this->human_node_suids[ i ] != rThat.human_node_suids[ i ] ) return false;
+        }
+
+        if( this->human_num_humans.size() != rThat.human_num_humans.size() ) return false;
+        for( int i = 0; i < this->human_num_humans.size(); ++i )
+        {
+            if( this->human_num_humans[ i ] != rThat.human_num_humans[ i ] ) return false;
+        }
+
+        if( this->human_chunk_sizes.size() != rThat.human_chunk_sizes.size() ) return false;
+        for( int i = 0; i < this->human_chunk_sizes.size(); ++i )
+        {
+            if( this->human_chunk_sizes[ i ] != rThat.human_chunk_sizes[ i ] ) return false;
+        }
+
+        return true;
+    }
+
+    bool Header::operator!=( const Header& rThat ) const
+    {
+        return !operator==( rThat );
+    }
 
     std::string Header::ToString() const
     {
@@ -115,104 +331,232 @@ namespace SerializedState {
 
     json::Object Header::ToJson() const
     {
+        release_assert( node_compressions.size()  == node_chunk_sizes.size()  );
+        release_assert( human_compressions.size() == human_node_suids.size()  );
+        release_assert( human_chunk_sizes.size()  == human_chunk_sizes.size() );
+
         json::Object header;
-        header["version"] = json::Uint64( version ); 
-        header["author"] = json::String("IDM");
-        header["tool"] = json::String( "DTK" );
-        header["date"] = json::String( date );
-        header["compression"] = json::String( compression );
-        header["emod_info"] = json::Object( emod_info.toJson() );
-        header["bytecount"] = json::Uint64( byte_count );
-        header["chunkcount"] = json::Uint64( chunk_count );
-        
-        json::Array chunk_size_array;
-        for(size_t i = 0; i < chunk_sizes.size(); ++i)
-        {
-            chunk_size_array.Insert( json::Uint64(chunk_sizes[i]) );
-        }
-        header["chunksizes"] = chunk_size_array;
+        header[ "version"   ] = json::Uint64( version );
+        header[ "author"    ] = json::String( "IDM" );
+        header[ "tool"      ] = json::String( "DTK" );
+        header[ "date"      ] = json::String( date );
+        header[ "emod_info" ] = json::Object( emod_info.toJson() );
+
+        // ---------------------------
+        // --- Add info about Sim Data
+        // ---------------------------
+        header[ "sim_compression" ] = json::String( sim_compression );
+        header[ "sim_chunk_size"  ] = json::String( Uint64ToHexString( sim_chunk_size ) );
+
+        // ----------------------------
+        // --- Add info about Node Data
+        // ----------------------------
+        header[ "node_compressions" ] = ConvertStringArrayToJson(          node_compressions );
+        header[ "node_suids"        ] = ConvertIntgerArrayToJson<int32_t>( node_suids        );
+        header[ "node_chunk_sizes"  ] = ConvertIntgerArrayToJson<uint64_t>( node_chunk_sizes );
+
+        // -----------------------------
+        // --- Add info about Human Data
+        // -----------------------------
+        header[ "human_compressions" ] = ConvertStringArrayToJson(           human_compressions );
+        header[ "human_node_suids"   ] = ConvertIntgerArrayToJson<int32_t >( human_node_suids   );
+        header[ "human_num_humans"   ] = ConvertIntgerArrayToJson<int32_t >( human_num_humans   );
+        header[ "human_chunk_sizes"  ] = ConvertIntgerArrayToJson<uint64_t>( human_chunk_sizes  );
 
         return header;
     }
 
-    void Header::Validate() const
+    void Header::FromJson( const std::string& rJsonStr )
     {
-        switch (version)
+        Kernel::IJsonObjectAdapter* p_file_adapter = Kernel::CreateJsonObjAdapter();
+        p_file_adapter->Parse( rJsonStr.c_str() );
+        IJsonObjectAdapter& file_info = *p_file_adapter;
+
+        version = 0;
+        version = file_info.GetUint( "version" );
+
+        ValidateVersion( version );
+
+        date = std::string( file_info.GetString( "date" ) );
+
+        IJsonObjectAdapter* p_emod_info_adapter = file_info.GetJsonObject( "emod_info" );
+        emod_info = ProgDllVersion( p_emod_info_adapter );
+
+        // -----------------
+        // --- read sim data
+        // -----------------
+        sim_compression = file_info.GetString( "sim_compression" );
+
+        std::string sim_chunk_str = file_info.GetString( "sim_chunk_size" );
+        sim_chunk_size = HexStringToUint64( sim_chunk_str );
+
+        // ------------------
+        // --- read node data
+        // ------------------
+        node_compressions = ConvertCompressionStringsJsonArray( file_info, "node", "node_compressions" );
+        node_suids        = ConvertIntegerJsonArray<int32_t>(   file_info, "node", "node_suids"       );
+        node_chunk_sizes  = ConvertIntegerJsonArray<size_t>(    file_info, "node", "node_chunk_sizes" );
+
+        CheckArrayLengths<int32_t>( node_compressions, node_suids,       "node_compressions", "node_suids"       );
+        CheckArrayLengths<size_t >( node_compressions, node_chunk_sizes, "node_compressions", "node_chunk_sizes" );
+
+        // -------------------
+        // --- Read human data
+        // -------------------
+        human_compressions = ConvertCompressionStringsJsonArray( file_info, "human", "human_compressions" );
+        human_node_suids   = ConvertIntegerJsonArray<int32_t>(   file_info, "human", "human_node_suids"   );
+        human_num_humans   = ConvertIntegerJsonArray<int32_t>(   file_info, "human", "human_num_humans"   );
+        human_chunk_sizes  = ConvertIntegerJsonArray<size_t>(    file_info, "human", "human_chunk_sizes"  );
+
+        CheckArrayLengths<int32_t>( human_compressions, human_node_suids,  "human_compressions", "human_node_suids"  );
+        CheckArrayLengths<int32_t>( human_compressions, human_num_humans,  "human_compressions", "human_num_humans"  );
+        CheckArrayLengths<size_t >( human_compressions, human_chunk_sizes, "human_compressions", "human_chunk_sizes" );
+
+        delete p_emod_info_adapter;
+        delete p_file_adapter;
+    }
+
+    void Header::ValidateVersion( int versionInFile ) const
+    {
+        if( versionInFile != FILE_HEADER_VERSION )
         {
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-                // Check specified compression engine
-                if ( (compression != "NONE") && (compression != "LZ4") && (compression != "SNAPPY"))
-                {
-                    ostringstream msg;
-                    msg << "Unknown compression scheme, '" << compression.c_str() << "', specified in header." << std::endl;
-                    throw Kernel::SerializationException( __FILE__, __LINE__, __FUNCTION__, msg.str().c_str() );
-                }
-
-                // Check chunk_count matches number of chunk_sizes
-                if ( chunk_sizes.size() != chunk_count )
-                {
-                    ostringstream msg;
-                    msg << "Chunk count, " << chunk_count << ", does not match size of chunksizes array, " << chunk_sizes.size() << ", specified in header." << std::endl;
-                    throw Kernel::SerializationException( __FILE__, __LINE__, __FUNCTION__, msg.str().c_str() );
-                }
-            break;
-
-            default:
-            {
-                ostringstream msg;
-                msg << "Unexpected version found in header: " << version << std::endl;
-                throw Kernel::SerializationException( __FILE__, __LINE__, __FUNCTION__, msg.str().c_str() );
-            }
+            std::stringstream msg;
+            msg << "INVALID VERSION: The header version in the file is " << versionInFile << "\n";
+            msg << "This version of EMOD only supports header version " << FILE_HEADER_VERSION << ".";
+            throw Kernel::SerializationException( __FILE__, __LINE__, __FUNCTION__, msg.str().c_str() );
         }
     }
 
+    // ----------------------
+    // --- internal functions
+    // ----------------------
 
-    void SaveSerializedSimulation(Kernel::Simulation* sim, uint32_t time_step, bool compress, bool use_full_precision )
+    const std::string& GetSchemeStr( Scheme scheme )
     {
-        string filename;
-        GenerateFilename(time_step, filename);
-        LOG_INFO_F("Writing state to '%s'\n", filename.c_str());
-        FILE* f = OpenFileForWriting(filename);
+        switch( scheme )
+        {
+            case Scheme::NONE:
+                return COMPRESSION_STR_NONE;
 
-        try {
-            vector<Kernel::IArchive*> writers;
+            case Scheme::LZ4:
+                return COMPRESSION_STR_LZ4;
 
-            vector<const char*> json_texts;
-            vector<size_t> json_sizes;
+            case Scheme::SNAPPY:
+                return COMPRESSION_STR_SNAPPY;
 
-            PrepareSimulationData(sim, writers, json_texts, json_sizes, use_full_precision );
-
-            Scheme scheme = LZ4;
-            string scheme_name("LZ4");
-            SetCompressionScheme(compress, json_sizes, scheme, scheme_name);
-
-            size_t total = 0;
-            vector<string*> compressed_data;
-            vector<size_t> chunk_sizes;
-
-            PrepareChunkContents(json_texts, scheme, json_sizes, total, chunk_sizes, compressed_data);
-
-            Header header(scheme_name, chunk_sizes);
-            string size_string;
-            ConstructHeaderSize(header, size_string);
-
-            WriteMagicNumber(f);
-            WriteHeaderSize(size_string, f);
-            WriteHeader(header, f);
-            WriteChunks(scheme, json_texts, chunk_sizes, compressed_data, f);
-
-            fflush(f);
-            fclose(f);
-        
-            // _Don't_ clean up vector<const char*> json_text - they just point into the writers
-            FreeMemory(compressed_data, writers);
+            default:
+                std::stringstream ss;
+                ss << "UNKNOWN COMPRESSION SCHEME: scheme = " << scheme;
+                throw SerializationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }
-        catch (...) {
-            fclose(f);
+    }
+
+    Scheme GetScheme( const std::string& rCompressionSchemeStr )
+    {
+        if( rCompressionSchemeStr == COMPRESSION_STR_NONE )
+        {
+            return Scheme::NONE;
+        }
+        else if( rCompressionSchemeStr == COMPRESSION_STR_LZ4 )
+        {
+            return Scheme::LZ4;
+        }
+        else if( rCompressionSchemeStr == COMPRESSION_STR_SNAPPY )
+        {
+            return Scheme::SNAPPY;
+        }
+        else
+        {
+            std::stringstream ss;
+            ss << "UNKNOWN COMRPESSION SCHEME STRING: value = " << rCompressionSchemeStr;
+            throw SerializationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
+        }
+    }
+
+    Scheme GetCompressionScheme( size_t jsonSize )
+    {
+        // #define LZ4_MAX_INPUT_SIZE      (0x7E000000) // defined in lz4.h
+#define SNAPPY_MAX_INPUT_SIZE   (0xFFFFFFFF)
+
+        // default to LZ4
+        Scheme scheme = Scheme::LZ4;
+
+        if( jsonSize > SNAPPY_MAX_INPUT_SIZE )
+        {
+            // If bigger than snappy can handle, then no compression
+            scheme = Scheme::NONE;
+        }
+        else if( jsonSize > LZ4_MAX_INPUT_SIZE )
+        {
+            // If the payload is too big for LZ4, then use snappy.
+            scheme = Scheme::SNAPPY;
+        }
+
+        return scheme;
+    }
+
+    // ------------------------------------------------------------------------
+    // --- Write Functions
+    // ------------------------------------------------------------------------
+
+    void SaveSerializedSimulation( Kernel::Simulation* sim, uint32_t time_step, bool compress, bool use_full_precision )
+    {
+        sim->CheckMemoryFailure( false );
+
+        string filename;
+        GenerateFilename( time_step, filename );
+        LOG_INFO_F( "Writing state to '%s'\n", filename.c_str() );
+        FILE* f = OpenFileForWriting( filename );
+
+        try
+        {
+            // Create a Header object without the real values, but
+            // enough so that we can get the size of the JSON.
+            Header size_header;
+
+            std::vector<int32_t> node_suids;
+            std::vector<int32_t> human_node_suids;
+            std::vector<std::vector<IIndividualHuman*>> human_collections;
+
+            PrepareSimulationData( sim, node_suids, human_node_suids, human_collections );
+
+            PopulateSizeHeader( node_suids, human_node_suids, human_collections, size_header );
+
+            sim->CheckMemoryFailure( false );
+
+            string size_string;
+            ConstructHeaderSize( size_header, size_string );
+            WriteMagicNumber( f );
+            WriteHeaderSize( size_string, f );
+            WriteHeader( size_header, f );
+
+            Header real_header;
+            WriteSimData( use_full_precision, sim, f, real_header );
+
+            sim->CheckMemoryFailure( false );
+
+            Kernel::NodeMap_t& node_map = GetNodes( sim );
+
+            for( auto entry : node_map )
+            {
+                WriteNodeData( use_full_precision, sim, entry.second, f, real_header );
+                sim->CheckMemoryFailure( false );
+            }
+
+            for( int i = 0; i < human_collections.size(); ++i )
+            {
+                WriteHumanData( use_full_precision, sim, human_node_suids[ i ], human_collections[ i ], f, real_header );
+                sim->CheckMemoryFailure( false );
+            }
+
+            WriteRealHeader( size_string, real_header, f );
+
+            fflush( f );
+            fclose( f );
+        }
+        catch( ... )
+        {
+            fclose( f );
             ostringstream msg;
             msg << "Exception writing serialized population file '" << filename.c_str() << "'." << std::endl;
             LOG_ERR( msg.str().c_str() );
@@ -220,9 +564,148 @@ namespace SerializedState {
             // We do not know what went wrong or exactly what the exception is. We will just pass it along.
             throw;  // Kernel::SerializationException( __FILE__, __LINE__, __FUNCTION__, msg.str().c_str() );
         }
+        sim->CheckMemoryFailure( false );
     }
 
-    void GenerateFilename(uint32_t time_step, string& filename_with_path)
+    void WriteData( Simulation* pSim,
+                    size_t bufferSize,
+                    const char* pBuffer,
+                    Scheme& rScheme,
+                    size_t& rCompressedDataSize, FILE* f )
+    {
+        rScheme = GetCompressionScheme( bufferSize );
+
+        std::string compressed_data;
+        CompressData( rScheme, bufferSize, pBuffer, rCompressedDataSize, compressed_data );
+
+        pSim->CheckMemoryFailure( false );
+
+        WriteChunk( rCompressedDataSize, compressed_data, f );
+
+        pSim->CheckMemoryFailure( false );
+    }
+
+    void WriteSimData( bool use_full_precision, Simulation* pSim, FILE* f, Header& rRealHeader )
+    {
+        Kernel::IArchive* writer = static_cast<Kernel::IArchive*>(new Kernel::JsonFullWriter( false, use_full_precision ));
+        (*writer)& pSim;
+
+        Scheme scheme = Scheme::NONE;
+        size_t compressed_data_size = 0;
+        WriteData( pSim, writer->GetBufferSize(), writer->GetBuffer(), scheme, compressed_data_size, f );
+
+        rRealHeader.sim_compression = GetSchemeStr( scheme );
+        rRealHeader.sim_chunk_size = compressed_data_size;
+
+        delete writer;
+    }
+
+    void WriteNodeData( bool use_full_precision,
+                        Simulation* pSim,
+                        INodeContext* pNode,
+                        FILE* f,
+                        Header& rRealHeader )
+    {
+        Kernel::IArchive* writer = static_cast<Kernel::IArchive*>(new Kernel::JsonFullWriter( false, use_full_precision ));
+        (*writer)& pNode;
+
+        Scheme scheme = Scheme::NONE;
+        size_t compressed_data_size = 0;
+        WriteData( pSim, writer->GetBufferSize(), writer->GetBuffer(), scheme, compressed_data_size, f );
+
+        rRealHeader.node_suids.push_back( pNode->GetSuid().data );
+        rRealHeader.node_compressions.push_back( GetSchemeStr( scheme ) );
+        rRealHeader.node_chunk_sizes.push_back( compressed_data_size );
+
+        delete writer;
+    }
+
+    void WriteHumanData( bool use_full_precision,
+                         Simulation* pSim,
+                         int32_t humanNodeSuid,
+                         std::vector<IIndividualHuman*>& rHumanCollection,
+                         FILE* f,
+                         Header& rRealHeader )
+    {
+        // -------------------------------------------------------------------
+        // --- I thought we could just write the array, but it didn't work.
+        // --- Things where happier if the main chunk was an object/dictionary.
+        // -------------------------------------------------------------------
+        Kernel::IArchive* writer = static_cast<Kernel::IArchive*>(new Kernel::JsonFullWriter( false, use_full_precision ));
+        (*writer).startObject();
+        (*writer).labelElement("human_collection") & rHumanCollection;
+        (*writer).endObject();
+
+        Scheme scheme = Scheme::NONE;
+        size_t compressed_data_size = 0;
+        WriteData( pSim, writer->GetBufferSize(), writer->GetBuffer(), scheme, compressed_data_size, f );
+
+        rRealHeader.human_compressions.push_back( GetSchemeStr( scheme ) );
+        rRealHeader.human_chunk_sizes.push_back( compressed_data_size );
+        rRealHeader.human_node_suids.push_back( humanNodeSuid );
+        rRealHeader.human_num_humans.push_back( rHumanCollection.size() );
+
+        delete writer;
+    }
+
+    void WriteChunk( size_t compressDataSize,
+                     const std::string& rCompressedData,
+                     FILE* f )
+    {
+        fwrite( rCompressedData.c_str(), sizeof( char ), compressDataSize, f );
+    }
+
+    void CompressData( Scheme scheme,
+                       size_t bufferSize,
+                       const char* pBuffer,
+                       size_t& rCompressedDataSize,
+                       std::string& rCompressedData )
+    {
+        switch( scheme )
+        {
+            case NONE:
+            {
+                // No compression, just use the raw JSON text.
+                rCompressedDataSize = bufferSize;
+                rCompressedData.resize( rCompressedDataSize );
+                char* buffer = &*(rCompressedData).begin();
+                memcpy( buffer, pBuffer, bufferSize );
+            }
+            break;
+
+            case LZ4:
+            {
+                size_t source_size = bufferSize;
+                size_t required = LZ4_COMPRESSBOUND( source_size );
+                rCompressedData.resize( required );
+
+                char* buffer = &*(rCompressedData).begin();
+                *reinterpret_cast<uint32_t*>(buffer) = uint32_t( source_size );
+                char* payload = buffer + sizeof( uint32_t );
+                size_t compressed_size = LZ4_compress_default( pBuffer, payload, int32_t( source_size ), int32_t( required ) );
+                // Python binding for LZ4 writes the source_size first, account for that space
+                size_t payload_size = compressed_size + sizeof( uint32_t );
+                rCompressedData.resize( payload_size );
+                rCompressedDataSize = payload_size;
+            }
+            break;
+
+            case SNAPPY:
+            {
+                rCompressedDataSize = snappy::Compress( pBuffer, bufferSize, &rCompressedData );
+            }
+            break;
+
+            default:
+            {
+                ostringstream msg;
+                msg << "Unknown compression scheme chosen: " << (uint32_t)scheme << std::endl;
+                throw Kernel::SerializationException( __FILE__, __LINE__, __FUNCTION__, msg.str().c_str() );
+            }
+        }
+    }
+
+    void GenerateFilename( uint32_t time_step, string& filename_with_path )
     {
         // Make sure length accounts for "state-#####-###.dtk" (19 chars)
         size_t length = strlen("state-#####-###.dtk") + 1;  // Don't forget the null terminator (for sprintf_s)!
@@ -230,7 +713,7 @@ namespace SerializedState {
         filename.resize(length);
         char* buffer = &*filename.begin();
 
-        if (EnvPtr->MPI.NumTasks == 1)
+        if( EnvPtr->MPI.NumTasks == 1 )
         {
             // Don't bother with rank suffix if only one task.
             sprintf_s(buffer, length, "state-%05d.dtk", time_step);
@@ -249,7 +732,7 @@ namespace SerializedState {
         errno = 0;
         bool opened = (fopen_s(&f, filename.c_str(), "wb") == 0);
 
-        if (!opened)
+        if( !opened )
         {
             std::stringstream ss;
             ss << "Received error '" << FileSystem::GetSystemErrorMessage() << "' while opening file for writing.";
@@ -265,116 +748,60 @@ namespace SerializedState {
     }
 
     void PrepareSimulationData( Kernel::Simulation* sim,
-                                vector<Kernel::IArchive*>& writers,
-                                vector<const char*>& json_texts,
-                                vector<size_t>& json_sizes,
-                                bool use_full_precision )
+                                std::vector<int32_t>& node_suids,
+                                std::vector<int32_t>& human_collecttion_node_suids,
+                                std::vector<std::vector<IIndividualHuman*>>& human_collections )
     {
-        Kernel::IArchive* writer = static_cast<Kernel::IArchive*>(new Kernel::JsonFullWriter( false, use_full_precision ));
-        (*writer) & sim;
+        Kernel::NodeMap_t& node_map = GetNodes( sim );
 
-        writers.push_back(writer);
-        json_texts.push_back(writer->GetBuffer());
-        json_sizes.push_back(writer->GetBufferSize());
-
-        for (auto& entry : GetNodes(sim))
+        for( auto entry : node_map )
         {
-            // entry.first is const which doesn't play well with IArchive operator '&'
-            Kernel::suids::suid suid(entry.first);
-            Kernel::IArchive* writer = static_cast<Kernel::IArchive*>(new Kernel::JsonFullWriter( false, use_full_precision ));
-            (*writer) & entry.second;
+            int32_t node_suid = entry.first.data;
+            node_suids.push_back( node_suid );
+            human_collecttion_node_suids.push_back( node_suid );
+            human_collections.push_back( std::vector<IIndividualHuman*>() );
 
-            writers.push_back(writer);
-            json_texts.push_back(writer->GetBuffer());
-            json_sizes.push_back(writer->GetBufferSize());
+            INodeEventContext::individual_visit_function_t fn =
+                [node_suid,
+                &human_collecttion_node_suids,
+                &human_collections](IIndividualHumanEventContext* ihec)
+                {
+                    std::vector<IIndividualHuman*>* p_humans = &(human_collections.back());
+                    if( p_humans->size() >= SerializationParameters::GetInstance()->GetMaxHumansPerCollection() )
+                    {
+                        human_collecttion_node_suids.push_back( node_suid );
+                        human_collections.push_back( std::vector<IIndividualHuman*>() );
+                        p_humans = &(human_collections.back());
+                    }
+                    IIndividualHuman* p_human = const_cast<IIndividualHuman*>(ihec->GetIndividualHumanConst());
+                    p_humans->push_back( p_human );
+                };
+            entry.second->GetEventContext()->VisitIndividuals( fn );
         }
     }
 
-    void SetCompressionScheme(bool compress, const vector<size_t>& json_sizes, Scheme& scheme, string& scheme_name)
+    void PopulateSizeHeader( std::vector<int32_t>& node_suids,
+                             const std::vector<int32_t>& rHumanNodeSuids,
+                             const std::vector<std::vector<IIndividualHuman*>>& rHumanCollections,
+                             Header& rSizeHeader )
     {
-    // #define LZ4_MAX_INPUT_SIZE      (0x7E000000) // defined in lz4.h
-    #define SNAPPY_MAX_INPUT_SIZE   (0xFFFFFFFF)
+        rSizeHeader.sim_compression = COMPRESSION_STR_NONE;
+        rSizeHeader.sim_chunk_size = 0;
 
-        // check json_size for lz4 limit (0x7E000000)
-        // drop back to snappy if possible (0x7E000000 < size <= 0xFFFFFFFF)
-        // disable compression if necessary
-        if (compress)
+        for( int i = 0; i < node_suids.size(); ++i )
         {
-            for (size_t size : json_sizes)
-            {
-                if ((scheme == LZ4) && (size > LZ4_MAX_INPUT_SIZE))
-                {
-                    // If the payload is too big, drop back to snappy.
-                    // Note that the if check below will check for snappy limits.
-                    scheme = SNAPPY;
-                    scheme_name = "SNAPPY";
-                }
-
-                if ((scheme == SNAPPY) && (size > SNAPPY_MAX_INPUT_SIZE))
-                {
-                    scheme = NONE;
-                    scheme_name = "NONE";
-                    break;
-                }
-            }
+            rSizeHeader.node_compressions.push_back( COMPRESSION_STR_NONE );
+            rSizeHeader.node_suids.push_back( node_suids[ i ] );
+            rSizeHeader.node_chunk_sizes.push_back( 0 );
         }
-        else
+
+        release_assert( rHumanNodeSuids.size() == rHumanCollections.size() );
+        for( int i = 0; i < rHumanCollections.size(); ++i )
         {
-            scheme = NONE;
-            scheme_name = "NONE";
-        }
-    }
-
-    void PrepareChunkContents(const vector<const char*>& json_texts, Scheme compression_scheme, const vector<size_t>& json_sizes, size_t& total, vector<size_t>& chunk_sizes, vector<string*>& compressed_data)
-    {
-        for (size_t i = 0; i < json_texts.size(); ++i)
-        {
-            switch (compression_scheme)
-            {
-                case NONE:
-                {
-                    // No compression, just use the raw JSON text.
-                    size_t size = json_sizes[i];
-                    total += size;
-                    chunk_sizes.push_back(size);
-                }
-                break;
-
-                case LZ4:
-                {
-                    size_t source_size = json_sizes[i];
-                    size_t required = LZ4_COMPRESSBOUND(source_size);
-                    string* chunk = new string(required, 0);
-                    char* buffer = &*(*chunk).begin();
-                    *reinterpret_cast<uint32_t*>(buffer) = uint32_t(source_size);
-                    char* payload = buffer + sizeof(uint32_t);
-                    size_t compressed_size = LZ4_compress_default(json_texts[i], payload, int32_t(source_size), int32_t(required));
-                    // Python binding for LZ4 writes the source_size first, account for that space
-                    size_t payload_size = compressed_size + sizeof(uint32_t);
-                    (*chunk).resize(payload_size);
-                    total += payload_size;
-                    compressed_data.push_back(chunk);
-                    chunk_sizes.push_back(payload_size);
-                }
-                break;
-
-                case SNAPPY:
-                {
-                    string* buffer = new string();
-                    size_t compressed_size = snappy::Compress(json_texts[i], json_sizes[i], buffer);
-                    total += compressed_size;
-                    compressed_data.push_back(buffer);
-                    chunk_sizes.push_back(compressed_size);
-                }
-                break;
-
-                default:
-                {
-                    ostringstream msg;
-                    msg << "Unknown compression scheme chosen: " << (uint32_t)compression_scheme << std::endl;
-                    throw Kernel::SerializationException( __FILE__, __LINE__, __FUNCTION__, msg.str().c_str() );
-                }
-            }
+            rSizeHeader.human_compressions.push_back( COMPRESSION_STR_NONE );
+            rSizeHeader.human_node_suids.push_back( rHumanNodeSuids[ i ] );
+            rSizeHeader.human_num_humans.push_back( rHumanCollections[ i ].size() );
+            rSizeHeader.human_chunk_sizes.push_back( 0 );
         }
     }
 
@@ -386,70 +813,50 @@ namespace SerializedState {
         size_string = temp.str();
     }
 
-    void WriteMagicNumber(FILE* f)
+    void WriteMagicNumber( FILE* f )
     {
         fwrite("IDTK", 1, 4, f);
     }
 
-    void WriteHeaderSize(const string& size_string, FILE* f)
+    void WriteHeaderSize( const string& size_string, FILE* f )
     {
         fwrite(size_string.c_str(), 1, size_string.length(), f);
     }
 
-    void WriteHeader(const Header& header, FILE* f)
+    void WriteHeader( const Header& header, FILE* f )
     {
         string header_string = header.ToString();
         fwrite(header_string.c_str(), 1, header_string.length(), f);
     }
 
-    void WriteChunks(Scheme compression_scheme, const vector<const char*>& json_texts, const vector<size_t>& chunk_sizes, const vector<string*>& compressed_data, FILE* f) 
+    void WriteRealHeader( const std::string& rOrigSizeString,
+                          const Header& rRealHeader,
+                          FILE* f )
     {
-        switch (compression_scheme)
-        {
-        case NONE:
-            for (size_t i = 0; i < json_texts.size(); ++i)
-            {
-                fwrite(json_texts[i], sizeof(char), chunk_sizes[i], f);
-                // Nothing to clean up.
-            }
-            break;
+        std::string size_string;
+        ConstructHeaderSize( rRealHeader, size_string );
+        release_assert( rOrigSizeString == size_string );
 
-        case LZ4:
-        case SNAPPY:
-            for (size_t i = 0; i < compressed_data.size(); ++i)
-            {
-                fwrite((*compressed_data[i]).c_str(), sizeof(char), chunk_sizes[i], f);
-            }
-            break;
+        int header_start_position = 4; // Magic Number
+        header_start_position += size_string.length();
 
-        default:
-            {
-                ostringstream msg;
-                msg << "Unexpected compression_scheme: " << uint32_t(compression_scheme) << '.' << std::endl;
-                throw Kernel::SerializationException( __FILE__, __LINE__, __FUNCTION__, msg.str().c_str() );
-            }
-        }
+        fseek( f, header_start_position, SEEK_SET );
+        string header_string = rRealHeader.ToString();
+
+        fwrite( header_string.c_str(), 1, header_string.length(), f );
     }
 
-    void FreeMemory(vector<string*>& compressed_data, vector<Kernel::IArchive*>& writers)
+    // ------------------------------------------------------------------------
+    // --- Read Functions
+    // ------------------------------------------------------------------------
+
+    Kernel::ISimulation* LoadSerializedSimulation( const char* filename )
     {
-        for (auto entry : compressed_data)
-        {
-            delete entry;
-        }
+        MemoryGauge mem;
+        // read the config.json file so that you can set the warning and halt memory limits
+        mem.Configure( EnvPtr->Config );
+        mem.CheckMemoryFailure( false );
 
-        for (auto pointer : writers)
-        {
-            delete pointer;
-        }
-    }
-
-
-    /*************************************************************************************************/
-
-
-    Kernel::ISimulation* LoadSerializedSimulation(const char* filename)
-    {
         Kernel::ISimulation* newsim = nullptr;
 
         FILE* f = OpenFileForReading(filename);
@@ -459,33 +866,11 @@ namespace SerializedState {
             CheckMagicNumber(f, filename);
             Header header;
             ReadHeader(f, filename, header);
-            ostringstream msg;
 
-            switch (header.version)
-            {
-            case 1:
-            case 2:
-            case 3:                
-                msg << "The serialized population you are trying to load has a a header versions < 4. "
-                    << "Serialized populations with a header version < 4 aren't supported anymore. "
-                    << "Please use an older version of EMOD to load the population or recreate the population." << std::endl;
-                throw Kernel::SerializationException( __FILE__, __LINE__, __FUNCTION__, msg.str().c_str() );
-            case 4:
-                header.emod_info = ProgDllVersion::getEmodInfoVersion4();
-                header.emod_info.checkSerializationVersion( filename );
-                newsim = ReadDtkVersion34(f, filename, header);
-                break;
-            case 5:            
-                header.emod_info.checkSerializationVersion(filename);
-                newsim = ReadDtkVersion34(f, filename, header);
-                break;
-
-            default:
-                {
-                    msg << "Unrecognized version in serialized population file header: " << header.version << std::endl;
-                    throw Kernel::SerializationException( __FILE__, __LINE__, __FUNCTION__, msg.str().c_str() );
-                }
-            }
+            mem.CheckMemoryFailure( false );
+            header.emod_info.checkSerializationVersion( filename );
+            newsim = ReadDtkVersion6( mem, f, filename, header );
+            mem.CheckMemoryFailure( false );
 
             fclose( f );
         }
@@ -497,7 +882,7 @@ namespace SerializedState {
             msg << se.GetMsg() << std::endl;
             throw Kernel::SerializationException( __FILE__, __LINE__, __FUNCTION__, msg.str().c_str() );
         }
-        catch (...)
+        catch( ... )
         {
             fclose( f );
             ostringstream msg;
@@ -511,13 +896,13 @@ namespace SerializedState {
         return newsim;
     }
 
-    FILE* OpenFileForReading(const char* filename)
+    FILE* OpenFileForReading( const char* filename )
     {
         FILE* f = nullptr;
         errno = 0;
         bool opened = (fopen_s(&f, filename, "rb") == 0);
 
-        if (!opened)
+        if( !opened )
         {
             std::stringstream ss;
             ss << "Received error '" << FileSystem::GetSystemErrorMessage() << "' while opening file for reading.";
@@ -527,7 +912,7 @@ namespace SerializedState {
         return f;
     }
 
-    uint32_t ReadMagicNumber(FILE* f, const char* filename)
+    uint32_t ReadMagicNumber( FILE* f, const char* filename )
     {
         uint32_t magic = 0x0BADBEEF;
         size_t count = 1;
@@ -543,11 +928,11 @@ namespace SerializedState {
         return magic;
     }
 
-    void CheckMagicNumber(FILE* f, const char* filename)
+    void CheckMagicNumber( FILE* f, const char* filename )
     {
         uint32_t magic = ReadMagicNumber(f, filename);
         bool valid = (magic == *(uint32_t*)"IDTK");
-        if (!valid)
+        if( !valid )
         {
             ostringstream msg;
             msg << "Serialized population file has wrong magic number, expected 0x" << std::hex << std::setw(8) << std::setfill('0') << *(uint32_t*)"IDTK";
@@ -556,12 +941,12 @@ namespace SerializedState {
         }
     }
 
-    uint32_t ReadHeaderSize(FILE* f, const char* filename)
+    uint32_t ReadHeaderSize( FILE* f, const char* filename )
     {
-        char size_string[13];   // allocate space for null terminator
+        char size_string[ 13 ];   // allocate space for null terminator
         size_t byte_count = sizeof( size_string ) - 1;
-        size_t bytes_read = fread(size_string, 1, byte_count, f); // don't read null terminator
-        if (bytes_read != byte_count)
+        size_t bytes_read = fread( size_string, 1, byte_count, f ); // don't read null terminator
+        if( bytes_read != byte_count )
         {
             ostringstream msg;
             msg << " read " << bytes_read << " of " << byte_count << " bytes for header";
@@ -570,7 +955,7 @@ namespace SerializedState {
         size_string[byte_count] = '\0';
         errno = 0;
         uint32_t header_size = strtoul(size_string, nullptr, 10);
-        if (errno == ERANGE)
+        if( errno == ERANGE )
         {
             ostringstream msg;
             msg << "Could not convert header size from text ('" << size_string << "') to unsigned integer." << std::endl;
@@ -580,16 +965,16 @@ namespace SerializedState {
         return header_size;
     }
 
-    void CheckHeaderSize(uint32_t header_size)
+    void CheckHeaderSize( uint32_t header_size )
     {
-        if (header_size == 0)
+        if( header_size == 0 )
         {
             string msg( "Serialized population header size is 0, which is not valid.\n" );
             throw Kernel::SerializationException( __FILE__, __LINE__, __FUNCTION__, msg.c_str() );
         }
     }
 
-    void ReadHeader(FILE* f, const char* filename, Header& header)
+    void ReadHeader( FILE* f, const char* filename, Header& header )
     {
         uint32_t count = ReadHeaderSize(f, filename);
         CheckHeaderSize(count);
@@ -597,59 +982,20 @@ namespace SerializedState {
         header_text.resize(count);
         char* buffer = &*header_text.begin();
         size_t bytes_read = fread(buffer, 1, count, f);
-        if (bytes_read != count)
+        if( bytes_read != count )
         {
             ostringstream msg;
             msg << "read " << bytes_read << " of " << count << " bytes for header";
             throw Kernel::FileIOException( __FILE__, __LINE__, __FUNCTION__, filename, msg.str().c_str() );
         }
-
-        Kernel::IJsonObjectAdapter* adapter = Kernel::CreateJsonObjAdapter();
-        adapter->Parse(header_text.c_str());
-        // TODO clorton - wrap this with try/catch for JSON errors
-        auto& file_info = (*adapter).Contains("metadata") ? *((*adapter)["metadata"]) : *adapter;
-        header.version = file_info.GetUint("version");
-        header.date = file_info.GetString("date");
-        header.byte_count = file_info.GetUInt64("bytecount");
-
-        if (header.version == 1)
-        {
-            // Fill in V2 values for a V1 header.
-            header.compressed = file_info.GetBool("compressed");
-            header.compression = header.compressed ? "SNAPPY" : "NONE";
-            header.chunk_count = 1;
-            header.chunk_sizes.push_back(header.byte_count);
-        }
-        else // header.version >= 2
-        {
-            header.compression = file_info.GetString((header.version < 4) ? "engine" : "compression");
-            header.compressed = (header.compression != "NONE");
-            header.chunk_count = file_info.GetUint("chunkcount");
-            auto& chunk_sizes = *(file_info.GetJsonArray("chunksizes"));
-            for (size_t i = 0; i < chunk_sizes.GetSize(); ++i)
-            {
-                auto& item = *(chunk_sizes[Kernel::IndexType(i)]);
-                size_t chunk_size = item.AsUint64();
-                header.chunk_sizes.push_back(chunk_size);
-            }
-        }
-        if (header.version == 5)
-        {
-            // Version 5 contains information about emod version
-            IJsonObjectAdapter* emod_info_temp = file_info.GetJsonObject( "emod_info" );
-            header.emod_info = ProgDllVersion( emod_info_temp );
-        }
-
-        header.Validate();
-
-        delete adapter;
+        header.FromJson( header_text );
     }
 
-    void ReadChunk(FILE* f, size_t byte_count, const char* filename, vector<char>& chunk)
+    void ReadChunk( FILE* f, size_t byte_count, const char* filename, vector<char>& chunk )
     {
         chunk.resize(byte_count);
         size_t bytes_read = fread(chunk.data(), 1, byte_count, f);
-        if (bytes_read != byte_count)
+        if( bytes_read != byte_count )
         {
             ostringstream msg;
             msg << "read " << bytes_read << " of " << byte_count << " bytes for chunk";
@@ -660,7 +1006,7 @@ namespace SerializedState {
     namespace lz4
     {
         // source is a block of LZ4 compressed data with the size of the uncompressed data prepended
-        size_t Uncompress(const char* block, size_t block_size, string& result)
+        size_t Uncompress( const char* block, size_t block_size, string& result )
         {
             size_t result_size = *reinterpret_cast<uint32_t*>(const_cast<char*>(block));
             const char* lz4_data = block + sizeof(uint32_t);
@@ -673,106 +1019,158 @@ namespace SerializedState {
         }
     }
 
-    void JsonFromChunk(const vector<char>& chunk, bool compressed, string& engine, string& json)
+    void JsonFromChunk( const vector<char>& chunk, const std::string& rCompressionSchemeStr, std::string& json )
     {
-        if (compressed)
+        if( rCompressionSchemeStr == COMPRESSION_STR_NONE )
         {
-            if (engine == "LZ4")
-            {
-                lz4::Uncompress(chunk.data(), chunk.size(), json);
-            }
-
-            if (engine == "SNAPPY")
-            {
-                snappy::Uncompress(chunk.data(), chunk.size(), &json);
-            }
+            json.resize( chunk.size() );
+            char* dest = &*json.begin();
+            memcpy( dest, chunk.data(), chunk.size() );
+        }
+        else if( rCompressionSchemeStr == COMPRESSION_STR_LZ4 )
+        {
+            lz4::Uncompress( chunk.data(), chunk.size(), json );
+        }
+        else if( rCompressionSchemeStr == COMPRESSION_STR_SNAPPY )
+        {
+            snappy::Uncompress( chunk.data(), chunk.size(), &json );
         }
         else
         {
-            json.resize(chunk.size());
-            char* dest = &*json.begin();
-            memcpy(dest, chunk.data(), chunk.size());
+            std::stringstream ss;
+            ss << "UNKNOWN COMRPESSION SCHEME STRING: value = " << rCompressionSchemeStr;
+            throw SerializationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }
     }
 
-    Kernel::ISimulation* ReadDtkVersion2(FILE* f, const char* filename, Header& header)
+    Simulation* ReadSimData( MemoryGauge& mem, FILE* f, const char* filename, const Header& rHeader )
     {
-        Kernel::ISimulation* newsim = nullptr;
+        std::vector<char> chunk;
+        ReadChunk( f, rHeader.sim_chunk_size, filename, chunk );
 
-        // Read simulation JSON
-        vector<char> chunk;
-        ReadChunk(f, header.chunk_sizes[0], filename, chunk);
+        mem.CheckMemoryFailure( false );
 
-        string json;
-        JsonFromChunk(chunk, header.compressed, header.compression, json);
+        std::string json;
+        JsonFromChunk( chunk, rHeader.sim_compression, json );
+
+        mem.CheckMemoryFailure( false );
 
         // Deserialize simulation
+        ISimulation* p_new_sim = nullptr;
+
         Kernel::IArchive* reader = static_cast<Kernel::IArchive*>(new Kernel::JsonFullReader(json.c_str()));
-        (*reader).labelElement("simulation") & newsim;
+        (*reader) & p_new_sim;
+
+        mem.CheckMemoryFailure( false );
+
         delete reader;
 
-        Kernel::Simulation* simulation = static_cast<Kernel::Simulation*>(newsim);
+        mem.CheckMemoryFailure( false );
 
-        // For each node
-        for (size_t i = 1; i < header.chunk_count; ++i)
-        {
-            // Read node JSON
-            ReadChunk(f, header.chunk_sizes[i], filename, chunk);
-            JsonFromChunk(chunk, header.compressed, header.compression, json);
-
-            // Deserialize node
-            reader = static_cast<Kernel::IArchive*>(new Kernel::JsonFullReader(json.c_str()));
-            Kernel::suids::suid suid;
-            Kernel::ISerializable* obj;
-            (*reader).labelElement("suid") & suid;
-            (*reader).labelElement("node") & obj;
-
-            delete reader;
-
-            // Add node to simulation.nodes
-            GetNodes(simulation)[suid] = static_cast<Kernel::Node*>(obj);
-        }
-
-        return newsim;
+        Kernel::Simulation* simulation = static_cast<Kernel::Simulation*>(p_new_sim);
+        return simulation;
     }
 
-    Kernel::ISimulation* ReadDtkVersion34(FILE* f, const char* filename, Header& header)
+    Node* ReadNodeData( MemoryGauge& mem,
+                        FILE* f,
+                        const char* filename,
+                        const std::string rCompressionSchemeStr,
+                        size_t nodeChunkSize )
     {
-        Kernel::ISimulation* newsim = nullptr;
+        // Read node JSON
+        std::vector<char> chunk;
+        ReadChunk( f, nodeChunkSize, filename, chunk);
 
-        // Read simulation JSON
-        vector<char> chunk;
-        ReadChunk(f, header.chunk_sizes[0], filename, chunk);
+        mem.CheckMemoryFailure( false );
 
-        string json;
-        JsonFromChunk(chunk, header.compressed, header.compression, json);
+        std::string json;
+        JsonFromChunk(chunk, rCompressionSchemeStr, json );
 
-        // Deserialize simulation
+        mem.CheckMemoryFailure( false );
+
+        // Deserialize node
         Kernel::IArchive* reader = static_cast<Kernel::IArchive*>(new Kernel::JsonFullReader(json.c_str()));
-        (*reader) & newsim;
+        Kernel::ISerializable* obj;
+        (*reader) & obj;
+
+        mem.CheckMemoryFailure( false );
+
         delete reader;
 
-        Kernel::Simulation* simulation = static_cast<Kernel::Simulation*>(newsim);
+        mem.CheckMemoryFailure( false );
+
+        Kernel::Node* p_node = static_cast<Kernel::Node*>(obj);
+        return p_node;
+    }
+
+    void ReadHumanData( MemoryGauge& mem, 
+                        FILE* f,
+                        const char* filename,
+                        const std::string rCompressionSchemeStr,
+                        size_t humanChunkSize,
+                        std::vector<IIndividualHuman*>& rHumanCollection )
+    {
+        // Read human JSON
+        std::vector<char> chunk;
+        ReadChunk( f, humanChunkSize, filename, chunk);
+
+        mem.CheckMemoryFailure( false );
+
+        std::string json;
+        JsonFromChunk(chunk, rCompressionSchemeStr, json );
+
+        mem.CheckMemoryFailure( false );
+
+        // Deserialize humans
+        Kernel::IArchive* reader = static_cast<Kernel::IArchive*>(new Kernel::JsonFullReader(json.c_str()));
+        (*reader).startObject();
+        (*reader).labelElement("human_collection") & rHumanCollection;
+        (*reader).endObject();
+
+        mem.CheckMemoryFailure( false );
+
+        delete reader;
+
+        mem.CheckMemoryFailure( false );
+    }
+
+    void AddHumans( Kernel::Node* pNode,
+                    const std::vector<Kernel::IIndividualHuman*>& rHumanCollection )
+    {
+        pNode->individualHumans.insert( pNode->individualHumans.end(),
+                                        rHumanCollection.begin(),
+                                        rHumanCollection.end());
+    }
+
+    Kernel::ISimulation* ReadDtkVersion6( MemoryGauge& mem, FILE* f, const char* filename, Header& header)
+    {
+        Kernel::Simulation* p_newsim = ReadSimData( mem, f, filename, header );
 
         // For each node
-        for (size_t i = 1; i < header.chunk_count; ++i)
+        for( size_t i = 0; i < header.node_chunk_sizes.size(); ++i)
         {
-            // Read node JSON
-            ReadChunk(f, header.chunk_sizes[i], filename, chunk);
-            JsonFromChunk(chunk, header.compressed, header.compression, json);
+            Kernel::Node* p_node = ReadNodeData( mem, f, filename, header.node_compressions[ i ], header.node_chunk_sizes[ i ] );
 
-            // Deserialize node
-            reader = static_cast<Kernel::IArchive*>(new Kernel::JsonFullReader(json.c_str()));
-            Kernel::ISerializable* obj;
-            (*reader) & obj;
-
-            delete reader;
-
-            // Add node to simulation.nodes
-            Kernel::Node* node = static_cast<Kernel::Node*>(obj);
-            GetNodes(simulation)[node->GetSuid()] = node;
+            GetNodes(p_newsim)[p_node->GetSuid()] = p_node;
         }
 
-        return newsim;
+        std::vector<IIndividualHuman*> human_collection;
+        human_collection.reserve( SerializationParameters::GetInstance()->GetMaxHumansPerCollection() );
+        for( size_t i = 0; i < header.human_chunk_sizes.size(); ++i )
+        {
+            human_collection.clear();
+            ReadHumanData( mem, f, filename, header.human_compressions[ i ], header.human_chunk_sizes[ i ], human_collection );
+
+            Kernel::suids::suid node_suid;
+            node_suid.data = header.human_node_suids[ i ];
+
+            INodeContext* p_nc = GetNodes( p_newsim )[ node_suid ];
+            Kernel::Node* p_node = static_cast<Kernel::Node*>(p_nc);
+
+            AddHumans( p_node, human_collection );
+        }
+
+        return p_newsim;
     }
+
 }   // namespace SerializedState

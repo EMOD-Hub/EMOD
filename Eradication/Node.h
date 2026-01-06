@@ -24,6 +24,12 @@ class ReportVector;
 class DemographicsReport;
 class BaseChannelReport;
 
+namespace SerializedState
+{
+    void AddHumans( Kernel::Node* pNode,
+                    const std::vector<Kernel::IIndividualHuman*>& rHumanCollection );
+}
+
 namespace Kernel
 {
     class SimulationConfig;
@@ -45,6 +51,9 @@ namespace Kernel
         friend class ::Report;
         friend class ::ReportVector;
         friend class ::DemographicsReport;
+
+        friend void SerializedState::AddHumans( Node* pNode,
+                                                const std::vector<IIndividualHuman*>& rHumanCollection );
 
     public:
         static Node *CreateNode(ISimulationContext *_parent_sim, ExternalNodeId_t externalNodeId, suids::suid node_suid);

@@ -1,0 +1,4 @@
+{
+    "Memory_Usage_Warning_Threshold_Working_Set_MB": 7500,
+    "Memory_Usage_Halting_Threshold_Working_Set_MB": 8000
+}

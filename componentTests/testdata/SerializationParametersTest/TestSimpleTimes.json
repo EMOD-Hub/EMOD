@@ -4,6 +4,7 @@
         2.5,
         4
     ],
+	"Serialization_Max_Humans_Per_Collection": 3333,
     "Serialization_Precision" : "REDUCED",
     "Serialized_Population_Writing_Type" : "TIME",
     "Serialized_Population_Reading_Type" : "NONE"
