@@ -3,11 +3,26 @@
 # 1. builds utils static library
 
 import os
+import subprocess
 from subprocess import Popen, PIPE
 import shutil
 import getpass
 
 Import("env")
+
+
+def is_git_available():
+    """Checks if the 'git' command is available in the system's PATH."""
+    try:
+        # Use subprocess.DEVNULL to silence output
+        subprocess.run(['git', '--version'], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        return True
+    except (subprocess.CalledProcessError, FileNotFoundError, OSError):
+        # CalledProcessError is raised if the command returns a non-zero exit code
+        # (e.g., if git is installed but misconfigured)
+        # FileNotFoundError/OSError is raised if the git executable is not found
+        return False
+
 
 if os.sys.platform == 'win32':
     ppf = '/D' # Visual Studio preprocessor define flag
@@ -39,31 +54,38 @@ for lval in def_lines:
 
 ver_tag = "v{:s}.{:s}".format(ver_maj, ver_min)
 
-# commit/branch info
-git_rev_handle = Popen(["git","rev-list","{:s}..HEAD".format(ver_tag),"--count"], stdout=PIPE, stderr=PIPE)
-rev = git_rev_handle.stdout.read().decode().strip().strip( '"\'' ).replace(" ","_")
-git_err = git_rev_handle.stderr.read().decode()
-if git_err:
-    # Raising an error breaks the Jenkins build; should be an error once off of Jenkins
-    # raise Exception(git_err)
-    rev = '0'
 
-git_branch_handle = Popen( "git rev-parse --abbrev-ref HEAD".split(), stdout=PIPE )
-branch = git_branch_handle.stdout.read().decode().strip().strip( '"\'' ).replace(" ","_")
-if branch == "":
-    branch = "unknownbranch"
+rev = '0'
+branch = "unknownbranch"
+sha1 = "_unknownsha1"
+git_date = "unknown_date_time"
 
-git_sha_handle = Popen( "git log --pretty=format:'%h' -n 1".split(), stdout=PIPE )
-sha1 = git_sha_handle.stdout.read().decode().strip().strip( '"\'' ).replace(" ","_")
-if sha1 == "":
-    sha1 = "unknownsha1"
-sha1 = '(' + sha1 + ')'
 
-git_date_handle = Popen( "git log -1 --pretty=%ai".split(), stdout=PIPE )
-git_date = git_date_handle.stdout.read().decode().strip().strip( '"\'' ).replace(' ','_')
-if git_date == "":
-    git_date = "unknown_date_time"
+if is_git_available():
+    # commit/branch info
+    git_rev_handle = Popen(["git","rev-list","{:s}..HEAD".format(ver_tag),"--count"], stdout=PIPE, stderr=PIPE)
+    tmp_rev = git_rev_handle.stdout.read().decode().strip().strip( '"\'' ).replace(" ","_")
+    git_err = git_rev_handle.stderr.read().decode()
+    if not git_err:
+        # Raising an error breaks the Jenkins build; should be an error once off of Jenkins
+        # raise Exception(git_err)
+        rev = tmp_rev
 
+    git_branch_handle = Popen( "git rev-parse --abbrev-ref HEAD".split(), stdout=PIPE )
+    tmp_branch = git_branch_handle.stdout.read().decode().strip().strip( '"\'' ).replace(" ","_")
+    if tmp_branch != "":
+        branch = tmp_branch
+
+    git_sha_handle = Popen( "git log --pretty=format:'%h' -n 1".split(), stdout=PIPE )
+    tmp_sha1 = git_sha_handle.stdout.read().decode().strip().strip( '"\'' ).replace(" ","_")
+    if tmp_sha1 != "":
+        sha1 = tmp_sha1
+    sha1 = '(' + sha1 + ')'
+
+    git_date_handle = Popen( "git log -1 --pretty=%ai".split(), stdout=PIPE )
+    tmp_git_date = git_date_handle.stdout.read().decode().strip().strip( '"\'' ).replace(' ','_')
+    if tmp_git_date != "":
+        git_date = tmp_git_date
 
 print( branch + sha1 )
 
