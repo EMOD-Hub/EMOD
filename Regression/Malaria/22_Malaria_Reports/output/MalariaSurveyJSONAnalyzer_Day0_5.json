@@ -7342,7 +7342,7 @@
                 645.0004882813
             ],
             "pfhrp2": [
-                62.04943466187
+                62.04942703247
             ],
             "smeared_asexual_parasites": [
                 848.1054077148
@@ -8050,7 +8050,7 @@
             ],
             "true_gametocytes": [
                 2.438044786453,
-                252.0489501953
+                252.0489196777
             ],
             "smeared_true_asexual_parasites": [
                 426.9694824219,
@@ -8058,7 +8058,7 @@
             ],
             "smeared_true_gametocytes": [
                 137.5839996338,
-                2399.590820313
+                2399.592285156
             ],
             "asexual_parasites": [
                 1600,
@@ -8078,7 +8078,7 @@
             ],
             "pfhrp2": [
                 52.75132751465,
-                65.62252044678
+                65.62251281738
             ],
             "smeared_asexual_parasites": [
                 1160.168823242,
@@ -8090,7 +8090,7 @@
             ],
             "infectiousness": [
                 0.007725639734417,
-                0.5776007175446
+                0.5776006579399
             ],
             "infectiousness_smeared": [
                 0,
@@ -8098,7 +8098,7 @@
             ],
             "infectiousness_age_scaled": [
                 0.007725639734417,
-                0.5776007175446
+                0.5776006579399
             ],
             "pos_asexual_fields": [
                 189,
@@ -11290,16 +11290,16 @@
                 ""
             ],
             "true_asexual_parasites": [
-                741.8706665039
+                741.8706054688
             ],
             "true_gametocytes": [
-                69.20087432861
+                69.20078277588
             ],
             "smeared_true_asexual_parasites": [
                 2714.823242188
             ],
             "smeared_true_gametocytes": [
-                31.79625511169
+                31.79621124268
             ],
             "asexual_parasites": [
                 730
@@ -11311,10 +11311,10 @@
                 855.6939086914
             ],
             "pcr_gametocytes": [
-                419.1403808594
+                419.1399230957
             ],
             "pfhrp2": [
-                50.47380447388
+                50.4737739563
             ],
             "smeared_asexual_parasites": [
                 720.7239379883
@@ -11323,13 +11323,13 @@
                 74.53182983398
             ],
             "infectiousness": [
-                0.2163139283657
+                0.2163137048483
             ],
             "infectiousness_smeared": [
                 0.1000000014901
             ],
             "infectiousness_age_scaled": [
-                0.2163139283657
+                0.2163137048483
             ],
             "pos_asexual_fields": [
                 167

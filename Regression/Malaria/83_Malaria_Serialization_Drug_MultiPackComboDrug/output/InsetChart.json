@@ -1331,7 +1331,7 @@
                 0.0001093736573239,
                 8.761414210312e-05,
                 6.934433622519e-05,
-                5.437368236016e-05,
+                5.437368599814e-05,
                 4.230427657603e-05,
                 3.210044451407e-05,
                 2.471132756909e-05,
@@ -1468,7 +1468,7 @@
                 0,
                 0
             ],
-            "Units": "Infected Fraction"
+            "Units": "Infected"
         },
         "Infectious Vectors": {
             "Data": [
@@ -3258,8 +3258,8 @@
     },
     "Header": {
         "Channels": 31,
-        "DTK_Version": "0 unknown-branch (unknown) May 25 2022 08:14:34",
-        "DateTime": "Thu Jun  2 16:20:44 2022",
+        "DTK_Version": "2.30.0 gh152_BloodCapacity_Calculation_Fix(050fe88582) Jan  7 2026 09:48:56",
+        "DateTime": "Wed Jan  7 11:12:28 2026",
         "Report_Type": "InsetChart",
         "Report_Version": "3.2",
         "Simulation_Timestep": 1,
