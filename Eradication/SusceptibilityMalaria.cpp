@@ -154,7 +154,7 @@ namespace Kernel
 
             if(pyrogenic_threshold_max < pyrogenic_threshold_min)
             {
-                throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, "Pyrogenic_Threshold_Max must be greater than Pyrogenic_Threshold_Min." );
+                throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, "Pyrogenic_Threshold_Max must be greater or equal to than Pyrogenic_Threshold_Min." );
             }
         }
 
