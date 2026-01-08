@@ -52,8 +52,8 @@ namespace Kernel
         friend class ::ReportVector;
         friend class ::DemographicsReport;
 
-        friend void SerializedState::AddHumans( Node* pNode,
-                                                const std::vector<IIndividualHuman*>& rHumanCollection );
+        friend void SerializedState::AddHumans( Kernel::Node* pNode,
+                                                const std::vector<Kernel::IIndividualHuman*>& rHumanCollection );
 
     public:
         static Node *CreateNode(ISimulationContext *_parent_sim, ExternalNodeId_t externalNodeId, suids::suid node_suid);
