@@ -4,7 +4,6 @@
 
 import os
 import subprocess
-from subprocess import Popen, PIPE
 import shutil
 import getpass
 
@@ -63,7 +62,9 @@ git_date = "unknown_date_time"
 
 if is_git_available():
     # commit/branch info
-    git_rev_handle = Popen(["git","rev-list","{:s}..HEAD".format(ver_tag),"--count"], stdout=PIPE, stderr=PIPE)
+    git_rev_handle = subprocess.Popen( ["git","rev-list","{:s}..HEAD".format(ver_tag),"--count"],
+                                       stdout=subprocess.PIPE,
+                                       stderr=subprocess.PIPE)
     tmp_rev = git_rev_handle.stdout.read().decode().strip().strip( '"\'' ).replace(" ","_")
     git_err = git_rev_handle.stderr.read().decode()
     if not git_err:
@@ -71,18 +72,18 @@ if is_git_available():
         # raise Exception(git_err)
         rev = tmp_rev
 
-    git_branch_handle = Popen( "git rev-parse --abbrev-ref HEAD".split(), stdout=PIPE )
+    git_branch_handle = subprocess.Popen( "git rev-parse --abbrev-ref HEAD".split(), stdout=subprocess.PIPE )
     tmp_branch = git_branch_handle.stdout.read().decode().strip().strip( '"\'' ).replace(" ","_")
     if tmp_branch != "":
         branch = tmp_branch
 
-    git_sha_handle = Popen( "git log --pretty=format:'%h' -n 1".split(), stdout=PIPE )
+    git_sha_handle = subprocess.Popen( "git log --pretty=format:'%h' -n 1".split(), stdout=subprocess.PIPE )
     tmp_sha1 = git_sha_handle.stdout.read().decode().strip().strip( '"\'' ).replace(" ","_")
     if tmp_sha1 != "":
         sha1 = tmp_sha1
     sha1 = '(' + sha1 + ')'
 
-    git_date_handle = Popen( "git log -1 --pretty=%ai".split(), stdout=PIPE )
+    git_date_handle = subprocess.Popen( "git log -1 --pretty=%ai".split(), stdout=subprocess.PIPE )
     tmp_git_date = git_date_handle.stdout.read().decode().strip().strip( '"\'' ).replace(' ','_')
     if tmp_git_date != "":
         git_date = tmp_git_date
