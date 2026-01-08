@@ -24,6 +24,18 @@ class ReportVector;
 class DemographicsReport;
 class BaseChannelReport;
 
+namespace Kernel
+{
+    class SimulationConfig;
+    class RANDOMBASE;
+    struct INodeEventContext;
+    class  NodeEventContextHost;
+    struct ISimulation;
+    struct IMigrationInfoFactory;
+    class Node;
+    struct IIndividualHuman;
+}
+
 namespace SerializedState
 {
     void AddHumans( Kernel::Node* pNode,
@@ -32,14 +44,6 @@ namespace SerializedState
 
 namespace Kernel
 {
-    class SimulationConfig;
-    class RANDOMBASE;
-    struct INodeEventContext;
-    //typedef 
-    class  NodeEventContextHost;
-    struct ISimulation;
-    struct IMigrationInfoFactory;
-
     class IDMAPI Node : public INodeContext, public JsonConfigurable
     {
         GET_SCHEMA_STATIC_WRAPPER(Node)
