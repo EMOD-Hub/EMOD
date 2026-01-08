@@ -16,8 +16,7 @@
         "Geography": "Namawala",
         "Run_Number": 1,
         "Simulation_Duration": 1825,
-		"Memory_Usage_Warning_Threshold_Working_Set_MB": 19000,
-		"Memory_Usage_Halting_Threshold_Working_Set_MB": 20000,
+        "Enable_Demographics_Reporting": 0,
         "COMMENT": "Do not include because we cannot have a queue of previous days infections when starting from serialized file.",
         "Inset_Chart_Reporting_Include_30Day_Avg_Infection_Duration": 0
     },
