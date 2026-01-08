@@ -195,9 +195,9 @@ namespace SerializedState
     }
 
     template<typename T>
-    std::vector<typename T> ConvertIntegerJsonArray( IJsonObjectAdapter& rJsonObject,
-                                                     const char* pObjTypeStr,
-                                                     const char* pjsonKeyStr )
+    std::vector<T> ConvertIntegerJsonArray( IJsonObjectAdapter& rJsonObject,
+                                            const char* pObjTypeStr,
+                                            const char* pjsonKeyStr )
     {
         std::vector<T> integer_array;
 
