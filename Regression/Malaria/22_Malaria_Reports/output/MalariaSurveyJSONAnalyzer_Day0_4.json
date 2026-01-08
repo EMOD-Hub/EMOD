@@ -5485,7 +5485,7 @@
                 508.3774108887
             ],
             "true_gametocytes": [
-                67.11777496338
+                67.11776733398
             ],
             "smeared_true_asexual_parasites": [
                 370.1237792969
@@ -5515,13 +5515,13 @@
                 81.8268661499
             ],
             "infectiousness": [
-                0.2483042776585
+                0.2483042627573
             ],
             "infectiousness_smeared": [
                 0.2750000059605
             ],
             "infectiousness_age_scaled": [
-                0.2483042776585
+                0.2483042627573
             ],
             "pos_asexual_fields": [
                 146
