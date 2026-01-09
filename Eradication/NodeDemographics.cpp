@@ -440,18 +440,6 @@ void NodeDemographicsFactory::Initialize( const ::Configuration* config,
                 }
                 JsonObjectDemog metadata = json["Metadata"] ;
 
-                if( !metadata.Contains( "NodeCount" ) )
-                {
-                    throw NodeDemographicsFormatErrorException( __FILE__, __LINE__, __FUNCTION__, demo_filename.c_str(), "Missing the 'Metadata.NodeCount' object." );
-                }
-
-                int nodecount = metadata.GetInt("NodeCount");
-                if( nodecount <= 0 )
-                {
-                    std::stringstream msg ;
-                    msg << "'NodeCount' = " << nodecount << ".  It must be positive." ;
-                    throw NodeDemographicsFormatErrorException( __FILE__, __LINE__, __FUNCTION__, demo_filename.c_str(), msg.str().c_str() );
-                }
                 SetIdReference( layer, demo_filename, metadata );
 
                 // ------------------------------------------------------------------
@@ -851,7 +839,6 @@ void NodeDemographicsFactory::WriteDefaultDemographicsFile( const std::string& r
            <<          "Tool" << "Eradication.exe"
            <<          "Author" << "DTK"
            <<          "IdReference" << idreference.c_str()
-           <<          "NodeCount" << nodeIDs.size()
            <<     '}'
            <<     "Defaults" << layer_defaults[0]
            <<     "Nodes"

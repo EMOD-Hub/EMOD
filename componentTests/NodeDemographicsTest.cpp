@@ -300,18 +300,6 @@ SUITE(NodeDemographicsTest)
                                               "Failed to parse incoming text. Name of an object member must be a string" );
     }
 
-    TEST_FIXTURE(NodeDemographicsFactoryFixture, TestNoNodeCount)
-    {
-        TestHelper_FormatException( __LINE__, "demographics_TestNoNodeCount.json", 
-                                              "Format error encountered loading demographics file (testdata/NodeDemographicsTest/demographics_TestNoNodeCount.json).  Missing the 'Metadata.NodeCount' object." );
-    }
-
-    TEST_FIXTURE(NodeDemographicsFactoryFixture, TestZeroNodecount)
-    {
-        TestHelper_FormatException( __LINE__, "demographics_TestZeroNodeCount.json", 
-                                              "Format error encountered loading demographics file (testdata/NodeDemographicsTest/demographics_TestZeroNodeCount.json).  'NodeCount' = 0.  It must be positive." );
-    }
-
     TEST_FIXTURE(NodeDemographicsFactoryFixture, TestMissingIdReference)
     {
         TestHelper_FormatException( __LINE__, "demographics_TestMissingIdReference.json", 
@@ -353,32 +341,6 @@ SUITE(NodeDemographicsTest)
         TestHelper_FormatException( __LINE__, "demographics_TestStringTableBadFormat.json", 
                                               "Failed to parse incoming text. Expect a value here. at character=991 / line number=0" );
     }
-    
-#ifdef USE_NODEOFFSET
-    TEST_FIXTURE(NodeDemographicsFactoryFixture, TestBadIdInNodeOffset)
-    {
-        TestHelper_MissingAttributes_FormatException( __LINE__, "demographics_TestBadIdInNodeOffset.json",
-                                                                "Format error encountered loading demographics file (UNKNOWN).  NodeID for lookup (2457) does not equal the NodeID (1) found in the data.  Is NodeOffset messed up?");
-    }
-
-    TEST_FIXTURE(NodeDemographicsFactoryFixture, TestBadOffsetInNodeOffset)
-    {
-        TestHelper_MissingAttributes_FormatException( __LINE__, "demographics_TestBadOffsetInNodeOffset.json",
-                                                                "Format error encountered loading demographics file (testdata/NodeDemographicsTest/demographics_TestBadOffsetInNodeOffset.json).  NodeID for lookup (1) does not have data at offset 4095.  Is NodeOffset messed up?");
-    }
-    
-    TEST_FIXTURE(NodeDemographicsFactoryFixture, TestBadNodeOffsetNot16)
-    {
-        TestHelper_FormatException( __LINE__, "demographics_TestBadNodeOffsetNot16.json",
-                                              "Format error encountered loading demographics file (testdata/NodeDemographicsTest/demographics_TestBadNodeOffsetNot16.json).  Length of 'NodeOffsets' isn't consistent with 'NodeCount' attribute." );
-    }
-    
-    TEST_FIXTURE(NodeDemographicsFactoryFixture, TestBadNodeOffsetNc2) //offset is for two nodes while nodecount=1
-    {
-        TestHelper_FormatException( __LINE__, "demographics_TestBadNodeOffsetNc2.json", 
-                                              "Format error encountered loading demographics file (testdata/NodeDemographicsTest/demographics_TestBadNodeOffsetNc2.json).  Length of 'NodeOffsets' isn't consistent with 'NodeCount' attribute." );
-    }
-#endif
 
     TEST_FIXTURE(NodeDemographicsFactoryFixture, TestMisingNodeAttributes)
     {
@@ -1621,9 +1583,6 @@ SUITE(NodeDemographicsTest)
 
         JsonObjectDemog default_demog_json ;
         default_demog_json.ParseFile( default_fn.c_str() );
-
-        int num_nodes = default_demog_json["Metadata"]["NodeCount"].AsInt();
-        CHECK_EQUAL( 100, num_nodes );
 
         for( int i = 0 ; i < nodeIDs.size() ; i++ )
         {
