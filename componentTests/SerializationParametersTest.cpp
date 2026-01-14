@@ -87,6 +87,8 @@ SUITE(SerializationParametersTest)
         { 0, 1, 2 }
         );
         CHECK_ARRAY_EQUAL(serialization_time_steps, compared, compared.size());
+
+        CHECK_EQUAL( 2000, SerializationParameters::GetInstance()->GetMaxHumansPerCollection() ); // default
         CHECK(m_fakeLogger.Empty());
 
     }
@@ -97,14 +99,15 @@ SUITE(SerializationParametersTest)
         m_pSimulationConfig->Sim_Tstep = 1.5;
         m_pSimulationConfig->starttime = 1;
         int steps = 10;
-        
+
         SerializationParameters::GetInstance()->Configure(p_config.get());
         std::deque<int32_t> serialization_time_steps = SerializationParameters::GetInstance()->GetSerializedTimeSteps(steps);
 
-        std::deque<int32_t> compared(
-        { 0, 1, 2 }
-        );
+        std::deque<int32_t> compared( { 0, 1, 2 } );
+
         CHECK_ARRAY_EQUAL(serialization_time_steps, compared, compared.size());
+
+        CHECK_EQUAL( 3333, SerializationParameters::GetInstance()->GetMaxHumansPerCollection() ); // read from file
         CHECK(m_fakeLogger.Empty());
     }
 
@@ -116,9 +119,8 @@ SUITE(SerializationParametersTest)
         SerializationParameters::GetInstance()->Configure(p_config.get());
         std::deque<int32_t> serialization_time_steps = SerializationParameters::GetInstance()->GetSerializedTimeSteps(steps);
 
-        std::deque<int32_t> compared(
-        { 0, 1, 2, 10 }
-        );
+        std::deque<int32_t> compared( { 0, 1, 2, 10 } );
+
         CHECK_ARRAY_EQUAL(serialization_time_steps, compared, compared.size());
         CHECK(m_fakeLogger.Empty());
     }

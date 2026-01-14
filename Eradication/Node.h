@@ -29,11 +29,21 @@ namespace Kernel
     class SimulationConfig;
     class RANDOMBASE;
     struct INodeEventContext;
-    //typedef 
     class  NodeEventContextHost;
     struct ISimulation;
     struct IMigrationInfoFactory;
+    class Node;
+    struct IIndividualHuman;
+}
 
+namespace SerializedState
+{
+    void AddHumans( Kernel::Node* pNode,
+                    const std::vector<Kernel::IIndividualHuman*>& rHumanCollection );
+}
+
+namespace Kernel
+{
     class IDMAPI Node : public INodeContext, public JsonConfigurable
     {
         GET_SCHEMA_STATIC_WRAPPER(Node)
@@ -45,6 +55,9 @@ namespace Kernel
         friend class ::Report;
         friend class ::ReportVector;
         friend class ::DemographicsReport;
+
+        friend void SerializedState::AddHumans( Kernel::Node* pNode,
+                                                const std::vector<Kernel::IIndividualHuman*>& rHumanCollection );
 
     public:
         static Node *CreateNode(ISimulationContext *_parent_sim, ExternalNodeId_t externalNodeId, suids::suid node_suid);

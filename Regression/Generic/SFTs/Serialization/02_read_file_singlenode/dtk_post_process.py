@@ -18,11 +18,11 @@ def application(output_folder="output", config_filename="config.json",
 
     dtk_filename = path.join(output_folder, 'state-00070.dtk')
     dtk_file = d_ss.DtkFile(dtk_filename)
-    dtk_file.write_node_to_disk(node_index=0)
-    dtk_file.write_simulation_to_disk()
     dtk_file.write_human_to_disk(node_index=0, suid=10)
     dtk_file.write_human_to_disk(node_index=0, suid=100)
     dtk_file.write_human_to_disk(node_index=0, suid=1000)
+    dtk_file.write_node_to_disk(node_index=0)
+    dtk_file.write_simulation_to_disk()
 
     #TODO: make sure each individual is Simulation_Duration days older
     human_1_first = d_ss.SerializedHuman.from_file('human-10-old.json')
