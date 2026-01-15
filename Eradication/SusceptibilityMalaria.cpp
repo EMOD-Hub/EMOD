@@ -565,8 +565,8 @@ namespace Kernel
         }
         else
         {   
-            // 0.00137 = (1/7300) linear growth from 0.5L to 5L over 0-20 years
-            m_RBCproduction = int64_t( INFANT_RBC_PRODUCTION + ( _age * 0.000137 ) * ( ADULT_RBC_PRODUCTION - INFANT_RBC_PRODUCTION ) ); 
+            // linear growth from 0.5L to 5L over 0-20 years, not ideal but works for now
+            m_RBCproduction = int64_t( INFANT_RBC_PRODUCTION + ( _age / ( 20 * DAYSPERYEAR)) * ( ADULT_RBC_PRODUCTION - INFANT_RBC_PRODUCTION ) ); 
             if(m_RBCproduction > ADULT_RBC_PRODUCTION)
             {
                 m_RBCproduction = ADULT_RBC_PRODUCTION; // cap at adult production, overrun happens to infected people at age 7299.375-7300 days
