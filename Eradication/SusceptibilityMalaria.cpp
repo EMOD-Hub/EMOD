@@ -316,13 +316,8 @@ namespace Kernel
 
         age += dt; // age in days
         m_age_dependent_biting_risk = BitingRiskAgeFactor(age);
-        if(age < (20 * DAYSPERYEAR)) // recalculate under-20 year olds every time step 
+        if(age < (20 * DAYSPERYEAR + dt)) // recalculate < 20 every time step and then once when they turn 20
         {
-            recalculateBloodCapacity(age);
-        }
-        else if(age < (20 * DAYSPERYEAR + dt)) // recalculate once when they turn 20
-        {
-            // set adult blood capacity once when they turn 20, it remains constant after that, no need to update again
             recalculateBloodCapacity(age);
         }
 
@@ -563,12 +558,15 @@ namespace Kernel
         // Only approximate due to linear increase in blood volume from 0.5 to 5 liters with age, a better growth model would be nonlinear
         if (_age >= 20 * DAYSPERYEAR) // 20 years = 7300 days
         {
+            // This initializes the daily production of red blood cells for adults to maintain standard equilibrium RBC concentrations given RBC lifetime
+            // N.B. Heavily caveated, because not all adults are same size.  However, this keeps consistent equilibrium RBC densities, allowing study of anemia, etc...
             m_RBCproduction = ADULT_RBC_PRODUCTION;
             m_inv_microliters_blood = float( 1 / ( ( 0.225 * ( 7300 / DAYSPERYEAR ) + 0.5 ) * 1e6 ) );// adult blood volume 5 liters
         }
         else
-        {
-            m_RBCproduction = int64_t( INFANT_RBC_PRODUCTION + ( _age * .000137 ) * ( ADULT_RBC_PRODUCTION - INFANT_RBC_PRODUCTION ) );
+        {   
+            // 0.00137 = (1/7300) linear growth from 0.5L to 5L over 0-20 years
+            m_RBCproduction = int64_t( INFANT_RBC_PRODUCTION + ( _age * 0.000137 ) * ( ADULT_RBC_PRODUCTION - INFANT_RBC_PRODUCTION ) ); 
             if(m_RBCproduction > ADULT_RBC_PRODUCTION)
             {
                 m_RBCproduction = ADULT_RBC_PRODUCTION; // cap at adult production, overrun happens to infected people at age 7299.375-7300 days
