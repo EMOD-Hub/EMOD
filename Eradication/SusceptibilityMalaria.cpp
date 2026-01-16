@@ -228,28 +228,9 @@ namespace Kernel
     void SusceptibilityMalaria::Initialize(float _age, float immmod, float riskmod)
     {
         SusceptibilityVector::Initialize(_age, immmod, riskmod);
-
-        // how many RBC's a person should have determined by age
-        if (_age > (20 * DAYSPERYEAR))
-        {
-            // This initializes the daily production of red blood cells for adults to maintain standard equilibrium RBC concentrations given RBC lifetime
-            // N.B. Heavily caveated, because not all adults are same size.  However, this keeps consistent equilibrium RBC densities, allowing study of anemia, etc...
-            m_RBCproduction = ADULT_RBC_PRODUCTION;// 2.0*10^11 (RBCs/day)*(120 days) = 2.4x10^13 RBCs ~= 5 liters * 5x10^6 RBCs/microliter
-
-            // This equation tracks the blood volume separately from the equilibrium number of RBCs, allowing for non-constant RBC concentration.
-            // m_inv_microliters_blood is 1/(microliters of blood in body)--this allows easy calculation of pathogen densities from pathogen numbers
-            m_inv_microliters_blood = float(1 / ( (0.225 * (7300/DAYSPERYEAR) + 0.5) * 1e6 )); // 5 liters
-        }
-        else
-        {
-            // Initializes daily production of red blood cells for children to grow linearly from INFANT_RBC_PRODUCTION to ADULT_RBC_PRODUCTION by age 20
-            // Only approximate due to linear increase in blood volume from 0.5 to 5 liters from birth to age 20 years.  Non-linear growth model might be better...
-            m_RBCproduction = int64_t(INFANT_RBC_PRODUCTION + (_age * 0.000137) * (ADULT_RBC_PRODUCTION - INFANT_RBC_PRODUCTION)); //*.000137==/7300 (linear growth to age 20)
-            m_inv_microliters_blood = float(1 / ( (0.225 * (_age/DAYSPERYEAR) + 0.5 ) * 1e6)); // linear growth from 0.5 liters at birth to 5 liters at age 20
-        }
-
-        m_RBCcapacity = m_RBCproduction * AVERAGE_RBC_LIFESPAN;  // Health equilibrium of RBC is production*lifetime.  This is the total number of RBC per human
-        m_RBC         = m_RBCcapacity;
+        
+        recalculateBloodCapacity( _age );
+        m_RBC = m_RBCcapacity; // initial m_RBC is at capacity
 
         // Set up variable pyrogenic thresholds + fever killing rates
         m_ind_pyrogenic_threshold = SusceptibilityMalariaConfig::pyrogenic_threshold;
@@ -330,11 +311,15 @@ namespace Kernel
 
     void SusceptibilityMalaria::Update(float dt)
     {
-        release_assert( params() );
+        // dt = 0.125 when infected, 1.0 otherwise
+        release_assert(params());
 
         age += dt; // age in days
         m_age_dependent_biting_risk = BitingRiskAgeFactor(age);
-        recalculateBloodCapacity(age);
+        if(age < (20 * DAYSPERYEAR + dt)) // recalculate < 20 every time step and then once when they turn 20
+        {
+            recalculateBloodCapacity(age);
+        }
 
         // Red blood cell dynamics
         if (SusceptibilityMalariaConfig::erythropoiesis_anemia_effect > 0)
@@ -569,28 +554,27 @@ namespace Kernel
     void SusceptibilityMalaria::recalculateBloodCapacity( float _age )
     {
         // How many RBCs a person should have determined by age.
-        // This sets the daily production of red blood cells for adults to maintain 
-        // standard equilibrium RBC concentrations given RBC lifetime
-        if ( _age > (20 * DAYSPERYEAR) )
+        // Sets daily production of red blood cells for people to set their equilibrium RBC concentrations and blood volume given an RBC lifetime
+        // Only approximate due to linear increase in blood volume from 0.5 to 5 liters with age, a better growth model would be nonlinear
+        if (_age >= 20 * DAYSPERYEAR) // 20 years = 7300 days
         {
-            // Update adults every year.  TODO: this presumes DAYSPERYEAR is a multiple of dt
-            if ( int(_age) % DAYSPERYEAR == 0 )
-            {
-                // 2.0*10^11 (RBCs/day)*(120 days)=2.4x10^13 RBCs ~= 5 liters * 5x10^6 RBCs/microliter
-                m_RBCproduction         = ADULT_RBC_PRODUCTION;
-                m_inv_microliters_blood = float(1 / ( (0.225 * (7300/DAYSPERYEAR) + 0.5) * 1e6 )); 
-                m_RBCcapacity           = m_RBCproduction * AVERAGE_RBC_LIFESPAN; // Health equilibrium of RBC is production*lifetime
-            }
+            // This initializes the daily production of red blood cells for adults to maintain standard equilibrium RBC concentrations given RBC lifetime
+            // N.B. Heavily caveated, because not all adults are same size.  However, this keeps consistent equilibrium RBC densities, allowing study of anemia, etc...
+            m_RBCproduction = ADULT_RBC_PRODUCTION;
+            m_inv_microliters_blood = float( 1 / ( ( 0.225 * ( 7300 / DAYSPERYEAR ) + 0.5 ) * 1e6 ) );// adult blood volume 5 liters
         }
         else
-        {
-            // Update children every day.
-            // Sets daily production of red blood cells for children to set their equilibrium RBC concentrations and blood volume given an RBC lifetime
-            // Only approximate due to linear increase in blood volume from 0.5 to 5 liters with age, a better growth model would be nonlinear
-            m_RBCproduction         = int64_t(INFANT_RBC_PRODUCTION + (_age * .000137) * (ADULT_RBC_PRODUCTION - INFANT_RBC_PRODUCTION)); //*.000137==/(20*DAYSPERYEAR)
-            m_inv_microliters_blood = float(1 / ( (0.225 * (_age/DAYSPERYEAR) + 0.5 ) * 1e6 )); 
-            m_RBCcapacity           = m_RBCproduction * AVERAGE_RBC_LIFESPAN; // Health equilibrium of RBC is production*lifetime
+        {   
+            // linear growth from 0.5L to 5L over 0-20 years, not ideal but works for now
+            // 0.000137 = 1/(20*DAYSPERYEAR)
+            m_RBCproduction = int64_t( INFANT_RBC_PRODUCTION + ( _age * 0.000137) * ( ADULT_RBC_PRODUCTION - INFANT_RBC_PRODUCTION ) ); 
+            if(m_RBCproduction > ADULT_RBC_PRODUCTION)
+            {
+                m_RBCproduction = ADULT_RBC_PRODUCTION; // cap at adult production, overrun happens to infected people at age 7299.375-7300 days
+            }
+            m_inv_microliters_blood = float( 1 / ( ( 0.225 * ( _age / DAYSPERYEAR ) + 0.5 ) * 1e6 ) );
         }
+        m_RBCcapacity = m_RBCproduction * AVERAGE_RBC_LIFESPAN; // Health equilibrium of RBC is production*lifetime
     }
 
     void SusceptibilityMalaria::countAntibodyVariations()
