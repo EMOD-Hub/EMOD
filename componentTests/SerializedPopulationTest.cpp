@@ -21,58 +21,135 @@ auto is_a_space = [](const unsigned char c)
 
 SUITE( SerializedPopulationTest )
 {   
-    TEST( TestHeader_Version5_ToString )
+    void FakePrepareSimulationData( std::vector<int32_t>& node_suids,
+                                    std::vector<int32_t>& human_node_suids,
+                                    std::vector<std::vector<IIndividualHuman*>>& human_collections )
+    {
+        node_suids.push_back( 1 );
+        node_suids.push_back( 2 );
+        node_suids.push_back( 3 );
+
+        human_node_suids.push_back( 1 );
+        human_node_suids.push_back( 1 );
+        human_node_suids.push_back( 2 );
+        human_node_suids.push_back( 3 );
+        human_node_suids.push_back( 3 );
+        human_node_suids.push_back( 3 );
+        std::vector<IIndividualHuman*> node_1_collection_1;
+        for( int i = 0; i < 1000; ++i )
+        {
+            node_1_collection_1.push_back( nullptr );
+        }
+        std::vector<IIndividualHuman*> node_1_collection_2;
+        for( int i = 0; i < 500; ++i )
+        {
+            node_1_collection_2.push_back( nullptr );
+        }
+        std::vector<IIndividualHuman*> node_2_collection_1;
+        for( int i = 0; i < 2000; ++i )
+        {
+            node_2_collection_1.push_back( nullptr );
+        }
+        std::vector<IIndividualHuman*> node_3_collection_1;
+        for( int i = 0; i < 1000; ++i )
+        {
+            node_1_collection_1.push_back( nullptr );
+        }
+        std::vector<IIndividualHuman*> node_3_collection_2;
+        for( int i = 0; i < 1000; ++i )
+        {
+            node_3_collection_2.push_back( nullptr );
+        }
+        std::vector<IIndividualHuman*> node_3_collection_3;
+        for( int i = 0; i < 300; ++i )
+        {
+            node_3_collection_3.push_back( nullptr );
+        }
+        human_collections.push_back( node_1_collection_1 );
+        human_collections.push_back( node_1_collection_2 );
+        human_collections.push_back( node_2_collection_1 );
+        human_collections.push_back( node_3_collection_1 );
+        human_collections.push_back( node_3_collection_2 );
+        human_collections.push_back( node_3_collection_3 );
+    }
+
+    void FakeWritingOfDataAndUpdatingHeader( SerializedState::Header& rHeader )
+    {
+        // Create Header
+        rHeader.version = 6;
+        //rHeader.date = "Sun Dec 7 08:40:49 2025";
+        //rHeader.emod_info;
+        rHeader.sim_compression = "LZ4";
+        rHeader.sim_chunk_size = 1234567;
+        rHeader.node_compressions.push_back( "LZ4" );
+        rHeader.node_compressions.push_back( "SNA" );
+        rHeader.node_compressions.push_back( "NON" );
+        rHeader.node_suids.push_back( 1 );
+        rHeader.node_suids.push_back( 2 );
+        rHeader.node_suids.push_back( 3 );
+        rHeader.node_chunk_sizes.push_back(       2345678 );
+        rHeader.node_chunk_sizes.push_back(   10000000000 );
+        rHeader.node_chunk_sizes.push_back( 2000000000000 );
+        rHeader.human_compressions.push_back( "LZ4" ); //1
+        rHeader.human_compressions.push_back( "LZ4" ); //1
+        rHeader.human_compressions.push_back( "SNA" ); //2
+        rHeader.human_compressions.push_back( "NON" ); //3 
+        rHeader.human_compressions.push_back( "SNA" ); //3
+        rHeader.human_compressions.push_back( "LZ4" ); //3
+        rHeader.human_node_suids.push_back( 1 );
+        rHeader.human_node_suids.push_back( 1 );
+        rHeader.human_node_suids.push_back( 2 );
+        rHeader.human_node_suids.push_back( 3 );
+        rHeader.human_node_suids.push_back( 3 );
+        rHeader.human_node_suids.push_back( 3 );
+        rHeader.human_chunk_sizes.push_back(      2345678 ); // "LZ4"
+        rHeader.human_chunk_sizes.push_back(      2345678 ); // "LZ4"
+        rHeader.human_chunk_sizes.push_back(   1000000000 ); // "SNA"
+        rHeader.human_chunk_sizes.push_back( 200000000000 ); // "NON"
+        rHeader.human_chunk_sizes.push_back(   2000000000 ); // "SNA"
+        rHeader.human_chunk_sizes.push_back(      9876543 ); // "LZ4"
+        rHeader.human_num_humans.push_back( 1000 );
+        rHeader.human_num_humans.push_back(  500 );
+        rHeader.human_num_humans.push_back(  400 );
+        rHeader.human_num_humans.push_back( 1000 );
+        rHeader.human_num_humans.push_back( 1000 );
+        rHeader.human_num_humans.push_back(  300 );
+    }
+
+    TEST( TestHeader_ToFromJson_PopulateSizeHeader )
     {
         try
         {
-            // Create Header
-            SerializedState::Header header;
-            header.version = 5;
-            header.date = "Tue Aug 30 19:28:49 2022";
-            header.compressed = false;;
-            header.byte_count = 123456789;
-            header.compression = "NONE";
-            header.chunk_count = 987654321;             // actually 3, testing uint
-            header.chunk_sizes = { 1, 234567891, 3 };   
+            std::vector<int32_t> node_suids;
+            std::vector<int32_t> human_node_suids;
+            std::vector<std::vector<IIndividualHuman*>> human_collections;
 
-            // compare generated header, remove spaces before comparing strings
-            std::ostringstream json_header_temp;
-            json_header_temp    << "{                                                                           "
-                                << "    \"version\": 5,                                                         "
-                                << "    \"author\" : \"IDM\",                                                   "
-                                << "    \"tool\" : \"DTK\",                                                     "
-                                << "    \"date\" : \"Tue Aug 30 19:28:49 2022\",                                "
-                                << "    \"compression\" : \"NONE\",                                             "
-                                << "    \"emod_info\" :                                                         "
-                                << "    {                                                                       "
-                                << "        \"emod_major_version\": 2,                                          "
-                                << "        \"emod_minor_version\" : 3,                                         "
-                                << "        \"emod_revision_number\" : 4,                                       "
-                                << "        \"ser_pop_major_version\" : 5,                                      "
-                                << "        \"ser_pop_minor_version\" : 6,                                      "
-                                << "        \"ser_pop_patch_version\" : 7,                                      "
-                                << "        \"emod_build_date\" : \"Wed Aug 31 19:28:49 2022\",                 "
-                                << "        \"emod_builder_name\" : \"me\",                                     "
-                                << "        \"emod_build_number\" : 0,                                          "
-                                << "        \"emod_sccs_branch\" : \"serialization_improvements (1c3fc702f7)\", "
-                                << "        \"emod_sccs_date\" : \"2022-07-15 06:46:28 -0700\"                  "
-                                << "    },                                                                      "
-                                << "    \"bytecount\" : 123456789,                                              "
-                                << "    \"chunkcount\" : 987654321,                                             "
-                                << "    \"chunksizes\": [1, 234567891, 3]                                       "
-                                << "}                                                                           ";
+            FakePrepareSimulationData( node_suids, human_node_suids, human_collections );
 
-            std::string expected_json_header = json_header_temp.str();
-            expected_json_header.erase( std::remove_if( expected_json_header.begin(), expected_json_header.end(), is_a_space ), expected_json_header.end() );
+            SerializedState::Header size_header;
 
-            Kernel::RapidJsonObj rapjo;
-            rapjo.Parse( json_header_temp.str().c_str() );
-            header.emod_info = ProgDllVersion( rapjo.GetJsonObject( "emod_info" ) );
+            SerializedState::PopulateSizeHeader( node_suids, human_node_suids, human_collections, size_header );
 
-            std::string actual_header = header.ToString();
-            actual_header.erase( std::remove_if( actual_header.begin(), actual_header.end(), is_a_space ), actual_header.end() );
+            std::string size_str = size_header.ToString();
+            //printf( "%s\n\n", size_str.c_str());
 
-            CHECK_EQUAL( expected_json_header, actual_header );
+            SerializedState::Header exp_header;
+            FakeWritingOfDataAndUpdatingHeader( exp_header );
+
+            std::string exp_str = exp_header.ToString();
+            //printf( "%s\n\n", exp_str.c_str());
+
+            // we need the length of these strings to be the same so that we can overwrite
+            // the size string at the end.
+            CHECK_EQUAL( size_str.length(), exp_str.length() );
+
+            SerializedState::Header act_header;
+            act_header.FromJson( exp_str );
+
+            std::string act_str = act_header.ToString();
+            CHECK_EQUAL( exp_str, act_str );
+
+            CHECK( exp_header == act_header );
         }
         catch( DetailedException& detailed_ex )
         {
@@ -82,29 +159,48 @@ SUITE( SerializedPopulationTest )
         }
     };
 
-    TEST( TestHeader_Version5_ReadHeader )
+    TEST( TestHeader_WriteWriteOverRead )
     {
-        // test if header stays the same after writing and reading it
+        // ------------------------------------------------------------------------------
+        // --- Test that we can write the size header, overwrite it with the real header,
+        // --- and then read it correctly.
+        // ------------------------------------------------------------------------------
         try
         {
-            // Create header, save header, read file into new header
-            SerializedState::Header header_expected( "NONE", {1, 2, 3} );
+            std::vector<int32_t> node_suids;
+            std::vector<int32_t> human_node_suids;
+            std::vector<std::vector<IIndividualHuman*>> human_collections;
 
-            const char* filename = "TestHeader_Version5_ReadHeader.json";
+            FakePrepareSimulationData( node_suids, human_node_suids, human_collections );
+
+            SerializedState::Header size_header;
+
+            SerializedState::PopulateSizeHeader( node_suids, human_node_suids, human_collections, size_header );
+
+            const char* filename = "TestHeader_WriteWriteOverRead.json";
             FILE* file_write = SerializedState::OpenFileForWriting( filename );
             string size_string;
-            ConstructHeaderSize( header_expected, size_string );
+            SerializedState::ConstructHeaderSize( size_header, size_string );
+            SerializedState::WriteMagicNumber( file_write );
             SerializedState::WriteHeaderSize( size_string, file_write );
-            WriteHeader( header_expected, file_write );
+            SerializedState::WriteHeader( size_header, file_write );
+
+            SerializedState::Header real_header;
+            FakeWritingOfDataAndUpdatingHeader( real_header );
+            //printf( "%s\n\n", size_header.ToString().c_str() );
+            //printf( "%s\n\n", real_header.ToString().c_str() );
+            WriteRealHeader( size_string, real_header, file_write );
+
             fflush( file_write );
             fclose( file_write );
 
-            SerializedState::Header header_actual;
+            SerializedState::Header header_read;
             FILE* file_read = SerializedState::OpenFileForReading( filename );
-            SerializedState::ReadHeader( file_read, filename, header_actual );
+            SerializedState::CheckMagicNumber( file_read, filename );
+            SerializedState::ReadHeader( file_read, filename, header_read );
             fclose( file_read );
 
-            CHECK_EQUAL( header_expected.ToString(), header_actual.ToString() );
+            CHECK_EQUAL( real_header.ToString(), header_read.ToString() );
 
             CHECK( FileSystem::RemoveFile( std::string( filename ) ) );
         }
@@ -116,7 +212,7 @@ SUITE( SerializedPopulationTest )
         }
     };
 
-    TEST( TestHeader_Version5_getVersionComparisonString )
+    TEST( TestHeader_getVersionComparisonString )
     {
         // test if error message contains all data
         try
@@ -141,14 +237,9 @@ SUITE( SerializedPopulationTest )
             json::QuickInterpreter em_info = emod_info_json;
 
             std::stringstream emod_version;
-            emod_version << em_info[ "emod_major_version" ].As<json::Uint64>()
-                  << "." << em_info[ "emod_minor_version" ].As<json::Uint64>();
-                  // -----------------------------------------------------
-                  // --- DanB - 10/28/2024 - Part of removing revision and
-                  // --- build number because they are always 1 and 0.
-                  // -----------------------------------------------------
-                  //<< "." << em_info["emod_revision_number"].As<json::Uint64>()
-                  //<< "." << em_info["emod_build_number"].As<json::Uint64>();
+            emod_version << em_info[ "emod_major_version"   ].As<json::Uint64>()
+                  << "." << em_info[ "emod_minor_version"   ].As<json::Uint64>()
+                  << "." << em_info[ "emod_revision_number" ].As<json::Uint64>();
 
             std::stringstream ser_pop_version;
             ser_pop_version << em_info["ser_pop_major_version"].As<json::Uint64>() << "."
@@ -193,26 +284,36 @@ SUITE( SerializedPopulationTest )
         }
     };
 
-
-
     struct HeaderSetup {
         // Check exception for wrong major version
         json::Object emod_info_json;
         ProgDllVersion emod_info;
-        HeaderSetup() {
-            emod_info_json["emod_major_version"] = json::Uint64( 2 );
-            emod_info_json["emod_minor_version"] = json::Uint64( 2 );
+
+        HeaderSetup()
+            : emod_info_json()
+            , emod_info()
+        {
+            emod_info_json["emod_major_version"  ] = json::Uint64( 2 );
+            emod_info_json["emod_minor_version"  ] = json::Uint64( 2 );
             emod_info_json["emod_revision_number"] = json::Uint64( 2 );
 
             emod_info_json["ser_pop_major_version"] = json::Uint64( emod_info.getSerPopMajorVersion() );
             emod_info_json["ser_pop_minor_version"] = json::Uint64( emod_info.getSerPopMinorVersion() );
             emod_info_json["ser_pop_patch_version"] = json::Uint64( emod_info.getSerPopPatchVersion() );
 
-            emod_info_json["emod_build_date"] = json::String( "dummy_emod_build_date" );
+            emod_info_json["emod_build_date"  ] = json::String( "dummy_emod_build_date" );
             emod_info_json["emod_builder_name"] = json::String( "dummy_build_name" );
-            emod_info_json["emod_sccs_branch"] = json::String( "dummy_sccs_branch (xyz123)" );
-            emod_info_json["emod_sccs_date"] = json::String( "dummy_sccs_date" );
+            emod_info_json["emod_sccs_branch" ] = json::String( "dummy_sccs_branch (xyz123)" );
+            emod_info_json["emod_sccs_date"   ] = json::String( "dummy_sccs_date" );
             emod_info_json["emod_build_number"] = json::Uint64( 123 );
+
+            Configuration* p_config = Environment::LoadConfigurationFile("testdata/SerializedPopulationTest_config.json");
+            Environment::getInstance()->Config = p_config;
+        }
+
+        ~HeaderSetup()
+        {
+            Environment::Finalize();
         }
     };
 
@@ -229,25 +330,39 @@ SUITE( SerializedPopulationTest )
      */
 
 
-    TEST_FIXTURE( HeaderSetup, TestHeader_Version5_ErrorMessage_LoadSerializedSimulation )
+    TEST_FIXTURE( HeaderSetup, TestHeader_ErrorMessage_LoadSerializedSimulation )
     {
         // test if LoadSerializedSimulation() forwards the error msg from getVersionComparisonString();
         try
         {           
+            std::vector<int32_t> node_suids;
+            std::vector<int32_t> human_node_suids;
+            std::vector<std::vector<IIndividualHuman*>> human_collections;
+
+            FakePrepareSimulationData( node_suids, human_node_suids, human_collections );
+
+            SerializedState::Header size_header;
+            SerializedState::PopulateSizeHeader( node_suids, human_node_suids, human_collections, size_header );
+
             json::QuickInterpreter em_info = emod_info_json;
             assert(em_info["ser_pop_major_version"].As<json::Uint64>() >= 1);
             emod_info_json["ser_pop_major_version"] = json::Uint64( 0 ); // trigger version comparison in checkSerializationVersion()
-
-            SerializedState::Header header( "NONE", { 1, 2, 3 } );
-            header.emod_info = ProgDllVersion( emod_info_json );
+            size_header.emod_info = ProgDllVersion( emod_info_json );
 
             const char* filename = "TestHeader_Version5_ErrorMessage_LoadSerializedSimulation.json";
             FILE* file_write = SerializedState::OpenFileForWriting( filename );
-            SerializedState::WriteMagicNumber( file_write );
             string size_string;
-            SerializedState::ConstructHeaderSize( header, size_string );
+            SerializedState::ConstructHeaderSize( size_header, size_string );
+            SerializedState::WriteMagicNumber( file_write );
             SerializedState::WriteHeaderSize( size_string, file_write );
-            SerializedState::WriteHeader( header, file_write );
+            SerializedState::WriteHeader( size_header, file_write );
+
+            SerializedState::Header real_header;
+            real_header.emod_info = ProgDllVersion( emod_info_json );
+            FakeWritingOfDataAndUpdatingHeader( real_header );
+            //printf( "%s\n\n", size_header.ToString().c_str() );
+            //printf( "%s\n\n", real_header.ToString().c_str() );
+            WriteRealHeader( size_string, real_header, file_write );
             fflush( file_write );
             fclose( file_write );
 
@@ -276,7 +391,7 @@ SUITE( SerializedPopulationTest )
         }
     };
 
-    TEST_FIXTURE( HeaderSetup, TestHeader_Version5_same_version )
+    TEST_FIXTURE( HeaderSetup, TestHeader_same_version )
     {
         // Test same major and minor version
         ProgDllVersion emod_info_same_version( emod_info_json );
@@ -292,7 +407,7 @@ SUITE( SerializedPopulationTest )
         }
     };
 
-    TEST_FIXTURE( HeaderSetup, TestHeader_Version5_CheckHeader_smaller_minor_version )
+    TEST_FIXTURE( HeaderSetup, TestHeader_CheckHeader_smaller_minor_version )
     {
         // The minor version of the loaded pop is greater than the version emod supports
         emod_info_json["ser_pop_minor_version"] = json::Uint64( emod_info.getSerPopMinorVersion() + 1 );
@@ -310,7 +425,7 @@ SUITE( SerializedPopulationTest )
         }
     }
 
-    TEST_FIXTURE( HeaderSetup, TestHeader_Version5_CheckHeader_smaller_major_version )
+    TEST_FIXTURE( HeaderSetup, TestHeader_CheckHeader_smaller_major_version )
     {
         // The major version of the loaded pop is greater than the version emod supports
         emod_info_json["ser_pop_major_version"] = json::Uint64( emod_info.getSerPopMajorVersion() + 1 );
@@ -327,8 +442,7 @@ SUITE( SerializedPopulationTest )
         }
     }
 
-
-    TEST_FIXTURE( HeaderSetup, TestHeader_Version5_CheckHeader_greater_minor_version )
+    TEST_FIXTURE( HeaderSetup, TestHeader_CheckHeader_greater_minor_version )
     {
         // The minor version of the loaded pop is lower than the version emod supports
         emod_info_json["ser_pop_minor_version"] = json::Uint64( emod_info.getSerPopMinorVersion() - 1 );
@@ -346,7 +460,7 @@ SUITE( SerializedPopulationTest )
         }
     }
 
-    TEST_FIXTURE( HeaderSetup, TestHeader_Version5_CheckHeader_greater_major_version )
+    TEST_FIXTURE( HeaderSetup, TestHeader_CheckHeader_greater_major_version )
     {
         // The major version of the loaded pop is lower than the version emod supports
         emod_info_json["ser_pop_major_version"] = json::Uint64( emod_info.getSerPopMajorVersion() - 1 );
@@ -514,14 +628,28 @@ SUITE( SerializedPopulationTest )
         }
     }
     
+    struct LoadSetup {
+        LoadSetup()
+        {
+            Configuration* p_config = Environment::LoadConfigurationFile("testdata/SerializedPopulationTest_config.json");
+            Environment::getInstance()->Config = p_config;
+        }
+
+        ~LoadSetup()
+        {
+            Environment::Finalize();
+        }
+    };
+
+
     // header version 4
-    TEST( TestHeader_Version4_ErrorMessage_major_LoadSerializedSimulation )
+    TEST_FIXTURE( LoadSetup, TestHeader_Version4_ErrorMessage_major_LoadSerializedSimulation )
     {
         // test if a lower version of ser_pop_major_version in a version 4 header triggers an SerializationException
         // test only works if SER_POP_MAJOR_VERSION > version4_ser_pop_major_version
         try
         {
-            SerializedState::Header header( "NONE", { 1, 2, 3 } );
+            SerializedState::Header header;;
             header.version = 4;
             header.emod_info = ProgDllVersion::getEmodInfoVersion4();
 
@@ -549,7 +677,7 @@ SUITE( SerializedPopulationTest )
             }
             catch( Kernel::SerializationException& actual_ex )
             {
-                std::string expected_message = header.emod_info.getVersionComparisonString( this_version );
+                std::string expected_message = "INVALID VERSION: The header version in the file is 4\nThis version of EMOD only supports header version 6.";
                 size_t found_pos = std::string( actual_ex.GetMsg() ).find( expected_message );
                 CHECK( found_pos != std::string::npos );
                 FileSystem::RemoveFile( filename );
@@ -563,12 +691,12 @@ SUITE( SerializedPopulationTest )
         }
     }
 
-    TEST( TestHeader_SetEmodInfoVersion4 )
+    TEST_FIXTURE( LoadSetup, TestHeader_SetEmodInfoVersion4 )
     {
         // test if LoadSerializedSimulation() forwards the error msg from getVersionComparisonString();
         try
         {
-            SerializedState::Header header( "NONE", { 1, 2, 3 } );
+            SerializedState::Header header;
             header.emod_info = ProgDllVersion::getEmodInfoVersion4();
 
             try
@@ -591,7 +719,7 @@ SUITE( SerializedPopulationTest )
         }
     }
 
-    TEST( Test_Header_throw_Exception_smaller_version_4 )
+    TEST_FIXTURE( LoadSetup, Test_Header_throw_Exception_smaller_version_4 )
     {
         // create file with version 3 header 
         std::ostringstream json_header;
@@ -628,7 +756,7 @@ SUITE( SerializedPopulationTest )
         catch( Kernel::SerializationException& actual_ex )
         {
             PrintDebug( actual_ex.GetMsg() );
-            std::string expected_message = { "The serialized population you are trying to load has a a header versions < 4. Serialized populations with a header version < 4 aren't supported anymore." };
+            std::string expected_message = "INVALID VERSION: The header version in the file is 3\nThis version of EMOD only supports header version 6.";
             size_t found_pos = std::string( actual_ex.GetMsg() ).find( expected_message );
             CHECK( found_pos != std::string::npos );
         }   

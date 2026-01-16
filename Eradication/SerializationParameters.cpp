@@ -16,6 +16,18 @@ END_QUERY_INTERFACE_BODY(SerializationParameters)
 
 SerializationParameters* SerializationParameters::p_instance = nullptr;
 
+// --------------------------------------------------------------------------------
+// --- I'm setting this to 2000 because:
+// ---    A) A lot of scenarios have a population of 1000 +/1 a few.
+// ---       These scenarios don't usually have memory issues, so we want
+// ---       to only have one human colleciton per node.
+// ---    B) Python Post Processing - In a test scenario with three nodes of
+// ---       10K, 11K, 12K people, it took 60 minutes vs 24 minutes in a test that
+// ---       replaced the genomes.  The old version used 22GB of memory.  The new
+// ---       version with a max of 1000 peaked at 9.2GB.  When we switched to 2000,
+// ---       we got a peak of 11.3 GB and took 73 minutes.  Hmm.
+// --------------------------------------------------------------------------------
+#define DEFAULT_MAX_HUMANS_PER_COLLECTION (2000)
 
 SerializationParameters::SerializationParameters()
     : m_serializationReadMask( 0 )
@@ -29,6 +41,7 @@ SerializationParameters::SerializationParameters()
     , m_serialization_time_steps()
     , m_serialization_times()
     , m_supportedFlags( SerializationBitMask_t{}.set( SerializationFlags::LarvalHabitats ) )
+    , m_MaxHumansPerCollection( DEFAULT_MAX_HUMANS_PER_COLLECTION )
 { }
 
 
@@ -63,6 +76,11 @@ std::string SerializationParameters::GetSerializedPopulationFilename() const
     release_assert( EnvPtr->MPI.Rank < m_serialized_population_filenames.size() );
     const std::string population_filename = FileSystem::Concat( m_serialized_population_path, m_serialized_population_filenames[EnvPtr->MPI.Rank] );
     return population_filename;
+}
+
+int32_t SerializationParameters::GetMaxHumansPerCollection() const
+{
+    return m_MaxHumansPerCollection;
 }
 
 std::deque<int32_t> SerializationParameters::GetSerializedTimeSteps( int32_t steps ) const
@@ -227,6 +245,16 @@ bool SerializationParameters::Configure( const Configuration * inputJson )
     initConfigTypeMap( "Serialization_Times", &m_serialization_times, Serialization_Times_DESC_TEXT, -1, FLT_MAX, false, "Serialized_Population_Writing_Type", "TIME" );
     initConfig( "Serialization_Precision", m_serialization_precision, inputJson, MetadataDescriptor::Enum( "Serialization_Precision", Serialization_Precision_DESC_TEXT, MDD_ENUM_ARGS( SerializationPrecision ) ), "Serialized_Population_Writing_Type", "TIMESTEP,TIME" );
     initConfigTypeMap( "Serialization_Mask_Node_Write", ( uint32_t* )&m_serializationWriteMask, SerializationMask_Node_Write_DESC_TEXT, 0, UINT32_MAX, 0, "Serialized_Population_Writing_Type","TIME,TIMESTEP" );
+
+    if( JsonConfigurable::_dryrun || inputJson->Exist( "Serialization_Max_Humans_Per_Collection" ) )
+    {
+        initConfigTypeMap( "Serialization_Max_Humans_Per_Collection",
+                           &m_MaxHumansPerCollection,
+                           Serialization_Max_Humans_Per_Collection_DESC_TEXT,
+                           5, INT32_MAX, DEFAULT_MAX_HUMANS_PER_COLLECTION,
+                           "Serialized_Population_Writing_Type",
+                           "TIME,TIMESTEP" );
+    }
 
     // Read serialized population
     initConfig( "Serialized_Population_Reading_Type", m_serialization_read_type, inputJson, MetadataDescriptor::Enum( "Serialized_Population_Reading_Type", Serialized_Population_Reading_Type_DESC_TEXT, MDD_ENUM_ARGS( SerializationTypeRead ) ) );

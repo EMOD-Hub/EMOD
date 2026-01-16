@@ -159,7 +159,7 @@ class DtkFile:
         json_filename = "{0}-{1}.{2}".format(node_filename,
                                              self.filename_suffix,
                                              self.file_extension)
-        self.write_json_file(n, json_filename)
+        self.write_json_file(n.get_json(), json_filename)
 
     def find_human_from_node(self, node_index=0, suid=None,
                              min_infections=None,

@@ -29,7 +29,7 @@
             }
         },
         "PRIMARY": {
-            "Config_Name": "Generic serialization 01 writes files",
+            "Config_Name": "Generic serialization 02 read files",
             "Geography": "SamplesInput",
             "Python_Script_Path": "SHARED",
             "Run_Number": 1,

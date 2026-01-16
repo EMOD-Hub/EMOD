@@ -19,8 +19,6 @@ def application(output_folder="output", config_filename="config.json",
 
     dtk_filename = path.join(output_folder, 'state-00005.dtk')
     dtk_file = d_ss.DtkFile(dtk_filename)
-    dtk_file.write_node_to_disk(node_index=0)
-    dtk_file.write_simulation_to_disk()
     infected_people_to_check = []
     with open("DEBUG_found_infected_persons.json") as infile:
         infected_people_to_check = json.load(infile)
@@ -53,6 +51,9 @@ def application(output_folder="output", config_filename="config.json",
         messages += newer_infection.compare_to_older(older_infection, expected_age_delta)
         messages += newer_infection.validate_own_timers()
 
+    dtk_file.write_node_to_disk(node_index=0)
+    dtk_file.write_simulation_to_disk()
+    
     # Make sure each infection is Simulation_Duration days older
 
 

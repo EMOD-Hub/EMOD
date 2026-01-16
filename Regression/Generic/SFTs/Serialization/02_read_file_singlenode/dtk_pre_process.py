@@ -17,11 +17,11 @@ def application(config_filename="config.json", debug=False):
     expected_dtk_fullpath = path.join(expected_dtk_filepath, expected_dtk_filename)
 
     dtk_file = d_ss.DtkFile(expected_dtk_fullpath, file_suffix="old")
-    dtk_file.write_node_to_disk(node_index=0)
-    dtk_file.write_simulation_to_disk()
     dtk_file.write_human_to_disk(node_index=0, suid=10)
     dtk_file.write_human_to_disk(node_index=0, suid=100)
     dtk_file.write_human_to_disk(node_index=0, suid=1000)
+    dtk_file.write_node_to_disk(node_index=0)
+    dtk_file.write_simulation_to_disk()
 
 if __name__=="__main__":
     import argparse

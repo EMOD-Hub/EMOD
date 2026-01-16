@@ -2697,7 +2697,11 @@ namespace Kernel
             
         if ( node.serializationFlags.test( SerializationFlags::Population ) )
         {
-            ar.labelElement("individualHumans"   ) & node.individualHumans;
+            // --------------------------------------------------------
+            // --- handling humans within the SerializedPopulation code
+            // --------------------------------------------------------
+            //ar.labelElement("individualHumans"   ) & node.individualHumans;
+
             ar.labelElement("home_individual_ids") & node.home_individual_ids;
         }
 

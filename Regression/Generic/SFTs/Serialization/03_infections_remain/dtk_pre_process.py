@@ -30,8 +30,6 @@ def application(config_filename="config.json", debug=False):
     expected_dtk_fullpath = path.join(expected_dtk_filepath, expected_dtk_filename)
 
     dtk_file = d_ss.DtkFile(expected_dtk_fullpath, file_suffix="old")
-    dtk_file.write_node_to_disk(node_index=0)
-    dtk_file.write_simulation_to_disk()
     found_people={}
     ignored_people=[]
     testable_infections = 5
@@ -47,6 +45,8 @@ def application(config_filename="config.json", debug=False):
             found_people[human_suid] = acceptable_infection
         ignored_people.append(human_suid)
     dtk_file.write_json_file(found_people, "DEBUG_found_infected_persons.json")
+    dtk_file.write_node_to_disk(node_index=0)
+    dtk_file.write_simulation_to_disk()
 
 if __name__=="__main__":
     import argparse

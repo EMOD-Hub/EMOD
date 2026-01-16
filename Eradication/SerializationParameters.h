@@ -53,6 +53,7 @@ public:
     bool GetCreateRngFromSerializedData() const;
     std::string GetSerializedPopulationPath() const;
     std::string GetSerializedPopulationFilename() const;
+    int32_t GetMaxHumansPerCollection() const;
 
 private:
     SerializationParameters( const SerializationParameters& ) = delete;
@@ -72,4 +73,5 @@ private:
     std::vector<float> m_serialization_times;
     static SerializationParameters* p_instance;
     SerializationBitMask_t m_supportedFlags;
+    int32_t m_MaxHumansPerCollection;
 };

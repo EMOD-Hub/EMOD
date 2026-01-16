@@ -1,0 +1,30 @@
+{
+    "CLIMATE": {
+        "Enable_Climate_Stochasticity": 0,
+		"Climate_Model": "CLIMATE_CONSTANT",
+		"Base_Air_Temperature": 25.0
+    },
+    "DEMOGRAPHICS": {
+        "Demographics_Filenames": [
+            "Namawala_multi_node_demographics.json"
+        ],
+        "Enable_Initial_Prevalence": 1
+    },
+    "Default_Config_Path": "../../defaults/malaria_default_config.json",
+    "PRIMARY": {
+        "Config_Name": "115_Malaria_Serialization_MultiNodeMultiHumanCollection",
+        "Geography": "Namawala",
+        "Run_Number": 1,
+        "Simulation_Duration": 1825,
+        "Enable_Demographics_Reporting": 0,
+        "COMMENT": "Do not include because we cannot have a queue of previous days infections when starting from serialized file.",
+        "Inset_Chart_Reporting_Include_30Day_Avg_Infection_Duration": 0
+    },
+    "SERIALIZATION" : {
+        "Serialization_Test" : 1,
+        "Serialized_Population_Writing_Type" : "TIME",
+        "Serialization_Mask_Node_Write": 0,
+        "Serialization_Precision" : "FULL",
+        "Serialization_Times" : [ 730 ]
+    }
+}

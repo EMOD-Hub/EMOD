@@ -4,7 +4,6 @@
 #define Author_DESC_TEXT "The person who created the demographics file. EMOD does not use this value."
 #define DateCreated_DESC_TEXT "The date the demographics file was created. EMOD does not use this value."
 #define IdReference_DESC_TEXT "The identifier for a simulation; all input files (except configuration and campaign files) used in a simulation must have the same IdReference value."
-#define NodeCount_DESC_TEXT "The number of nodes to expect in the input files."
 #define Tool_DESC_TEXT "The software tool used to create the demographics file. EMOD does not use this value."
 #define Resolution_DESC_TEXT "The spatial resolution of the demographics file."
 

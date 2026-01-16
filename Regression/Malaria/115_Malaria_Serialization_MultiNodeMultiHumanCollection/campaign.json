@@ -1,0 +1,114 @@
+{
+    "Campaign_Name": "Campaign - Bednets, IRS and Vaccines", 
+    "Events": [
+        {
+            "Event_Coordinator_Config": {
+                "Demographic_Coverage": 1, 
+                "Intervention_Config": {
+                    "Repelling_Config": {
+                        "class": "WaningEffectConstant",
+                        "Initial_Effect": 0.0
+                    }, 
+                    "Blocking_Config": {
+                        "Box_Duration": 3650, 
+                        "Initial_Effect": 1, 
+                        "class": "WaningEffectBox"
+                    }, 
+                    "Cost_To_Consumer": 3.13, 
+                    "Intervention_Name": "Bednet", 
+                    "Killing_Config": {
+                        "Box_Duration": 3650, 
+                        "Initial_Effect": 1, 
+                        "class": "WaningEffectBox"
+                    }, 
+                    "Usage_Config": {
+                        "class": "WaningEffectConstant",
+                        "Initial_Effect": 1.0
+                    }, 
+                    "class": "SimpleBednet"
+                }, 
+                "Target_Demographic": "Everyone", 
+                "class": "StandardInterventionDistributionEventCoordinator"
+            }, 
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            }, 
+            "Start_Day": 1460, 
+            "class": "CampaignEvent"
+        }, 
+        {
+            "Event_Coordinator_Config": {
+                "Demographic_Coverage": 1, 
+                "Intervention_Config": {
+                    "Repelling_Config": {
+                        "Box_Duration": 3650, 
+                        "Initial_Effect": 0, 
+                        "class": "WaningEffectBox"
+                    }, 
+                    "Cost_To_Consumer": 8, 
+                    "Killing_Config": {
+                        "Box_Duration": 3650, 
+                        "Initial_Effect": 1.0, 
+                        "class": "WaningEffectBox"
+                    }, 
+                    "class": "IRSHousingModification"
+                }, 
+                "Target_Demographic": "Everyone", 
+                "class": "StandardInterventionDistributionEventCoordinator"
+            }, 
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            }, 
+            "Start_Day": 1460, 
+            "class": "CampaignEvent"
+        }, 
+        {
+            "Event_Coordinator_Config": {
+                "Intervention_Config": {
+                    "Cost_To_Consumer": 10, 
+                    "Intervention_Name": "Vaccines", 
+                    "Reduced_Transmit": 1.0, 
+                    "Vaccine_Take": 1, 
+                    "Vaccine_Type": "AcquisitionBlocking", 
+                    "Waning_Config": {
+                        "Box_Duration": 3650, 
+                        "Initial_Effect": 1, 
+                        "class": "WaningEffectBox"
+                    }, 
+                    "class": "SimpleVaccine"
+                }, 
+                "Target_Demographic": "Everyone", 
+                "class": "StandardInterventionDistributionEventCoordinator"
+            }, 
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            }, 
+            "Start_Day": 1460, 
+            "class": "CampaignEvent"
+        }, 
+        {
+            "Event_Coordinator_Config": {
+                "Intervention_Config": {
+                    "Cost_To_Consumer": 10, 
+                    "Reduced_Acquire": 1, 
+                    "Vaccine_Take": 1, 
+                    "Vaccine_Type": "TransmissionBlocking", 
+                    "Waning_Config": {
+                        "Box_Duration": 3650, 
+                        "Initial_Effect": 1, 
+                        "class": "WaningEffectBox"
+                    }, 
+                    "class": "SimpleVaccine"
+                }, 
+                "Target_Demographic": "Everyone", 
+                "class": "StandardInterventionDistributionEventCoordinator"
+            }, 
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            }, 
+            "Start_Day": 1460, 
+            "class": "CampaignEvent"
+        }
+    ], 
+    "Use_Defaults": 1
+}
