@@ -127,11 +127,13 @@
 //                      Malaria: Added long term decay for malaria antibodies. 
 //                               Added ReportAntibodies report.
 //                               New serialization version 8 due to addition of long term decay for malaria antibodies.
-//
+// 2.31 - 1/16/2026  -  Serialization version change due to improvements in serializing/deserializing large population.
+//                      Removed NodeCount parameter from demographics. It was required but not used.
+//                      Malaria: Fixed issue with blood capacity calculations when people turned 20.
 
 
 #define    MAJOR_VERSION    2
-#define    MINOR_VERSION    30
+#define    MINOR_VERSION    31
 
 #ifndef REVISION_NUMBER
 #define    REVISION_NUMBER  $REVISION$
