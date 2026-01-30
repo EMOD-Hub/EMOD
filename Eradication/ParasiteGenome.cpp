@@ -237,7 +237,7 @@ namespace Kernel
         ar.labelElement("m_NucleotideSequence") & pInner->m_NucleotideSequence;
         ar.labelElement("m_AlleleRoots"       ) & pInner->m_AlleleRoots;
         // Not serializing m_GenomeCrossoverLocations to keep serialization file the same
-        // This parameter exists only for ReportFPGNewInfections and not for anything else. 
+        // This parameter exists only for ReportFpgNewInfections and not for anything else. 
     }
 
     // ------------------------------------------------------------------------
@@ -774,7 +774,7 @@ namespace Kernel
                 uint32_t male_offset = 2;
                 uint32_t male_idx = co.chromatid_male + male_offset;  //offset 0->2, 1->3
                 bool other_found = false;
-                for(int i = 0; i < p_all.size(); i++)
+                for(size_t i = 0; i < p_all.size(); i++)
                 {
                     // co.chromatid_female = 0 - > index 0
                     // co.chromatid_female = 1 - > index 1
@@ -901,12 +901,12 @@ namespace Kernel
         Assortment( SwapType::THREE,   0, 2, 3    ,{2, 1, 3, 0} ), // 15 2, 1, 3, 0 - THREE
         Assortment( SwapType::TWO_TWO, 0, 2, 1, 3 ,{2, 3, 0, 1} ), // 16 2, 3, 0, 1 - TWO(0,2) TWO(1,3)
         Assortment( SwapType::FOUR,    2, 3, 1, 0 ,{2, 3, 1, 0} ), // 17 2, 3, 1, 0 - FOUR
-        Assortment( SwapType::FOUR,    3, 0, 1, 2 ,{3, 0, 1, 2} ), // 18 3, 0, 1, 2 - THREE
+        Assortment( SwapType::FOUR,    3, 0, 1, 2 ,{3, 0, 1, 2} ), // 18 3, 0, 1, 2 - FOUR
         Assortment( SwapType::THREE,   0, 3, 1    ,{3, 0, 2, 1} ), // 19 3, 0, 2, 1 - THREE
         Assortment( SwapType::THREE,   0, 3, 2    ,{3, 1, 0, 2} ), // 20 3, 1, 0, 2 - THREE
-        Assortment( SwapType::TWO,     0, 3       ,{3, 1, 2, 0} ), // 23 3, 1, 2, 0 - TWO
-        Assortment( SwapType::FOUR,    3, 2, 0, 1 ,{3, 2, 0, 1} ), // 24 3, 2, 0, 1 - FOUR
-        Assortment( SwapType::TWO_TWO, 0, 3, 2, 1 ,{3, 2, 1, 0} ), // 25 3, 2, 1, 0 - TWO(0,3) TWO(2,1)
+        Assortment( SwapType::TWO,     0, 3       ,{3, 1, 2, 0} ), // 21 3, 1, 2, 0 - TWO
+        Assortment( SwapType::FOUR,    3, 2, 0, 1 ,{3, 2, 0, 1} ), // 22 3, 2, 0, 1 - FOUR
+        Assortment( SwapType::TWO_TWO, 0, 3, 2, 1 ,{3, 2, 1, 0} ), // 23 3, 2, 1, 0 - TWO(0,3) TWO(2,1)
     };
 
     // ----------------------------------------------------------------------------------

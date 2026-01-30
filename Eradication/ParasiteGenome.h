@@ -247,7 +247,7 @@ namespace Kernel
         const std::vector<int32_t>& GetAlleleRoots() const;
 
         // return the list of genome crossover locations that happened during the creation of this genome.
-        const std::vector<uint32_t>& ParasiteGenome::GetCrossovers() const;
+        const std::vector<uint32_t>& GetCrossovers() const;
 
         // Return true if this genome has this allele
         bool HasAllele( const ParasiteGenomeAllele& rAllele ) const;
