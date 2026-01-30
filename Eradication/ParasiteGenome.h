@@ -96,6 +96,7 @@ namespace Kernel
         const std::vector<int32_t>& GetNucleotideSequence() const;
         const std::vector<int32_t>& GetAlleleRoots() const;
 
+
     protected:
         // The unique ID of the genome.  Different ID's implies different contents.
         uint32_t m_ID;
@@ -124,6 +125,9 @@ namespace Kernel
         // Identity-by-Descent measurements so that ancestry of all remaining genotypes can be traced back to when
         // they initialized in the sim.
         std::vector<int32_t> m_AlleleRoots;
+
+        // Keeping track of genome crossover locations that happened to this genome during its creation.
+        std::vector<uint32_t> m_GenomeCrossoverLocations;
 
         // I think we need to generate "m_nonspectype" when a unique genome is created and then keep it
         // so that we can generate new minor epitopes that are in a similar range/set.
@@ -169,12 +173,12 @@ namespace Kernel
                                     uint32_t iChromosome,
                                     std::list<Crossover>& rCrossovers );
 
-        static void IndependentAssortment( RANDOMBASE* pRNG,
-                                           int32_t iChromosome,
-                                           ParasiteGenomeInner* pFemale0,
-                                           ParasiteGenomeInner* pFemale1,
-                                           ParasiteGenomeInner* pMale0,
-                                           ParasiteGenomeInner* pMale1 );
+        static std::vector<int32_t> IndependentAssortment( RANDOMBASE* pRNG,
+                                                           int32_t iChromosome,
+                                                           ParasiteGenomeInner* pFemale0,
+                                                           ParasiteGenomeInner* pFemale1,
+                                                           ParasiteGenomeInner* pMale0,
+                                                           ParasiteGenomeInner* pMale1 );
 
 
         ParasiteGenome();
@@ -242,11 +246,15 @@ namespace Kernel
         // This list is parallele to the nucleotide squence and must be the same length.
         const std::vector<int32_t>& GetAlleleRoots() const;
 
+        // return the list of genome crossover locations that happened during the creation of this genome.
+        const std::vector<uint32_t>& ParasiteGenome::GetCrossovers() const;
+
         // Return true if this genome has this allele
         bool HasAllele( const ParasiteGenomeAllele& rAllele ) const;
 
         // Return true if this genome has all of the alleles defined in the collection
         bool HasAllOfTheAlleles( const ParasiteGenomeAlleleCollection& rAlleleCollection ) const;
+
 
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // FPG-TODO - We will probably need to add something for drug resistance and HPR.

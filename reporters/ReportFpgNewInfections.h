@@ -37,6 +37,6 @@ namespace Kernel
 
     protected:
         ReportFilter m_ReportFilter;
-        bool m_OutputWritten;
+        bool m_WriteCrossovers;
     };
 }

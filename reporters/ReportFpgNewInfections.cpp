@@ -39,7 +39,7 @@ namespace Kernel
     ReportFpgNewInfections::ReportFpgNewInfections() 
         : BaseTextReportEvents( "ReportFpgNewInfections.csv" )
         , m_ReportFilter( nullptr, "", false, true, true )
-        , m_OutputWritten( false )
+        , m_WriteCrossovers( false )
     {
         initSimTypes( 1, "MALARIA_SIM" );
 
@@ -53,6 +53,10 @@ namespace Kernel
     bool ReportFpgNewInfections::Configure( const Configuration* inputJson )
     {
         m_ReportFilter.ConfigureParameters( *this, inputJson );
+        if(JsonConfigurable::_dryrun || inputJson->Exist( "Report_Crossover_Data_Instead" )) 
+        {
+            initConfigTypeMap( "Report_Crossover_Data_Instead", &m_WriteCrossovers, RFNI_Report_Crossover_Data_Instead, false );
+        }
 
         bool configured = JsonConfigurable::Configure( inputJson );
         if( configured && !JsonConfigurable::_dryrun )
@@ -120,24 +124,39 @@ namespace Kernel
     {
         std::stringstream header ;
 
-        header
-            << "SporozoiteToHuman_Time"
-            << ",SporozoiteToHuman_NodeID"
-            << ",SporozoiteToHuman_VectorID"
-            << ",SporozoiteToHuman_BiteID"
-            << ",SporozoiteToHuman_HumanID"
-            << ",SporozoiteToHuman_NewInfectionID"
-            << ",SporozoiteToHuman_NewGenomeID"
-            << ",HomeNodeID"
-            << ",GametocyteToVector_Time"
-            << ",GametocyteToVector_NodeID"
-            << ",GametocyteToVector_VectorID"
-            << ",GametocyteToVector_BiteID"
-            << ",GametocyteToVector_HumanID"
-            << ",FemaleGametocyteToVector_InfectionID"
-            << ",FemaleGametocyteToVector_GenomeID"
-            << ",MaleGametocyteToVector_InfectionID"
-            << ",MaleGametocyteToVector_GenomeID";
+        if(!m_WriteCrossovers)
+        {
+            header
+                << "SporozoiteToHuman_Time"
+                << ",SporozoiteToHuman_NodeID"
+                << ",SporozoiteToHuman_VectorID"
+                << ",SporozoiteToHuman_BiteID"
+                << ",SporozoiteToHuman_HumanID"
+                << ",SporozoiteToHuman_NewInfectionID"
+                << ",SporozoiteToHuman_NewGenomeID"
+                << ",HomeNodeID"
+                << ",GametocyteToVector_Time"
+                << ",GametocyteToVector_NodeID"
+                << ",GametocyteToVector_VectorID"
+                << ",GametocyteToVector_BiteID"
+                << ",GametocyteToVector_HumanID"
+                << ",FemaleGametocyteToVector_InfectionID"
+                << ",FemaleGametocyteToVector_GenomeID"
+                << ",MaleGametocyteToVector_InfectionID"
+                << ",MaleGametocyteToVector_GenomeID";
+        }
+        else
+        {
+            header
+                << "SporozoiteToHuman_Time"
+                << ",SporozoiteToHuman_NewInfectionID"
+                << ",SporozoiteToHuman_NewGenomeID"
+                << ",FemaleGametocyteToVector_InfectionID"
+                << ",FemaleGametocyteToVector_GenomeID"
+                << ",MaleGametocyteToVector_InfectionID"
+                << ",MaleGametocyteToVector_GenomeID"
+                << ",GenomeCrossoverLocations";
+        }
 
         return header.str();
     }
@@ -165,29 +184,55 @@ namespace Kernel
         const IStrainIdentity& r_strain = p_infection->GetInfectiousStrainID();
         const StrainIdentityMalariaGenetics* p_strain_genetics = static_cast<const StrainIdentityMalariaGenetics*>(&r_strain);
 
-        ISimulationContext* p_sim = context->GetNodeEventContext()->GetNodeContext()->GetParent();
+        if(!m_WriteCrossovers)
+        {
+            ISimulationContext* p_sim = context->GetNodeEventContext()->GetNodeContext()->GetParent();
+            uint32_t home_node_id = p_sim->GetNodeExternalID( context->GetIndividualHumanConst()->GetHomeNodeId() );
 
-        uint32_t home_node_id = p_sim->GetNodeExternalID( context->GetIndividualHumanConst()->GetHomeNodeId() ) ;
+            GetOutputStream()
+                << p_strain_genetics->GetSporozoiteInfo().GetTime()
+                << "," << p_strain_genetics->GetSporozoiteInfo().GetNodeID()
+                << "," << p_strain_genetics->GetSporozoiteInfo().GetVectorID()
+                << "," << p_strain_genetics->GetSporozoiteInfo().GetBiteID()
+                << "," << p_strain_genetics->GetSporozoiteInfo().GetHumanID()
+                << "," << p_strain_genetics->GetSporozoiteInfo().GetInfectionID()
+                << "," << p_strain_genetics->GetSporozoiteInfo().GetGenomeID()
+                << "," << home_node_id
+                << "," << p_strain_genetics->GetFemaleGametocyteInfo().GetTime()
+                << "," << p_strain_genetics->GetFemaleGametocyteInfo().GetNodeID()
+                << "," << p_strain_genetics->GetFemaleGametocyteInfo().GetVectorID()
+                << "," << p_strain_genetics->GetFemaleGametocyteInfo().GetBiteID()
+                << "," << p_strain_genetics->GetFemaleGametocyteInfo().GetHumanID()
+                << "," << p_strain_genetics->GetFemaleGametocyteInfo().GetInfectionID()
+                << "," << p_strain_genetics->GetFemaleGametocyteInfo().GetGenomeID()
+                << "," << p_strain_genetics->GetMaleGametocyteInfo().GetInfectionID()
+                << "," << p_strain_genetics->GetMaleGametocyteInfo().GetGenomeID()
+                << "\n";
+        }
+        else
+        {
 
-        GetOutputStream() 
-                   << p_strain_genetics->GetSporozoiteInfo().GetTime()
-            << "," << p_strain_genetics->GetSporozoiteInfo().GetNodeID()
-            << "," << p_strain_genetics->GetSporozoiteInfo().GetVectorID()
-            << "," << p_strain_genetics->GetSporozoiteInfo().GetBiteID()
-            << "," << p_strain_genetics->GetSporozoiteInfo().GetHumanID()
-            << "," << p_strain_genetics->GetSporozoiteInfo().GetInfectionID()
-            << "," << p_strain_genetics->GetSporozoiteInfo().GetGenomeID()
-            << "," << home_node_id
-            << "," << p_strain_genetics->GetFemaleGametocyteInfo().GetTime()
-            << "," << p_strain_genetics->GetFemaleGametocyteInfo().GetNodeID()
-            << "," << p_strain_genetics->GetFemaleGametocyteInfo().GetVectorID()
-            << "," << p_strain_genetics->GetFemaleGametocyteInfo().GetBiteID()
-            << "," << p_strain_genetics->GetFemaleGametocyteInfo().GetHumanID()
-            << "," << p_strain_genetics->GetFemaleGametocyteInfo().GetInfectionID()
-            << "," << p_strain_genetics->GetFemaleGametocyteInfo().GetGenomeID()
-            << "," << p_strain_genetics->GetMaleGametocyteInfo().GetInfectionID()
-            << "," << p_strain_genetics->GetMaleGametocyteInfo().GetGenomeID()
-            << "\n";
+            GetOutputStream()
+                << p_strain_genetics->GetSporozoiteInfo().GetTime()
+                << "," << p_strain_genetics->GetSporozoiteInfo().GetInfectionID()
+                << "," << p_strain_genetics->GetSporozoiteInfo().GetGenomeID()
+                << "," << p_strain_genetics->GetFemaleGametocyteInfo().GetInfectionID()
+                << "," << p_strain_genetics->GetFemaleGametocyteInfo().GetGenomeID()
+                << "," << p_strain_genetics->GetMaleGametocyteInfo().GetInfectionID()
+                << "," << p_strain_genetics->GetMaleGametocyteInfo().GetGenomeID();
+
+            const auto& crossovers = p_strain_genetics->GetGenome().GetCrossovers();
+            if(!crossovers.empty()) {
+                GetOutputStream() << ",\"[";
+                for(auto it = crossovers.begin(); it != crossovers.end(); ++it) {
+                    if(it != crossovers.begin()) GetOutputStream() << ",";
+                    GetOutputStream() << *it;
+                }
+                GetOutputStream() << "]\"";
+            }
+            GetOutputStream() << "\n";
+        }
+
 
         return true;
     }
