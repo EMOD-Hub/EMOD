@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <cstdint>
 class Stopwatch
 {
 public:
@@ -12,8 +13,8 @@ public:
     void PrintResultSeconds(const char * label);
 
 private:
-    uint64_t _start;
-    uint64_t _stop;
+    std::uint64_t _start;
+    std::uint64_t _stop;
 };
 
 #define REPORT_TIME(enable, label, block) \
