@@ -85,6 +85,9 @@ namespace Kernel
         (CHROMOSOME_LENGTH_1 + CHROMOSOME_LENGTH_2 + CHROMOSOME_LENGTH_3 + CHROMOSOME_LENGTH_4 + CHROMOSOME_LENGTH_5 + CHROMOSOME_LENGTH_6 + CHROMOSOME_LENGTH_7 + CHROMOSOME_LENGTH_8 + CHROMOSOME_LENGTH_9 + CHROMOSOME_LENGTH_10 + CHROMOSOME_LENGTH_11 + CHROMOSOME_LENGTH_12 + CHROMOSOME_LENGTH_13 + CHROMOSOME_LENGTH_14)
     };
 
+    // ReportFpgNewInfections static flag
+    bool ParasiteGenetics::collecting_parasite_genome_crossover_data = false;
+
     int32_t ParasiteGenetics::FindChromosome( int32_t genomeLocation )
     {
         release_assert( (0 <= genomeLocation) && (genomeLocation <= CHROMOSOME_ENDS.back()) );

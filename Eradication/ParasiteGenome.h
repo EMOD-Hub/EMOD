@@ -173,12 +173,13 @@ namespace Kernel
                                     uint32_t iChromosome,
                                     std::list<Crossover>& rCrossovers );
 
-        static std::vector<int32_t> IndependentAssortment( RANDOMBASE* pRNG,
+        static void IndependentAssortment( RANDOMBASE* pRNG,
                                                            int32_t iChromosome,
                                                            ParasiteGenomeInner* pFemale0,
                                                            ParasiteGenomeInner* pFemale1,
                                                            ParasiteGenomeInner* pMale0,
-                                                           ParasiteGenomeInner* pMale1 );
+                                                           ParasiteGenomeInner* pMale1,
+                                                           const std::list<Crossover>& rCrossovers );
 
 
         ParasiteGenome();
@@ -290,6 +291,13 @@ namespace Kernel
         static bool                 STATIC_SWAP_Initialized;
         
         static std::list<Crossover> STATIC_TEST_CROSSOVERS;
+
+        static void TrackCrossoversInGenomes( const std::list<Crossover>& rCrossovers,
+                                              const std::vector<int32_t>& rNewOrder,
+                                              ParasiteGenomeInner* pFemale0,
+                                              ParasiteGenomeInner* pFemale1,
+                                              ParasiteGenomeInner* pMale0,
+                                              ParasiteGenomeInner* pMale1 );
 
         static void InitializeStaticSwap();
 

@@ -134,6 +134,8 @@ namespace Kernel
         }
     }
 
+    // this is only used to create the static female_0, female_1, male_0, male_1 
+    // for Recombination
     ParasiteGenomeInner::ParasiteGenomeInner()
         : m_refcount(0)
         , m_ID(0)
@@ -144,6 +146,10 @@ namespace Kernel
         , m_GenomeCrossoverLocations()
     {
         ++num_active;
+        // we're getting no more than 3 crossovers (and usually just one or two) per 14 chromosomes 
+        // with IndependentAssortment, the average number of crossovers is actually much less since
+        // only two out of four chromatids end up with crossover locations per crossover action
+        m_GenomeCrossoverLocations.reserve( 42 );
     }
 
     ParasiteGenomeInner::ParasiteGenomeInner( const std::vector<int32_t>& rNucleotideSequence )
@@ -183,6 +189,7 @@ namespace Kernel
         , m_BarcodeHashcode(0)
         , m_NucleotideSequence(pOldInner->m_NucleotideSequence)
         , m_AlleleRoots( pOldInner->m_NucleotideSequence.size(), infectionID )
+        , m_GenomeCrossoverLocations()
     {
         release_assert( m_NucleotideSequence.size() == m_AlleleRoots.size() );
         CalculateHashcodes( this );
@@ -213,7 +220,7 @@ namespace Kernel
         m_BarcodeHashcode    = 0;
         m_NucleotideSequence = pInput->m_NucleotideSequence;
         m_AlleleRoots        = pInput->m_AlleleRoots;
-        m_GenomeCrossoverLocations = {};
+        m_GenomeCrossoverLocations.clear();
     }
 
     const std::vector<int32_t>& ParasiteGenomeInner::GetNucleotideSequence() const
@@ -662,6 +669,7 @@ namespace Kernel
     // --- you can get rid of them.  Better they are there allthe time.
     // ------------------------------------------------------------------------------
     static ParasiteGenomeInner female_0, female_1, male_0, male_1;
+    static std::list<Crossover> crossovers;
 
     void ParasiteGenome::LogBarcodes( const char* name,
                                       int iChromosome,
@@ -739,7 +747,6 @@ namespace Kernel
 
             int first_index_on_chromosome = ParasiteGenetics::GetInstance()->GetFirstIndexOnChromosome( i_chromosome );
 
-            static std::list<Crossover> crossovers;
             crossovers.clear();
             FindCrossovers( pRNG, i_chromosome, crossovers );
 
@@ -766,34 +773,7 @@ namespace Kernel
             // --- Independent Assortment - Randomly shuffle this chromosome between the genomes.
             // ----------------------------------------------------------------------------------
             LogBarcodes( "BeforeIA", i_chromosome, &female_0, &female_1, &male_0, &male_1 );
-            std::vector<int32_t> new_order = IndependentAssortment( pRNG, i_chromosome, &female_0, &female_1, &male_0, &male_1 );
-            std::vector<ParasiteGenomeInner*> p_all = { &female_0, &female_1, &male_0, &male_1 };
-            release_assert( new_order.size() == p_all.size() );
-            for(auto co : crossovers)
-            {
-                uint32_t male_offset = 2;
-                uint32_t male_idx = co.chromatid_male + male_offset;  //offset 0->2, 1->3
-                bool other_found = false;
-                for(size_t i = 0; i < p_all.size(); i++)
-                {
-                    // co.chromatid_female = 0 - > index 0
-                    // co.chromatid_female = 1 - > index 1
-                    // co.chromatid_male   = 0 - > index 2
-                    // co.chromatid_male   = 1 - > index 3
-                    if(new_order[i] == male_idx || new_order[i] == co.chromatid_female)
-                    {
-                        p_all[i]->m_GenomeCrossoverLocations.push_back( co.genome_location );
-                        if(other_found)
-                        {
-                            break; 
-                        }
-                        else
-                        {
-                            other_found = true;
-                        }
-                    }
-                }
-            }
+            IndependentAssortment( pRNG, i_chromosome, &female_0, &female_1, &male_0, &male_1, crossovers );
             LogBarcodes( "AfterIA ", i_chromosome, &female_0, &female_1, &male_0, &male_1 );
         }
 
@@ -837,7 +817,7 @@ namespace Kernel
         std::vector<int32_t> inner_indexes; // index of the genome
         std::vector<int32_t> new_order;     // new order of the genomes after swap
 
-        Assortment( SwapType st, int32_t index0, int32_t index1, std::vector<int32_t> new_order )
+        Assortment( SwapType st, int32_t index0, int32_t index1, const std::vector<int32_t> new_order )
             : swap_type( SwapType::TWO ) // purposely ignore input
             , inner_indexes()
             , new_order( new_order )
@@ -846,7 +826,7 @@ namespace Kernel
             inner_indexes.push_back( index1 );
         }
 
-        Assortment( SwapType st, int32_t index0, int32_t index1, int32_t index2, std::vector<int32_t> new_order )
+        Assortment( SwapType st, int32_t index0, int32_t index1, int32_t index2, const std::vector<int32_t> new_order )
             : swap_type( SwapType::THREE ) // purposely ignore input
             , inner_indexes()
             , new_order( new_order )
@@ -856,7 +836,7 @@ namespace Kernel
             inner_indexes.push_back( index2 );
         }
 
-        Assortment( SwapType st, int32_t index0, int32_t index1, int32_t index2, int32_t index3 , std::vector<int32_t> new_order )
+        Assortment( SwapType st, int32_t index0, int32_t index1, int32_t index2, int32_t index3 , const std::vector<int32_t> new_order )
             : swap_type( st )
             , inner_indexes()
             , new_order( new_order )
@@ -883,30 +863,30 @@ namespace Kernel
     // ------------------------------------------------------------------------------------
 
     std::vector<Assortment> ASSORTMENTS = {
-        Assortment( SwapType::TWO,     0, 0       ,{0, 1, 2, 3} ), // 0- 0, 1, 2, 3 - Do nothing
-        Assortment( SwapType::TWO,     2, 3       ,{0, 1, 3, 2} ), // 1- 0, 1, 3, 2 - TWO
-        Assortment( SwapType::TWO,     1, 2       ,{0, 2, 1, 3} ), // 2- 0, 2, 1, 3 - TWO
-        Assortment( SwapType::THREE,   1, 2, 3    ,{0, 2, 3, 1} ), // 3- 0, 2, 3, 1 - THREE
-        Assortment( SwapType::THREE,   2, 1, 3    ,{0, 3, 1, 2} ), // 4- 0, 3, 1, 2 - THREE
-        Assortment( SwapType::TWO,     1, 3       ,{0, 3, 2, 1} ), // 5- 0, 3, 2, 1 - TWO
-        Assortment( SwapType::TWO,     0, 1       ,{1, 0, 2, 3} ), // 6- 1, 0, 2, 3 - TWO
-        Assortment( SwapType::TWO_TWO, 0, 1, 2, 3 ,{1, 0, 3, 2} ), // 7- 1, 0, 3, 2 - TWO(0,1), TWO(2,3)
-        Assortment( SwapType::THREE,   0, 1, 2    ,{1, 2, 0, 3} ), // 8- 1, 2, 0, 3 - THREE
-        Assortment( SwapType::FOUR,    1, 2, 3, 0 ,{1, 2, 3, 0} ), // 9- 1, 2, 3, 0 - FOUR
-        Assortment( SwapType::FOUR,    1, 3, 0, 2 ,{1, 3, 0, 2} ), // 10 1, 3, 0, 2 - FOUR
-        Assortment( SwapType::THREE,   0, 1, 3    ,{1, 3, 2, 0} ), // 11 1, 3, 2, 0 - THREE
-        Assortment( SwapType::THREE,   0, 2, 1    ,{2, 0, 1, 3} ), // 12 2, 0, 1, 3 - THREE
-        Assortment( SwapType::FOUR,    2, 0, 3, 1 ,{2, 0, 3, 1} ), // 13 2, 0, 3, 1 - FOUR
-        Assortment( SwapType::TWO,     0, 2       ,{2, 1, 0, 3} ), // 14 2, 1, 0, 3 - TWO
-        Assortment( SwapType::THREE,   0, 2, 3    ,{2, 1, 3, 0} ), // 15 2, 1, 3, 0 - THREE
-        Assortment( SwapType::TWO_TWO, 0, 2, 1, 3 ,{2, 3, 0, 1} ), // 16 2, 3, 0, 1 - TWO(0,2) TWO(1,3)
-        Assortment( SwapType::FOUR,    2, 3, 1, 0 ,{2, 3, 1, 0} ), // 17 2, 3, 1, 0 - FOUR
-        Assortment( SwapType::FOUR,    3, 0, 1, 2 ,{3, 0, 1, 2} ), // 18 3, 0, 1, 2 - FOUR
-        Assortment( SwapType::THREE,   0, 3, 1    ,{3, 0, 2, 1} ), // 19 3, 0, 2, 1 - THREE
-        Assortment( SwapType::THREE,   0, 3, 2    ,{3, 1, 0, 2} ), // 20 3, 1, 0, 2 - THREE
-        Assortment( SwapType::TWO,     0, 3       ,{3, 1, 2, 0} ), // 21 3, 1, 2, 0 - TWO
-        Assortment( SwapType::FOUR,    3, 2, 0, 1 ,{3, 2, 0, 1} ), // 22 3, 2, 0, 1 - FOUR
-        Assortment( SwapType::TWO_TWO, 0, 3, 2, 1 ,{3, 2, 1, 0} ), // 23 3, 2, 1, 0 - TWO(0,3) TWO(2,1)
+        Assortment( SwapType::TWO,     0, 0       ,{0, 1, 2, 3} ), 
+        Assortment( SwapType::TWO,     2, 3       ,{0, 1, 3, 2} ), 
+        Assortment( SwapType::TWO,     1, 2       ,{0, 2, 1, 3} ), 
+        Assortment( SwapType::THREE,   1, 2, 3    ,{0, 2, 3, 1} ), 
+        Assortment( SwapType::THREE,   2, 1, 3    ,{0, 3, 1, 2} ),
+        Assortment( SwapType::TWO,     1, 3       ,{0, 3, 2, 1} ), 
+        Assortment( SwapType::TWO,     0, 1       ,{1, 0, 2, 3} ), 
+        Assortment( SwapType::TWO_TWO, 0, 1, 2, 3 ,{1, 0, 3, 2} ), 
+        Assortment( SwapType::THREE,   0, 1, 2    ,{1, 2, 0, 3} ), 
+        Assortment( SwapType::FOUR,    1, 2, 3, 0 ,{1, 2, 3, 0} ),
+        Assortment( SwapType::FOUR,    1, 3, 0, 2 ,{1, 3, 0, 2} ),
+        Assortment( SwapType::THREE,   0, 1, 3    ,{1, 3, 2, 0} ), 
+        Assortment( SwapType::THREE,   0, 2, 1    ,{2, 0, 1, 3} ), 
+        Assortment( SwapType::FOUR,    2, 0, 3, 1 ,{2, 0, 3, 1} ), 
+        Assortment( SwapType::TWO,     0, 2       ,{2, 1, 0, 3} ), 
+        Assortment( SwapType::THREE,   0, 2, 3    ,{2, 1, 3, 0} ), 
+        Assortment( SwapType::TWO_TWO, 0, 2, 1, 3 ,{2, 3, 0, 1} ), 
+        Assortment( SwapType::FOUR,    2, 3, 1, 0 ,{2, 3, 1, 0} ), 
+        Assortment( SwapType::FOUR,    3, 0, 1, 2 ,{3, 0, 1, 2} ), 
+        Assortment( SwapType::THREE,   0, 3, 1    ,{3, 0, 2, 1} ), 
+        Assortment( SwapType::THREE,   0, 3, 2    ,{3, 1, 0, 2} ), 
+        Assortment( SwapType::TWO,     0, 3       ,{3, 1, 2, 0} ), 
+        Assortment( SwapType::FOUR,    3, 2, 0, 1 ,{3, 2, 0, 1} ), 
+        Assortment( SwapType::TWO_TWO, 0, 3, 2, 1 ,{3, 2, 1, 0} ), 
     };
 
     // ----------------------------------------------------------------------------------
@@ -914,23 +894,35 @@ namespace Kernel
     // --- how to arrange the chromosomes into the different genomes, and do this with
     // --- a minimal amount of copying and random numbers.
     // ----------------------------------------------------------------------------------
-    std::vector<int32_t> ParasiteGenome::IndependentAssortment( RANDOMBASE* pRNG,
+    void ParasiteGenome::IndependentAssortment( RANDOMBASE* pRNG,
                                                                 int32_t iChromosome,
                                                                 ParasiteGenomeInner* pFemale0,
                                                                 ParasiteGenomeInner* pFemale1,
                                                                 ParasiteGenomeInner* pMale0,
-                                                                ParasiteGenomeInner* pMale1 )
+                                                                ParasiteGenomeInner* pMale1,
+                                                                const std::list<Crossover>& rCrossovers )
     {
         int16_t assortment_index = pRNG->uniformZeroToN16( ASSORTMENTS.size() );
 
-        if(assortment_index == 0) return {0, 1, 2, 3};
-
-        const Assortment& rAssortment = ASSORTMENTS[ assortment_index ];
+        if(assortment_index == 0)
+        {
+            if(ParasiteGenetics::collecting_parasite_genome_crossover_data)
+            {
+                TrackCrossoversInGenomes( rCrossovers,
+                                          ASSORTMENTS[0].new_order,
+                                          pFemale0,
+                                          pFemale1,
+                                          pMale0,
+                                          pMale1 );
+            }
+            return;
+        }
 
         int first_index = ParasiteGenetics::GetInstance()->GetFirstIndexOnChromosome( iChromosome );
         int last_index  = ParasiteGenetics::GetInstance()->GetLastIndexOnChromosome( iChromosome );
-
+        const Assortment& rAssortment = ASSORTMENTS[assortment_index];
         ParasiteGenomeInner* pInners[] = { pFemale0, pFemale1, pMale0, pMale1 };
+
 
         switch( rAssortment.swap_type )
         {
@@ -971,7 +963,52 @@ namespace Kernel
                 release_assert( false ); // shouldn't get here
         }
 
-        return rAssortment.new_order;
+        if(ParasiteGenetics::collecting_parasite_genome_crossover_data)
+        {
+            TrackCrossoversInGenomes( rCrossovers,
+                                      rAssortment.new_order,
+                                      pFemale0,
+                                      pFemale1,
+                                      pMale0,
+                                      pMale1 );
+        }
+    }
+
+    void ParasiteGenome::TrackCrossoversInGenomes( const std::list<Crossover>& rCrossovers,
+                                                   const std::vector<int32_t>& rNewOrder,
+                                                   ParasiteGenomeInner* pFemale0,
+                                                   ParasiteGenomeInner* pFemale1,
+                                                   ParasiteGenomeInner* pMale0,
+                                                   ParasiteGenomeInner* pMale1 )
+    {
+        // if we're collecting crossover data for report, track
+        // crossovers after the assortment
+        ParasiteGenomeInner* pInners[] = { pFemale0, pFemale1, pMale0, pMale1 };
+        uint32_t male_offset = 2;
+        for(auto co : rCrossovers)
+        {
+            uint32_t male_idx = co.chromatid_male + male_offset;  //offset 0->2, 1->3
+            bool other_found = false;
+            for(size_t i = 0; i < 4; i++)
+            {
+                // co.chromatid_female = 0 - > index 0
+                // co.chromatid_female = 1 - > index 1
+                // co.chromatid_male   = 0 - > index 2
+                // co.chromatid_male   = 1 - > index 3
+                if(rNewOrder[i] == male_idx || rNewOrder[i] == co.chromatid_female)
+                {
+                    pInners[i]->m_GenomeCrossoverLocations.push_back( co.genome_location );
+                    if(other_found)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        other_found = true;
+                    }
+                }
+            }
+        }
     }
 
     std::vector<int32_t> ParasiteGenome::STATIC_SWAP_ns;

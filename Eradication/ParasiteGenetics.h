@@ -47,7 +47,8 @@ namespace Kernel
         static std::vector<int32_t> CHROMOSOME_ENDS;
         static int32_t MAX_LOCATIONS;
         static int32_t FindChromosome( int32_t genomeLocation );
-
+        // ReportFpgNewInfections static flag
+        static bool collecting_parasite_genome_crossover_data;
 
         static ParasiteGenetics* CreateInstance();
         static void DeleteInstance();

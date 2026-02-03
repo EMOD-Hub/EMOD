@@ -15,6 +15,7 @@
 #include "MalariaContexts.h"
 #include "SimulationEventContext.h"
 #include "ISimulationContext.h"
+#include "ParasiteGenetics.h"
 
 SETUP_LOGGING("ReportFpgNewInfections")
 
@@ -94,6 +95,11 @@ namespace Kernel
         if( !is_registered && is_valid_time )
         {
             BaseTextReportEvents::UpdateEventRegistration( currentTime, dt, rNodeEventContextList, pSimEventContext );
+            if (m_WriteCrossovers)
+            {
+                // if we're actively collecting crossover data for report, set flag in SimulationMalaria
+                ParasiteGenetics::collecting_parasite_genome_crossover_data = true;
+            }
         }
         else if( is_registered && !is_valid_time )
         {
@@ -106,6 +112,7 @@ namespace Kernel
                     UpdateRegistration( broadcaster, false );
                 }
             }
+            ParasiteGenetics::collecting_parasite_genome_crossover_data = false;
             is_registered = false;
         }
     }
