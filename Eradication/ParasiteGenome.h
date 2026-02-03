@@ -125,6 +125,9 @@ namespace Kernel
         // they initialized in the sim.
         std::vector<int32_t> m_AlleleRoots;
 
+        // Keeping track of genome crossover locations that happened to this genome during its creation.
+        std::vector<uint32_t> m_GenomeCrossoverLocations;
+
         // I think we need to generate "m_nonspectype" when a unique genome is created and then keep it
         // so that we can generate new minor epitopes that are in a similar range/set.
         // This is a number between zero and Falciparum_Nonspecific_Types.  It is used with MINOR_EPITOPE_VARS_PER_SET
@@ -174,8 +177,8 @@ namespace Kernel
                                            ParasiteGenomeInner* pFemale0,
                                            ParasiteGenomeInner* pFemale1,
                                            ParasiteGenomeInner* pMale0,
-                                           ParasiteGenomeInner* pMale1 );
-
+                                           ParasiteGenomeInner* pMale1,
+                                           const std::list<Crossover>& rCrossovers );
 
         ParasiteGenome();
         ParasiteGenome( const ParasiteGenome& rMaster );
@@ -242,6 +245,9 @@ namespace Kernel
         // This list is parallele to the nucleotide squence and must be the same length.
         const std::vector<int32_t>& GetAlleleRoots() const;
 
+        // return the list of genome crossover locations that happened during the creation of this genome.
+        const std::vector<uint32_t>& GetCrossovers() const;
+
         // Return true if this genome has this allele
         bool HasAllele( const ParasiteGenomeAllele& rAllele ) const;
 
@@ -266,9 +272,7 @@ namespace Kernel
 
         std::string ConvertToString( const std::vector<int32_t>& rIndexes ) const;
 
-
         ParasiteGenomeInner* m_pInner;
-
 
         static void LogBarcodes( const char* name,
                                  int iChromosome,
@@ -282,6 +286,13 @@ namespace Kernel
         static bool                 STATIC_SWAP_Initialized;
         
         static std::list<Crossover> STATIC_TEST_CROSSOVERS;
+
+        static void TrackCrossoversInGenomes( const std::list<Crossover>& rCrossovers,
+                                              const std::vector<int32_t>& rNewOrder,
+                                              ParasiteGenomeInner* pFemale0,
+                                              ParasiteGenomeInner* pFemale1,
+                                              ParasiteGenomeInner* pMale0,
+                                              ParasiteGenomeInner* pMale1 );
 
         static void InitializeStaticSwap();
 

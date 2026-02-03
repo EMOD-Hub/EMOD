@@ -112,4 +112,4 @@
 #define RA_Reporting_Interval_DESC_TEXT "Defines the cadence of the report in days (not timesteps). Data will be recorded every **Reporting_Interval** days starting with the **Start_Day**. This will limit system memory usage and is advised when large output files are expected."
 #define RA_Infected_Only_DESC_TEXT "If true (1), only individuals currently infected will be added to the report."
 
-
+#define RFNI_Report_Crossover_Data_Instead_DESC_TEXT "If true (1), instead of reporting new infections in detail, the report will contain basic new infection information with the crossover locations that created this infection's genome."
