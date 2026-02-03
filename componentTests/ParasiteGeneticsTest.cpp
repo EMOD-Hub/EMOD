@@ -1467,6 +1467,7 @@ SUITE( ParasiteGeneticsTest )
         ParasiteGenetics::CreateInstance()->Configure( EnvPtr->Config );
 
         int32_t num_bp = ParasiteGenetics::GetInstance()->GetNumBasePairs();
+        std::list<Crossover> empty_crossover_list;
 
         std::vector<int32_t> ns_orig_f0( num_bp, 0 );
         std::vector<int32_t> ns_orig_f1( num_bp, 0 );
@@ -1493,7 +1494,7 @@ SUITE( ParasiteGeneticsTest )
         // -------------------------------------------------------------
         rng.SetUL( 0 ); // Set the random number so that uniformZeroToN16( 24 ) = 0
 
-        ParasiteGenome::IndependentAssortment( &rng, 0, &female_0, &female_1, &male_0, &male_1 );
+        ParasiteGenome::IndependentAssortment( &rng, 0, &female_0, &female_1, &male_0, &male_1, empty_crossover_list );
 
         CHECK_ARRAY_EQUAL( ns_orig_f0, female_0.GetNucleotideSequence(), ns_orig_f0.size() );
         CHECK_ARRAY_EQUAL( ns_orig_f1, female_1.GetNucleotideSequence(), ns_orig_f1.size() );
@@ -1512,7 +1513,7 @@ SUITE( ParasiteGeneticsTest )
         uint32_t ul = 1 * uint32_t( uint64_t( UINT_MAX ) / uint64_t( 24 ) ) + 1;
         rng.SetUL( ul );
 
-        ParasiteGenome::IndependentAssortment( &rng, 0, &female_0, &female_1, &male_0, &male_1 );
+        ParasiteGenome::IndependentAssortment( &rng, 0, &female_0, &female_1, &male_0, &male_1, empty_crossover_list );
 
         std::vector<int32_t> ns_exp_m0 = {
             4011, 4012, 4013, 4014,
@@ -1602,7 +1603,7 @@ SUITE( ParasiteGeneticsTest )
         ParasiteGenomeInner assort_2_m1( ns_orig_m1, ar_orig_m1 );
 
         // 2nd chromosome
-        ParasiteGenome::IndependentAssortment( &rng, 1, &assort_2_f0, &assort_2_f1, &assort_2_m0, &assort_2_m1 );
+        ParasiteGenome::IndependentAssortment( &rng, 1, &assort_2_f0, &assort_2_f1, &assort_2_m0, &assort_2_m1, empty_crossover_list );
 
         std::vector<int32_t> ns_exp_f0 = ns_orig_f0;
         std::vector<int32_t> ns_exp_f1 = {
@@ -1698,7 +1699,7 @@ SUITE( ParasiteGeneticsTest )
         ParasiteGenomeInner assort_3_m1( ns_orig_m1, ar_orig_m1 );
 
         // 3rd chromosome
-        ParasiteGenome::IndependentAssortment( &rng, 2, &assort_3_f0, &assort_3_f1, &assort_3_m0, &assort_3_m1 );
+        ParasiteGenome::IndependentAssortment( &rng, 2, &assort_3_f0, &assort_3_f1, &assort_3_m0, &assort_3_m1, empty_crossover_list );
 
         ns_exp_f0 = ns_orig_f0;
         ns_exp_f1 = {
@@ -1823,7 +1824,7 @@ SUITE( ParasiteGeneticsTest )
         ParasiteGenomeInner assort_4_m1( ns_orig_m1, ar_orig_m1 );
 
         // 4th chromosome
-        ParasiteGenome::IndependentAssortment( &rng, 3, &assort_4_f0, &assort_4_f1, &assort_4_m0, &assort_4_m1 );
+        ParasiteGenome::IndependentAssortment( &rng, 3, &assort_4_f0, &assort_4_f1, &assort_4_m0, &assort_4_m1, empty_crossover_list );
 
         ns_exp_f0 = ns_orig_f0;
         ns_exp_f1 = {
@@ -1948,7 +1949,7 @@ SUITE( ParasiteGeneticsTest )
         ParasiteGenomeInner assort_5_m1( ns_orig_m1, ar_orig_m1 );
 
         // 5th chromosome
-        ParasiteGenome::IndependentAssortment( &rng, 4, &assort_5_f0, &assort_5_f1, &assort_5_m0, &assort_5_m1 );
+        ParasiteGenome::IndependentAssortment( &rng, 4, &assort_5_f0, &assort_5_f1, &assort_5_m0, &assort_5_m1, empty_crossover_list );
 
         ns_exp_f0 = ns_orig_f0;
         ns_exp_f1 = {
@@ -2073,7 +2074,7 @@ SUITE( ParasiteGeneticsTest )
         ParasiteGenomeInner assort_6_m1( ns_orig_m1, ar_orig_m1 );
 
         // 6th chromosome
-        ParasiteGenome::IndependentAssortment( &rng, 5, &assort_6_f0, &assort_6_f1, &assort_6_m0, &assort_6_m1 );
+        ParasiteGenome::IndependentAssortment( &rng, 5, &assort_6_f0, &assort_6_f1, &assort_6_m0, &assort_6_m1, empty_crossover_list );
 
         ns_exp_f0 = {
             1011, 1012, 1013, 1014,
@@ -2228,7 +2229,7 @@ SUITE( ParasiteGeneticsTest )
         ParasiteGenomeInner assort_7_m1( ns_orig_m1, ar_orig_m1 );
 
         // 7th chromosome
-        ParasiteGenome::IndependentAssortment( &rng, 6, &assort_7_f0, &assort_7_f1, &assort_7_m0, &assort_7_m1 );
+        ParasiteGenome::IndependentAssortment( &rng, 6, &assort_7_f0, &assort_7_f1, &assort_7_m0, &assort_7_m1, empty_crossover_list );
 
         ns_exp_f0 = {
             1011, 1012, 1013, 1014,
@@ -2383,7 +2384,7 @@ SUITE( ParasiteGeneticsTest )
         ParasiteGenomeInner assort_8_m1( ns_orig_m1, ar_orig_m1 );
 
         // 8th chromosome
-        ParasiteGenome::IndependentAssortment( &rng, 7, &assort_8_f0, &assort_8_f1, &assort_8_m0, &assort_8_m1 );
+        ParasiteGenome::IndependentAssortment( &rng, 7, &assort_8_f0, &assort_8_f1, &assort_8_m0, &assort_8_m1, empty_crossover_list );
 
         ns_exp_f0 = {
             1011, 1012, 1013, 1014,
@@ -2538,7 +2539,7 @@ SUITE( ParasiteGeneticsTest )
         ParasiteGenomeInner assort_9_m1( ns_orig_m1, ar_orig_m1 );
 
         // 9th chromosome
-        ParasiteGenome::IndependentAssortment( &rng, 8, &assort_9_f0, &assort_9_f1, &assort_9_m0, &assort_9_m1 );
+        ParasiteGenome::IndependentAssortment( &rng, 8, &assort_9_f0, &assort_9_f1, &assort_9_m0, &assort_9_m1, empty_crossover_list );
 
         ns_exp_f0 = {
             1011, 1012, 1013, 1014,
@@ -2693,7 +2694,7 @@ SUITE( ParasiteGeneticsTest )
         ParasiteGenomeInner assort_10_m1( ns_orig_m1, ar_orig_m1 );
 
         // 10th chromosome
-        ParasiteGenome::IndependentAssortment( &rng, 9, &assort_10_f0, &assort_10_f1, &assort_10_m0, &assort_10_m1 );
+        ParasiteGenome::IndependentAssortment( &rng, 9, &assort_10_f0, &assort_10_f1, &assort_10_m0, &assort_10_m1, empty_crossover_list );
 
         ns_exp_f0 = {
             1011, 1012, 1013, 1014,
@@ -2848,7 +2849,7 @@ SUITE( ParasiteGeneticsTest )
         ParasiteGenomeInner assort_11_m1( ns_orig_m1, ar_orig_m1 );
 
         // 11th chromosome
-        ParasiteGenome::IndependentAssortment( &rng, 10, &assort_11_f0, &assort_11_f1, &assort_11_m0, &assort_11_m1 );
+        ParasiteGenome::IndependentAssortment( &rng, 10, &assort_11_f0, &assort_11_f1, &assort_11_m0, &assort_11_m1, empty_crossover_list );
 
         ns_exp_f0 = {
             1011, 1012, 1013, 1014,
@@ -3003,7 +3004,7 @@ SUITE( ParasiteGeneticsTest )
         ParasiteGenomeInner assort_12_m1( ns_orig_m1, ar_orig_m1 );
 
         // 12th chromosome
-        ParasiteGenome::IndependentAssortment( &rng, 11, &assort_12_f0, &assort_12_f1, &assort_12_m0, &assort_12_m1 );
+        ParasiteGenome::IndependentAssortment( &rng, 11, &assort_12_f0, &assort_12_f1, &assort_12_m0, &assort_12_m1, empty_crossover_list );
 
         ns_exp_f0 = {
             1011, 1012, 1013, 1014,
@@ -3158,7 +3159,7 @@ SUITE( ParasiteGeneticsTest )
         ParasiteGenomeInner assort_13_m1( ns_orig_m1, ar_orig_m1 );
 
         // 13th chromosome
-        ParasiteGenome::IndependentAssortment( &rng, 12, &assort_13_f0, &assort_13_f1, &assort_13_m0, &assort_13_m1 );
+        ParasiteGenome::IndependentAssortment( &rng, 12, &assort_13_f0, &assort_13_f1, &assort_13_m0, &assort_13_m1, empty_crossover_list );
 
         ns_exp_f0 = {
             1011, 1012, 1013, 1014,
@@ -3313,7 +3314,7 @@ SUITE( ParasiteGeneticsTest )
         ParasiteGenomeInner assort_14_m1( ns_orig_m1, ar_orig_m1 );
 
         // 14th chromosome
-        ParasiteGenome::IndependentAssortment( &rng, 13, &assort_14_f0, &assort_14_f1, &assort_14_m0, &assort_14_m1 );
+        ParasiteGenome::IndependentAssortment( &rng, 13, &assort_14_f0, &assort_14_f1, &assort_14_m0, &assort_14_m1, empty_crossover_list );
 
         ns_exp_f0 = {
             1011, 1012, 1013, 1014,
@@ -3468,7 +3469,7 @@ SUITE( ParasiteGeneticsTest )
         ParasiteGenomeInner assort_15_m1( ns_orig_m1, ar_orig_m1 );
 
         // 1st chromosome
-        ParasiteGenome::IndependentAssortment( &rng, 0, &assort_15_f0, &assort_15_f1, &assort_15_m0, &assort_15_m1 );
+        ParasiteGenome::IndependentAssortment( &rng, 0, &assort_15_f0, &assort_15_f1, &assort_15_m0, &assort_15_m1, empty_crossover_list );
 
         ns_exp_f0 = {
             3011, 3012, 3013, 3014,
@@ -3623,7 +3624,7 @@ SUITE( ParasiteGeneticsTest )
         ParasiteGenomeInner assort_16_m1( ns_orig_m1, ar_orig_m1 );
 
         // 2nd chromosome
-        ParasiteGenome::IndependentAssortment( &rng, 1, &assort_16_f0, &assort_16_f1, &assort_16_m0, &assort_16_m1 );
+        ParasiteGenome::IndependentAssortment( &rng, 1, &assort_16_f0, &assort_16_f1, &assort_16_m0, &assort_16_m1, empty_crossover_list );
 
         ns_exp_f0 = {
             1011, 1012, 1013, 1014,
@@ -3778,7 +3779,7 @@ SUITE( ParasiteGeneticsTest )
         ParasiteGenomeInner assort_17_m1( ns_orig_m1, ar_orig_m1 );
 
         // 3rd chromosome
-        ParasiteGenome::IndependentAssortment( &rng, 2, &assort_17_f0, &assort_17_f1, &assort_17_m0, &assort_17_m1 );
+        ParasiteGenome::IndependentAssortment( &rng, 2, &assort_17_f0, &assort_17_f1, &assort_17_m0, &assort_17_m1, empty_crossover_list );
 
         ns_exp_f0 = {
             1011, 1012, 1013, 1014,
@@ -3933,7 +3934,7 @@ SUITE( ParasiteGeneticsTest )
         ParasiteGenomeInner assort_18_m1( ns_orig_m1, ar_orig_m1 );
 
         // 4th chromosome
-        ParasiteGenome::IndependentAssortment( &rng, 3, &assort_18_f0, &assort_18_f1, &assort_18_m0, &assort_18_m1 );
+        ParasiteGenome::IndependentAssortment( &rng, 3, &assort_18_f0, &assort_18_f1, &assort_18_m0, &assort_18_m1, empty_crossover_list );
 
         ns_exp_f0 = {
             1011, 1012, 1013, 1014,
@@ -4088,7 +4089,7 @@ SUITE( ParasiteGeneticsTest )
         ParasiteGenomeInner assort_19_m1( ns_orig_m1, ar_orig_m1 );
 
         // 5th chromosome
-        ParasiteGenome::IndependentAssortment( &rng, 4, &assort_19_f0, &assort_19_f1, &assort_19_m0, &assort_19_m1 );
+        ParasiteGenome::IndependentAssortment( &rng, 4, &assort_19_f0, &assort_19_f1, &assort_19_m0, &assort_19_m1, empty_crossover_list );
 
         ns_exp_f0 = {
             1011, 1012, 1013, 1014,
@@ -4243,7 +4244,7 @@ SUITE( ParasiteGeneticsTest )
         ParasiteGenomeInner assort_20_m1( ns_orig_m1, ar_orig_m1 );
 
         // 6th chromosome
-        ParasiteGenome::IndependentAssortment( &rng, 5, &assort_20_f0, &assort_20_f1, &assort_20_m0, &assort_20_m1 );
+        ParasiteGenome::IndependentAssortment( &rng, 5, &assort_20_f0, &assort_20_f1, &assort_20_m0, &assort_20_m1, empty_crossover_list );
 
         ns_exp_f0 = {
             1011, 1012, 1013, 1014,
@@ -4398,7 +4399,7 @@ SUITE( ParasiteGeneticsTest )
         ParasiteGenomeInner assort_21_m1( ns_orig_m1, ar_orig_m1 );
 
         // 7th chromosome
-        ParasiteGenome::IndependentAssortment( &rng, 6, &assort_21_f0, &assort_21_f1, &assort_21_m0, &assort_21_m1 );
+        ParasiteGenome::IndependentAssortment( &rng, 6, &assort_21_f0, &assort_21_f1, &assort_21_m0, &assort_21_m1, empty_crossover_list );
 
         ns_exp_f0 = {
             1011, 1012, 1013, 1014,
@@ -4553,7 +4554,7 @@ SUITE( ParasiteGeneticsTest )
         ParasiteGenomeInner assort_22_m1( ns_orig_m1, ar_orig_m1 );
 
         // 8th chromosome
-        ParasiteGenome::IndependentAssortment( &rng, 7, &assort_22_f0, &assort_22_f1, &assort_22_m0, &assort_22_m1 );
+        ParasiteGenome::IndependentAssortment( &rng, 7, &assort_22_f0, &assort_22_f1, &assort_22_m0, &assort_22_m1, empty_crossover_list );
 
         ns_exp_f0 = {
             1011, 1012, 1013, 1014,
@@ -4708,7 +4709,7 @@ SUITE( ParasiteGeneticsTest )
         ParasiteGenomeInner assort_23_m1( ns_orig_m1, ar_orig_m1 );
 
         // 9th chromosome
-        ParasiteGenome::IndependentAssortment( &rng, 8, &assort_23_f0, &assort_23_f1, &assort_23_m0, &assort_23_m1 );
+        ParasiteGenome::IndependentAssortment( &rng, 8, &assort_23_f0, &assort_23_f1, &assort_23_m0, &assort_23_m1, empty_crossover_list );
 
         ns_exp_f0 = {
             1011, 1012, 1013, 1014,
