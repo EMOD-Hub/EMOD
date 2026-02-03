@@ -54,9 +54,9 @@ namespace Kernel
     bool ReportFpgNewInfections::Configure( const Configuration* inputJson )
     {
         m_ReportFilter.ConfigureParameters( *this, inputJson );
-        if(JsonConfigurable::_dryrun || inputJson->Exist( "Report_Crossover_Data_Instead" )) 
+        if( JsonConfigurable::_dryrun || inputJson->Exist( "Report_Crossover_Data_Instead" ) ) 
         {
-            initConfigTypeMap( "Report_Crossover_Data_Instead", &m_WriteCrossovers, RFNI_Report_Crossover_Data_Instead, false );
+            initConfigTypeMap( "Report_Crossover_Data_Instead", &m_WriteCrossovers, RFNI_Report_Crossover_Data_Instead_DESC_TEXT, false );
         }
 
         bool configured = JsonConfigurable::Configure( inputJson );
@@ -95,9 +95,10 @@ namespace Kernel
         if( !is_registered && is_valid_time )
         {
             BaseTextReportEvents::UpdateEventRegistration( currentTime, dt, rNodeEventContextList, pSimEventContext );
-            if (m_WriteCrossovers)
+            if( m_WriteCrossovers )
             {
-                // if we're actively collecting crossover data for report, set flag in SimulationMalaria
+                // static flag in ParasiteGenomes set by ReportFpgNewInfections to tell ParasiteGenomes 
+                // when it needs the crossover data so ParasiteGenomes can store it for reporting 
                 ParasiteGenetics::collecting_parasite_genome_crossover_data = true;
             }
         }
@@ -131,7 +132,7 @@ namespace Kernel
     {
         std::stringstream header ;
 
-        if(!m_WriteCrossovers)
+        if( !m_WriteCrossovers )
         {
             header
                 << "SporozoiteToHuman_Time"

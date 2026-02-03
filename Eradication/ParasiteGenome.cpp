@@ -817,7 +817,7 @@ namespace Kernel
         std::vector<int32_t> inner_indexes; // index of the genome
         std::vector<int32_t> new_order;     // new order of the genomes after swap
 
-        Assortment( SwapType st, int32_t index0, int32_t index1, const std::vector<int32_t> new_order )
+        Assortment( SwapType st, int32_t index0, int32_t index1, const std::vector<int32_t>& new_order )
             : swap_type( SwapType::TWO ) // purposely ignore input
             , inner_indexes()
             , new_order( new_order )
@@ -826,7 +826,7 @@ namespace Kernel
             inner_indexes.push_back( index1 );
         }
 
-        Assortment( SwapType st, int32_t index0, int32_t index1, int32_t index2, const std::vector<int32_t> new_order )
+        Assortment( SwapType st, int32_t index0, int32_t index1, int32_t index2, const std::vector<int32_t>& new_order )
             : swap_type( SwapType::THREE ) // purposely ignore input
             , inner_indexes()
             , new_order( new_order )
@@ -836,7 +836,7 @@ namespace Kernel
             inner_indexes.push_back( index2 );
         }
 
-        Assortment( SwapType st, int32_t index0, int32_t index1, int32_t index2, int32_t index3 , const std::vector<int32_t> new_order )
+        Assortment( SwapType st, int32_t index0, int32_t index1, int32_t index2, int32_t index3 , const std::vector<int32_t>& new_order )
             : swap_type( st )
             , inner_indexes()
             , new_order( new_order )
@@ -895,12 +895,12 @@ namespace Kernel
     // --- a minimal amount of copying and random numbers.
     // ----------------------------------------------------------------------------------
     void ParasiteGenome::IndependentAssortment( RANDOMBASE* pRNG,
-                                                                int32_t iChromosome,
-                                                                ParasiteGenomeInner* pFemale0,
-                                                                ParasiteGenomeInner* pFemale1,
-                                                                ParasiteGenomeInner* pMale0,
-                                                                ParasiteGenomeInner* pMale1,
-                                                                const std::list<Crossover>& rCrossovers )
+                                                int32_t iChromosome,
+                                                ParasiteGenomeInner* pFemale0,
+                                                ParasiteGenomeInner* pFemale1,
+                                                ParasiteGenomeInner* pMale0,
+                                                ParasiteGenomeInner* pMale1,
+                                                const std::list<Crossover>& rCrossovers )
     {
         int16_t assortment_index = pRNG->uniformZeroToN16( ASSORTMENTS.size() );
 
@@ -908,6 +908,10 @@ namespace Kernel
         {
             if(ParasiteGenetics::collecting_parasite_genome_crossover_data)
             {
+                // Crossovers are stored in ParasiteGenomeInner, because chromosomes are not
+                // separate objects but rather subset of the genome array - so we need to know
+                // which genome each crossover (chromosome) went to after independent assortment.
+                // in this case, the crossovers (chromosome) are staying with their original genomes.
                 TrackCrossoversInGenomes( rCrossovers,
                                           ASSORTMENTS[0].new_order,
                                           pFemale0,
@@ -922,7 +926,6 @@ namespace Kernel
         int last_index  = ParasiteGenetics::GetInstance()->GetLastIndexOnChromosome( iChromosome );
         const Assortment& rAssortment = ASSORTMENTS[assortment_index];
         ParasiteGenomeInner* pInners[] = { pFemale0, pFemale1, pMale0, pMale1 };
-
 
         switch( rAssortment.swap_type )
         {
@@ -965,6 +968,10 @@ namespace Kernel
 
         if(ParasiteGenetics::collecting_parasite_genome_crossover_data)
         {
+            // Crossovers are stored in ParasiteGenomeInner, because chromosomes are not
+            // separate objects but rather subset of the genome array - so we need to know
+            // which genome each crossover (chromosome) went to after independent assortment.
+            // before attaching the crossovers to the genome
             TrackCrossoversInGenomes( rCrossovers,
                                       rAssortment.new_order,
                                       pFemale0,
@@ -981,8 +988,10 @@ namespace Kernel
                                                    ParasiteGenomeInner* pMale0,
                                                    ParasiteGenomeInner* pMale1 )
     {
-        // if we're collecting crossover data for report, track
-        // crossovers after the assortment
+        // Crossovers are stored in ParasiteGenomeInner, because chromosomes are not
+        // separate objects but rather subset of the genome array - so we need to know
+        // which genome each crossover (chromosome) went to after independent assortment.
+        // before attaching the crossovers to the genome
         ParasiteGenomeInner* pInners[] = { pFemale0, pFemale1, pMale0, pMale1 };
         uint32_t male_offset = 2;
         for(auto co : rCrossovers)

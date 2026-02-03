@@ -96,7 +96,6 @@ namespace Kernel
         const std::vector<int32_t>& GetNucleotideSequence() const;
         const std::vector<int32_t>& GetAlleleRoots() const;
 
-
     protected:
         // The unique ID of the genome.  Different ID's implies different contents.
         uint32_t m_ID;
@@ -174,13 +173,12 @@ namespace Kernel
                                     std::list<Crossover>& rCrossovers );
 
         static void IndependentAssortment( RANDOMBASE* pRNG,
-                                                           int32_t iChromosome,
-                                                           ParasiteGenomeInner* pFemale0,
-                                                           ParasiteGenomeInner* pFemale1,
-                                                           ParasiteGenomeInner* pMale0,
-                                                           ParasiteGenomeInner* pMale1,
-                                                           const std::list<Crossover>& rCrossovers );
-
+                                           int32_t iChromosome,
+                                           ParasiteGenomeInner* pFemale0,
+                                           ParasiteGenomeInner* pFemale1,
+                                           ParasiteGenomeInner* pMale0,
+                                           ParasiteGenomeInner* pMale1,
+                                           const std::list<Crossover>& rCrossovers );
 
         ParasiteGenome();
         ParasiteGenome( const ParasiteGenome& rMaster );
@@ -256,7 +254,6 @@ namespace Kernel
         // Return true if this genome has all of the alleles defined in the collection
         bool HasAllOfTheAlleles( const ParasiteGenomeAlleleCollection& rAlleleCollection ) const;
 
-
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // FPG-TODO - We will probably need to add something for drug resistance and HPR.
         //            I just don't know what the using code needs right now.
@@ -275,9 +272,7 @@ namespace Kernel
 
         std::string ConvertToString( const std::vector<int32_t>& rIndexes ) const;
 
-
         ParasiteGenomeInner* m_pInner;
-
 
         static void LogBarcodes( const char* name,
                                  int iChromosome,
