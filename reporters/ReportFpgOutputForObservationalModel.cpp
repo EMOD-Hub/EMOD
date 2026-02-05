@@ -106,7 +106,7 @@ namespace Kernel
         m_NumpyFilenameRoots   = FileSystem::Concat( std::string(EnvPtr->OutputPath), std::string("roots.npy"   ) );
 
         m_GenomeDimensions.push_back( 0 );
-        m_GenomeDimensions.push_back( ParasiteGenetics::GetInstance()->GetNumBasePairs() );
+        m_GenomeDimensions.push_back( ParasiteGenetics::GetInstance()->GetIndexesBarcode().size()); // we only want SNP (barcode) data
 
         write_numpy_file( write_func, dtype::int32, m_GenomeDimensions, m_NumpyFilenameAlleles, false );
         write_numpy_file( write_func, dtype::int32, m_GenomeDimensions, m_NumpyFilenameRoots,   false );
@@ -299,35 +299,76 @@ namespace Kernel
 
         if( (EnvPtr->MPI.Rank == 0) && (m_GenomeList.size() > 0) )
         {
+            // We only want the neutral alleles in these reports (the BarcodeLocations alleles)
+            const std::vector<int32_t>& r_barcode_indexes = ParasiteGenetics::GetInstance()->GetIndexesBarcode();
+            const size_t snp_data_size = r_barcode_indexes.size() * sizeof( int32_t );
             // --------------------------------------------------------------------------------
             // --- Define function that will write the nucleotide sequences to the numpy array
             // --- file such that they can be read as a 2D array.
             // --------------------------------------------------------------------------------
-            write_data_func write_func_alleles = [ this ]( size_t num_bytes, std::ofstream& file ) 
+            write_data_func write_func_alleles = [this, &r_barcode_indexes, &snp_data_size]( size_t num_bytes, std::ofstream& file )
             { 
                 size_t bytes_written = 0;
                 if( m_GenomeList.size() > 0 )
                 {
-                    size_t genome_size = m_GenomeList[0].GetNucleotideSequence().size() * sizeof(int32_t);
-                    for( const ParasiteGenome& r_genome : m_GenomeList )
+                    if(r_barcode_indexes.size() == m_GenomeList[0].GetNucleotideSequence().size())
                     {
-                        file.write( (char *)r_genome.GetNucleotideSequence().data(), genome_size );
-                        bytes_written += genome_size;
+                        // in case we are storing only barcode SNPs as the full nucleotide sequence
+                        for( const ParasiteGenome& r_genome : m_GenomeList )
+                        {
+                            file.write( (char*)r_genome.GetNucleotideSequence().data(), snp_data_size );
+                            bytes_written += snp_data_size ;
+                        }
+                    }
+                    else
+                    {
+                        std::vector<int32_t> snps;
+                        snps.reserve( r_barcode_indexes.size() );
+                        for(const ParasiteGenome& r_genome : m_GenomeList)
+                        {
+                            snps.clear();
+                            for(auto index : r_barcode_indexes)
+                            {
+                                release_assert( index < r_genome.GetNucleotideSequence().size() );
+                                snps.push_back( r_genome.GetNucleotideSequence()[index] );
+                            }
+                            file.write( (char*)snps.data(), snp_data_size );
+                            bytes_written += snp_data_size;
+                        }
                     }
                 }
                 release_assert( num_bytes == bytes_written );
             }; 
 
-            write_data_func write_func_roots = [ this ]( size_t num_bytes, std::ofstream& file ) 
+            write_data_func write_func_roots = [ this , &r_barcode_indexes, &snp_data_size ]( size_t num_bytes, std::ofstream& file )
             { 
                 size_t bytes_written = 0;
                 if( m_GenomeList.size() > 0 )
                 {
-                    size_t genome_size = m_GenomeList[0].GetAlleleRoots().size() * sizeof(int32_t);
-                    for( const ParasiteGenome& r_genome : m_GenomeList )
+                    if(r_barcode_indexes.size() == m_GenomeList[0].GetAlleleRoots().size())
                     {
-                        file.write( (char *)r_genome.GetAlleleRoots().data(), genome_size );
-                        bytes_written += genome_size;
+                        // in case we are storing only barcode SNPs as the full nucleotide sequence
+                        for(const ParasiteGenome& r_genome : m_GenomeList)
+                        {
+                            file.write( (char*)r_genome.GetAlleleRoots().data(), snp_data_size );
+                            bytes_written += snp_data_size;
+                        }
+                    }
+                    else
+                    {
+                        std::vector<int32_t> snps;
+                        snps.reserve( r_barcode_indexes.size() );
+                        for(const ParasiteGenome& r_genome : m_GenomeList)
+                        {
+                            snps.clear();
+                            for(auto index : r_barcode_indexes)
+                            {
+                                release_assert( index < r_genome.GetAlleleRoots().size() );
+                                snps.push_back( r_genome.GetAlleleRoots()[index] );
+                            }
+                            file.write( (char*)snps.data(), snp_data_size );
+                            bytes_written += snp_data_size;
+                        }
                     }
                 }
                 release_assert( num_bytes == bytes_written );
