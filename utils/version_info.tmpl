@@ -130,10 +130,11 @@
 // 2.31 - 1/16/2026  -  Serialization version change due to improvements in serializing/deserializing large population.
 //                      Removed NodeCount parameter from demographics. It was required but not used.
 //                      Malaria: Fixed issue with blood capacity calculations when people turned 20.
-
+// 2.32 - 2/05/2026  -  Malaria: ReportFPGNewInfections now has a new optional parameter - "Report_Crossover_Data_Instead"
+//                                   This keeps basic new infection info and adds a new GenomeCrossoverLocations column.
 
 #define    MAJOR_VERSION    2
-#define    MINOR_VERSION    31
+#define    MINOR_VERSION    32
 
 #ifndef REVISION_NUMBER
 #define    REVISION_NUMBER  $REVISION$
