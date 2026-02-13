@@ -70,7 +70,6 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 2,1960.51,1,HIVTestedNegative,400,9923.74,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 2,1960.51,1,HIVTestedNegative,422,8286.79,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 2,1960.51,1,HIVTestedNegative,430,8895.22,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-2,1960.51,1,HIVTestedNegative,432,7176.19,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 2,1960.51,1,HIVTestedNegative,442,12663.8,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 2,1960.51,1,HIVTestedNegative,465,10951.7,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 2,1960.51,1,HIVTestedNegative,484,12992.7,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
@@ -106,7 +105,6 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 2,1960.51,1,HIVTestedNegative,615,6390.31,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 2,1960.51,1,HIVTestedNegative,622,11693.5,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 2,1960.51,1,HIVTestedNegative,623,11470.4,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-2,1960.51,1,HIVTestedNegative,624,9781.78,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 2,1960.51,1,HIVTestedNegative,628,8611.35,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 2,1960.51,1,HIVTestedNegative,633,13121.5,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 2,1960.51,1,HIVTestedNegative,646,9944.53,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None

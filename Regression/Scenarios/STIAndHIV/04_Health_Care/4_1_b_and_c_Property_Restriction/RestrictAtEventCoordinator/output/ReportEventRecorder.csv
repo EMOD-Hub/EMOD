@@ -152,7 +152,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 1,1960,1,HIVNeedsMaleCircumcision,363,25014.5,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,365,62.6239,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,367,35203.5,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-1,1960,1,HIVNeedsMaleCircumcision,368,7313.53,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+1,1960,1,HIVNeedsMaleCircumcision,368,7313.52,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,372,1585.2,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,373,18775.8,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,374,5731.57,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
@@ -503,7 +503,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 1,1960,1,HIVNeedsMaleCircumcision,1313,9074.65,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,1317,876.845,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,1318,55.6459,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-1,1960,1,HIVNeedsMaleCircumcision,1321,5956.4,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+1,1960,1,HIVNeedsMaleCircumcision,1321,5956.39,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,1326,14454.3,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,1332,9022.05,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,1335,9000.38,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
@@ -643,7 +643,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 1,1960,1,HIVNeedsMaleCircumcision,1651,22084.6,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,1653,3714.52,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,1656,43038.5,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-1,1960,1,HIVNeedsMaleCircumcision,1657,28800.9,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+1,1960,1,HIVNeedsMaleCircumcision,1657,28800.8,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,1658,18082.7,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,1661,8012.57,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,1670,10140.3,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
@@ -704,7 +704,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 1,1960,1,HIVNeedsMaleCircumcision,1787,5102.51,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,1791,11309.7,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,1792,702.129,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-1,1960,1,HIVNeedsMaleCircumcision,1793,7151.26,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+1,1960,1,HIVNeedsMaleCircumcision,1793,7151.27,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,1795,2481.89,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,1797,3656.09,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,1798,1773.31,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
@@ -738,7 +738,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 1,1960,1,HIVNeedsMaleCircumcision,1872,29207.7,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,1873,7542.5,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,1874,17330.9,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-1,1960,1,HIVNeedsMaleCircumcision,1875,4542.96,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+1,1960,1,HIVNeedsMaleCircumcision,1875,4542.97,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,1876,23420.4,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,1881,9001.51,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,1882,9227.01,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
@@ -848,7 +848,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 1,1960,1,HIVNeedsMaleCircumcision,2160,2171.15,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,2169,4497.49,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,2170,2935.21,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-1,1960,1,HIVNeedsMaleCircumcision,2173,26806.6,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+1,1960,1,HIVNeedsMaleCircumcision,2173,26806.7,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,2177,614.83,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,2178,7654.14,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,2180,1486.47,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
@@ -1122,7 +1122,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 1,1960,1,HIVNeedsMaleCircumcision,2853,5520.99,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,2857,562.997,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,2858,16214.7,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-1,1960,1,HIVNeedsMaleCircumcision,2859,1877.6,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+1,1960,1,HIVNeedsMaleCircumcision,2859,1877.59,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,2860,4792.24,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,2861,21045.3,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,2863,9832.99,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
@@ -1213,7 +1213,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 1,1960,1,HIVNeedsMaleCircumcision,3059,33653.9,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,3060,2547.67,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,3061,6728.28,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-1,1960,1,HIVNeedsMaleCircumcision,3062,3651,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+1,1960,1,HIVNeedsMaleCircumcision,3062,3650.99,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,3063,19904.2,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,3064,2823.35,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,3067,1086.63,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
@@ -1453,7 +1453,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 1,1960,1,HIVNeedsMaleCircumcision,3637,307.701,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,3640,1617.61,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,3645,23867.7,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-1,1960,1,HIVNeedsMaleCircumcision,3646,2848.98,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+1,1960,1,HIVNeedsMaleCircumcision,3646,2848.97,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,3647,290.122,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,3648,18841.9,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,3649,23028.7,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
@@ -1582,7 +1582,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 1,1960,1,HIVNeedsMaleCircumcision,3970,1293.13,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,3973,4986.38,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,3978,17751.6,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-1,1960,1,HIVNeedsMaleCircumcision,3980,4072.16,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+1,1960,1,HIVNeedsMaleCircumcision,3980,4072.15,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,3981,6582.7,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,3984,5278.75,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,3985,6323.35,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
@@ -1742,7 +1742,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 1,1960,1,HIVNeedsMaleCircumcision,4393,2232.28,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,4394,1909.19,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,4396,10046.6,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-1,1960,1,HIVNeedsMaleCircumcision,4398,29144.6,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+1,1960,1,HIVNeedsMaleCircumcision,4398,29144.7,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,4399,12844.9,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,4400,2674.95,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,4402,6460.53,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
@@ -2045,7 +2045,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 1,1960,1,HIVNeedsMaleCircumcision,5099,158.449,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5100,5989.7,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5101,24335,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-1,1960,1,HIVNeedsMaleCircumcision,5102,9438.98,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+1,1960,1,HIVNeedsMaleCircumcision,5102,9438.97,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5103,4093.1,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5106,14011.9,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5110,65.2453,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
@@ -2072,7 +2072,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 1,1960,1,HIVNeedsMaleCircumcision,5163,914.909,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5166,17326.1,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5167,2212.14,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-1,1960,1,HIVNeedsMaleCircumcision,5174,39397.4,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+1,1960,1,HIVNeedsMaleCircumcision,5174,39397.3,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5175,25170.1,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5178,10840.6,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5179,14025.5,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
@@ -2144,7 +2144,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 1,1960,1,HIVNeedsMaleCircumcision,5346,4448.58,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5348,12564,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5349,28770.4,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-1,1960,1,HIVNeedsMaleCircumcision,5353,5415.11,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+1,1960,1,HIVNeedsMaleCircumcision,5353,5415.12,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5355,7710.73,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5359,95.4613,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5361,205.125,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
@@ -2152,7 +2152,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 1,1960,1,HIVNeedsMaleCircumcision,5364,35877.9,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5367,5708.05,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5368,2589.99,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-1,1960,1,HIVNeedsMaleCircumcision,5371,8571.91,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+1,1960,1,HIVNeedsMaleCircumcision,5371,8571.9,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5375,1879.31,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5376,4109.35,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5377,188.106,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
@@ -2332,11 +2332,11 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 1,1960,1,HIVNeedsMaleCircumcision,5759,4913.53,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5762,14862.4,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5764,1212.84,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-1,1960,1,HIVNeedsMaleCircumcision,5767,10921.3,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+1,1960,1,HIVNeedsMaleCircumcision,5767,10921.2,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5771,5203.11,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5774,18294.6,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5777,2915.84,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-1,1960,1,HIVNeedsMaleCircumcision,5781,3322.79,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+1,1960,1,HIVNeedsMaleCircumcision,5781,3322.78,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5783,8265.4,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5784,11272.1,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,5785,13798.7,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
@@ -2637,7 +2637,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 1,1960,1,HIVNeedsMaleCircumcision,6515,11403,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,6516,11132.7,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,6517,24033.9,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-1,1960,1,HIVNeedsMaleCircumcision,6520,5415.85,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+1,1960,1,HIVNeedsMaleCircumcision,6520,5415.86,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,6522,12895.3,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,6525,19194.6,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,6526,34081.4,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
@@ -3134,7 +3134,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 1,1960,1,HIVNeedsMaleCircumcision,7761,594.033,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,7769,23489.8,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,7770,354.968,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-1,1960,1,HIVNeedsMaleCircumcision,7772,483.64,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+1,1960,1,HIVNeedsMaleCircumcision,7772,483.641,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,7774,1698.15,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,7775,5118.27,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,7777,2423.93,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
@@ -3233,7 +3233,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 1,1960,1,HIVNeedsMaleCircumcision,8003,6044.32,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,8006,17584.9,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,8012,3197.97,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-1,1960,1,HIVNeedsMaleCircumcision,8015,9310.42,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+1,1960,1,HIVNeedsMaleCircumcision,8015,9310.41,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,8016,8522.21,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,8020,18869.8,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,8021,10078.3,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
@@ -3264,7 +3264,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 1,1960,1,HIVNeedsMaleCircumcision,8093,5983.84,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,8100,1401.47,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,8102,279.08,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-1,1960,1,HIVNeedsMaleCircumcision,8110,872.275,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+1,1960,1,HIVNeedsMaleCircumcision,8110,872.274,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,8115,50064.5,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,8118,3052.88,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 1,1960,1,HIVNeedsMaleCircumcision,8119,10310.3,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None

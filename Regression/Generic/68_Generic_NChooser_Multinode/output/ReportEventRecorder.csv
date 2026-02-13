@@ -585,7 +585,7 @@ Time,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness
 35,1,Vaccinated,3858,18981.9,F,0,0
 35,1,Vaccinated,5216,20390.5,F,1,0.3
 35,1,Vaccinated,5588,18805.4,F,0,0
-35,1,Vaccinated,6530,20158.3,F,0,0
+35,1,Vaccinated,6530,20158.2,F,0,0
 35,1,Vaccinated,7824,20942.4,F,1,0
 35,2,Vaccinated,493,20411.1,F,1,0.3
 35,2,Vaccinated,1195,19238.3,F,1,0.3
@@ -892,7 +892,7 @@ Time,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness
 37,1,Vaccinated,3600,8678.15,F,0,0
 37,1,Vaccinated,3784,10143.7,F,0,0
 37,1,Vaccinated,3824,8886.19,F,0,0
-37,1,Vaccinated,4130,8377.13,F,0,0
+37,1,Vaccinated,4130,8377.12,F,0,0
 37,1,Vaccinated,5516,9707.33,F,0,0
 37,1,Vaccinated,5956,7301.57,F,0,0
 37,1,Vaccinated,6028,9024.82,F,0,0
@@ -963,7 +963,7 @@ Time,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness
 37,2,Vaccinated,2145,19959.9,M,1,0
 37,2,Vaccinated,2347,18294.6,M,1,0.3
 37,2,Vaccinated,3259,20054,M,0,0
-37,2,Vaccinated,3309,20600.3,M,1,0
+37,2,Vaccinated,3309,20600.2,M,1,0
 37,2,Vaccinated,3351,18633,M,1,0
 37,2,Vaccinated,3417,19121.4,M,0,0
 37,2,Vaccinated,3625,21010.6,M,0,0
@@ -1093,7 +1093,7 @@ Time,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness
 38,1,Vaccinated,3662,8726.76,F,0,0
 38,1,Vaccinated,3670,7533.83,F,0,0
 38,1,Vaccinated,3774,8476.04,F,0,0
-38,1,Vaccinated,4130,8378.13,F,0,0
+38,1,Vaccinated,4130,8378.12,F,0,0
 38,1,Vaccinated,4658,7993.85,F,0,0
 38,1,Vaccinated,5118,9485.84,F,0,0
 38,1,Vaccinated,5550,7472.94,F,1,0
@@ -1167,7 +1167,7 @@ Time,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness
 38,2,Vaccinated,1741,20869.8,M,0,0.3
 38,2,Vaccinated,2057,20594.6,M,0,0
 38,2,Vaccinated,2279,20014.3,M,0,0
-38,2,Vaccinated,3309,20601.3,M,1,0
+38,2,Vaccinated,3309,20601.2,M,1,0
 38,2,Vaccinated,3325,21505.1,M,0,0
 38,2,Vaccinated,4183,21144.8,M,0,0
 38,2,Vaccinated,4195,21387.5,M,0,0
@@ -1329,7 +1329,7 @@ Time,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness
 39,2,Vaccinated,6189,8828.47,F,1,0.3
 39,2,Vaccinated,6229,8083.3,F,0,0
 39,2,Vaccinated,7123,9072.73,F,0,0
-39,2,Vaccinated,7861,8721.13,F,1,0
+39,2,Vaccinated,7861,8721.12,F,1,0
 39,2,Vaccinated,7875,9679.5,F,0,0
 39,2,Vaccinated,8195,9273.04,F,0,0
 39,2,Vaccinated,8605,10076.1,F,1,0.3
