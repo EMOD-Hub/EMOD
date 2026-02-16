@@ -22,7 +22,7 @@ class HIVCircumcisionAnalyzer():
     def ztest(self, x, n, p, alpha):
 
         if n*p < 10 or n*(1-p) < 10:
-            print "WARNING: not enough samples to use a Z-Test, marking as Fail!"
+            print("WARNING: not enough samples to use a Z-Test, marking as Fail!")
             return {'Valid': False, 'Test_Statistic': None, 'P_Value': None}
 
         p_hat = x / float(n)
@@ -31,7 +31,7 @@ class HIVCircumcisionAnalyzer():
         p_val = 2 * sps.norm.cdf(-abs(z_score))
 
         if self.verbose:
-            print p_val
+            print(p_val)
 
         if p_val < alpha:
             return {'Valid': False, 'Test_Statistic': z_score, 'P_Value': p_val}
@@ -60,7 +60,9 @@ class HIVCircumcisionAnalyzer():
                 found = True
 
         if not found:
-            print "WARNING: Did not find campaign even with name '%s', assuming target male circumcision fraction is %f" % (circumcision_event_name, target_mc_frac)
+            print(
+                "WARNING: Did not find campaign even with name '%s', assuming target male circumcision fraction is %f" % (
+                    circumcision_event_name, target_mc_frac))
 
         key = ( id(self), target_mc_frac )
         emit_data[key] = {'MC': male_circumcision}
@@ -94,7 +96,7 @@ class HIVCircumcisionAnalyzer():
         each_valid = [y['Valid'] for y in [ self.results[x] for x in self.results]]
 
         if self.verbose:
-            print each_valid
+            print(each_valid)
 
         all_valid = all( each_valid )
 

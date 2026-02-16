@@ -57,11 +57,8 @@ class RelationshipDurationAnalyzer():
         for reltype in [TRANSITORY, INFORMAL, MARITAL]:
             relname = relnames[reltype]
 
-            if self.verbose:
-                print "Rel type: " + relname + ": lam=" + str(lam/DAYS_PER_YEAR) + " kap=" + str(kap) + " mu=" + str(mu/DAYS_PER_YEAR)
-
             # Choose rows corresponding to this relationship type
-            type_rows = [r for r in rows if r[colMap['Rel_type']] is str(reltype)]
+            type_rows = [r for r in rows if r[colMap['Rel_type']] == str(reltype)]
 
             # Get relationship duration for each type_row
             emit_data[relname] = [ float(r[colMap['Rel_scheduled_end_time']]) - float(r[colMap['Rel_start_time']]) for r in type_rows]
@@ -77,7 +74,7 @@ class RelationshipDurationAnalyzer():
                 if relname not in self.data:
                     self.data[relname] = np.array(p.output_data[relname])
                 else:
-                    self.data[relname] = np.hstack( self.data[relname], np.array(p.output_data[relname]) )
+                    self.data[relname] = np.hstack((self.data[relname], np.array(p.output_data[relname])))
 
         # Now run accumulated data through KS test to see if valid
         config_json = p.output_data[ self.filenames[1] ]
@@ -99,17 +96,16 @@ class RelationshipDurationAnalyzer():
             kap = kapv[reltype]
             lam = mu / math.gamma(1+1/kap)
 
-            # Note dummy parameters in the lambda below kepp necessary variable (lam, kap) in scope
+            # Note dummy parameters in the lambda below keep necessary variable (lam, kap) in scope
             self.fun[relname] = lambda x, lam=lam, kap=kap: self.weib_cdf(x, lam, kap)
 
-            self.results[relname] = self.kstest(self.data[relname], self.fun[relname], self.alpha, )
+            self.results[relname] = self.kstest(self.data[relname], self.fun[relname], self.alpha)
 
             if self.verbose:
                 if self.results[relname]['Valid']:
-                    print "Sub-test for " + relname + " passed."
+                    print("Sub-test for " + relname + " passed.")
                 else:
-                    print "Sub-test for " + relname + " failed."
-
+                    print("Sub-test for " + relname + " failed.")
 
     def finalize(self):
         if self.plot:

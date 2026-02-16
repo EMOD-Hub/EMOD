@@ -2,9 +2,6 @@
     "Reports": [
         {
             "class": "ReportPfaQueues"
-        },
-        {
-            "class": "StiRelationshipQueueReporter"
         }
     ],
     "Use_Defaults": 1

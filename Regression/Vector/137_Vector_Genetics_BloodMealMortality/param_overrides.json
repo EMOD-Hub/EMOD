@@ -18,7 +18,7 @@
         "PRIMARY": {
             "Config_Name": "137_Vector_Genetics_BloodMealMortality",
             "Custom_Reports_Filename": "custom_reports.json",
-            "Geography": "NO_DEFAULT_GEOGRAPHY",
+            "Geography": "",
             "Run_Number": 1,
             "Simulation_Duration": 730,
             "logLevel_DllLoader": "WARNING",

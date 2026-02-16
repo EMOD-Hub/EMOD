@@ -20,10 +20,10 @@ class HIVCircumcisionAnalyzer():
         self.results = {} # Place to store the boolean validity and other statistics of sub-tests
 
     def binom_test(self, x, n, p, alpha):
-        p_val = sps.binom_test(x, n, p)
+        p_val = sps.binomtest(x, n, p)
 
         if self.verbose:
-            print p_val
+            print(p_val)
 
         if p_val < alpha:
             return {'Valid': False, 'Test_Statistic': x/n, 'P_Value': p_val}
@@ -71,7 +71,9 @@ class HIVCircumcisionAnalyzer():
                 found = True
 
         if not found:
-            print "WARNING: Did not find campaign even with name '%s', assuming target male circumcision fraction is %f" % (circumcision_event_name, target_mc_frac)
+            print(
+                "WARNING: Did not find campaign even with name '%s', assuming target male circumcision fraction is %f" % (
+                    circumcision_event_name, target_mc_frac))
 
         key = ( id(self), target_mc_frac )
         emit_data[key] = {'MC': male_circumcision}
@@ -101,7 +103,7 @@ class HIVCircumcisionAnalyzer():
 # For large samples, can use Pearson's chi-squared test (and the G-test) / Wikipedia
 
             #self.results[target_mc_frac] = self.ztest( num_circ, num_males, target_mc_frac, self.alpha )
-            self.results[target_mc_frac] = self.binom_test( num_circ, num_males, target_mc_frac, self.alpha )
+            self.results[target_mc_frac] = self.binomtest( num_circ, num_males, target_mc_frac, self.alpha )
 
     def finalize(self):
         tmp = [ self.results[x] for x in self.results]
@@ -109,7 +111,7 @@ class HIVCircumcisionAnalyzer():
         each_valid = [y['Valid'] for y in [ self.results[x] for x in self.results]]
 
         if self.verbose:
-            print each_valid
+            print(each_valid)
 
         all_valid = all( each_valid )
 

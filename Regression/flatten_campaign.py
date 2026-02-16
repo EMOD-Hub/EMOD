@@ -18,8 +18,8 @@ def make_event_map(json_in):
     for event in json_in["Events"]:
         try:
             event_map[event['Event_Name']] = (hash( json.dumps(event, sort_keys=True) ), event)
-        except KeyError, e:
-            print event
+        except KeyError as e:
+            print(event)
             raise Exception( 'The event printed above is missing the required %s key' % str(e) )
     return event_map
 
@@ -71,7 +71,7 @@ try:
     base_fn = args.base
     if( len(args.base) == 0 ):
         base_fn = overlay_json["Default_Campaign_Path"]
-except KeyError, e:
+except KeyError as e:
     raise Exception( 'The overlay campaign file %s is missing a required key: %s' % (sys.argv[1], str(e)) )
 
 base_str = open( base_fn ).read()
@@ -85,16 +85,16 @@ for key, value in base_json.items():
     if key == "Events":
         # Skip events
         if args.verbose:
-            print "Skipping key: %s" % key
+            print("Skipping key: %s" % key)
         continue
     elif key in overlay_json:
         if args.verbose:
-            print "Key from overlay: %s" % key
+            print("Key from overlay: %s" % key)
         # Use modified value, if any
         merged_json[key] = overlay_json[key]
     else:
         if args.verbose:
-            print "Key from base: %s" % key
+            print("Key from base: %s" % key)
         # Use base
         merged_json[key] = value
 
@@ -116,7 +116,7 @@ for overlay_event_str in overlay_event_str_list:
 
     if event_name not in base_event_map:
         if args.verbose:
-            print "USE OVERLAY (EXCLUSIVE): %s" % event_name
+            print("USE OVERLAY (EXCLUSIVE): %s" % event_name)
         merged_events_str += "        %s,\n"%overlay_event_str
 
 
@@ -128,12 +128,12 @@ for base_event_str in base_event_str_list:
 
     if event_name in overlay_event_map:
         if args.verbose :
-            print "USE OVERLAY: %s" % event_name
+            print("USE OVERLAY: %s" % event_name)
         overlay_event_str = overlay_event_name_to_string_map[event_name]
         merged_events_str += "        %s,\n"%overlay_event_str
     else:
         if args.verbose :
-            print "USE BASE: %s" % event_name
+            print("USE BASE: %s" % event_name)
         merged_events_str += "        %s,\n"%base_event_str
 
 merged_events_str = merged_events_str[:-2]  # Chop final ",\n"
@@ -153,11 +153,11 @@ merged_str = merged_str[0:insert_psn-1] \
 
 if len(args.saveto) > 0:
     if args.verbose:
-        print "Writing output to %s" % args.saveto
+        print("Writing output to %s" % args.saveto)
 
     with open(args.saveto, 'w') as outfile:
         outfile.write( merged_str )
 if len(args.saveto) == 0 or args.verbose:
-    print "Here's the merged campaign:"
-    print "--------------------------------"
-    print merged_str
+    print("Here's the merged campaign:")
+    print("--------------------------------")
+    print(merged_str)

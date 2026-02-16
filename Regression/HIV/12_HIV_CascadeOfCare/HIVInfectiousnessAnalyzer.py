@@ -57,9 +57,6 @@ class RelationshipDurationAnalyzer():
         for reltype in [TRANSITORY, INFORMAL, MARITAL]:
             relname = relnames[reltype]
 
-            if self.verbose:
-                print "Rel type: " + relname + ": lam=" + str(lam/DAYS_PER_YEAR) + " kap=" + str(kap) + " mu=" + str(mu/DAYS_PER_YEAR)
-
             # Choose rows corresponding to this relationship type
             type_rows = [r for r in rows if r[colMap['Rel_type']] is str(reltype)]
 
@@ -106,10 +103,9 @@ class RelationshipDurationAnalyzer():
 
             if self.verbose:
                 if self.results[relname]['Valid']:
-                    print "Sub-test for " + relname + " passed."
+                    print("Sub-test for " + relname + " passed.")
                 else:
-                    print "Sub-test for " + relname + " failed."
-
+                    print("Sub-test for " + relname + " failed.")
 
     def finalize(self):
         if self.plot:

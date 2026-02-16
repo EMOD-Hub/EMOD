@@ -1,0 +1,6 @@
+h5py
+lz4
+matplotlib
+pandas
+scipy
+seaborn

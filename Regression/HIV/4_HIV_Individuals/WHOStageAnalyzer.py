@@ -101,13 +101,13 @@ class WHOStageAnalyzer():
                     continue
 
                 if self.verbose:
-                    print "id: %d, stage: %d, pf: %f" % (uid, stage, pf)
-                    print 'Found stage '+str(stage)+' for uid='+str(uid)+' start at prog frac of ' + str(pf)
+                    print("id: %d, stage: %d, pf: %f" % (uid, stage, pf))
+                    print('Found stage ' + str(stage) + ' for uid=' + str(uid) + ' start at prog frac of ' + str(pf))
 
                 if stage == 1:
                     initial_stage = next((float(r[colMap['WHOStage']]) for r in rows if float(r[colMap['Id']]) == uid), None)
                     if initial_stage >= 2:
-                        print "WARNING: Initial WHO stage for id=%d is %f" % (uid, initial_stage)
+                        print("WARNING: Initial WHO stage for id=%d is %f" % (uid, initial_stage))
                     if key not in self.results:
                         self.results[key] = {'Valid': initial_stage < 2} 
                     else:
@@ -120,12 +120,12 @@ class WHOStageAnalyzer():
                     emit_data[key].append(stage_duration)   # Stage duration (actually of previous stage!)
 
                     k = 'Stage_' + str(stage-1)
-                    self.fun[k].append( \
-                        lambda prog_frac, \
-                            lam=Stage_Duration_Param[k]['Lambda'], \
-                            kap=Stage_Duration_Param[k]['Kappa'], \
-                            max_delta_pf=max_pf-pf_prev: \
-                            [1 if fp > max_delta_pf else sps.exponweib(1,kap).cdf(fp/lam) / sps.exponweib(1,kap).cdf(max_delta_pf/lam) for fp in prog_frac]
+                    self.fun[k].append(
+                        lambda prog_frac,
+                               lam=Stage_Duration_Param[k]['Lambda'],
+                               kap=Stage_Duration_Param[k]['Kappa'],
+                               max_delta_pf=max_pf-pf_prev:
+                        [1 if fp > max_delta_pf else sps.exponweib(1,kap).cdf(fp/lam) / sps.exponweib(1,kap).cdf(max_delta_pf/lam) for fp in prog_frac]
                         )
 
         return emit_data
@@ -160,7 +160,7 @@ class WHOStageAnalyzer():
                 self.results[key] = self.kstest(duration, self.fun_tot[k], self.alpha)
 
         if self.verbose:
-            print self.results
+            print(self.results)
 
     def finalize(self):
         if self.plot:

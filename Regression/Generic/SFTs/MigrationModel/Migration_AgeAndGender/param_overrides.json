@@ -28,7 +28,7 @@
         },
         "PRIMARY": {
             "Config_Name": "SFT_Generic_MigrationByAgeAndGender",
-            "Geography": "NONE",
+            "Geography": "",
             "Run_Number": 1,
             "Simulation_Duration": 400
         },

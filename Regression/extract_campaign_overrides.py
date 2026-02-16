@@ -18,8 +18,8 @@ def make_event_map(json_in):
     for event in json_in["Events"]:
         try:
             event_map[event['Event_Name']] = (hash( json.dumps(event, sort_keys=True) ), event)
-        except KeyError, e:
-            print event
+        except KeyError as e:
+            print(event)
             raise Exception( 'The event printed above is missing the required %s key' % str(e) )
     return event_map
 
@@ -78,16 +78,16 @@ for key, value in base_json.items():
     if key == "Events":
         # Skip events
         if args.verbose:
-            print "Skipping key: %s" % key
+            print("Skipping key: %s" % key)
         continue
     elif key in mod_json:
         if args.verbose:
-            print "Key from mod: %s" % key
+            print("Key from mod: %s" % key)
         # Use modified value, if any
         diff_json[key] = mod_json[key]
     else:
         if args.verbose:
-            print "Key from base: %s" % key
+            print("Key from base: %s" % key)
         # Use base
         diff_json[key] = value
 
@@ -103,18 +103,18 @@ for event_str in mod_event_str_list:
 
     mod_hash = mod_event_map[event_name][0]
     if args.verbose:
-        print "Event_Name: %s" % event_name
+        print("Event_Name: %s" % event_name)
 
     if event_name not in base_event_map:
         if args.verbose:
-            print "NEW: %s" % event_name
+            print("NEW: %s" % event_name)
         diff_str_events += "        %s,\n"%event_str
     elif base_event_map[event_name][0] != mod_hash:
         if args.verbose:
-            print "MODIFIED: %s" % event_name
+            print("MODIFIED: %s" % event_name)
         diff_str_events += "        %s,\n"%event_str
     elif args.verbose:
-        print "MATCH: %s" % event_name
+        print("MATCH: %s" % event_name)
 
 diff_str_events = diff_str_events[:-2]  # Chop final ",\n"
 
@@ -131,11 +131,11 @@ diff_str = diff_str[0:insert_psn-1] \
 
 if len(args.saveto) > 0:
     if args.verbose:
-        print "Writing output to %s" % args.saveto
+        print("Writing output to %s" % args.saveto)
 
     with open(args.saveto, 'w') as outfile:
         outfile.write( diff_str )
 if len(args.saveto) == 0 or args.verbose:
-    print "Here's the resulting difference:"
-    print "--------------------------------"
-    print diff_str
+    print("Here's the resulting difference:")
+    print("--------------------------------")
+    print(diff_str)

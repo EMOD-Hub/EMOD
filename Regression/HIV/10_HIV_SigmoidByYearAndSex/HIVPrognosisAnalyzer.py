@@ -109,10 +109,9 @@ class HIVPrognosisAnalyzer():
 
             if self.verbose:
                 if self.results[abi]['Valid']:
-                    print "Sub-test for age range " + str(age_range) + " passed."
+                    print("Sub-test for age range " + str(age_range) + " passed.")
                 else:
-                    print "Sub-test for age range " + str(age_range) + " failed."
-
+                    print("Sub-test for age range " + str(age_range) + " failed.")
 
     def finalize(self):
         if self.plot:

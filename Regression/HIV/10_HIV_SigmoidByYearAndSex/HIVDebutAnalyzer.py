@@ -23,7 +23,7 @@ class HIVDebutAnalyzer():
         self.results = {} # Place to store the boolean validity and other statistics of sub-tests
 
     def kstest(self, debut_age, fun, alpha):
-        print "Running kstest on", len(debut_age), "samples."
+        print("Running kstest on", len(debut_age), "samples.")
         (D, p_val) = sps.kstest( debut_age, fun)
         return {'Valid': p_val >= alpha, 'Test_Statistic': D, 'P_Value': p_val}
 
@@ -92,11 +92,10 @@ class HIVDebutAnalyzer():
 
             if self.verbose:
                 if self.results[key]['Valid']:
-                    print "Sub-test for " + str(key) + " passed."
+                    print("Sub-test for " + str(key) + " passed.")
                 else:
-                    print "Sub-test for " + str(key) + " failed."
-                    print self.results[key]
-
+                    print("Sub-test for " + str(key) + " failed.")
+                    print(self.results[key])
 
     def finalize(self):
         if self.plot:

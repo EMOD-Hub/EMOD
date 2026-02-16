@@ -51,7 +51,7 @@
         "PRIMARY": {
             "Config_Name": "66_Generic_CHW_NodeProperties",
             "Custom_Reports_Filename": "custom_reports.json",
-            "Geography": "NONE",
+            "Geography": "",
             "Num_Cores": 1,
             "Run_Number": 1,
             "Simulation_Duration": 500,

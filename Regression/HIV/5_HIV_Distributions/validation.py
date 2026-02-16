@@ -44,13 +44,13 @@ def main():
         valid = a.finalize()
 
         if type(valid) is not bool:
-            print "WARNING: finalize did not return a bool!  Setting valid to False"
+            print("WARNING: finalize did not return a bool!  Setting valid to False")
             valid = False
 
         if valid:
-            print a.__class__.__name__ + ': [ PASSED ]'
+            print(a.__class__.__name__ + ': [ PASSED ]')
         else:
-            print a.__class__.__name__ + ': [ FAILED ]'
+            print(a.__class__.__name__ + ': [ FAILED ]')
 
         all_valid &= valid
 
