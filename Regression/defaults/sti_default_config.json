@@ -51,7 +51,7 @@
         "Enable_Susceptibility_Scaling": 0,
         "Enable_Timestep_Channel_In_Report": 0,
         "Enable_Vital_Dynamics": 1,
-        "Geography": "SouthAfrica",
+        "Geography": "NONE",
         "Incubation_Period_Distribution": "CONSTANT_DISTRIBUTION",
         "Individual_Sampling_Type": "TRACK_ALL",
         "Infection_Updates_Per_Timestep": 1,

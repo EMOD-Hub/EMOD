@@ -46,7 +46,6 @@
           }, 
           "PRIMARY": {
                "Config_Name": "3_Malaria_Default_Geography", 
-               "Geography": "auto-generated", 
                "Node_Grid_Size": 0.009, 
                "Run_Number": 33, 
                "Simulation_Duration": 730

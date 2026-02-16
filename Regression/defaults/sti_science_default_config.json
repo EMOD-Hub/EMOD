@@ -52,7 +52,7 @@
         "Enable_Termination_On_Zero_Total_Infectivity": 0,
         "Enable_Timestep_Channel_In_Report": 0,
         "Enable_Vital_Dynamics": 1,
-        "Geography": "SouthAfrica",
+        "Geography": "NONE",
         "Incubation_Period_Constant": 0,
         "Incubation_Period_Distribution": "CONSTANT_DISTRIBUTION",
         "Individual_Sampling_Type": "TRACK_ALL",
