@@ -1,0 +1,1157 @@
+{
+     "Metadata": {
+          "DateCreated": "Mon Sep 26 09:59:35 2011", 
+          "Tool": "convertdemog.py", 
+          "Author": "jsteinkraus", 
+          "IdReference": "Legacy", 
+          "NodeCount": 124,
+          "Resolution": 30
+     }, 
+     "Defaults": {
+          "NodeAttributes": {
+               "Airport": 0, 
+               "Region": 1, 
+               "Seaport": 0, 
+               "BirthRate": 0.000168219
+          }, 
+          "IndividualAttributes": {
+               "AgeDistributionFlag": 1, 
+               "AgeDistribution1": 0, 
+               "AgeDistribution2": 21900, 
+               "PrevalenceDistributionFlag": 0, 
+               "PrevalenceDistribution1": 0, 
+               "PrevalenceDistribution2": 0, 
+               "SusceptibilityDistributionFlag": 0, 
+               "SusceptibilityDistribution1": 1, 
+               "SusceptibilityDistribution2": 0, 
+               "RiskDistributionFlag": 0, 
+               "RiskDistribution1": 1, 
+               "RiskDistribution2": 0, 
+               "MigrationHeterogeneityDistributionFlag": 0, 
+               "MigrationHeterogeneityDistribution1": 1, 
+               "MigrationHeterogeneityDistribution2": 0
+          }
+     }, 
+     "Nodes": [
+          {
+               "NodeID": 1, 
+               "NodeAttributes": {
+                    "Latitude": 47.72628134, 
+                    "Longitude": -122.2887375, 
+                    "Altitude": 67.6646, 
+                    "InitialPopulation": 5530
+               }
+          }, 
+          {
+               "NodeID": 2, 
+               "NodeAttributes": {
+                    "Latitude": 47.72663842, 
+                    "Longitude": -122.3099881, 
+                    "Altitude": 86.4919, 
+                    "InitialPopulation": 7345
+               }
+          }, 
+          {
+               "NodeID": 3, 
+               "NodeAttributes": {
+                    "Latitude": 47.73053151, 
+                    "Longitude": -122.3329137, 
+                    "Altitude": 131.498, 
+                    "InitialPopulation": 2485
+               }
+          }, 
+          {
+               "NodeID": 4, 
+               "NodeAttributes": {
+                    "Latitude": 47.72894392, 
+                    "Longitude": -122.3526686, 
+                    "Altitude": 142.714, 
+                    "InitialPopulation": 4734
+               }
+          }, 
+          {
+               "NodeID": 5, 
+               "NodeAttributes": {
+                    "Latitude": 47.716859, 
+                    "Longitude": -122.352367, 
+                    "Altitude": 130.939, 
+                    "InitialPopulation": 4582
+               }
+          }, 
+          {
+               "NodeID": 6, 
+               "NodeAttributes": {
+                    "Latitude": 47.72165564, 
+                    "Longitude": -122.3680937, 
+                    "Altitude": 86.5013, 
+                    "InitialPopulation": 3296
+               }
+          }, 
+          {
+               "NodeID": 7, 
+               "NodeAttributes": {
+                    "Latitude": 47.71791898, 
+                    "Longitude": -122.3325315, 
+                    "Altitude": 117.494, 
+                    "InitialPopulation": 7361
+               }
+          }, 
+          {
+               "NodeID": 8, 
+               "NodeAttributes": {
+                    "Latitude": 47.71569284, 
+                    "Longitude": -122.3018624, 
+                    "Altitude": 72.9457, 
+                    "InitialPopulation": 4189
+               }
+          }, 
+          {
+               "NodeID": 9, 
+               "NodeAttributes": {
+                    "Latitude": 47.71124352, 
+                    "Longitude": -122.2860829, 
+                    "Altitude": 45.3558, 
+                    "InitialPopulation": 2600
+               }
+          }, 
+          {
+               "NodeID": 10, 
+               "NodeAttributes": {
+                    "Latitude": 47.70772713, 
+                    "Longitude": -122.2777017, 
+                    "Altitude": 35.616, 
+                    "InitialPopulation": 2044
+               }
+          }, 
+          {
+               "NodeID": 11, 
+               "NodeAttributes": {
+                    "Latitude": 47.70641306, 
+                    "Longitude": -122.2960608, 
+                    "Altitude": 37.8751, 
+                    "InitialPopulation": 1705
+               }
+          }, 
+          {
+               "NodeID": 12, 
+               "NodeAttributes": {
+                    "Latitude": 47.70654793, 
+                    "Longitude": -122.306805, 
+                    "Altitude": 77.8005, 
+                    "InitialPopulation": 2369
+               }
+          }, 
+          {
+               "NodeID": 13, 
+               "NodeAttributes": {
+                    "Latitude": 47.70713003, 
+                    "Longitude": -122.3228204, 
+                    "Altitude": 89.9849, 
+                    "InitialPopulation": 6106
+               }
+          }, 
+          {
+               "NodeID": 14, 
+               "NodeAttributes": {
+                    "Latitude": 47.70228398, 
+                    "Longitude": -122.342196, 
+                    "Altitude": 99.3135, 
+                    "InitialPopulation": 4183
+               }
+          }, 
+          {
+               "NodeID": 15, 
+               "NodeAttributes": {
+                    "Latitude": 47.70627268, 
+                    "Longitude": -122.3648335, 
+                    "Altitude": 87.1354, 
+                    "InitialPopulation": 4673
+               }
+          }, 
+          {
+               "NodeID": 16, 
+               "NodeAttributes": {
+                    "Latitude": 47.69574385, 
+                    "Longitude": -122.3941503, 
+                    "Altitude": 59.0894, 
+                    "InitialPopulation": 2350
+               }
+          }, 
+          {
+               "NodeID": 17, 
+               "NodeAttributes": {
+                    "Latitude": 47.69916809, 
+                    "Longitude": -122.3805968, 
+                    "Altitude": 83.3383, 
+                    "InitialPopulation": 3946
+               }
+          }, 
+          {
+               "NodeID": 18, 
+               "NodeAttributes": {
+                    "Latitude": 47.6964584, 
+                    "Longitude": -122.3600606, 
+                    "Altitude": 93.1002, 
+                    "InitialPopulation": 7448
+               }
+          }, 
+          {
+               "NodeID": 19, 
+               "NodeAttributes": {
+                    "Latitude": 47.69404503, 
+                    "Longitude": -122.3419873, 
+                    "Altitude": 87.1159, 
+                    "InitialPopulation": 3991
+               }
+          }, 
+          {
+               "NodeID": 20, 
+               "NodeAttributes": {
+                    "Latitude": 47.69652596, 
+                    "Longitude": -122.326248, 
+                    "Altitude": 105.579, 
+                    "InitialPopulation": 3423
+               }
+          }, 
+          {
+               "NodeID": 21, 
+               "NodeAttributes": {
+                    "Latitude": 47.69547353, 
+                    "Longitude": -122.3118704, 
+                    "Altitude": 114.908, 
+                    "InitialPopulation": 3116
+               }
+          }, 
+          {
+               "NodeID": 22, 
+               "NodeAttributes": {
+                    "Latitude": 47.69537021, 
+                    "Longitude": -122.2980416, 
+                    "Altitude": 84.5825, 
+                    "InitialPopulation": 3637
+               }
+          }, 
+          {
+               "NodeID": 23, 
+               "NodeAttributes": {
+                    "Latitude": 47.69359639, 
+                    "Longitude": -122.2793521, 
+                    "Altitude": 58.6497, 
+                    "InitialPopulation": 5396
+               }
+          }, 
+          {
+               "NodeID": 24, 
+               "NodeAttributes": {
+                    "Latitude": 47.68668366, 
+                    "Longitude": -122.2878234, 
+                    "Altitude": 99.2011, 
+                    "InitialPopulation": 2828
+               }
+          }, 
+          {
+               "NodeID": 25, 
+               "NodeAttributes": {
+                    "Latitude": 47.68391088, 
+                    "Longitude": -122.3022667, 
+                    "Altitude": 80.0145, 
+                    "InitialPopulation": 2541
+               }
+          }, 
+          {
+               "NodeID": 26, 
+               "NodeAttributes": {
+                    "Latitude": 47.68273558, 
+                    "Longitude": -122.3119135, 
+                    "Altitude": 95.7785, 
+                    "InitialPopulation": 4522
+               }
+          }, 
+          {
+               "NodeID": 27, 
+               "NodeAttributes": {
+                    "Latitude": 47.6868546, 
+                    "Longitude": -122.3311421, 
+                    "Altitude": 81.1577, 
+                    "InitialPopulation": 4943
+               }
+          }, 
+          {
+               "NodeID": 28, 
+               "NodeAttributes": {
+                    "Latitude": 47.6851339, 
+                    "Longitude": -122.3499359, 
+                    "Altitude": 79.6847, 
+                    "InitialPopulation": 4232
+               }
+          }, 
+          {
+               "NodeID": 29, 
+               "NodeAttributes": {
+                    "Latitude": 47.68509112, 
+                    "Longitude": -122.3606602, 
+                    "Altitude": 87.5014, 
+                    "InitialPopulation": 3984
+               }
+          }, 
+          {
+               "NodeID": 30, 
+               "NodeAttributes": {
+                    "Latitude": 47.68509739, 
+                    "Longitude": -122.3740643, 
+                    "Altitude": 86.9677, 
+                    "InitialPopulation": 5250
+               }
+          }, 
+          {
+               "NodeID": 31, 
+               "NodeAttributes": {
+                    "Latitude": 47.68565725, 
+                    "Longitude": -122.393699, 
+                    "Altitude": 70.9169, 
+                    "InitialPopulation": 6038
+               }
+          }, 
+          {
+               "NodeID": 32, 
+               "NodeAttributes": {
+                    "Latitude": 47.67365024, 
+                    "Longitude": -122.397344, 
+                    "Altitude": 31.298, 
+                    "InitialPopulation": 7213
+               }
+          }, 
+          {
+               "NodeID": 33, 
+               "NodeAttributes": {
+                    "Latitude": 47.67597106, 
+                    "Longitude": -122.3768273, 
+                    "Altitude": 48.8104, 
+                    "InitialPopulation": 5832
+               }
+          }, 
+          {
+               "NodeID": 34, 
+               "NodeAttributes": {
+                    "Latitude": 47.6740692, 
+                    "Longitude": -122.3617565, 
+                    "Altitude": 59.2394, 
+                    "InitialPopulation": 3198
+               }
+          }, 
+          {
+               "NodeID": 35, 
+               "NodeAttributes": {
+                    "Latitude": 47.67255017, 
+                    "Longitude": -122.3521266, 
+                    "Altitude": 92.6423, 
+                    "InitialPopulation": 3639
+               }
+          }, 
+          {
+               "NodeID": 36, 
+               "NodeAttributes": {
+                    "Latitude": 47.67720168, 
+                    "Longitude": -122.3242061, 
+                    "Altitude": 65.5036, 
+                    "InitialPopulation": 4886
+               }
+          }, 
+          {
+               "NodeID": 37, 
+               "NodeAttributes": {
+                    "Latitude": 47.67940939, 
+                    "Longitude": -122.2955263, 
+                    "Altitude": 92.9821, 
+                    "InitialPopulation": 1980
+               }
+          }, 
+          {
+               "NodeID": 38, 
+               "NodeAttributes": {
+                    "Latitude": 47.67941342, 
+                    "Longitude": -122.2823397, 
+                    "Altitude": 91.707, 
+                    "InitialPopulation": 2670
+               }
+          }, 
+          {
+               "NodeID": 39, 
+               "NodeAttributes": {
+                    "Latitude": 47.68080568, 
+                    "Longitude": -122.2597112, 
+                    "Altitude": 26.5484, 
+                    "InitialPopulation": 2385
+               }
+          }, 
+          {
+               "NodeID": 40, 
+               "NodeAttributes": {
+                    "Latitude": 47.66327657, 
+                    "Longitude": -122.2728778, 
+                    "Altitude": 36.7858, 
+                    "InitialPopulation": 7505
+               }
+          }, 
+          {
+               "NodeID": 41, 
+               "NodeAttributes": {
+                    "Latitude": 47.67020987, 
+                    "Longitude": -122.2841358, 
+                    "Altitude": 56.3959, 
+                    "InitialPopulation": 7202
+               }
+          }, 
+          {
+               "NodeID": 42, 
+               "NodeAttributes": {
+                    "Latitude": 47.66823337, 
+                    "Longitude": -122.3010744, 
+                    "Altitude": 37.4374, 
+                    "InitialPopulation": 6132
+               }
+          }, 
+          {
+               "NodeID": 43, 
+               "NodeAttributes": {
+                    "Latitude": 47.67033859, 
+                    "Longitude": -122.3119341, 
+                    "Altitude": 66.0528, 
+                    "InitialPopulation": 5740
+               }
+          }, 
+          {
+               "NodeID": 44, 
+               "NodeAttributes": {
+                    "Latitude": 47.66858306, 
+                    "Longitude": -122.3229098, 
+                    "Altitude": 75.0082, 
+                    "InitialPopulation": 2414
+               }
+          }, 
+          {
+               "NodeID": 45, 
+               "NodeAttributes": {
+                    "Latitude": 47.67402239, 
+                    "Longitude": -122.3378015, 
+                    "Altitude": 60.8318, 
+                    "InitialPopulation": 3023
+               }
+          }, 
+          {
+               "NodeID": 46, 
+               "NodeAttributes": {
+                    "Latitude": 47.66649649, 
+                    "Longitude": -122.375516, 
+                    "Altitude": 17.4386, 
+                    "InitialPopulation": 4916
+               }
+          }, 
+          {
+               "NodeID": 47, 
+               "NodeAttributes": {
+                    "Latitude": 47.66055621, 
+                    "Longitude": -122.3605672, 
+                    "Altitude": 36.9001, 
+                    "InitialPopulation": 4325
+               }
+          }, 
+          {
+               "NodeID": 48, 
+               "NodeAttributes": {
+                    "Latitude": 47.65695519, 
+                    "Longitude": -122.3511915, 
+                    "Altitude": 63.0168, 
+                    "InitialPopulation": 5525
+               }
+          }, 
+          {
+               "NodeID": 49, 
+               "NodeAttributes": {
+                    "Latitude": 47.66086793, 
+                    "Longitude": -122.3418406, 
+                    "Altitude": 69.2942, 
+                    "InitialPopulation": 3252
+               }
+          }, 
+          {
+               "NodeID": 50, 
+               "NodeAttributes": {
+                    "Latitude": 47.65852366, 
+                    "Longitude": -122.3322483, 
+                    "Altitude": 66.8943, 
+                    "InitialPopulation": 3453
+               }
+          }, 
+          {
+               "NodeID": 51, 
+               "NodeAttributes": {
+                    "Latitude": 47.65951895, 
+                    "Longitude": -122.3230158, 
+                    "Altitude": 50.3004, 
+                    "InitialPopulation": 5281
+               }
+          }, 
+          {
+               "NodeID": 52, 
+               "NodeAttributes": {
+                    "Latitude": 47.66151606, 
+                    "Longitude": -122.3131241, 
+                    "Altitude": 59.1421, 
+                    "InitialPopulation": 8509
+               }
+          }, 
+          {
+               "NodeID": 53, 
+               "NodeAttributes": {
+                    "Latitude": 47.65514006, 
+                    "Longitude": -122.303759, 
+                    "Altitude": 22.9412, 
+                    "InitialPopulation": 2528
+               }
+          }, 
+          {
+               "NodeID": 54, 
+               "NodeAttributes": {
+                    "Latitude": 47.65118451, 
+                    "Longitude": -122.3391932, 
+                    "Altitude": 28.7195, 
+                    "InitialPopulation": 4241
+               }
+          }, 
+          {
+               "NodeID": 55, 
+               "NodeAttributes": {
+                    "Latitude": 47.64277266, 
+                    "Longitude": -122.4057345, 
+                    "Altitude": 70.1916, 
+                    "InitialPopulation": 6229
+               }
+          }, 
+          {
+               "NodeID": 56, 
+               "NodeAttributes": {
+                    "Latitude": 47.65781377, 
+                    "Longitude": -122.4084485, 
+                    "Altitude": 61.4298, 
+                    "InitialPopulation": 5990
+               }
+          }, 
+          {
+               "NodeID": 57, 
+               "NodeAttributes": {
+                    "Latitude": 47.65466854, 
+                    "Longitude": -122.3862431, 
+                    "Altitude": 35.899, 
+                    "InitialPopulation": 4543
+               }
+          }, 
+          {
+               "NodeID": 58, 
+               "NodeAttributes": {
+                    "Latitude": 47.63724761, 
+                    "Longitude": -122.3803276, 
+                    "Altitude": 23.2846, 
+                    "InitialPopulation": 4817
+               }
+          }, 
+          {
+               "NodeID": 59, 
+               "NodeAttributes": {
+                    "Latitude": 47.64776716, 
+                    "Longitude": -122.3684453, 
+                    "Altitude": 59.0092, 
+                    "InitialPopulation": 6715
+               }
+          }, 
+          {
+               "NodeID": 60, 
+               "NodeAttributes": {
+                    "Latitude": 47.6439159, 
+                    "Longitude": -122.3528252, 
+                    "Altitude": 54.6631, 
+                    "InitialPopulation": 4725
+               }
+          }, 
+          {
+               "NodeID": 61, 
+               "NodeAttributes": {
+                    "Latitude": 47.6444523, 
+                    "Longitude": -122.3214454, 
+                    "Altitude": 32.0897, 
+                    "InitialPopulation": 4447
+               }
+          }, 
+          {
+               "NodeID": 62, 
+               "NodeAttributes": {
+                    "Latitude": 47.63867311, 
+                    "Longitude": -122.301134, 
+                    "Altitude": 29.7464, 
+                    "InitialPopulation": 3800
+               }
+          }, 
+          {
+               "NodeID": 63, 
+               "NodeAttributes": {
+                    "Latitude": 47.6339417, 
+                    "Longitude": -122.2851928, 
+                    "Altitude": 31.251, 
+                    "InitialPopulation": 5006
+               }
+          }, 
+          {
+               "NodeID": 64, 
+               "NodeAttributes": {
+                    "Latitude": 47.62854112, 
+                    "Longitude": -122.3048297, 
+                    "Altitude": 99.1248, 
+                    "InitialPopulation": 3201
+               }
+          }, 
+          {
+               "NodeID": 65, 
+               "NodeAttributes": {
+                    "Latitude": 47.63097697, 
+                    "Longitude": -122.3177397, 
+                    "Altitude": 114.101, 
+                    "InitialPopulation": 4045
+               }
+          }, 
+          {
+               "NodeID": 66, 
+               "NodeAttributes": {
+                    "Latitude": 47.63207625, 
+                    "Longitude": -122.3267199, 
+                    "Altitude": 38.5821, 
+                    "InitialPopulation": 2954
+               }
+          }, 
+          {
+               "NodeID": 67, 
+               "NodeAttributes": {
+                    "Latitude": 47.6322003, 
+                    "Longitude": -122.3453297, 
+                    "Altitude": 62.7664, 
+                    "InitialPopulation": 5369
+               }
+          }, 
+          {
+               "NodeID": 68, 
+               "NodeAttributes": {
+                    "Latitude": 47.63603497, 
+                    "Longitude": -122.3564602, 
+                    "Altitude": 121.054, 
+                    "InitialPopulation": 2646
+               }
+          }, 
+          {
+               "NodeID": 69, 
+               "NodeAttributes": {
+                    "Latitude": 47.63436647, 
+                    "Longitude": -122.3669723, 
+                    "Altitude": 102.237, 
+                    "InitialPopulation": 3845
+               }
+          }, 
+          {
+               "NodeID": 70, 
+               "NodeAttributes": {
+                    "Latitude": 47.62822644, 
+                    "Longitude": -122.3568131, 
+                    "Altitude": 81.4747, 
+                    "InitialPopulation": 6855
+               }
+          }, 
+          {
+               "NodeID": 71, 
+               "NodeAttributes": {
+                    "Latitude": 47.62228683, 
+                    "Longitude": -122.3570454, 
+                    "Altitude": 27.4361, 
+                    "InitialPopulation": 1809
+               }
+          }, 
+          {
+               "NodeID": 72, 
+               "NodeAttributes": {
+                    "Latitude": 47.61944605, 
+                    "Longitude": -122.3431072, 
+                    "Altitude": 30.44, 
+                    "InitialPopulation": 3084
+               }
+          }, 
+          {
+               "NodeID": 73, 
+               "NodeAttributes": {
+                    "Latitude": 47.61996656, 
+                    "Longitude": -122.3336676, 
+                    "Altitude": 32.0153, 
+                    "InitialPopulation": 2218
+               }
+          }, 
+          {
+               "NodeID": 74, 
+               "NodeAttributes": {
+                    "Latitude": 47.62094017, 
+                    "Longitude": -122.3247427, 
+                    "Altitude": 84.7546, 
+                    "InitialPopulation": 8932
+               }
+          }, 
+          {
+               "NodeID": 75, 
+               "NodeAttributes": {
+                    "Latitude": 47.61839074, 
+                    "Longitude": -122.316884, 
+                    "Altitude": 108.344, 
+                    "InitialPopulation": 5554
+               }
+          }, 
+          {
+               "NodeID": 76, 
+               "NodeAttributes": {
+                    "Latitude": 47.62186985, 
+                    "Longitude": -122.3075848, 
+                    "Altitude": 118.245, 
+                    "InitialPopulation": 3261
+               }
+          }, 
+          {
+               "NodeID": 77, 
+               "NodeAttributes": {
+                    "Latitude": 47.61912402, 
+                    "Longitude": -122.2973475, 
+                    "Altitude": 64.8074, 
+                    "InitialPopulation": 3990
+               }
+          }, 
+          {
+               "NodeID": 78, 
+               "NodeAttributes": {
+                    "Latitude": 47.61341144, 
+                    "Longitude": -122.287036, 
+                    "Altitude": 59.6486, 
+                    "InitialPopulation": 5097
+               }
+          }, 
+          {
+               "NodeID": 79, 
+               "NodeAttributes": {
+                    "Latitude": 47.61438879, 
+                    "Longitude": -122.3076706, 
+                    "Altitude": 113.487, 
+                    "InitialPopulation": 4232
+               }
+          }, 
+          {
+               "NodeID": 80, 
+               "NodeAttributes": {
+                    "Latitude": 47.61576341, 
+                    "Longitude": -122.3522558, 
+                    "Altitude": 18.7094, 
+                    "InitialPopulation": 3410
+               }
+          }, 
+          {
+               "NodeID": 81, 
+               "NodeAttributes": {
+                    "Latitude": 47.61208912, 
+                    "Longitude": -122.3452723, 
+                    "Altitude": 30.4065, 
+                    "InitialPopulation": 2762
+               }
+          }, 
+          {
+               "NodeID": 82, 
+               "NodeAttributes": {
+                    "Latitude": 47.60646561, 
+                    "Longitude": -122.336851, 
+                    "Altitude": 24.3921, 
+                    "InitialPopulation": 3477
+               }
+          }, 
+          {
+               "NodeID": 83, 
+               "NodeAttributes": {
+                    "Latitude": 47.61037386, 
+                    "Longitude": -122.3319406, 
+                    "Altitude": 55.7491, 
+                    "InitialPopulation": 2875
+               }
+          }, 
+          {
+               "NodeID": 84, 
+               "NodeAttributes": {
+                    "Latitude": 47.61174869, 
+                    "Longitude": -122.3279756, 
+                    "Altitude": 78.4644, 
+                    "InitialPopulation": 2508
+               }
+          }, 
+          {
+               "NodeID": 85, 
+               "NodeAttributes": {
+                    "Latitude": 47.61348238, 
+                    "Longitude": -122.3239973, 
+                    "Altitude": 90.3332, 
+                    "InitialPopulation": 3838
+               }
+          }, 
+          {
+               "NodeID": 86, 
+               "NodeAttributes": {
+                    "Latitude": 47.60511039, 
+                    "Longitude": -122.3249478, 
+                    "Altitude": 84.3829, 
+                    "InitialPopulation": 6025
+               }
+          }, 
+          {
+               "NodeID": 87, 
+               "NodeAttributes": {
+                    "Latitude": 47.60710161, 
+                    "Longitude": -122.3166877, 
+                    "Altitude": 87.0859, 
+                    "InitialPopulation": 4098
+               }
+          }, 
+          {
+               "NodeID": 88, 
+               "NodeAttributes": {
+                    "Latitude": 47.60592671, 
+                    "Longitude": -122.3077938, 
+                    "Altitude": 94.6972, 
+                    "InitialPopulation": 3790
+               }
+          }, 
+          {
+               "NodeID": 89, 
+               "NodeAttributes": {
+                    "Latitude": 47.60733041, 
+                    "Longitude": -122.297634, 
+                    "Altitude": 90.1772, 
+                    "InitialPopulation": 3506
+               }
+          }, 
+          {
+               "NodeID": 90, 
+               "NodeAttributes": {
+                    "Latitude": 47.59673642, 
+                    "Longitude": -122.2942817, 
+                    "Altitude": 64.5111, 
+                    "InitialPopulation": 4596
+               }
+          }, 
+          {
+               "NodeID": 91, 
+               "NodeAttributes": {
+                    "Latitude": 47.59826442, 
+                    "Longitude": -122.3090908, 
+                    "Altitude": 65.0235, 
+                    "InitialPopulation": 2134
+               }
+          }, 
+          {
+               "NodeID": 92, 
+               "NodeAttributes": {
+                    "Latitude": 47.59844896, 
+                    "Longitude": -122.3217695, 
+                    "Altitude": 40.1085, 
+                    "InitialPopulation": 2083
+               }
+          }, 
+          {
+               "NodeID": 93, 
+               "NodeAttributes": {
+                    "Latitude": 47.60039977, 
+                    "Longitude": -122.3305843, 
+                    "Altitude": 18.1638, 
+                    "InitialPopulation": 1836
+               }
+          }, 
+          {
+               "NodeID": 94, 
+               "NodeAttributes": {
+                    "Latitude": 47.57596913, 
+                    "Longitude": -122.3300724, 
+                    "Altitude": 12.4621, 
+                    "InitialPopulation": 2602
+               }
+          }, 
+          {
+               "NodeID": 95, 
+               "NodeAttributes": {
+                    "Latitude": 47.58819583, 
+                    "Longitude": -122.3098657, 
+                    "Altitude": 53.65, 
+                    "InitialPopulation": 5202
+               }
+          }, 
+          {
+               "NodeID": 96, 
+               "NodeAttributes": {
+                    "Latitude": 47.58234747, 
+                    "Longitude": -122.2923828, 
+                    "Altitude": 39.174, 
+                    "InitialPopulation": 5717
+               }
+          }, 
+          {
+               "NodeID": 97, 
+               "NodeAttributes": {
+                    "Latitude": 47.58678516, 
+                    "Longitude": -122.3875807, 
+                    "Altitude": 63.1824, 
+                    "InitialPopulation": 4919
+               }
+          }, 
+          {
+               "NodeID": 98, 
+               "NodeAttributes": {
+                    "Latitude": 47.57181396, 
+                    "Longitude": -122.4072769, 
+                    "Altitude": 37.2547, 
+                    "InitialPopulation": 5323
+               }
+          }, 
+          {
+               "NodeID": 99, 
+               "NodeAttributes": {
+                    "Latitude": 47.57189859, 
+                    "Longitude": -122.3959927, 
+                    "Altitude": 85.167, 
+                    "InitialPopulation": 5011
+               }
+          }, 
+          {
+               "NodeID": 100, 
+               "NodeAttributes": {
+                    "Latitude": 47.57194769, 
+                    "Longitude": -122.3830934, 
+                    "Altitude": 109.189, 
+                    "InitialPopulation": 5820
+               }
+          }, 
+          {
+               "NodeID": 101, 
+               "NodeAttributes": {
+                    "Latitude": 47.57432788, 
+                    "Longitude": -122.3587792, 
+                    "Altitude": 16.803165, 
+                    "InitialPopulation": 4338, 
+                    "BirthRate": 0
+               }
+          }, 
+          {
+               "NodeID": 102, 
+               "NodeAttributes": {
+                    "Latitude": 47.57049069, 
+                    "Longitude": -122.3063495, 
+                    "Altitude": 79.7403, 
+                    "InitialPopulation": 8139
+               }
+          }, 
+          {
+               "NodeID": 103, 
+               "NodeAttributes": {
+                    "Latitude": 47.56614372, 
+                    "Longitude": -122.2829968, 
+                    "Altitude": 25.9351, 
+                    "InitialPopulation": 5943
+               }
+          }, 
+          {
+               "NodeID": 104, 
+               "NodeAttributes": {
+                    "Latitude": 47.55324453, 
+                    "Longitude": -122.2628619, 
+                    "Altitude": 43.8558, 
+                    "InitialPopulation": 4870
+               }
+          }, 
+          {
+               "NodeID": 105, 
+               "NodeAttributes": {
+                    "Latitude": 47.5541488, 
+                    "Longitude": -122.2826484, 
+                    "Altitude": 49.926, 
+                    "InitialPopulation": 6178
+               }
+          }, 
+          {
+               "NodeID": 106, 
+               "NodeAttributes": {
+                    "Latitude": 47.55352582, 
+                    "Longitude": -122.303282, 
+                    "Altitude": 71.0144, 
+                    "InitialPopulation": 9002
+               }
+          }, 
+          {
+               "NodeID": 107, 
+               "NodeAttributes": {
+                    "Latitude": 47.55744346, 
+                    "Longitude": -122.3855484, 
+                    "Altitude": 86.2432, 
+                    "InitialPopulation": 5481
+               }
+          }, 
+          {
+               "NodeID": 108, 
+               "NodeAttributes": {
+                    "Latitude": 47.54713519, 
+                    "Longitude": -122.3887039, 
+                    "Altitude": 68.463, 
+                    "InitialPopulation": 7075
+               }
+          }, 
+          {
+               "NodeID": 109, 
+               "NodeAttributes": {
+                    "Latitude": 47.54426299, 
+                    "Longitude": -122.368491, 
+                    "Altitude": 88.0373, 
+                    "InitialPopulation": 6140
+               }, 
+               "IndividualAttributes": {
+                    "PrevalenceDistribution1": 0.05
+               }
+          }, 
+          {
+               "NodeID": 110, 
+               "NodeAttributes": {
+                    "Latitude": 47.55239093, 
+                    "Longitude": -122.3498534, 
+                    "Altitude": 32.225985, 
+                    "InitialPopulation": 4318
+               }
+          }, 
+          {
+               "NodeID": 111, 
+               "NodeAttributes": {
+                    "Latitude": 47.54212276, 
+                    "Longitude": -122.3190572, 
+                    "Altitude": 4.19568, 
+                    "InitialPopulation": 1181
+               }
+          }, 
+          {
+               "NodeID": 112, 
+               "NodeAttributes": {
+                    "Latitude": 47.53971335, 
+                    "Longitude": -122.2940041, 
+                    "Altitude": 53.5198, 
+                    "InitialPopulation": 6260
+               }
+          }, 
+          {
+               "NodeID": 113, 
+               "NodeAttributes": {
+                    "Latitude": 47.53948617, 
+                    "Longitude": -122.2773704, 
+                    "Altitude": 36.1643, 
+                    "InitialPopulation": 4560
+               }
+          }, 
+          {
+               "NodeID": 114, 
+               "NodeAttributes": {
+                    "Latitude": 47.53960734, 
+                    "Longitude": -122.266995, 
+                    "Altitude": 37.8495, 
+                    "InitialPopulation": 4360
+               }
+          }, 
+          {
+               "NodeID": 115, 
+               "NodeAttributes": {
+                    "Latitude": 47.52844095, 
+                    "Longitude": -122.3261226, 
+                    "Altitude": 8.27927, 
+                    "InitialPopulation": 3708
+               }
+          }, 
+          {
+               "NodeID": 116, 
+               "NodeAttributes": {
+                    "Latitude": 47.52742387, 
+                    "Longitude": -122.3446568, 
+                    "Altitude": 95.9875, 
+                    "InitialPopulation": 5975
+               }
+          }, 
+          {
+               "NodeID": 117, 
+               "NodeAttributes": {
+                    "Latitude": 47.52527392, 
+                    "Longitude": -122.3632996, 
+                    "Altitude": 98.8482, 
+                    "InitialPopulation": 7904
+               }
+          }, 
+          {
+               "NodeID": 118, 
+               "NodeAttributes": {
+                    "Latitude": 47.53018592, 
+                    "Longitude": -122.3755303, 
+                    "Altitude": 124.72, 
+                    "InitialPopulation": 4173
+               }
+          }, 
+          {
+               "NodeID": 119, 
+               "NodeAttributes": {
+                    "Latitude": 47.52882175, 
+                    "Longitude": -122.3880417, 
+                    "Altitude": 72.5764, 
+                    "InitialPopulation": 6111
+               }
+          }, 
+          {
+               "NodeID": 120, 
+               "NodeAttributes": {
+                    "Latitude": 47.52025982, 
+                    "Longitude": -122.2829639, 
+                    "Altitude": 36.751, 
+                    "InitialPopulation": 5192
+               }
+          }, 
+          {
+               "NodeID": 121, 
+               "NodeAttributes": {
+                    "Latitude": 47.52258851, 
+                    "Longitude": -122.2661766, 
+                    "Altitude": 23.4505, 
+                    "InitialPopulation": 7497
+               }
+          }, 
+          {
+               "NodeID": 122, 
+               "NodeAttributes": {
+                    "Latitude": 47.50589425, 
+                    "Longitude": -122.2582599, 
+                    "Altitude": 83.7645, 
+                    "InitialPopulation": 7161
+               }
+          }, 
+          {
+               "NodeID": 123, 
+               "NodeAttributes": {
+                    "Latitude": 47.51293267, 
+                    "Longitude": -122.3806262, 
+                    "Altitude": 109.684, 
+                    "InitialPopulation": 3401
+               }
+          }, 
+          {
+               "NodeID": 124, 
+               "NodeAttributes": {
+                    "Latitude": 47.50692646, 
+                    "Longitude": -122.3833204, 
+                    "Altitude": 61.3676, 
+                    "InitialPopulation": 2745
+               }
+          }
+     ]
+}

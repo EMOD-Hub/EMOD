@@ -1,0 +1,34 @@
+{
+    "Metadata": {
+        "DateCreated": "Sun Sep 25 23:19:55 2011", 
+        "Tool": "convertdemog.py", 
+        "Author": "jsteinkraus", 
+        "IdReference": "Gridded world grump2.5arcmin", 
+        "Resolution": 150,
+        "NodeCount": 1
+    }, 
+    "Nodes": [
+        {
+            "NodeID": 340461476, 
+            "IndividualAttributes": {
+                "MortalityDistribution": {
+                    "NumDistributionAxes": 2,
+                    "AxisNames": [ "gender", "age" ],
+                    "AxisUnits": [ "male=0,female=1", "years" ],
+                    "AxisScaleFactors": [ 1, 365 ],
+                    "NumPopulationGroups": [ 2, 5 ],
+                    "PopulationGroups": [
+                        [ 0, 1 ],
+                        [ 0, 2, 10, 100, 2000 ]
+                    ],
+                    "ResultUnits": "annual deaths per 1000 individuals",
+                    "ResultScaleFactor": 0.00000274,
+                    "ResultValues": [
+                        [ 60, 8, 2, 20, 400 ],
+                        [ 60, 8, 2, 20, 400 ]
+                    ]
+                }
+            }
+        }
+    ]
+}

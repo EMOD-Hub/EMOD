@@ -1,0 +1,18 @@
+{
+     "Metadata": {
+          "DateCreated": "Sun Sep 25 19:02:09 2011", 
+          "Tool": "createclimateheader.py", 
+          "Author": "jsteinkraus", 
+          "IdReference": "Gridded world grump2.5arcmin", 
+          "NodeCount": 1, 
+          "DatavalueCount": 3650, 
+          "UpdateResolution": "CLIMATE_UPDATE_DAY",
+          "OriginalDataYears": "1990-1993",
+          "StartDayOfYear": "January 1",
+          "DataProvenance": "Temporarily just a copy of air-temperature data for Namawala - currently unused by the DTK",
+		  "WeatherSchemaVersion": "2.0",
+		  "WeatherCellCount": 1,
+		  "NumberDTKNodes": 1
+     }, 
+     "NodeOffsets": "144B07A400000000"
+}
