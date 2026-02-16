@@ -13,7 +13,6 @@
         ],
         "Enable_Maternal_Infection_Transmission": 1,
         "Enable_Natural_Mortality": 0,
-        "Geography": "SouthAfrica",
         "Inset_Chart_Include_Coital_Acts": 1,
         "Infectious_Period_Gaussian_Mean": 120,
         "Num_Cores": 1,
