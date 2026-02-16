@@ -125,8 +125,9 @@ class MyRegressionRunner(object):
                 # print('Copying %s to remote working directory'%filename)
                 simulation_path = os.path.join(self.params.sim_root, simulation_directory)
                 simulation_file = os.path.join(simulation_path, os.path.basename(filename))
-                self.update_file(scenario_file, simulation_file)
-            else:
+                if simulation_path != simulation_file:
+                    self.update_file(scenario_file, simulation_file)
+            elif source_path != dest_path:
                 if not self.update_file(source_path, dest_path):
                     print("Could not find source file '{0}' locally ({1}) or in inputs ({2}) [{3}]!".format(filename, scenario_file, source_path, scenario_directory))
                     # config_json["parameters"]["Demographics_Filename"] = "input file ({0}) not found".format(filename)
@@ -160,12 +161,12 @@ class MyRegressionRunner(object):
             source = scenario_file
             dest = simulation_file
 
-        if not self.update_file(source, dest):
+        if (source != dest) and (not self.update_file(source, dest)):
             print("Could not find input file '{0}' to copy to '{1}' for scenario '{2}'".format(source, dest, scenario))
         if key != "Load_Balance_Filename":
             source = source + ".json"
             dest = dest + ".json"
-            if not self.update_file(source, dest):
+            if (source != dest) and (not self.update_file(source, dest)):
                 print("Could not find input file '{0}' to copy to '{1}' for scenario '{2}'".format(source, dest, scenario))
 
         
