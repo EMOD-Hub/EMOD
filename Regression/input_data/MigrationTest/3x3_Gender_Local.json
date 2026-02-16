@@ -1,0 +1,184 @@
+{
+    "Comment"            : "This migration file puts the females in the even nodes and the males in the odd nodes.",
+    "IdReference"        : "MigrationTest", 
+    "Interpolation_Type" : "PIECEWISE_CONSTANT",
+    "Gender_Data_Type"   : "ONE_FOR_EACH_GENDER",
+    "Ages_Years"         : [ 125 ],
+    "Node_Data" :
+    [
+        {
+            "From_Node_ID" : 1,
+            "Rate_Data" :
+            [
+                {
+                    "To_Node_ID"            : 2,
+                    "Avg_Num_Trips_Per_Day_Male"   : [ 0.0 ],
+                    "Avg_Num_Trips_Per_Day_Female" : [ 0.1 ]
+                },
+                {
+                    "To_Node_ID"            : 4,
+                    "Avg_Num_Trips_Per_Day_Male"   : [ 0.0 ],
+                    "Avg_Num_Trips_Per_Day_Female" : [ 0.1 ]
+                }
+            ]
+        },
+        {
+            "From_Node_ID" : 2,
+            "Rate_Data" :
+            [
+                {
+                    "To_Node_ID"            : 1,
+                    "Avg_Num_Trips_Per_Day_Male"   : [ 0.1 ],
+                    "Avg_Num_Trips_Per_Day_Female" : [ 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 3,
+                    "Avg_Num_Trips_Per_Day_Male"   : [ 0.1 ],
+                    "Avg_Num_Trips_Per_Day_Female" : [ 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 5,
+                    "Avg_Num_Trips_Per_Day_Male"   : [ 0.1 ],
+                    "Avg_Num_Trips_Per_Day_Female" : [ 0.0 ]
+                }
+            ]
+        },
+        {
+            "From_Node_ID" : 3,
+            "Rate_Data" :
+            [
+                {
+                    "To_Node_ID"            : 2,
+                    "Avg_Num_Trips_Per_Day_Male"   : [ 0.0 ],
+                    "Avg_Num_Trips_Per_Day_Female" : [ 0.1 ]
+                },
+                {
+                    "To_Node_ID"            : 6,
+                    "Avg_Num_Trips_Per_Day_Male"   : [ 0.0 ],
+                    "Avg_Num_Trips_Per_Day_Female" : [ 0.1 ]
+                }
+            ]
+        },
+        {
+            "From_Node_ID" : 4,
+            "Rate_Data" :
+            [
+                {
+                    "To_Node_ID"            : 1,
+                    "Avg_Num_Trips_Per_Day_Male"   : [ 0.1 ],
+                    "Avg_Num_Trips_Per_Day_Female" : [ 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 5,
+                    "Avg_Num_Trips_Per_Day_Male"   : [ 0.1 ],
+                    "Avg_Num_Trips_Per_Day_Female" : [ 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 7,
+                    "Avg_Num_Trips_Per_Day_Male"   : [ 0.1 ],
+                    "Avg_Num_Trips_Per_Day_Female" : [ 0.0 ]
+                }
+            ]
+        },
+        {
+            "From_Node_ID" : 5,
+            "Rate_Data" :
+            [
+                {
+                    "To_Node_ID"            : 2,
+                    "Avg_Num_Trips_Per_Day_Male"   : [ 0.0 ],
+                    "Avg_Num_Trips_Per_Day_Female" : [ 0.1 ]
+                },
+                {
+                    "To_Node_ID"            : 4,
+                    "Avg_Num_Trips_Per_Day_Male"   : [ 0.0 ],
+                    "Avg_Num_Trips_Per_Day_Female" : [ 0.1 ]
+                },
+                {
+                    "To_Node_ID"            : 6,
+                    "Avg_Num_Trips_Per_Day_Male"   : [ 0.0 ],
+                    "Avg_Num_Trips_Per_Day_Female" : [ 0.1 ]
+                },
+                {
+                    "To_Node_ID"            : 8,
+                    "Avg_Num_Trips_Per_Day_Male"   : [ 0.0 ],
+                    "Avg_Num_Trips_Per_Day_Female" : [ 0.1 ]
+                }
+            ]
+        },
+        {
+            "From_Node_ID" : 6,
+            "Rate_Data" :
+            [
+                {
+                    "To_Node_ID"            : 3,
+                    "Avg_Num_Trips_Per_Day_Male"   : [ 0.1 ],
+                    "Avg_Num_Trips_Per_Day_Female" : [ 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 5,
+                    "Avg_Num_Trips_Per_Day_Male"   : [ 0.1 ],
+                    "Avg_Num_Trips_Per_Day_Female" : [ 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 9,
+                    "Avg_Num_Trips_Per_Day_Male"   : [ 0.1 ],
+                    "Avg_Num_Trips_Per_Day_Female" : [ 0.0 ]
+                }
+            ]
+        },
+        {
+            "From_Node_ID" : 7,
+            "Rate_Data" :
+            [
+                {
+                    "To_Node_ID"            : 4,
+                    "Avg_Num_Trips_Per_Day_Male"   : [ 0.0 ],
+                    "Avg_Num_Trips_Per_Day_Female" : [ 0.1 ]
+                },
+                {
+                    "To_Node_ID"            : 8,
+                    "Avg_Num_Trips_Per_Day_Male"   : [ 0.0 ],
+                    "Avg_Num_Trips_Per_Day_Female" : [ 0.1 ]
+                }
+            ]
+        },
+        {
+            "From_Node_ID" : 8,
+            "Rate_Data" :
+            [
+                {
+                    "To_Node_ID"            : 5,
+                    "Avg_Num_Trips_Per_Day_Male"   : [ 0.1 ],
+                    "Avg_Num_Trips_Per_Day_Female" : [ 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 7,
+                    "Avg_Num_Trips_Per_Day_Male"   : [ 0.1 ],
+                    "Avg_Num_Trips_Per_Day_Female" : [ 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 9,
+                    "Avg_Num_Trips_Per_Day_Male"   : [ 0.1 ],
+                    "Avg_Num_Trips_Per_Day_Female" : [ 0.0 ]
+                }
+            ]
+        },
+        {
+            "From_Node_ID" : 9,
+            "Rate_Data" :
+            [
+                {
+                    "To_Node_ID"            : 6,
+                    "Avg_Num_Trips_Per_Day_Male"   : [ 0.0 ],
+                    "Avg_Num_Trips_Per_Day_Female" : [ 0.1 ]
+                },
+                {
+                    "To_Node_ID"            : 8,
+                    "Avg_Num_Trips_Per_Day_Male"   : [ 0.0 ],
+                    "Avg_Num_Trips_Per_Day_Female" : [ 0.1 ]
+                }
+            ]
+        }
+    ]
+}
