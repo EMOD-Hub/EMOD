@@ -1,8 +1,0 @@
-{
-    "tests": [
-        { "path": "Serialization/10_Generic_Version_2_Save" },
-        { "path": "Serialization/12_Vector_Version_2_Save" },
-        { "path": "Serialization/14_Malaria_Version_2_Save" },
-        { "path": "Serialization/20_Generic_Multicore_Save" }
-    ]
-}
