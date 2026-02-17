@@ -348,9 +348,9 @@ Time,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness
 10,1486303252,PropertyChange,167,8176.59,M,0,0
 10,1486303252,PVC_Distributed,167,8176.59,M,0,0
 10,1486303252,EveryUpdate,167,8176.59,M,0,0
-10,1486303252,PropertyChange,201,16918.8,F,0,0
-10,1486303252,PVC_Distributed,201,16918.8,F,0,0
-10,1486303252,EveryUpdate,201,16918.8,F,0,0
+10,1486303252,PropertyChange,169,19610.7,F,0,0
+10,1486303252,PVC_Distributed,169,19610.7,F,0,0
+10,1486303252,EveryUpdate,169,19610.7,F,0,0
 10,1486303252,PropertyChange,171,13590.2,F,0,0
 10,1486303252,PVC_Distributed,171,13590.2,F,0,0
 10,1486303252,EveryUpdate,171,13590.2,F,0,0
@@ -396,6 +396,9 @@ Time,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness
 10,1486303252,PropertyChange,199,2767.7,F,0,0
 10,1486303252,PVC_Distributed,199,2767.7,F,0,0
 10,1486303252,EveryUpdate,199,2767.7,F,0,0
+10,1486303252,PropertyChange,201,16918.8,F,0,0
+10,1486303252,PVC_Distributed,201,16918.8,F,0,0
+10,1486303252,EveryUpdate,201,16918.8,F,0,0
 11,1486303252,EveryUpdate,3,12406.3,F,0,0
 11,1486303252,EveryUpdate,5,9537.15,F,0,0
 11,1486303252,EveryUpdate,7,5798.02,F,0,0
@@ -479,7 +482,7 @@ Time,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness
 11,1486303252,EveryUpdate,163,4997.05,M,1,0
 11,1486303252,EveryUpdate,165,13161.2,M,0,0
 11,1486303252,EveryUpdate,167,8177.59,M,0,0
-11,1486303252,EveryUpdate,201,16919.8,F,0,0
+11,1486303252,EveryUpdate,169,19611.7,F,0,0
 11,1486303252,EveryUpdate,171,13591.2,F,0,0
 11,1486303252,EveryUpdate,173,12,M,0,0
 11,1486303252,EveryUpdate,175,25632.8,F,0,0
@@ -495,3 +498,4 @@ Time,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness
 11,1486303252,EveryUpdate,195,15092.4,M,1,0
 11,1486303252,EveryUpdate,197,8161.48,F,0,0
 11,1486303252,EveryUpdate,199,2768.7,F,0,0
+11,1486303252,EveryUpdate,201,16919.8,F,0,0
