@@ -209,7 +209,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness
 7,1960.52,1,FirstCoitalAct,11890,5527.95,M,0,0
 7,1960.52,1,FirstCoitalAct,15818,6730.79,F,0,0
 7,1960.52,1,FirstCoitalAct,12264,9256.21,M,0,0
-7,1960.52,1,FirstCoitalAct,7435,9225.63,F,0,0
+7,1960.52,1,FirstCoitalAct,7435,9225.62,F,0,0
 7,1960.52,1,FirstCoitalAct,13136,7031.86,M,0,0
 7,1960.52,1,FirstCoitalAct,13228,6287,F,0,0
 7,1960.52,1,FirstCoitalAct,14974,18176,M,0,0
