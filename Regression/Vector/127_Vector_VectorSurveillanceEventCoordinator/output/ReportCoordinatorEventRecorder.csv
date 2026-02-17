@@ -8,9 +8,7 @@ Time,Coordinator_Name,Event_Name
 42,MosquitoRelease,DoneReleasing_a1a1
 50,Coordnator_2,Stop_Sampling_a1
 60,Coordnator_3,Start_Sampling_a0a0
-61,Fraction_Counter,Release_More_Mosquitoes_a0a0
 61,Fraction_Counter,Considered_Responding_a0a0
-62,MosquitoRelease,DoneReleasing_a0a0
 71,Fraction_Counter,Release_More_Mosquitoes_a0a0
 71,Fraction_Counter,Considered_Responding_a0a0
 72,MosquitoRelease,DoneReleasing_a0a0
