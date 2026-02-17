@@ -38,7 +38,7 @@ Time,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Quality
 11,340461476,HappyBirthday,514,24090.3,M,0,0,Bad,HIGH
 12,340461476,HappyBirthday,286,5840.23,F,0,0,OK,LOW
 12,340461476,HappyBirthday,592,15330.2,F,0,0,Good,LOW
-13,340461476,HappyBirthday,90,7300.34,F,0,0,Bad,LOW
+13,340461476,HappyBirthday,90,7300.33,F,0,0,Bad,LOW
 13,340461476,HappyBirthday,261,14235.1,M,0,0,OK,LOW
 13,340461476,HappyBirthday,850,4015.5,M,0,0,Bad,LOW
 14,340461476,HappyBirthday,321,11315.8,M,0,0,Bad,LOW
@@ -96,7 +96,7 @@ Time,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Quality
 33,340461476,HappyBirthday,254,4380.96,F,0,0,Bad,HIGH
 33,340461476,HappyBirthday,496,1460.08,M,0,0,Bad,LOW
 33,340461476,HappyBirthday,893,2190.93,M,0,0,Bad,LOW
-33,340461476,HappyBirthday,896,4380.46,F,0,0,Bad,LOW
+33,340461476,HappyBirthday,896,4380.45,F,0,0,Bad,LOW
 34,340461476,HappyBirthday,199,5475.12,M,0,0,Bad,LOW
 34,340461476,HappyBirthday,448,7665.61,F,0,0,Good,LOW
 36,340461476,HappyBirthday,283,8760.09,F,0,0,Good,HIGH
@@ -243,7 +243,7 @@ Time,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Quality
 92,340461476,HappyBirthday,417,10585.2,M,0,0,OK,LOW
 92,340461476,HappyBirthday,729,24455.1,F,0,0,Bad,LOW
 92,340461476,HappyBirthday,994,10585,F,0,0,Bad,LOW
-94,340461476,HappyBirthday,492,6205.71,F,0,0,Bad,LOW
+94,340461476,HappyBirthday,492,6205.7,F,0,0,Bad,LOW
 94,340461476,HappyBirthday,780,730.127,M,0,0,Good,LOW
 94,340461476,HappyBirthday,993,1460.94,M,0,0,Bad,HIGH
 95,340461476,HappyBirthday,177,6570.64,F,0,0,Bad,LOW
@@ -408,7 +408,7 @@ Time,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Quality
 123,340461476,HappyBirthday,274,1460.75,F,0,0,OK,LOW
 123,340461476,HappyBirthday,316,365.037,M,0,0,OK,MEDIUM
 124,340461476,HappyBirthday,68,5475.77,F,0,0,OK,LOW
-124,340461476,HappyBirthday,155,730.428,F,0,0,Good,LOW
+124,340461476,HappyBirthday,155,730.429,F,0,0,Good,LOW
 124,340461476,HappyBirthday,840,1460.7,F,0,0,Bad,LOW
 125,340461476,HappyBirthday,393,2555.44,M,0,0,Bad,LOW
 126,340461476,HappyBirthday,47,10220.8,F,0,0,Bad,LOW
