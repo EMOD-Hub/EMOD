@@ -5003,7 +5003,7 @@ Time, IndividualID, AgeYears, Gender, IsAdult, Home_NodeID, From_NodeID, To_Node
 2,1995,12.1487,F,F,5,5,2,local,Emigrating
 2,7989,99.757,F,T,5,5,7,regional,Emigrating
 2,2067,1.77566,F,F,5,5,6,local,Emigrating
-2,2085,91.1563,M,T,5,5,7,regional,Emigrating
+2,2085,91.1562,M,T,5,5,7,regional,Emigrating
 2,467,54.511,F,T,7,5,2,local,Emigrating
 2,7935,12.8443,M,F,5,5,1,regional,Emigrating
 2,2130,108.202,F,T,5,5,2,local,Emigrating
@@ -12598,7 +12598,7 @@ Time, IndividualID, AgeYears, Gender, IsAdult, Home_NodeID, From_NodeID, To_Node
 11,7109,107.531,F,T,7,4,7,regional,Emigrating
 11,2202,18.0231,F,T,5,4,3,regional,Emigrating
 11,5132,88.8531,F,T,1,4,8,regional,Emigrating
-11,7591,98.2813,F,T,3,4,9,regional,Emigrating
+11,7591,98.2812,F,T,3,4,9,regional,Emigrating
 11,4766,51.6275,M,T,4,4,1,local,Emigrating
 11,2464,57.8245,M,T,6,4,5,local,Emigrating
 11,4126,66.4758,M,T,3,4,7,local,Emigrating

@@ -212,7 +212,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 120,1960.83,1,Female_SetSexualDebutAge_Event,415,3104.05,F,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 120,1960.83,1,Female_SetSexualDebutAge_Event,416,32427,F,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 120,1960.83,1,Female_SetSexualDebutAge_Event,417,1793.72,F,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-120,1960.83,1,Female_SetSexualDebutAge_Event,418,6772.63,F,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+120,1960.83,1,Female_SetSexualDebutAge_Event,418,6772.62,F,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 120,1960.83,1,Female_SetSexualDebutAge_Event,421,12129,F,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 120,1960.83,1,Female_SetSexualDebutAge_Event,423,9574.18,F,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 120,1960.83,1,Female_SetSexualDebutAge_Event,424,2983.15,F,0,0,N,N,1e+06,-1,NOT_INFECTED,None
@@ -1121,7 +1121,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 120,1960.83,1,STIDebut,415,3134.05,F,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 120,1960.83,1,STIDebut,416,32457,F,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 120,1960.83,1,STIDebut,417,1823.72,F,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-120,1960.83,1,STIDebut,418,6802.63,F,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+120,1960.83,1,STIDebut,418,6802.62,F,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 120,1960.83,1,STIDebut,421,12159,F,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 120,1960.83,1,STIDebut,423,9604.18,F,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 120,1960.83,1,STIDebut,424,3013.15,F,0,0,N,N,1e+06,-1,NOT_INFECTED,None
@@ -2312,7 +2312,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 510,1961.9,1,Male_SetSexualDebutAge_Event,1021,1024.76,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 510,1961.9,1,Male_SetSexualDebutAge_Event,1025,1057.11,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 510,1961.9,1,Male_SetSexualDebutAge_Event,1029,8839,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-510,1961.9,1,Male_SetSexualDebutAge_Event,1031,14920.3,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+510,1961.9,1,Male_SetSexualDebutAge_Event,1031,14920.2,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 510,1961.9,1,Male_SetSexualDebutAge_Event,1033,3217.87,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 510,1961.9,1,Male_SetSexualDebutAge_Event,1034,20141.2,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 510,1961.9,1,Male_SetSexualDebutAge_Event,1035,16695.9,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
@@ -3178,7 +3178,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 510,1961.9,1,STIDebut,1021,1054.76,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 510,1961.9,1,STIDebut,1025,1087.11,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 510,1961.9,1,STIDebut,1029,8869,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-510,1961.9,1,STIDebut,1031,14950.3,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+510,1961.9,1,STIDebut,1031,14950.2,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 510,1961.9,1,STIDebut,1033,3247.87,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 510,1961.9,1,STIDebut,1034,20171.2,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 510,1961.9,1,STIDebut,1035,16725.9,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
