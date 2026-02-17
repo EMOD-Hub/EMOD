@@ -306,7 +306,7 @@ namespace Kernel
             // --- Define function that will write the nucleotide sequences to the numpy array
             // --- file such that they can be read as a 2D array.
             // --------------------------------------------------------------------------------
-            write_data_func write_func_alleles = [this, &r_barcode_indexes, &snp_data_size]( size_t num_bytes, std::ofstream& file )
+            write_data_func write_func_alleles = [this, r_barcode_indexes, snp_data_size]( size_t num_bytes, std::ofstream& file )
             { 
                 size_t bytes_written = 0;
                 if( m_GenomeList.size() > 0 )
