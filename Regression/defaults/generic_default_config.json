@@ -147,7 +147,7 @@
             },
             "Enable_Termination_On_Zero_Total_Infectivity": 0,
             "Enable_Absolute_Time": "NO",
-            "Geography": "NONE",
+            "Geography": "",
             "Memory_Usage_Halting_Threshold_Working_Set_MB": 4000,
             "Memory_Usage_Warning_Threshold_Working_Set_MB": 3500,
             "Node_Grid_Size": 0.042,

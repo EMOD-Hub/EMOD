@@ -52,7 +52,7 @@
         },
         "PRIMARY": {
             "Config_Name": "64_Generic_NLHTIV_DistributeOnReturnHome",
-            "Geography": "NONE",
+            "Geography": "",
             "Num_Cores": 1,
             "Run_Number": 1,
             "Simulation_Duration": 100,
