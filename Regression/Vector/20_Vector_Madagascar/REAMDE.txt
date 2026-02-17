@@ -1,0 +1,4 @@
+As of 2/17/2026, we have quit running this test on a regular basis because
+the weather files are about 500MB each and we don't want those files in the
+EMOD repo.  You can still run the test if you get the Madagascar directory
+in the EMOD-Hub\EMOD-InputData repo.

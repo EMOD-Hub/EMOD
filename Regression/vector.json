@@ -16,9 +16,7 @@
         { "path": "Vector/15_Vector_Release_Wolbachia_Females_Individual" },
         { "path": "Vector/16_Vector_Release_Sterile_Male_Cohort" },
         { "path": "Vector/18_Vector_Release_Wolbachia" },
-        { "path": "Vector/20_Vector_Madagascar" },
         { "path": "Vector/21_Vector_Garki" },
-        { "path": "Vector/22_Vector_Garki_MultiCore_VectorMigration" },
         { "path": "Vector/23_Vector_Custom_Reporter_Demo" },
         { "path": "Vector/24_Vector_An_farauti_IRS" },
         { "path": "Vector/25_Vector_An_arabiensis_MultipleHabitats" },
@@ -218,6 +216,8 @@
         { "path": "Vector/ImperialCollege/12_Imperial_InitialDiversity_4x2" }
     ],
     "multicore":[
+        { "path": "Vector/20_Vector_Madagascar" },
+        { "path": "Vector/22_Vector_Garki_MultiCore_VectorMigration" },
         { "path": "Vector/81_Vector_Insecticide_SimpleBednet_Multicore" },
         { "path": "Vector/128_Vector_VectorSurveillanceEventCoordinator_Multinode" },
 
