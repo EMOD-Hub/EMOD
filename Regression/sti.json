@@ -60,9 +60,7 @@
         { "path": "STI/58_STI_Informal_Only_Relationship_Pause" },
         { "path": "STI/59_STI_Transitory_Only_Relationship_Terminate" },
         { "path": "STI/60_STI_All_Rel_Types_All_Rel_States" },
-        { "path": "STI/61_STI_Marital_Only_Relationship_Migration_Multicore" },
         { "path": "STI/62_STI_ERAD_2931_PauseAndRelationshipTermination" },
-        { "path": "STI/63_STI_All_Rel_Types_All_Rel_States_Multicore" },
         { "path": "STI/64_STI_Transitory_Only_MaxRelationships" },
         { "path": "STI/65_STI_Commercial_Only" },
         { "path": "STI/66_STI_Commercial_Concurrent" },
@@ -116,6 +114,10 @@
         { "path": "Scenarios/STIAndHIV/01_STI_Network/G_Partner_Choice_By_Age" },
         { "path": "Scenarios/STIAndHIV/01_STI_Network/H_Risk_Groups" },
         { "path": "Scenarios/STIAndHIV/01_STI_Network/I_Coital_Dilution" }
+    ],
+    "multicore": [
+        { "path": "STI/61_STI_Marital_Only_Relationship_Migration_Multicore" },
+        { "path": "STI/63_STI_All_Rel_Types_All_Rel_States_Multicore" }
     ],
     "ENABLE_PYTHON": [
         { "path": "STI/44_STI_PFA_Report" },

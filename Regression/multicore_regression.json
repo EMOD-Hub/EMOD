@@ -1,59 +1,69 @@
 {
-    "tests": [
+    "2_cores": [
+        { "path": "Malaria/42_Malaria_Households_5x5_vm_local_LHM_BETON_2_core", "Num_Cores": 2 },
+        { "path": "Malaria/43_Malaria_Households_5x5_vm_local_LHM_2_core", "Num_Cores": 2 },
+        { "path": "Malaria/82_Malaria_Serialization_CoTransmission_Multinode", "Num_Cores": 2 },
+        { "path": "Malaria/95_Malaria_FPG_TwoMarkers_Multicore", "Num_Cores": 2 },
+        { "path": "HIV/53_HIV_GH459", "Num_Cores": 2 },
+        { "path": "STI/61_STI_Marital_Only_Relationship_Migration_Multicore", "Num_Cores": 2 },
+        { "path": "Vector/81_Vector_Insecticide_SimpleBednet_Multicore", "Num_Cores": 2 }
+    ],
+    "3-4_cores": [
         { "path": "Generic/33_Generic_Seattle_MultiCore", "Num_Cores": 4 },
         { "path": "Generic/70_Generic_RngPerNode", "Num_Cores": 4 },
-        { "path": "Multicore_Nosibe/20_Generic_SimpleDiagnostic" },
-        { "path": "Multicore_Nosibe/Scenarios/Generic/01_SIR" },
-        { "path": "Multicore_Nosibe/Scenarios/Generic/02_SIR_Vaccinations/A_BaselineOutbreak" },
-        { "path": "Multicore_Nosibe/Scenarios/Generic/02_SIR_Vaccinations/B_Vaccinations" },
-        { "path": "Multicore_Nosibe/Scenarios/Generic/02_SIR_Vaccinations/C_TargetedVaccinations" },
-        { "path": "Multicore_Nosibe/Scenarios/Generic/03_SEIR" },
-        { "path": "Multicore_Nosibe/Scenarios/Generic/04_SEIR_VitalDynamics" },
-        { "path": "Multicore_Nosibe/Scenarios/Generic/05_SIRS" },
-        { "path": "Multicore_Nosibe/Scenarios/Generic/06_SEIRS" },
-        { "path": "Multicore_Nosibe/Scenarios/Generic/08_SIS" },
-        { "path": "Multicore_Nosibe/Scenarios/Generic/09_DensityScaling" },
-        
         { "path": "HIV/45_HIV_CascadeOfCare_MultiNode_MultiCore", "Num_Cores": 4 },
         { "path": "HIV/50_HIV_GH611", "Num_Cores": 4 },
-        { "path": "HIV/53_HIV_GH459", "Num_Cores": 2 },
         { "path": "HIV/55_HIV_CascadeOfCare_MultiNode_MultiCore_RngPerNode", "Num_Cores": 4 },
-        
-        { "path": "Malaria/24_Malaria_SurveyReport_Multicore", "Num_Cores": 8 },
         { "path": "Malaria/31_Malaria_GH426_ReportMalariaFiltered", "Num_Cores": 3 },
-        { "path": "Malaria/42_Malaria_Households_5x5_vm_local_regional_LHM_BETON_2_core", "Num_Cores": 2 },
-        { "path": "Malaria/43_Malaria_Households_5x5_vm_local_regional_LHM_2_core", "Num_Cores": 2 },
-        { "path": "Malaria/64_Malaria_Households_MV_hum_local_reg_sea_vec_local_reg_outbreak_75_4_cores", "Num_Cores": 4 },
-        { "path": "Malaria/65_Malaria_Households_MV_hum_local_reg_sea_vec_local_reg_outbreak_57_BETON_4_cores", "Num_Cores": 4 },
-        { "path": "Malaria/66_Malaria_Households_MV_hum_local_reg_sea_vec_local_reg_outbreak_57_BETON_MigrateIndividuals_4_cores", "Num_Cores": 4 },
+        { "path": "Malaria/64_Malaria_Households_MV_hum_local_reg_sea_vec_local_outbreak_75_4_cores", "Num_Cores": 4 },
+        { "path": "Malaria/66_Malaria_Households_MV_hum_local_reg_sea_vec_local_outbreak_57_BETON_MigrateIndividuals_4_cores", "Num_Cores": 4 },
+        { "path": "Malaria/65_Malaria_Households_MV_hum_local_reg_sea_vec_local_outbreak_57_BETON_4_cores", "Num_Cores": 4 },
         { "path": "Malaria/67_Malaria_Households_All", "Num_Cores": 4 },
         { "path": "Malaria/77_Malaria_SummaryReport_Multicore", "Num_Cores": 4 },
-        { "path": "Multicore_Nosibe/23_Malaria_Intervention_RTSSVaccine" },
-        
-        { "path": "STI/61_STI_Marital_Only_Relationship_Migration_Multicore", "Num_Cores": 2 },
+        { "path": "Malaria/90_Malaria_FPG_TwoMarkers_Multicore", "Num_Cores": 4 },
         { "path": "STI/63_STI_All_Rel_Types_All_Rel_States_Multicore", "Num_Cores": 4 },
-        
-        { "path": "Vector/20_Vector_Madagascar", "Num_Cores": 16 },
-        { "path": "Vector/21_Vector_Garki", "Num_Cores": 4 },
-        { "path": "Vector/22_Vector_Garki_MultiCore_VectorMigration", "Num_Cores": 8 },
-        { "path": "Multicore_Nosibe/12_Vector_Namawala_HostSeekingTrap" },
-        { "path": "Multicore_Nosibe/28_Vector_ScaleLarvalHabitat" },
-        { "path": "Multicore_Nosibe/29_Vector_IRS_Ivermectin" },
-        { "path": "Multicore_Nosibe/35_Vector_Ivermectin" },
-        { "path": "Multicore_Nosibe/42_Vector_SimpleIndividualRepellent" },
-        { "path": "Multicore_Nosibe/Scenarios/VectorAndMalaria/01_A_Namawala3Vectors_lowEIR" },
-        { "path": "Multicore_Nosibe/Scenarios/VectorAndMalaria/01_B_Namawala3Vectors_highEIR" },
-        { "path": "Multicore_Nosibe/Scenarios/VectorAndMalaria/03_A_Namawala_Vector" },
-        { "path": "Multicore_Nosibe/Scenarios/VectorAndMalaria/03_B_Muheza_Vector" },
-        { "path": "Multicore_Nosibe/Scenarios/VectorAndMalaria/03_C_Garki_single_node_Vector" },
-        { "path": "Multicore_Nosibe/Scenarios/VectorAndMalaria/05_Namawala_Vector_ITNs" },
-        { "path": "Multicore_Nosibe/Scenarios/VectorAndMalaria/06_Namawala_Vector_ITNsPEV" },
-        { "path": "Multicore_Nosibe/Scenarios/VectorAndMalaria/07_Namawala_Vector_SSV" },
-        { "path": "Multicore_Nosibe/Scenarios/VectorAndMalaria/09_Namawala_Vector_SugarBaitedTraps" },
-        { "path": "Multicore_Nosibe/Scenarios/VectorAndMalaria/11_MultipleLarvalHabitats" }
+        { "path": "Vector/128_Vector_VectorSurveillanceEventCoordinator_Multinode", "Num_Cores": 3 }
     ],
-    "too_many_cores": [
+    "tests": [
+        { "path": "Multicore_Nosibe/20_Generic_SimpleDiagnostic", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/Scenarios/Generic/01_SIR", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/Scenarios/Generic/02_SIR_Vaccinations/A_BaselineOutbreak", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/Scenarios/Generic/02_SIR_Vaccinations/B_Vaccinations", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/Scenarios/Generic/02_SIR_Vaccinations/C_TargetedVaccinations", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/Scenarios/Generic/03_SEIR", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/Scenarios/Generic/04_SEIR_VitalDynamics", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/Scenarios/Generic/05_SIRS", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/Scenarios/Generic/06_SEIRS", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/Scenarios/Generic/08_SIS", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/Scenarios/Generic/09_DensityScaling", "Num_Cores": 8 },
+        
+        { "path": "Malaria/24_Malaria_SurveyReport_Multicore", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/21_Malaria_InputEIR", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/23_Malaria_Intervention_RTSSVaccine", "Num_Cores": 8 },
+        
+        { "path": "Multicore_Nosibe/12_Vector_Namawala_HostSeekingTrap", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/28_Vector_ScaleLarvalHabitat", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/29_Vector_IRS_Ivermectin", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/35_Vector_Ivermectin", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/42_Vector_SimpleIndividualRepellent", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/Scenarios/VectorAndMalaria/01_A_Namawala3Vectors_lowEIR", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/Scenarios/VectorAndMalaria/01_B_Namawala3Vectors_highEIR", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/Scenarios/VectorAndMalaria/03_A_Namawala_Vector", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/Scenarios/VectorAndMalaria/03_B_Muheza_Vector", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/Scenarios/VectorAndMalaria/03_C_Garki_single_node_Vector", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/Scenarios/VectorAndMalaria/05_Namawala_Vector_ITNs", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/Scenarios/VectorAndMalaria/06_Namawala_Vector_ITNsPEV", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/Scenarios/VectorAndMalaria/07_Namawala_Vector_SSV", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/Scenarios/VectorAndMalaria/09_Namawala_Vector_SugarBaitedTraps", "Num_Cores": 8 },
+        { "path": "Multicore_Nosibe/Scenarios/VectorAndMalaria/11_MultipleLarvalHabitats", "Num_Cores": 8 }
+    ],
+    "more_than_8_cores": [
         { "path": "Malaria/2_Malaria_Garki", "Num_Cores": 32 },
         { "path": "Malaria/32_Malaria_GH434_MpiDataExchanger", "Num_Cores": 24 }
+    ],
+    "Weather_data_too_big": [
+        { "path": "Vector/20_Vector_Madagascar", "Num_Cores": 16, "Weather": "too big" },
+        { "path": "Vector/21_Vector_Garki", "Num_Cores": 4, "Weather": "too big" },
+        { "path": "Vector/22_Vector_Garki_MultiCore_VectorMigration", "Num_Cores": 8 }
     ]
 }

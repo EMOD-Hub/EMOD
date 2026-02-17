@@ -37,7 +37,6 @@
         { "path" : "HIV/42_HIV_MaleCircumcision"},
         { "path" : "HIV/43_HIV_ProportionalAdjustmentEventCoordinator"},
         { "path" : "HIV/44_HIV_CascadeOfCare_MultiNode_SingleCore" },
-        { "path" : "HIV/45_HIV_CascadeOfCare_MultiNode_MultiCore" },
         { "path" : "HIV/46_HIV_ProportionalAdjustmentEventCoordinator_HIVNegative"},
         { "path" : "HIV/47_HIV_ProportionalAdjustmentEventCoordinator_HIVNegative_Vaccine"},
         { "path" : "HIV/48_HIV_NChooser" },
@@ -45,8 +44,6 @@
         { "path" : "HIV/50_HIV_GH611" },
         { "path" : "HIV/51_HIV_GH620_NChooser" },
         { "path" : "HIV/52_HIV_GH690_RTEC" },
-        { "path" : "HIV/53_HIV_GH459" },
-        { "path" : "HIV/55_HIV_CascadeOfCare_MultiNode_MultiCore_RngPerNode" },
         { "path" : "HIV/56_HIV_Concordant_Relationships" },
         { "path" : "HIV/57_HIV_WouldHaveDied" },
         { "path" : "HIV/58_HIV_InterventionForCurrentPartners" },
@@ -113,5 +110,10 @@
         { "path": "Scenarios/STIAndHIV/05_Intervention_Examples/7a_HIVProphylaxis_Uniform_Lifelong_Protection_F_15to49" },
         { "path": "Scenarios/STIAndHIV/05_Intervention_Examples/7b_HIVProphylaxis_Heterogeneous_Adherence_or_Efficacy_F_15to49" },
         { "path": "Scenarios/STIAndHIV/05_Intervention_Examples/7c_HIVProphylaxis_LongActingInjectable_F_15to49" }
+    ],
+    "multicore": [
+        { "path" : "HIV/45_HIV_CascadeOfCare_MultiNode_MultiCore" },
+        { "path" : "HIV/53_HIV_GH459" },
+        { "path" : "HIV/55_HIV_CascadeOfCare_MultiNode_MultiCore_RngPerNode" }
     ]
 }

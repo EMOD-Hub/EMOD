@@ -21,7 +21,6 @@
         { "path": "Generic/30_Generic_Seattle_SingleCore" },
         { "path": "Generic/31_Generic_Seattle_SingleCore_Zoonosis" },
         { "path": "Generic/32_Generic_Seattle_SingleCore_CoverageByNode" },
-        { "path": "Generic/33_Generic_Seattle_MultiCore" },
         { "path": "Generic/34_Generic_Namawala" },
         { "path": "Generic/37_Generic_Namawala_Property_Restrictions_NLHTI" },
         { "path": "Generic/38_Generic_Namawala_DelayedIntervention" },
@@ -44,7 +43,6 @@
         { "path": "Generic/67_Generic_GH1538_PVC" },
         { "path": "Generic/68_Generic_NChooser_Multinode" },
         { "path": "Generic/69_Generic_ExposureSkipping" },
-        { "path": "Generic/70_Generic_RngPerNode" },
         { "path": "Generic/73_Generic_SimAbort_ZeroInfectivity" },
         { "path": "Generic/74_Generic_ImmunityBloodTest" },
         { "path": "Generic/75_Generic_BroadcastCoordinatorEvent" },
@@ -82,7 +80,11 @@
         { "path": "Scenarios/Generic/06_SEIRS" },
         { "path": "Scenarios/Generic/07_SI" },
         { "path": "Scenarios/Generic/08_SIS" },
-        { "path": "Scenarios/Generic/09_DensityScaling" },
+        { "path": "Scenarios/Generic/09_DensityScaling" }
+    ],
+    "multicore": [
+        { "path": "Generic/33_Generic_Seattle_MultiCore" },
+        { "path": "Generic/70_Generic_RngPerNode" },
         { "path": "Multicore_Nosibe/20_Generic_SimpleDiagnostic" },
         { "path": "Multicore_Nosibe/Scenarios/Generic/01_SIR" },
         { "path": "Multicore_Nosibe/Scenarios/Generic/02_SIR_Vaccinations/A_BaselineOutbreak" },
