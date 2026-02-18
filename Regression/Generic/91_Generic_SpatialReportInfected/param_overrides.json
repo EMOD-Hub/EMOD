@@ -4,7 +4,7 @@
         "Base_Infectivity" : 0.0,
         "Config_Name": "91_Generic_SpatialReportInfected", 
         "Enable_Vital_Dynamics": 0,
-        "Geography": "NONE", 
+        "Geography": "", 
         "Infectious_Period_Distribution": "CONSTANT_DISTRIBUTION",
         "Infectious_Period_Constant": 10,
         "Simulation_Duration": 10, 

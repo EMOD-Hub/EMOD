@@ -5,7 +5,7 @@
         "Enable_Log_Throttling": 1,
         "Enable_Initial_Prevalence": 0,
         "Enable_Vital_Dynamics": 0,
-        "Geography": "NONE",
+        "Geography": "",
         "Config_Name": "PythonInProcess_HonorsTimestep",
         "Build_Campaign_Event_At": 25,
         "Simulation_Duration": 100,

@@ -254,7 +254,7 @@ class MyRegressionRunner(object):
             source_input_directory = os.path.join(self.params.shared_input, config_json["parameters"]["Geography"])
             working_input_directory = os.path.join(self.params.user_input, config_json["parameters"]["Geography"])
 
-            if not os.path.exists(working_input_directory):
+            if (config_json["parameters"]["Geography"] != "") and not os.path.exists(working_input_directory):
                 print("Creating " + working_input_directory)
                 os.makedirs(working_input_directory)
 

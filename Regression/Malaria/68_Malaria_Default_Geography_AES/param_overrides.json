@@ -47,7 +47,6 @@
           "PRIMARY": {
                "Config_Name": "68_Malaria_Default_Geography_AES", 
                "Enable_Vector_Species_Report" : 1,
-               "Geography": "auto-generated", 
                "Node_Grid_Size": 0.009, 
                "Run_Number": 33, 
                "Simulation_Duration": 730,
