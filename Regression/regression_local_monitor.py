@@ -14,7 +14,7 @@ import io
 
 import regression_utils as ru
 
-MAX_ACTIVE_JOBS=50
+MAX_ACTIVE_JOBS=10
 class Monitor(threading.Thread):
     sems = threading.Semaphore( MAX_ACTIVE_JOBS )
     completed = 0
