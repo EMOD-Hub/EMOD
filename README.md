@@ -84,20 +84,11 @@ The following link provides instructions for installing the prerequisites requir
 https://docs.idmod.org/projects/emod-malaria/en/latest/dev-install-overview.html
 
 
-Community
-------------
-The EMOD Community is made up of researchers and software developers, primarily focused on malaria and HIV research.
-We value mutual respect, openness, and a collaborative spirit. If these values resonate with you, 
-we invite you to join our EMOD Slack Community by completing this form:
-
-https://forms.office.com/r/sjncGvBjvZ
-
-
-Contributing
-------------
-Questions or comments can be directed to [idmsupport@gatesfoundation.org](<mailto:idmsupport@gatesfoundation.org>).
-
-Full information about EMOD is provided in the [documentation](<https://docs.idmod.org/models.html#emod>).
+Contributing and Community
+--------------------------
+- [Full Documentation](<https://docs.idmod.org/models.html#emod>)
+- [Discussions](<https://github.com/orgs/EMOD-Hub/discussions>)
+- [Have an issue?](<https://github.com/EMOD-Hub/issues-and-discussions/issues>)
 
 
 Disclaimer
