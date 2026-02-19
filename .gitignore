@@ -279,6 +279,11 @@ componentTests/testdata/NodeDemographicsTest/DefaultDemographics.json
 Regression/reports/
 Regression/Scenarios/InputFiles
 
+Regression/testing_output/bin
+Regression/testing_output/Python
+Regression/testing_output/simulations_local
+
+
 # Sphinx documentation
 
 docs/_build
