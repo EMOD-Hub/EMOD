@@ -18,6 +18,7 @@ KEY_MIGRATION_MODEL = "Migration_Model"  # ("NO_MIGRATION" | "FIXED_RATE_MIGRATI
 KEY_MIGRATION_PATTERN = "Migration_Pattern"  # {"RANDOM_WALK_DIFFUSION" | "SINGLE_ROUND_TRIPS" | "WAYPOINTS_HOME" }
 KEY_ROUNDTRIP_WAYPOINTS = "Roundtrip_Waypoints"
 KEY_DEMOGRAPHICS_FILENAMES  = "Demographics_Filenames"
+KEY_INPUT_DIRECTORY = "input_directory"
 
 # following is for generic Migration parameters
 KEY_MIGRATION_ENABLE = "Enable_{}_Migration"
@@ -73,7 +74,7 @@ def load_emod_parameters(config_filename="config.json"):
         config = json.load(infile)
         cdj = config["parameters"]
     param_obj = {}
-    param_obj["input_directory"] = config["input_directory"]
+    param_obj[KEY_INPUT_DIRECTORY] = config[KEY_INPUT_DIRECTORY]
     param_obj[KEY_TOTAL_TIMESTEPS] = cdj[KEY_TOTAL_TIMESTEPS]
     param_obj[KEY_SIMULATION_TIMESTEP] = cdj[KEY_SIMULATION_TIMESTEP]
     param_obj[KEY_MIGRATION_MODEL] = cdj[KEY_MIGRATION_MODEL]
@@ -304,7 +305,7 @@ def create_report_file_stationary_distribution(param_obj, node_demog_df, report_
     migration_pattern = param_obj[KEY_MIGRATION_PATTERN]
     migration_model = param_obj[KEY_MIGRATION_MODEL]
     demog_filenames = param_obj[KEY_DEMOGRAPHICS_FILENAMES]
-    input_path = param_obj["input_directory"]
+    input_path = param_obj[KEY_INPUT_DIRECTORY]
     success = True
 
     with open(report_name, "w") as outfile:
@@ -527,7 +528,7 @@ def create_report_file(param_obj, node_demog_df, human_migration_df, report_name
     migration_pattern = param_obj[KEY_MIGRATION_PATTERN]
     migration_model = param_obj[KEY_MIGRATION_MODEL]
     demog_filenames = param_obj[KEY_DEMOGRAPHICS_FILENAMES]
-    input_path = param_obj["input_directory"]
+    input_path = param_obj[KEY_INPUT_DIRECTORY]
 
     success = True
     with open(report_name, "w") as outfile:
