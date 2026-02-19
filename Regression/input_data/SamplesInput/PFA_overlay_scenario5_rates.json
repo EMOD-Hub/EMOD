@@ -1,0 +1,111 @@
+{
+    "Metadata": {
+        "Author": "dbridenbecker", 
+        "NodeCount": 1, 
+        "Tool": "notepad", 
+        "IdReference": "0", 
+        "DateCreated": "2015-3-21"
+    },
+    "Defaults": {
+        "Society" : {
+            "Concurrency_Configuration" : 
+            {
+                "NONE": 
+                {
+                    "Extra_Relational_Flag_Type": "Correlated",
+                    "Correlated_Relationship_Type_Order" : [ "TRANSITORY", "INFORMAL", "MARITAL", "COMMERCIAL" ]
+                }
+            },
+            "TRANSITORY" :
+            {
+                "Concurrency_Parameters" :
+                {
+                    "NONE": 
+                    {
+                        "Max_Simultaneous_Relationships_Female": 2,
+                        "Max_Simultaneous_Relationships_Male"  : 4,
+                        "Prob_Extra_Relationship_Female"       : 0.8,
+                        "Prob_Extra_Relationship_Male"         : 0.2
+                    }
+                },
+                "Relationship_Parameters" :
+                {
+                    "Condom_Usage_Probability" :
+                    {
+                        "Min": 0.0125,
+                        "Max": 0.3,
+                        "Mid": 2001,
+                        "Rate": 1.5
+                    }
+                },
+                "Pair_Formation_Parameters" :
+                {
+                    "Formation_Rate_Constant": 0.0013,
+                    "Update_Period" : 7.0,
+                    "Extra_Relational_Rate_Ratio_Male": 5,
+                    "Extra_Relational_Rate_Ratio_Female": 2
+                }
+            },
+            "INFORMAL" :
+            {
+                "Concurrency_Parameters" :
+                {
+                    "NONE": 
+                    {
+                        "Max_Simultaneous_Relationships_Female": 2,
+                        "Max_Simultaneous_Relationships_Male"  : 3,
+                        "Prob_Extra_Relationship_Female"       : 0.5,
+                        "Prob_Extra_Relationship_Male"         : 1.0
+                    }
+                },
+                "Relationship_Parameters" :
+                {
+                    "Condom_Usage_Probability" :
+                    {
+                        "Min": 0.0125,
+                        "Max": 0.4,
+                        "Mid": 2000,
+                        "Rate": 1.5
+                    }
+                },
+                "Pair_Formation_Parameters" :
+                {
+                    "Formation_Rate_Constant": 0.00035,
+                    "Update_Period" : 7.0,
+                    "Extra_Relational_Rate_Ratio_Male": 5,
+                    "Extra_Relational_Rate_Ratio_Female": 2
+                }
+            },
+            "MARITAL" :
+            {
+                "Concurrency_Parameters" :
+                {
+                    "NONE": 
+                    {
+                        "Max_Simultaneous_Relationships_Female": 2,
+                        "Max_Simultaneous_Relationships_Male"  : 2,
+                        "Prob_Extra_Relationship_Female"       : 0.5,
+                        "Prob_Extra_Relationship_Male"         : 0.5
+                    }
+                },
+                "Relationship_Parameters" :
+                {
+                    "Condom_Usage_Probability" :
+                    {
+                        "Min": 0.000625,
+                        "Max": 0.2,
+                        "Mid": 2003,
+                        "Rate": 1.5
+                    }
+                },
+                "Pair_Formation_Parameters" :
+                {
+                    "Formation_Rate_Constant": 7.8171373381041601e-05,
+                    "Update_Period" : 30.0,
+                    "Extra_Relational_Rate_Ratio_Male": 5,
+                    "Extra_Relational_Rate_Ratio_Female": 2
+                }
+            }
+        }
+    }
+}

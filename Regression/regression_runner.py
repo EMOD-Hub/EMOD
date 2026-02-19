@@ -125,8 +125,9 @@ class MyRegressionRunner(object):
                 # print('Copying %s to remote working directory'%filename)
                 simulation_path = os.path.join(self.params.sim_root, simulation_directory)
                 simulation_file = os.path.join(simulation_path, os.path.basename(filename))
-                self.update_file(scenario_file, simulation_file)
-            else:
+                if simulation_path != simulation_file:
+                    self.update_file(scenario_file, simulation_file)
+            elif source_path != dest_path:
                 if not self.update_file(source_path, dest_path):
                     print("Could not find source file '{0}' locally ({1}) or in inputs ({2}) [{3}]!".format(filename, scenario_file, source_path, scenario_directory))
                     # config_json["parameters"]["Demographics_Filename"] = "input file ({0}) not found".format(filename)
@@ -148,11 +149,12 @@ class MyRegressionRunner(object):
     def copy_one_climate_and_migration_file(self, key, filename,
                                             simulation_directory, source_input_directory,
                                             working_input_directory, scenario):
+
         source = os.path.join(source_input_directory, filename)
         dest = os.path.join(working_input_directory, os.path.basename(filename))
         scenario_file = os.path.join(scenario, filename)
 
-        # For any demographics overlays WITHIN regression folder:
+        # if the file is in the scenario folder
         # Copy directly to remote simulation working directory
         if os.path.isfile(scenario_file):
             simulation_path = os.path.join(self.params.sim_root, simulation_directory)
@@ -160,12 +162,13 @@ class MyRegressionRunner(object):
             source = scenario_file
             dest = simulation_file
 
-        if not self.update_file(source, dest):
+        if (source != dest) and (not self.update_file(source, dest)):
             print("Could not find input file '{0}' to copy to '{1}' for scenario '{2}'".format(source, dest, scenario))
+
         if key != "Load_Balance_Filename":
             source = source + ".json"
             dest = dest + ".json"
-            if not self.update_file(source, dest):
+            if (source != dest) and (not self.update_file(source, dest)):
                 print("Could not find input file '{0}' to copy to '{1}' for scenario '{2}'".format(source, dest, scenario))
 
         
@@ -258,6 +261,7 @@ class MyRegressionRunner(object):
                 print("Creating " + working_input_directory)
                 os.makedirs(working_input_directory)
 
+        config_json["input_directory"] = working_input_directory
         # Harmonizing these to do the same thing
         self.copy_demographics_files_to_user_input(simulation_directory, config_json, working_input_directory, scenario_path, source_input_directory) 
         self.copy_climate_and_migration_files_to_user_input(simulation_directory, config_json, source_input_directory, working_input_directory, scenario_path) 
@@ -457,17 +461,17 @@ class MyRegressionRunner(object):
         if "campaign_json" in reply_json:
             #campaign_json = json.dumps(reply_json["campaign_json"]).replace("u'", "'").replace("'", '"').strip('"')
             with open( sim_dir + "/" + self.campaign_filename, 'w' ) as camp_file:
-                 try:
-                    camp_json = reply_json["campaign_json"]
-                    if isinstance( camp_json, dict ):
-                        json.dump(camp_json, camp_file)
-                    else:
-                        camp_json_grrr = json.loads( camp_json )
-                        json.dump(camp_json_grrr , camp_file)
-                 except Exception as ex:
-                     print( "Exception writing campaign.json for " + scenario_path )
-                     print( str( ex ) ) 
-            #reply_json["campaign_json"] = None 
+                    if ("campaign_json" in reply_json) and (reply_json["campaign_json"] is not None):
+                        try:
+                            camp_json = reply_json["campaign_json"]
+                            if isinstance( camp_json, dict ):
+                                json.dump(camp_json, camp_file)
+                            else:
+                                camp_json_grrr = json.loads( camp_json )
+                                json.dump(camp_json_grrr , camp_file)
+                        except Exception as ex:
+                            print( "Exception writing campaign.json for " + scenario_path )
+                            print( str( ex ) )
         elif "Campaign_Filename" in reply_json["parameters"]:
             camp_filename = reply_json["parameters"]["Campaign_Filename"]
             if len(camp_filename) > 0:

@@ -1,0 +1,16 @@
+{
+    "Metadata": {
+        "IdReference": "9-nodes",
+        "DateCreated": "Mon Aug 26 23:29:14 2024",
+        "Tool": "convert_json_to_bin.py",
+        "DatavalueCount": 8,
+        "MigrationType": "LOCAL_MIGRATION",
+        "GenderDataType": "SAME_FOR_BOTH_GENDERS",
+        "InterpolationType": "PIECEWISE_CONSTANT",
+        "AgesYears": [
+            125
+        ],
+        "NodeCount": 1
+    },
+    "NodeOffsets": "0000000500000000"
+}

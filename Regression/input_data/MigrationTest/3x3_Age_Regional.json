@@ -1,0 +1,280 @@
+{
+    "Comment"            : "This migration file puts 0-40 in nodes 1-3, 40-80 in nodes 4-6, and 80-125 in nodes 7-9.",
+    "IdReference"        : "MigrationTest", 
+    "Interpolation_Type" : "PIECEWISE_CONSTANT",
+    "Gender_Data_Type"   : "SAME_FOR_BOTH_GENDERS",
+    "Ages_Years"         : [ 0.0, 40.0, 80.0 ],
+    "Node_Data" :
+    [
+        {
+            "From_Node_ID" : 1,
+            "Rate_Data" :
+            [
+                {
+                    "To_Node_ID"            : 4,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.1, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 5,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.1, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 6,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.1, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 7,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.0, 0.1 ]
+                },
+                {
+                    "To_Node_ID"            : 8,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.0, 0.1 ]
+                },
+                {
+                    "To_Node_ID"            : 9,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.0, 0.1 ]
+                }
+            ]
+        },
+        {
+            "From_Node_ID" : 2,
+            "Rate_Data" :
+            [
+                {
+                    "To_Node_ID"            : 4,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.1, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 5,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.1, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 6,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.1, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 7,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.0, 0.1 ]
+                },
+                {
+                    "To_Node_ID"            : 8,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.0, 0.1 ]
+                },
+                {
+                    "To_Node_ID"            : 9,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.0, 0.1 ]
+                }
+            ]
+        },
+        {
+            "From_Node_ID" : 3,
+            "Rate_Data" :
+            [
+                {
+                    "To_Node_ID"            : 4,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.1, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 5,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.1, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 6,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.1, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 7,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.0, 0.1 ]
+                },
+                {
+                    "To_Node_ID"            : 8,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.0, 0.1 ]
+                },
+                {
+                    "To_Node_ID"            : 9,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.0, 0.1 ]
+                }
+            ]
+        },
+        {
+            "From_Node_ID" : 4,
+            "Rate_Data" :
+            [
+                {
+                    "To_Node_ID"            : 1,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.1, 0.0, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 2,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.1, 0.0, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 3,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.1, 0.0, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 7,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.0, 0.1 ]
+                },
+                {
+                    "To_Node_ID"            : 8,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.0, 0.1 ]
+                },
+                {
+                    "To_Node_ID"            : 9,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.0, 0.1 ]
+                }
+            ]
+        },
+        {
+            "From_Node_ID" : 5,
+            "Rate_Data" :
+            [
+                {
+                    "To_Node_ID"            : 1,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.1, 0.0, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 2,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.1, 0.0, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 3,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.1, 0.0, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 7,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.0, 0.1 ]
+                },
+                {
+                    "To_Node_ID"            : 8,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.0, 0.1 ]
+                },
+                {
+                    "To_Node_ID"            : 9,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.0, 0.1 ]
+                }
+            ]
+        },
+        {
+            "From_Node_ID" : 6,
+            "Rate_Data" :
+            [
+                {
+                    "To_Node_ID"            : 1,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.1, 0.0, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 2,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.1, 0.0, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 3,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.1, 0.0, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 7,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.0, 0.1 ]
+                },
+                {
+                    "To_Node_ID"            : 8,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.0, 0.1 ]
+                },
+                {
+                    "To_Node_ID"            : 9,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.0, 0.1 ]
+                }
+            ]
+        },
+        {
+            "From_Node_ID" : 7,
+            "Rate_Data" :
+            [
+                {
+                    "To_Node_ID"            : 1,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.1, 0.0, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 2,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.1, 0.0, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 3,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.1, 0.0, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 4,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.1, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 5,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.1, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 6,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.1, 0.0 ]
+                }
+            ]
+        },
+        {
+            "From_Node_ID" : 8,
+            "Rate_Data" :
+            [
+                {
+                    "To_Node_ID"            : 1,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.1, 0.0, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 2,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.1, 0.0, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 3,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.1, 0.0, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 4,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.1, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 5,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.1, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 6,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.1, 0.0 ]
+                }
+            ]
+        },
+        {
+            "From_Node_ID" : 9,
+            "Rate_Data" :
+            [
+                {
+                    "To_Node_ID"            : 1,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.1, 0.0, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 2,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.1, 0.0, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 3,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.1, 0.0, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 4,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.1, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 5,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.1, 0.0 ]
+                },
+                {
+                    "To_Node_ID"            : 6,
+                    "Avg_Num_Trips_Per_Day_Both" : [ 0.0, 0.1, 0.0 ]
+                }
+            ]
+        }
+    ]
+}

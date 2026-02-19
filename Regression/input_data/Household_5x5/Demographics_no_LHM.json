@@ -1,0 +1,391 @@
+{
+    "Metadata": {
+        "DateCreated": "Tue Jun 30 07:00:42 2015",
+        "Tool": "Eradication.exe",
+        "Author": "DTK",
+        "IdReference": "Household-Scenario-Small",
+        "NodeCount": 26
+    },
+    "Defaults": {
+        "NodeID": -1,
+        "NodeAttributes": {
+            "Latitude": -1,
+            "Longitude": -1,
+            "Altitude": 0,
+            "Airport": 0,
+            "Region": 1,
+            "Seaport": 1,
+            "BirthRate": 8.715e-005,
+            "Urban": 0,
+            "AbovePoverty": 0.5
+        },
+        "IndividualAttributes": {
+            "AgeDistributionFlag": 3,
+            "AgeDistribution1": 0.000118,
+            "AgeDistribution2": 0,
+            "PrevalenceDistributionFlag": 0,
+            "PrevalenceDistribution1": 0,
+            "PrevalenceDistribution2": 0,
+            "SusceptibilityDistributionFlag": 0,
+            "SusceptibilityDistribution1": 0,
+            "SusceptibilityDistribution2": 0,
+            "RiskDistributionFlag": 0,
+            "RiskDistribution1": 0,
+            "RiskDistribution2": 0,
+            "MigrationHeterogeneityDistributionFlag": 0,
+            "MigrationHeterogeneityDistribution1": 0.25,
+            "MigrationHeterogeneityDistribution2": 0,
+            "PercentageChildren" : 0.7
+        }
+    },
+    "Nodes": [
+        {
+            "NodeID": 1,
+            "NodeAttributes": {
+                "InitialPopulation": 5,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 30,
+                    "funestus"  : 30,
+                    "gambiae"   : 40
+                 },
+                "Latitude": 0,
+                "Longitude": 0
+            }
+        },
+        {
+            "NodeID": 2,
+            "NodeAttributes": {
+                "InitialPopulation": 10,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 30,
+                    "funestus"  : 30,
+                    "gambiae"   : 40
+                 },
+                "Latitude": 0.005,
+                "Longitude": 0
+            }
+        },
+        {
+            "NodeID": 3,
+            "NodeAttributes": {
+                "InitialPopulation": 1,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 30,
+                    "funestus"  : 30,
+                    "gambiae"   : 40
+                 },
+                "Latitude": 0.01,
+                "Longitude": 0
+            }
+        },
+        {
+            "NodeID": 4,
+            "NodeAttributes": {
+                "InitialPopulation": 5,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 15,
+                    "funestus"  : 15,
+                    "gambiae"   : 20
+                 },
+                ".LarvalHabitatMultiplier": {"ALL_HABITATS": 0.5},
+                "Latitude": 0.015,
+                "Longitude": 0
+            }
+        },
+        {
+            "NodeID": 5,
+            "NodeAttributes": {
+                "InitialPopulation": 15,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 15,
+                    "funestus"  : 15,
+                    "gambiae"   : 20
+                 },
+                ".LarvalHabitatMultiplier": {"ALL_HABITATS": 0.5},
+                "Latitude": 0.02,
+                "Longitude": 0
+            }
+        },
+        {
+            "NodeID": 6,
+            "NodeAttributes": {
+                "InitialPopulation": 10,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 30,
+                    "funestus"  : 30,
+                    "gambiae"   : 40
+                 },
+                "Latitude": 0,
+                "Longitude": 0.005
+            }
+        },
+        {
+            "NodeID": 7,
+            "NodeAttributes": {
+                "InitialPopulation": 0,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 30,
+                    "funestus"  : 30,
+                    "gambiae"   : 40
+                 },
+                "Latitude": 0.005,
+                "Longitude": 0.005
+            }
+        },
+        {
+            "NodeID": 8,
+            "NodeAttributes": {
+                "InitialPopulation": 10,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 30,
+                    "funestus"  : 30,
+                    "gambiae"   : 40
+                 },
+                "Latitude": 0.01,
+                "Longitude": 0.005
+            }
+        },
+        {
+            "NodeID": 9,
+            "NodeAttributes": {
+                "InitialPopulation": 10,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 30,
+                    "funestus"  : 30,
+                    "gambiae"   : 40
+                 },
+                "Latitude": 0.015,
+                "Longitude": 0.005
+            }
+        },
+        {
+            "NodeID": 10,
+            "NodeAttributes": {
+                "InitialPopulation": 10,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 15,
+                    "funestus"  : 15,
+                    "gambiae"   : 20
+                 },
+                ".LarvalHabitatMultiplier": {"ALL_HABITATS": 0.5},
+                "Latitude": 0.02,
+                "Longitude": 0.005
+            }
+        },
+        {
+            "NodeID": 11,
+            "NodeAttributes": {
+                "InitialPopulation": 10,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 60,
+                    "funestus"  : 60,
+                    "gambiae"   : 80
+                 },
+                ".LarvalHabitatMultiplier": {"ALL_HABITATS": 5.0},
+                "Latitude": 0,
+                "Longitude": 0.01
+            }
+        },
+        {
+            "NodeID": 12,
+            "NodeAttributes": {
+                "InitialPopulation": 15,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 30,
+                    "funestus"  : 30,
+                    "gambiae"   : 40
+                 },
+                "Latitude": 0.005,
+                "Longitude": 0.01
+            }
+        },
+        {
+            "NodeID": 13,
+            "NodeAttributes": {
+                "InitialPopulation": 10,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 30,
+                    "funestus"  : 30,
+                    "gambiae"   : 40
+                 },
+                "Latitude": 0.01,
+                "Longitude": 0.01
+            }
+        },
+        {
+            "NodeID": 14,
+            "NodeAttributes": {
+                "InitialPopulation": 0,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 30,
+                    "funestus"  : 30,
+                    "gambiae"   : 40
+                 },
+                "Latitude": 0.015,
+                "Longitude": 0.01
+            }
+        },
+        {
+            "NodeID": 15,
+            "NodeAttributes": {
+                "InitialPopulation": 5,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 30,
+                    "funestus"  : 30,
+                    "gambiae"   : 40
+                 },
+                "Latitude": 0.02,
+                "Longitude": 0.01
+            }
+        },
+        {
+            "NodeID": 16,
+            "NodeAttributes": {
+                "InitialPopulation": 0,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 120,
+                    "funestus"  : 120,
+                    "gambiae"   : 160
+                 },
+                ".LarvalHabitatMultiplier": {"ALL_HABITATS": 10.0},
+                "Latitude": 0,
+                "Longitude": 0.015
+            }
+        },
+        {
+            "NodeID": 17,
+            "NodeAttributes": {
+                "InitialPopulation": 5,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 60,
+                    "funestus"  : 60,
+                    "gambiae"   : 80
+                 },
+                ".LarvalHabitatMultiplier": {"ALL_HABITATS": 5.0},
+                "Latitude": 0.005,
+                "Longitude": 0.015
+            }
+        },
+        {
+            "NodeID": 18,
+            "NodeAttributes": {
+                "InitialPopulation": 10,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 30,
+                    "funestus"  : 30,
+                    "gambiae"   : 40
+                 },
+                "Latitude": 0.01,
+                "Longitude": 0.015
+            }
+        },
+        {
+            "NodeID": 19,
+            "NodeAttributes": {
+                "InitialPopulation": 10,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 30,
+                    "funestus"  : 30,
+                    "gambiae"   : 40
+                 },
+                "Latitude": 0.015,
+                "Longitude": 0.015
+            }
+        },
+        {
+            "NodeID": 20,
+            "NodeAttributes": {
+                "InitialPopulation": 10,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 30,
+                    "funestus"  : 30,
+                    "gambiae"   : 40
+                 },
+                "Latitude": 0.02,
+                "Longitude": 0.015
+            }
+        },
+        {
+            "NodeID": 21,
+            "NodeAttributes": {
+                "InitialPopulation": 0,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 120,
+                    "funestus"  : 120,
+                    "gambiae"   : 160
+                 },
+                ".LarvalHabitatMultiplier": {"ALL_HABITATS": 10.0},
+                "Latitude": 0,
+                "Longitude": 0.02
+            }
+        },
+        {
+            "NodeID": 22,
+            "NodeAttributes": {
+                "InitialPopulation": 0,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 120,
+                    "funestus"  : 120,
+                    "gambiae"   : 160
+                 },
+                ".LarvalHabitatMultiplier": {"ALL_HABITATS": 10.0},
+                "Latitude": 0.005,
+                "Longitude": 0.02
+            }
+        },
+        {
+            "NodeID": 23,
+            "NodeAttributes": {
+                "InitialPopulation": 15,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 60,
+                    "funestus"  : 60,
+                    "gambiae"   : 80
+                 },
+                ".LarvalHabitatMultiplier": {"ALL_HABITATS": 5.0},
+                "Latitude": 0.01,
+                "Longitude": 0.02
+            }
+        },
+        {
+            "NodeID": 24,
+            "NodeAttributes": {
+                "InitialPopulation": 10,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 30,
+                    "funestus"  : 30,
+                    "gambiae"   : 40
+                 },
+                "Latitude": 0.015,
+                "Longitude": 0.02
+            }
+        },
+        {
+            "NodeID": 25,
+            "NodeAttributes": {
+                "InitialPopulation": 1,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 30,
+                    "funestus"  : 30,
+                    "gambiae"   : 40
+                 },
+                "Latitude": 0.02,
+                "Longitude": 0.02
+            }
+        },
+        {
+            "NodeID": 26,
+            "NodeAttributes": {
+                "InitialPopulation": 0,
+                "InitialVectorsPerSpecies": {
+                    "arabiensis": 300,
+                    "funestus"  : 300,
+                    "gambiae"   : 400
+                 },
+                ".LarvalHabitatMultiplier": {"ALL_HABITATS": 20.0},
+                "Latitude": 0.0,
+                "Longitude": 1.04
+            }
+        }
+    ]
+}

@@ -1,0 +1,20 @@
+{
+    "Metadata": {
+        "Author": "dbridenbecker", 
+        "NodeCount": 1, 
+        "Tool": "notepad", 
+        "IdReference": "0", 
+        "DateCreated": "2015-3-21"
+    },
+    "Defaults": {
+        "Society" : {
+            "TRANSITORY" :
+            {
+                "Pair_Formation_Parameters" :
+                {
+                    "Formation_Rate_Constant": 0.0
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,59 @@
+{
+    "Metadata": {
+        "DateCreated": "Sun Sep 25 23:19:55 2011", 
+        "Tool": "convertdemog.py", 
+        "Author": "jsteinkraus", 
+        "IdReference": "Gridded world grump2.5arcmin", 
+        "Resolution": 150,
+        "NodeCount": 1
+    }, 
+    "Nodes": [
+        {
+            "NodeID": 340461476, 
+            "NodeAttributes": {
+                "Latitude": 12.4, 
+                "Longitude": 9.1, 
+                "Altitude": 0, 
+                "Airport": 0, 
+                "Region": 1, 
+                "Seaport": 0, 
+                "InitialPopulation": 1000, 
+                "BirthRate": 0.0001263
+            }, 
+            "IndividualAttributes": {
+                "AgeDistributionFlag": 1, 
+                "AgeDistribution1": 0, 
+                "AgeDistribution2": 18250, 
+                "PrevalenceDistributionFlag": 1, 
+                "PrevalenceDistribution1": 0.1, 
+                "PrevalenceDistribution2": 0.3, 
+                "SusceptibilityDistributionFlag": 0, 
+                "SusceptibilityDistribution1": 1, 
+                "SusceptibilityDistribution2": 0, 
+                "RiskDistributionFlag": 0, 
+                "RiskDistribution1": 1, 
+                "RiskDistribution2": 0, 
+                "MigrationHeterogeneityDistributionFlag": 0, 
+                "MigrationHeterogeneityDistribution1": 1, 
+                "MigrationHeterogeneityDistribution2": 0,
+                "MortalityDistribution": {
+                    "NumDistributionAxes": 2,
+                    "AxisNames": [ "gender", "age" ],
+                    "AxisUnits": [ "male=0,female=1", "years" ],
+                    "AxisScaleFactors": [ 1, 365 ],
+                    "NumPopulationGroups": [ 2, 3 ],
+                    "PopulationGroups": [
+                        [ 0, 1 ],
+                        [ 0, 100, 2000 ]
+                    ],
+                    "ResultUnits": "annual deaths per 1000 individuals",
+                    "ResultScaleFactor": 0.00000273972602739726027397260273973,
+                    "ResultValues": [
+                        [ 20.8, 20.8, 20.8 ],
+                        [ 20.8, 20.8, 20.8 ]
+                    ]
+                }
+            }
+        }
+    ]
+}
