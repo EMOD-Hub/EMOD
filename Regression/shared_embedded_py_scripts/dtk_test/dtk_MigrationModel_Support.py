@@ -11,12 +11,6 @@ import dtk_test.dtk_sft as sft
 
 # DEVNOTE: add contact to point to input path, although we should probably interrogate the environment to get the
 # input_path passed to dtk
-if os.name == "nt":
-    INPUT_PATH = "\\\\iazdvfil05.idmhpc.azr\\IDM\\home\\IDM_Bamboo_User\\input\\MigrationSFTs"
-else:
-    INPUT_PATH = "/mnt/iazdvfil05/public/input/TIP/MigrationSFTs"
-
-# INPUT_PATH = "C:\\EMOD\\USER_input_data\\MigrationTest"
 
 KEY_TOTAL_TIMESTEPS = "Simulation_Duration"
 KEY_SIMULATION_TIMESTEP = "Simulation_Timestep"
@@ -76,16 +70,18 @@ def load_emod_parameters(config_filename="config.json"):
     :returns param_obj:     dictionary with KEY_TOTAL_TIMESTEPS, etc., keys (e.g.)
     """
     with open(config_filename) as infile:
-        cdj = json.load(infile)["parameters"]
+        config = json.load(infile)
+        cdj = config["parameters"]
     param_obj = {}
+    param_obj["input_directory"] = config["input_directory"]
     param_obj[KEY_TOTAL_TIMESTEPS] = cdj[KEY_TOTAL_TIMESTEPS]
     param_obj[KEY_SIMULATION_TIMESTEP] = cdj[KEY_SIMULATION_TIMESTEP]
     param_obj[KEY_MIGRATION_MODEL] = cdj[KEY_MIGRATION_MODEL]
     param_obj[KEY_MIGRATION_PATTERN] = cdj[KEY_MIGRATION_PATTERN]
     param_obj[KEY_DEMOGRAPHICS_FILENAMES] = cdj[KEY_DEMOGRAPHICS_FILENAMES]
     param_obj[KEY_ROUNDTRIP_WAYPOINTS] = cdj.get(KEY_ROUNDTRIP_WAYPOINTS, 0)
-    print("*** param_obj ***")
-    print(param_obj)
+    #print("*** param_obj ***")
+    #print(param_obj)
     read_migration_params(param_obj, cdj, "Local")
     read_migration_params(param_obj, cdj, "Regional")
     read_migration_params(param_obj, cdj, "Air")
@@ -308,7 +304,7 @@ def create_report_file_stationary_distribution(param_obj, node_demog_df, report_
     migration_pattern = param_obj[KEY_MIGRATION_PATTERN]
     migration_model = param_obj[KEY_MIGRATION_MODEL]
     demog_filenames = param_obj[KEY_DEMOGRAPHICS_FILENAMES]
-
+    input_path = param_obj["input_directory"]
     success = True
 
     with open(report_name, "w") as outfile:
@@ -341,7 +337,7 @@ def create_report_file_stationary_distribution(param_obj, node_demog_df, report_
                 for migration_mode in ("Local", "Regional", "Air", "Sea"):
                     if param_obj[KEY_MIGRATION_PARAM.format(migration_mode)].enable == 1:
                         outfile.write("Extracting data from {} migration...\n".format(migration_mode))
-                        migration_bin_json = read_migration_bin_json(os.path.join(INPUT_PATH, param_obj[KEY_MIGRATION_PARAM.format(migration_mode)].filename.__add__(".json")))
+                        migration_bin_json = read_migration_bin_json(os.path.join(input_path, param_obj[KEY_MIGRATION_PARAM.format(migration_mode)].filename.__add__(".json")))
                         if debug:
                             print("\tMigration bin json read: {}\n".format(str(migration_bin_json)))
                         if migration_bin_json['Metadata']['NodeCount'] != len(node_attributes):
@@ -352,7 +348,7 @@ def create_report_file_stationary_distribution(param_obj, node_demog_df, report_
                                                  len(node_attributes)))
                             success = False
 
-                        node_destination_rates = read_migration_bin(migration_mode, os.path.join(INPUT_PATH, param_obj[KEY_MIGRATION_PARAM.format(migration_mode)].filename))
+                        node_destination_rates = read_migration_bin(migration_mode, os.path.join(input_path, param_obj[KEY_MIGRATION_PARAM.format(migration_mode)].filename))
                         # DEVNOTE: ensure that node migration rate is as expected, note that if we use a generic rate validation, we should remove this check,
                         #          and add migration rate aggregation across all migration mode to get the real migration rate from Node i-> Node j
                         if debug:
@@ -531,6 +527,7 @@ def create_report_file(param_obj, node_demog_df, human_migration_df, report_name
     migration_pattern = param_obj[KEY_MIGRATION_PATTERN]
     migration_model = param_obj[KEY_MIGRATION_MODEL]
     demog_filenames = param_obj[KEY_DEMOGRAPHICS_FILENAMES]
+    input_path = param_obj["input_directory"]
 
     success = True
     with open(report_name, "w") as outfile:
@@ -566,7 +563,7 @@ def create_report_file(param_obj, node_demog_df, human_migration_df, report_name
                             human_migration_df[human_migration_df.IndividualID == individual_id].iloc[:, 0].diff()
                         """
 
-                        migration_bin_json = read_migration_bin_json(os.path.join(INPUT_PATH, param_obj[KEY_MIGRATION_PARAM.format(migration_mode)].filename.__add__(".json")))
+                        migration_bin_json = read_migration_bin_json(os.path.join(input_path, param_obj[KEY_MIGRATION_PARAM.format(migration_mode)].filename.__add__(".json")))
                         if debug:
                             print("\tMigration bin json read:")
                             print(str(migration_bin_json))
@@ -580,8 +577,8 @@ def create_report_file(param_obj, node_demog_df, human_migration_df, report_name
                                                  len(node_attributes)))
                             success = False
 
-                        outfile.write("about to read_migration_bin({}, {}) \n".format(migration_mode, os.path.join(INPUT_PATH, param_obj[KEY_MIGRATION_PARAM.format(migration_mode)].filename)))
-                        node_destination_rates = read_migration_bin(migration_mode, os.path.join(INPUT_PATH, param_obj[KEY_MIGRATION_PARAM.format(migration_mode)].filename))
+                        outfile.write("about to read_migration_bin({}, {}) \n".format(migration_mode, os.path.join(input_path, param_obj[KEY_MIGRATION_PARAM.format(migration_mode)].filename)))
+                        node_destination_rates = read_migration_bin(migration_mode, os.path.join(input_path, param_obj[KEY_MIGRATION_PARAM.format(migration_mode)].filename))
                         if debug:
                             print("\tMigration bin read:")
                             print(str(node_destination_rates))
