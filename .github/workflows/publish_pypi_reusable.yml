@@ -1,0 +1,135 @@
+name: Publish to PyPI
+
+on:
+  workflow_call:
+    inputs:
+      package_type:
+        description: 'Package type to publish (common, hiv, malaria)'
+        required: true
+        type: string
+      build_artifact_name:
+        description: 'Name of the combined build artifact produced by build_reusable.yml'
+        required: true
+        type: string
+
+jobs:
+  prepare:
+    name: Build emod-${{ inputs.package_type }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      pypi_package_name:  ${{ steps.config.outputs.pypi_package_name }}
+      dist_artifact_name: ${{ steps.config.outputs.dist_artifact_name }}
+
+    steps:
+      - name: Resolve package config
+        id: config
+        run: |
+          TYPE="${{ inputs.package_type }}"
+          echo "pypi_dir=pypi_${TYPE}"               >> $GITHUB_OUTPUT
+          echo "package_subdir=emod_${TYPE}"          >> $GITHUB_OUTPUT
+          echo "pypi_package_name=emod-${TYPE}"       >> $GITHUB_OUTPUT
+          echo "dist_artifact_name=emod-${TYPE}-dist" >> $GITHUB_OUTPUT
+
+      - name: Checkout repo
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: ${{ inputs.build_artifact_name }}
+          path: artifact/
+
+      - name: Prep files
+        run: |
+          PYPI_DIR="${{ steps.config.outputs.pypi_dir }}"
+          PKG="${{ steps.config.outputs.package_subdir }}"
+          cp    artifact/version                                      "${PYPI_DIR}/src/version"
+          zip -j "${PYPI_DIR}/src/${PKG}/Eradication.zip"            artifact/build/x64/Release/Eradication/Eradication
+          zip -j "${PYPI_DIR}/src/${PKG}/schema.zip"                 artifact/schema.json
+
+      - name: Build PyPI distribution
+        run: |
+          python3 -m pip install build
+          cd ${{ steps.config.outputs.pypi_dir }}
+          python3 -m build
+
+      - name: Upload dist artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: ${{ steps.config.outputs.dist_artifact_name }}
+          path: ${{ steps.config.outputs.pypi_dir }}/dist/
+          retention-days: 1
+
+  review:
+    name: Review emod-${{ inputs.package_type }} before publish
+    needs: prepare
+    runs-on: ubuntu-latest
+    # Requires a "pypi-review" environment configured in GitHub repo settings
+    # with required reviewers — the job pauses here until a reviewer approves.
+    environment: pypi-review
+    permissions:
+      contents: read
+
+    steps:
+      - name: Download dist artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: ${{ needs.prepare.outputs.dist_artifact_name }}
+          path: dist/
+
+      - name: Show package contents for review
+        run: |
+          echo "========================================"
+          echo "  Package: ${{ needs.prepare.outputs.pypi_package_name }}"
+          echo "  Target:  PyPI (pypi.org)"
+          echo "========================================"
+          echo ""
+          echo "=== Distribution files ==="
+          ls -lh dist/
+          echo ""
+          echo "=== Wheel contents ==="
+          for f in dist/*.whl; do
+            [ -f "$f" ] && echo "--- $(basename $f) ---" && unzip -l "$f"
+          done
+          echo ""
+          echo "=== Source tarball contents ==="
+          for f in dist/*.tar.gz; do
+            [ -f "$f" ] && echo "--- $(basename $f) ---" && tar -tzf "$f"
+          done
+          echo ""
+          echo "Approve this job in the GitHub Actions UI to proceed with publishing."
+
+  publish:
+    name: Publish emod-${{ inputs.package_type }} to PyPI
+    needs: [prepare, review]
+    runs-on: ubuntu-latest
+    # Requires a "pypi" environment configured in GitHub repo settings
+    # with a trusted publisher pointing to pypi.org
+    environment:
+      name: pypi
+      url: ${{ format('https://pypi.org/project/{0}', needs.prepare.outputs.pypi_package_name) }}
+    permissions:
+      contents: read
+      id-token: write  # mandatory for trusted publishing
+
+    steps:
+      - name: Download dist artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: ${{ needs.prepare.outputs.dist_artifact_name }}
+          path: dist/
+
+      # - name: Publish to PyPI
+      #   uses: pypa/gh-action-pypi-publish@release/v1
+      #   with:
+      #     verbose: true
+      #     packages-dir: dist/
