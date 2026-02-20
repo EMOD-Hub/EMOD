@@ -1,0 +1,218 @@
+name: Regression Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      disease_type:
+        description: 'Disease type to test (Generic, HIV, Malaria, All)'
+        required: true
+        type: choice
+        options:
+          - Generic
+          - HIV
+          - Malaria
+          - All
+        default: 'Generic'
+      regression_test_cores:
+        description: 'Number of cores to run regression tests with'
+        required: false
+        default: '4'
+      regression_test_options:
+        description: 'Additional regression_test.py command-line options'
+        required: false
+        default: '--scons --use-dlls'
+      copy_binaries:
+        description: 'Copy built Eradication, reporter_plugins, schema'
+        required: false
+        type: boolean
+        default: true
+      use_existing_build:
+        description: 'Skip build and download most recently built artifact'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  build:
+    name: Build ${{ inputs.disease_type }}
+    if: ${{ !inputs.use_existing_build }}
+    uses: ./.github/workflows/build_reusable.yml
+    with:
+      disease_type: ${{ inputs.disease_type }}
+      build_jobs: '4'
+
+  test:
+    name: Run ${{ inputs.disease_type }} Regression Tests
+    needs: build
+    if: ${{ always() && (needs.build.result == 'success' || needs.build.result == 'skipped') }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Find Latest Build Artifact
+        if: ${{ inputs.use_existing_build }}
+        id: find-artifact
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const disease = '${{ inputs.disease_type }}'.toLowerCase();
+            const artifactName = `emod-${disease}-build`;
+
+            const artifacts = await github.rest.actions.listArtifactsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: artifactName,
+              per_page: 10
+            });
+
+            const valid = artifacts.data.artifacts.filter(a => !a.expired);
+            if (valid.length === 0) {
+              core.setFailed(`No valid artifact '${artifactName}' found`);
+              return;
+            }
+
+            valid.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            const latest = valid[0];
+            core.setOutput('run-id', latest.workflow_run.id.toString());
+            core.setOutput('name', artifactName);
+            console.log(`Found '${artifactName}' from run ${latest.workflow_run.id} (${latest.created_at})`);
+
+      - name: Download Build Artifacts
+        if: ${{ !inputs.use_existing_build }}
+        uses: actions/download-artifact@v5
+        with:
+          name: ${{ needs.build.outputs.artifact_name }}
+          path: .
+
+      - name: Download Existing Build Artifacts
+        if: ${{ inputs.use_existing_build }}
+        uses: actions/download-artifact@v5
+        with:
+          name: ${{ steps.find-artifact.outputs.name }}
+          run-id: ${{ steps.find-artifact.outputs.run-id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: .
+
+      - name: Restore executable permissions
+        run: |
+          echo "Checking downloaded artifact structure..."
+          ls -la build/x64/Release/Eradication/
+          chmod +x build/x64/Release/Eradication/Eradication
+          echo "✓ Permissions restored"
+
+      - name: Determine test suite
+        id: test-suite
+        run: |
+          case "${{ inputs.disease_type }}" in
+            Generic)
+              echo "suite=generic" >> $GITHUB_OUTPUT
+              ;;
+            HIV)
+              echo "suite=generic,hiv,sti" >> $GITHUB_OUTPUT
+              ;;
+            Malaria)
+              echo "suite=generic,malaria,vector" >> $GITHUB_OUTPUT
+              ;;
+            All)
+              echo "suite=generic,hiv,malaria,sti,vector" >> $GITHUB_OUTPUT
+              ;;
+          esac
+          echo "Running test suite: $(cat $GITHUB_OUTPUT | grep suite | cut -d'=' -f2)"
+
+      - name: Run Regression Tests
+        id: regression_tests
+        continue-on-error: true
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/EMOD" \
+            docker-production.packages.idmod.org/idm/dtk-centos-sfts:3.0 \
+            bash -c "\
+              cd /EMOD && \
+              mkdir -p /EMOD/regression_test_output && \
+              echo 'Running regression tests for: ${{ steps.test-suite.outputs.suite }}' && \
+              cd Regression && \
+              python3 regression_test.py \
+                ${{ steps.test-suite.outputs.suite }} \
+                ../build/x64/Release/Eradication/Eradication \
+                --hidegraphs --config-constraints Num_Cores:${{ github.event.inputs.regression_test_cores }} \
+                ${{ github.event.inputs.regression_test_options }} \
+                --local \
+                --linux\
+            "
+
+      - name: Check Test Results
+        if: always()
+        run: |
+          echo "=== Looking for regression test reports ==="
+
+          # Find the XML report file(s)
+          REPORT_FILE=$(find Regression/reports -name "report_*.xml" 2>/dev/null | head -1)
+
+          if [ -n "$REPORT_FILE" ] && [ -f "$REPORT_FILE" ]; then
+
+            # Parse XML for failures and errors
+            FAILURES=$(grep -oP 'failures="\K[0-9]+' "$REPORT_FILE" || echo "0")
+            ERRORS=$(grep -oP 'errors="\K[0-9]+' "$REPORT_FILE" || echo "0")
+            TESTS=$(grep -oP 'tests="\K[0-9]+' "$REPORT_FILE" || echo "0")
+
+            echo "Test Summary:"
+            echo "  Total tests: $TESTS"
+            echo "  Failures: $FAILURES"
+            echo "  Errors: $ERRORS"
+            echo ""
+
+            # Fail if there are any failures or errors
+            if [ "$FAILURES" != "0" ] || [ "$ERRORS" != "0" ]; then
+              echo "❌ REGRESSION TESTS FAILED"
+              echo "   $FAILURES test(s) failed, $ERRORS error(s)"
+              echo "   Check the test results artifact for details"
+              exit 1
+            else
+              echo "✅ All $TESTS regression tests passed!"
+            fi
+          else
+            echo "⚠️  No regression report found at Regression/reports/report_*.xml"
+            echo "Test step outcome: ${{ steps.regression_tests.outcome }}"
+
+            if [ "${{ steps.regression_tests.outcome }}" != "success" ]; then
+              echo "❌ Regression tests failed to complete"
+              exit 1
+            else
+              echo "⚠️  Tests completed but no report was generated"
+              echo "This may indicate the test suite was empty or had configuration issues"
+            fi
+          fi
+
+      - name: Copy Binaries to artifacts directory
+        if: ${{ github.event.inputs.copy_binaries == 'true' }}
+        run: |
+          mkdir -p artifacts
+          cp build/x64/Release/Eradication/Eradication artifacts/
+          cp build/x64/Release/schema.json artifacts/ 2>/dev/null || cp schema.json artifacts/
+          cp build/x64/Release/version artifacts/ 2>/dev/null || cp version artifacts/
+          if [ -d "build/x64/Release/reporter_plugins" ]; then
+            cp -r build/x64/Release/reporter_plugins artifacts/
+          fi
+
+      - name: Upload Build Artifacts
+        if: ${{ github.event.inputs.copy_binaries == 'true' }}
+        uses: actions/upload-artifact@v5
+        with:
+          name: emod-${{ inputs.disease_type }}-binaries
+          path: artifacts/
+          retention-days: 7
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: emod-${{ inputs.disease_type }}-regression-test-results
+          path: |
+            regression_test_output/
+            Regression/reports/
+          retention-days: 7
+          if-no-files-found: ignore
