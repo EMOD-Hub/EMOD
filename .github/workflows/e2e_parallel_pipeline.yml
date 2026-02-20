@@ -78,8 +78,8 @@ jobs:
               python3 regression_test.py \
                 ${{ matrix.suite }} \
                 ../build/x64/Release/Eradication/Eradication \
-                --hidegraphs --config-constraints Num_Cores:${{ inputs.regression_test_cores }} \
-                ${{ inputs.regression_test_options }} \
+                --hidegraphs --config-constraints Num_Cores:${{ inputs.regression_test_cores || '4' }} \
+                ${{ inputs.regression_test_options || '--scons --use-dlls' }} \
                 --local \
                 --linux\
             "
