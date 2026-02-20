@@ -8,6 +8,7 @@ if platform == "linux" or platform == "linux2":
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import inspect
 
 from scipy.stats import binom
 from scipy.stats import binomtest
@@ -69,7 +70,7 @@ def cal_binom_ci_per_timestep(total_mother, prob_effect):
                 ci_lower.append(0)
                 ci_upper.append(0)
             else:
-                ci = binom.interval(confidence=0.95, n=total_mother[i], p=prob_effect[i])
+                ci = binom.interval(0.95, n=total_mother[i], p=prob_effect[i])
                 ci_lower.append(ci[0])
                 ci_upper.append(ci[1]+1)
         return ci_lower, ci_upper
@@ -88,7 +89,7 @@ def exact_binomial(count_success, count_trail, prob, alpha, output_report_file, 
     :return: boolean - whether count_success is within the exact alpha% CI of Bin(n = count_trail, p = prob)
     """
     success = True
-    success_interval = binom.interval(confidence=alpha, n=count_trail, p=prob)
+    success_interval = binom.interval(alpha, n=count_trail, p=prob)
     lower_bound = success_interval[0]
     upper_bound = success_interval[1]
     p_value = binomtest(count_success, count_trail, prob)
