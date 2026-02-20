@@ -190,6 +190,7 @@
         { "path": "Malaria/fpg_vs_base/90_Int-OutdoorRestKill_K-0.9" }
     ],
     "multicore": [
+        { "path": "Malaria/2_Malaria_Garki" },
         { "path": "Malaria/24_Malaria_SurveyReport_Multicore" },
         { "path": "Malaria/31_Malaria_GH426_ReportMalariaFiltered" },
         { "path": "Malaria/32_Malaria_GH434_MpiDataExchanger" },
@@ -202,9 +203,6 @@
         { "path": "Malaria/77_Malaria_SummaryReport_Multicore"},
         { "path": "Malaria/82_Malaria_Serialization_CoTransmission_Multinode" },
         { "path": "Malaria/90_Malaria_FPG_TwoMarkers_Multicore"},
-        { "path": "Malaria/95_Malaria_FPG_TwoMarkers_Multicore" },
-    ],
-    "weather_data_too_big":[
-        { "path": "Malaria/2_Malaria_Garki" },
+        { "path": "Malaria/95_Malaria_FPG_TwoMarkers_Multicore" }
     ]
 }
