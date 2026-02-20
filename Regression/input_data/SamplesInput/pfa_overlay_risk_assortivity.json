@@ -1,0 +1,66 @@
+{
+    "Metadata": {
+        "Author": "dbridenbecker", 
+        "NodeCount": 1, 
+        "Tool": "notepad", 
+        "IdReference": "0", 
+        "DateCreated": "2015-3-21"
+    },
+    "Defaults": {
+        "Society" : {
+            "TRANSITORY" :
+            {
+                "Pair_Formation_Parameters" :
+                {
+                    "Assortivity" :
+                    {
+                        "Group" : "INDIVIDUAL_PROPERTY",
+                        "Property_Name" : "Risk",
+                        "Axes" : [ "LOW", "HIGH" ],
+                        "Weighting_Matrix_RowMale_ColumnFemale" :
+                        [
+                            [ 0.2, 0.8 ],
+                            [ 0.8, 0.2]
+                        ]
+                    }
+                }
+            },
+            "INFORMAL" :
+            {
+                "Pair_Formation_Parameters" :
+                {
+                    "Formation_Rate_Constant": 0.001369863,
+                    "Assortivity" :
+                    {
+                        "Group" : "INDIVIDUAL_PROPERTY",
+                        "Property_Name" : "Risk",
+                        "Axes" : [ "LOW", "HIGH" ],
+                        "Weighting_Matrix_RowMale_ColumnFemale" :
+                        [
+                            [ 0.5, 0.5 ],
+                            [ 0.5, 0.5 ]
+                        ]
+                    }
+                }
+            },
+            "MARITAL" :
+            {
+                "Pair_Formation_Parameters" :
+                {
+                    "Formation_Rate_Constant": 0.0001826484,
+                    "Assortivity" :
+                    {
+                        "Group" : "INDIVIDUAL_PROPERTY",
+                        "Property_Name" : "Risk",
+                        "Axes" : [ "LOW", "HIGH" ],
+                        "Weighting_Matrix_RowMale_ColumnFemale" :
+                        [
+                            [ 0.8, 0.2 ],
+                            [ 0.2, 0.8 ]
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

@@ -56,7 +56,7 @@
         "Enable_Susceptibility_Scaling": 0,
         "Enable_Termination_On_Zero_Total_Infectivity": 0,
         "Enable_Timestep_Channel_In_Report": 0,
-        "Geography": "SouthAfrica",
+        "Geography": "",
         "HIV_Adult_Survival_Scale_Parameter_Intercept": 21.182,
         "HIV_Adult_Survival_Scale_Parameter_Slope": -0.2717,
         "HIV_Adult_Survival_Shape_Parameter": 2.0,

@@ -1,0 +1,11 @@
+{
+    "Metadata": {
+        "Author": "cwiswell",
+        "DatavalueCount": 30,
+        "DateCreated": "Thu Jul 18 15:02:51 2019",
+        "IdReference": "0",
+        "NodeCount": 3,
+        "Tool": "buildMigrationFiles.py"
+    },
+    "NodeOffsets": "0000000100000000000000020000016800000003000002D0"
+}

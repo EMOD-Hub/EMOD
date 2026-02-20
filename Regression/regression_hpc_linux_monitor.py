@@ -222,19 +222,7 @@ class LinuxHpcMonitor(regression_local_monitor.Monitor):
                                         self.duration = datetime.timedelta(hours=int(time_split[0]), minutes=int(time_split[1]), seconds=int(time_split[2]))
                                         break
 
-                        if self.scenario_type == 'tests':
-                            if self.params.all_outputs == False:
-                            # Following line is for InsetChart.json only
-                                self.verify(sim_dir)
-                            else:
-                                # Every .json file in output (not hidden with . prefix) will be used for validation
-                                for file in os.listdir( os.path.join( self.scenario_path, "output" ) ):
-                                    if ( file.endswith( ".json" ) or file.endswith( ".csv" ) or file.endswith( ".kml" ) or file.endswith( ".bin" ) or file.endswith( ".h5" ) or file.endswith( ".db" ) ) and file[0] != "." and file != "transitions.json" and "linux" not in file:
-                                        self.verify( sim_dir, file, "Channels" )
-                        elif self.scenario_type == 'science':   # self.report <> None:
-                            self.science_verify( self.get_sim_path() )			    
-                        elif self.scenario_type == 'pymod':   # self.report <> None:
-                            self.pymod_verify( sim_dir )
+                        self.verify_test()
 
                     break
             time.sleep(5)

@@ -72,7 +72,6 @@
     },
     "PRIMARY": {
         "Config_Name": "70_Malaria_InputEIR_Enable_Immunity_Distribution_disabled",
-        "Geography": "Zambia",
         "Run_Number": 1,
         "Simulation_Duration": 3650
     },

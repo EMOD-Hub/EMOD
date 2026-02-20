@@ -66,8 +66,7 @@
     "PRIMARY": {
         "Run_Number": 1, 
         "Simulation_Duration": 2190, 
-        "Config_Name": "78_Malaria_Different_InputEIR", 
-        "Geography": "Zambia"
+        "Config_Name": "78_Malaria_Different_InputEIR"
     }, 
     "MOSQUITO": {
         "Vector_Species_Params": []

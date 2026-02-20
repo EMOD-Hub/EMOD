@@ -10,7 +10,6 @@
             "property_demographics.json"
         ],
         "Enable_Natural_Mortality": 0,
-        "Geography": "SouthAfrica",
         "Individual_Sampling_Type": "FIXED_SAMPLING",
         "Custom_Individual_Events": [
             "Reduced_Acquire_Lowest",

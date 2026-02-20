@@ -1,0 +1,59 @@
+{
+     "Metadata": {
+          "DateCreated": "Sun Sep 25 23:12:50 2011", 
+          "Tool": "convertdemog.py", 
+          "Author": "jsteinkraus", 
+          "IdReference": "Gridded world grump2.5arcmin", 
+          "Resolution": 150,
+          "NodeCount": 1
+     }, 
+     "Nodes": [
+          {
+               "NodeID": 344066036, 
+               "NodeAttributes": {
+                    "Latitude": -5.17270, 
+                    "Longitude": 38.78818, 
+                    "Altitude": 0, 
+                    "Airport": 0, 
+                    "Region": 1, 
+                    "Seaport": 0, 
+                    "InitialPopulation": 1000, 
+                    "BirthRate": 0.0001
+               }, 
+               "IndividualAttributes": {
+                    "AgeDistributionFlag": 3, 
+                    "AgeDistribution1": 0.000118, 
+                    "AgeDistribution2": 0, 
+                    "PrevalenceDistributionFlag": 1, 
+                    "PrevalenceDistribution1": 0.1, 
+                    "PrevalenceDistribution2": 0.2, 
+                    "SusceptibilityDistributionFlag": 0, 
+                    "SusceptibilityDistribution1": 1, 
+                    "SusceptibilityDistribution2": 0, 
+                    "RiskDistributionFlag": 0, 
+                    "RiskDistribution1": 1, 
+                    "RiskDistribution2": 0, 
+                    "MigrationHeterogeneityDistributionFlag": 0, 
+                    "MigrationHeterogeneityDistribution1": 1, 
+                    "MigrationHeterogeneityDistribution2": 0,
+			    "MortalityDistribution": {
+                    "NumDistributionAxes": 2,
+                    "AxisNames": [ "gender", "age" ],
+                    "AxisUnits": [ "male=0,female=1", "years" ],
+                    "AxisScaleFactors": [ 1, 365 ],
+                    "NumPopulationGroups": [ 2, 3 ],
+                    "PopulationGroups": [
+                        [ 0, 1 ],
+                        [ 0, 100, 2000 ]
+                    ],
+                    "ResultUnits": "annual deaths per 1000 individuals",
+                    "ResultScaleFactor": 0.00000273972602739726027397260273973,
+                    "ResultValues": [
+                        [ 0, 20.0000035, 400.00007 ],
+                        [ 0, 20.0000035, 400.00007 ]
+                    ]
+                }
+               }
+          }
+     ]
+}

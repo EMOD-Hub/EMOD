@@ -53,7 +53,6 @@
         "Enable_Timestep_Channel_In_Report": 0,
         "Extra_Relational_Rate_Ratio_Female": 1,
         "Extra_Relational_Rate_Ratio_Male": 1,
-        "Geography": "SouthAfrica",
         "HIV_Adult_Survival_Scale_Parameter_Intercept": 21.182,
         "HIV_Adult_Survival_Scale_Parameter_Slope": -0.2717,
         "HIV_Adult_Survival_Shape_Parameter": 2.0,

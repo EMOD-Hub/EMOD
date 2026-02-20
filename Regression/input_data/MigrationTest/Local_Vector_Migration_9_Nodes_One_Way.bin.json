@@ -1,0 +1,12 @@
+{
+    "Metadata": {
+        "Author": "dbridenbecker", 
+        "Tool": "convert_txt_to_bin.py", 
+        "IdReference": "9-nodes", 
+        "DatavalueCount": 8, 
+        "DateCreated": "Thu Jun 22 10:31:46 2017", 
+        "NodeCount": 9, 
+        "MigrationType": "LOCAL_MIGRATION"
+    }, 
+    "NodeOffsets": "0000000100000000000000020000006000000003000000C00000000400000120000000050000018000000006000001E0000000070000024000000008000002A00000000900000300"
+}

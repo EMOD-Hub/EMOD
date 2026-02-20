@@ -1,0 +1,14 @@
+{
+    "Metadata": {
+        "DateCreated": "Thu Dec  3 10:57:59 2015", 
+        "Tool": "convert_json_to_bin.py", 
+        "IdReference": "MigrationTest", 
+        "NodeCount": 9, 
+        "DatavalueCount": 6,
+        "MigrationType": "REGIONAL_MIGRATION", 
+        "GenderDataType": "SAME_FOR_BOTH_GENDERS", 
+        "InterpolationType": "PIECEWISE_CONSTANT", 
+        "AgesYears": [ 0.0, 40.0, 80.0 ]
+    }, 
+    "NodeOffsets": "00000001000000000000000200000048000000030000009000000004000000D80000000500000120000000060000016800000007000001B000000008000001F80000000900000240"
+}

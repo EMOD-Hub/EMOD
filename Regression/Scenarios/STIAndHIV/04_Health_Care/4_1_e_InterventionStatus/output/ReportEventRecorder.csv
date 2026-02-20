@@ -79,8 +79,8 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 30.4167,1960.08,1,PropertyChange,40,7981.1,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 30.4167,1960.08,1,Loop_Entry_InitialPopulation,41,3326.04,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 30.4167,1960.08,1,PropertyChange,41,3326.04,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
-30.4167,1960.08,1,Loop_Entry_InitialPopulation,42,6838.6,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
-30.4167,1960.08,1,PropertyChange,42,6838.6,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
+30.4167,1960.08,1,Loop_Entry_InitialPopulation,42,6838.59,M,0,0,N,N,1e+06,-1,NOT_INFECTED,None
+30.4167,1960.08,1,PropertyChange,42,6838.59,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 30.4167,1960.08,1,Loop_Entry_InitialPopulation,43,9291.84,F,0,0,N,N,1e+06,-1,NOT_INFECTED,None
 30.4167,1960.08,1,PropertyChange,43,9291.84,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 30.4167,1960.08,1,Loop_Entry_InitialPopulation,44,11683.3,F,0,0,N,N,1e+06,-1,NOT_INFECTED,None
@@ -425,7 +425,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 395.417,1961.08,1,Done_Waiting,79,5905.88,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 395.417,1961.08,1,Done_Waiting,80,28175.4,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 395.417,1961.08,1,Done_Waiting,81,2961.9,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
-395.417,1961.08,1,Done_Waiting,82,9665.13,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
+395.417,1961.08,1,Done_Waiting,82,9665.12,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 395.417,1961.08,1,Done_Waiting,83,11912.7,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 395.417,1961.08,1,Done_Waiting,84,13451.1,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 395.417,1961.08,1,Done_Waiting,85,2786.68,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
@@ -515,7 +515,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 395.417,1961.08,1,Done_Waiting,169,12136.6,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 395.417,1961.08,1,Done_Waiting,170,23347.6,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 395.417,1961.08,1,Done_Waiting,171,13361.8,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
-395.417,1961.08,1,Done_Waiting,172,8917.85,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
+395.417,1961.08,1,Done_Waiting,172,8917.86,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 395.417,1961.08,1,Done_Waiting,173,23023.3,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 395.417,1961.08,1,Done_Waiting,174,634.973,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 760.417,1962.08,1,Done_Waiting,2,12519.6,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
@@ -622,7 +622,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 760.417,1962.08,1,Done_Waiting,103,2761.23,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 760.417,1962.08,1,Done_Waiting,104,11969.9,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 760.417,1962.08,1,Done_Waiting,105,9591.98,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
-760.417,1962.08,1,Done_Waiting,106,9724.84,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
+760.417,1962.08,1,Done_Waiting,106,9724.83,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 760.417,1962.08,1,Done_Waiting,107,2402.74,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 760.417,1962.08,1,Done_Waiting,108,4360.65,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 760.417,1962.08,1,Done_Waiting,109,7845.15,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
@@ -648,7 +648,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 760.417,1962.08,1,Done_Waiting,129,934.867,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 760.417,1962.08,1,Done_Waiting,130,9784.01,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 760.417,1962.08,1,Done_Waiting,131,34371.2,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
-760.417,1962.08,1,Done_Waiting,132,6302.06,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
+760.417,1962.08,1,Done_Waiting,132,6302.07,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 760.417,1962.08,1,Done_Waiting,133,8295.34,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 760.417,1962.08,1,Done_Waiting,134,24030.7,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 760.417,1962.08,1,Done_Waiting,135,8676.44,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
@@ -685,7 +685,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 760.417,1962.08,1,Done_Waiting,166,23139.5,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 760.417,1962.08,1,Done_Waiting,167,1158.74,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 760.417,1962.08,1,Done_Waiting,168,964.602,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
-760.417,1962.08,1,Done_Waiting,169,12501.6,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
+760.417,1962.08,1,Done_Waiting,169,12501.7,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 760.417,1962.08,1,Done_Waiting,170,23712.6,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 760.417,1962.08,1,Done_Waiting,171,13726.8,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 760.417,1962.08,1,Done_Waiting,172,9282.86,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
@@ -919,9 +919,9 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 1125.42,1963.08,1,Done_Waiting,77,10725.6,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 1125.42,1963.08,1,PropertyChange,77,10725.6,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Abort_Infinite_Loop
 1125.42,1963.08,1,Infinite_Loop_Should_Be_Aborted_Now,77,10725.6,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Abort_Infinite_Loop
-1125.42,1963.08,1,Done_Waiting,78,6812.36,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
-1125.42,1963.08,1,PropertyChange,78,6812.36,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Abort_Infinite_Loop
-1125.42,1963.08,1,Infinite_Loop_Should_Be_Aborted_Now,78,6812.36,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Abort_Infinite_Loop
+1125.42,1963.08,1,Done_Waiting,78,6812.37,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
+1125.42,1963.08,1,PropertyChange,78,6812.37,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Abort_Infinite_Loop
+1125.42,1963.08,1,Infinite_Loop_Should_Be_Aborted_Now,78,6812.37,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Abort_Infinite_Loop
 1125.42,1963.08,1,Done_Waiting,79,6635.88,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Infinite_Loop
 1125.42,1963.08,1,PropertyChange,79,6635.88,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Abort_Infinite_Loop
 1125.42,1963.08,1,Infinite_Loop_Should_Be_Aborted_Now,79,6635.88,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Abort_Infinite_Loop
@@ -1272,7 +1272,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 1155.83,1963.17,1,InterventionDisqualified,61,9592.34,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Abort_Infinite_Loop
 1155.83,1963.17,1,InterventionDisqualified,62,11497.9,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Abort_Infinite_Loop
 1155.83,1963.17,1,InterventionDisqualified,63,7855.66,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Abort_Infinite_Loop
-1155.83,1963.17,1,InterventionDisqualified,64,39706.6,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Abort_Infinite_Loop
+1155.83,1963.17,1,InterventionDisqualified,64,39706.5,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Abort_Infinite_Loop
 1155.83,1963.17,1,InterventionDisqualified,65,11660.4,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Abort_Infinite_Loop
 1155.83,1963.17,1,InterventionDisqualified,66,31366,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Abort_Infinite_Loop
 1155.83,1963.17,1,InterventionDisqualified,67,16997.3,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Abort_Infinite_Loop
@@ -1296,7 +1296,7 @@ Time,Year,Node_ID,Event_Name,Individual_ID,Age,Gender,Infected,Infectiousness,Ha
 1155.83,1963.17,1,InterventionDisqualified,85,3547.1,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Abort_Infinite_Loop
 1155.83,1963.17,1,InterventionDisqualified,86,24589.6,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Abort_Infinite_Loop
 1155.83,1963.17,1,InterventionDisqualified,87,1495.89,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Abort_Infinite_Loop
-1155.83,1963.17,1,InterventionDisqualified,88,7419.09,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Abort_Infinite_Loop
+1155.83,1963.17,1,InterventionDisqualified,88,7419.08,F,0,0,N,N,1e+06,-1,NOT_INFECTED,Abort_Infinite_Loop
 1155.83,1963.17,1,InterventionDisqualified,89,12473.8,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Abort_Infinite_Loop
 1155.83,1963.17,1,InterventionDisqualified,90,2394.33,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Abort_Infinite_Loop
 1155.83,1963.17,1,InterventionDisqualified,91,4156.42,M,0,0,N,N,1e+06,-1,NOT_INFECTED,Abort_Infinite_Loop
