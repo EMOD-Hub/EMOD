@@ -1,10 +1,12 @@
 #!/usr/bin/python
 import os
+
 if __name__ == '__main__':
     from pathlib import Path
     import sys
+
     os.chdir(str(Path(sys.argv[0]).parent))
-    sys.path.append( str(Path('../../../../shared_embedded_py_scripts').resolve().absolute()) )
+    sys.path.append(str(Path('../../../../shared_embedded_py_scripts').resolve().absolute()))
 
 import dtk_test.dtk_sft as dtk_sft
 import dtk_test.dtk_ARTMortalityTable_Support as amt_s
@@ -25,12 +27,11 @@ Output: scientific_feature_report.txt
         survival_durations_onART_ARTDuraiton-0.png
         survival_durations_onART_ARTDuraiton-4005.png
         survival_durations_onART_ARTDuraiton-8004.png
-        
+
 """
 
 
 def create_report_file(event_df, config_filename, event_report_name, report_name):
-
     succeed = True
     messages = []
     with open(report_name, 'w') as output_report_file:
@@ -42,9 +43,9 @@ def create_report_file(event_df, config_filename, event_report_name, report_name
         campaign_object = amt_s.load_campaign_ART(campaign_filename)
         if len(campaign_object) != 3:
             messages.append(f"BAD: {len(campaign_object)} {amt_s.Campaign.ARTMortalityTable} and "
-                                     f"{amt_s.Campaign.ART} intervention(s) in the {campaign_filename}, expected 2 "
-                                     f"{amt_s.Campaign.ARTMortalityTable} and {amt_s.Campaign.ART} intervention, "
-                                     f"please check the test.\n")
+                            f"{amt_s.Campaign.ART} intervention(s) in the {campaign_filename}, expected 2 "
+                            f"{amt_s.Campaign.ARTMortalityTable} and {amt_s.Campaign.ART} intervention, "
+                            f"please check the test.\n")
 
         # parse campaign object
         art_start_days, art_duration_days_bins, art_mortality_table, art_mortality_table_start_day = \
@@ -53,14 +54,15 @@ def create_report_file(event_df, config_filename, event_report_name, report_name
         # make sure ARTMortalityTable doesn't stop ART
         if not event_df[event_df[amt_s.EventReport.event_name] == amt_s.EventReport.stopped_art].empty:
             messages.append(f"BAD: {amt_s.Campaign.ARTMortalityTable} should not stop the ART intervention. "
-                                     f"there are {amt_s.EventReport.stopped_art} events broadcast in "
-                                     f"{event_report_name}.\n")
+                            f"there are {amt_s.EventReport.stopped_art} events broadcast in "
+                            f"{event_report_name}.\n")
         else:
             messages.append(f"GOOD: {amt_s.Campaign.ARTMortalityTable} does not stop the ART intervention.\n")
 
         # load ip overlay file
         ip_name, ip_values = amt_s.load_ip_group(dtk_sft.get_config_parameter(config_filename,
-                                                                        amt_s.ConfigParam.demographics_filenames)[0][-1])
+                                                                              amt_s.ConfigParam.demographics_filenames)[
+                                                     0][-1])
 
         # make sure ARTMortalityTable doesn't restart ART
         amt_s.check_ART_start_event(event_df, ip_name, art_start_days, base_year, event_report_name, messages)
@@ -72,16 +74,16 @@ def create_report_file(event_df, config_filename, event_report_name, report_name
                               (event_df[amt_s.EventReport.event_name] == amt_s.EventReport.death)]
 
         for ip_value in ip_values:
-            ip_group = ip_name+"-"+ip_value
+            ip_group = ip_name + "-" + ip_value
             start_day = art_start_days[ip_group] if ip_group in art_start_days else art_mortality_table_start_day
 
             art_duration = art_mortality_table_start_day - start_day
             # filter by property group
-            ip_df = df_to_test[event_df[ip_name] == ip_value]
+            ip_df = df_to_test[df_to_test[ip_name] == ip_value]
 
             # calculate survival duration
             ip_df[amt_s.EventReport.survival_duration] = ip_df[amt_s.EventReport.year] - base_year - \
-                                                   art_mortality_table_start_day / dtk_sft.DAYS_IN_YEAR
+                                                         art_mortality_table_start_day / dtk_sft.DAYS_IN_YEAR
             duration_to_test = ip_df[amt_s.EventReport.survival_duration].tolist()
 
             # get rate and max_duration_current_bin
@@ -121,7 +123,7 @@ def application(output_folder="output", stdout_filename="test.txt",
                 report_name=dtk_sft.sft_output_filename,
                 debug=False):
     if debug:
-        print("output_folder: " + output_folder+ "\n")
+        print("output_folder: " + output_folder + "\n")
         print("stdout_filename: " + stdout_filename + "\n")
         print("event_report_name: " + event_report_name + "\n")
         print("config_filename: " + config_filename + "\n")
@@ -132,7 +134,7 @@ def application(output_folder="output", stdout_filename="test.txt",
 
     event_df = ReportEventRecorder(os.path.join(output_folder, event_report_name)).df
 
-    create_report_file(event_df,  config_filename, event_report_name, report_name)
+    create_report_file(event_df, config_filename, event_report_name, report_name)
 
 
 if __name__ == "__main__":

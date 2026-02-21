@@ -137,10 +137,10 @@ def create_report_file(param_obj, campaign_obj, stdout_df, property_df, property
                     ))
 
                 # calculate expected new infection for test group
-                susceptible_population = population_test.iloc[t][0] - infected_test.iloc[t][0]
+                susceptible_population = population_test.iloc[t, 0] - infected_test.iloc[t,0]
                 expected_new_infection = susceptible_population * calculated_prob
                 expected_new_infection_list.append(expected_new_infection)
-                actual_new_infection = new_infection_test.iloc[t + 1][0]
+                actual_new_infection = new_infection_test.iloc[t + 1, 0]
                 with open("DEBUG_binomial_test_{}.txt".format(test_group), 'w') as file:
                     if expected_new_infection < 5 or susceptible_population * (1 - calculated_prob) < 5:
                         binom_pmf = stats.binom.pmf(k=actual_new_infection, n=susceptible_population, p=calculated_prob)

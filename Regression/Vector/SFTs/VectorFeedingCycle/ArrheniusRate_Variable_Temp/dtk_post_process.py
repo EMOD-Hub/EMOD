@@ -41,7 +41,8 @@ def parse_output_file(stdout, debug=False):
 
     """
     time = 0
-    gonothropic_df = pd.DataFrame(columns='Time Temperature Duration Timer'.split())
+
+    data_rows = []
     with open(stdout) as logfile:
         for line in logfile:
             if "Time: " in line:
@@ -50,10 +51,10 @@ def parse_output_file(stdout, debug=False):
                 temperature_k = float(sft.get_val("days at ", line)) + 273.15
                 duration_in_days = float(sft.get_val("gonotrophic cycle duration = ", line))
                 timer = int(sft.get_val("timer set to ", line))
-                gonothropic_df = gonothropic_df.append({'Time': time, 'Temperature': temperature_k,
-                                                        'Duration': duration_in_days, 'Timer': timer},
-                                                       ignore_index=True)
+                data_rows.append({'Time': time, 'Temperature': temperature_k,
+                                                        'Duration': duration_in_days, 'Timer': timer})
 
+    gonothropic_df = pd.DataFrame(data=data_rows, columns='Time Temperature Duration Timer'.split())
     if debug:
         with open("DEBUG_filtered_lines.txt", "w") as debug_file:
             debug_file.write(str(gonothropic_df))

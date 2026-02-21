@@ -222,7 +222,7 @@ def parse_ReportNodeDemographics_output(output_filename="output/ReportNodeDemogr
     return node_demog
 
 
-def parse_output_files(node_demog_csv="output\\ReportNodeDemographics.csv", human_migration_csv="otuput\\ReportHumanMigrationTracking.csv" ,debug=False):
+def parse_output_files(node_demog_csv=r"output\ReportNodeDemographics.csv", human_migration_csv=r"output\ReportHumanMigrationTracking.csv" ,debug=False):
     """
     creates a dataframe of time step and infected,  infectiouness and stat populations
     :param node_demog_csv:  dtk custom output file ReportNodeDemographics.csv to parse
@@ -375,19 +375,20 @@ def create_report_file_stationary_distribution(param_obj, node_demog_df, report_
 
                 max_time = node_demog_df['Time'].max()
                 last_node_demog = node_demog_df[node_demog_df['Time']==max_time]
-                groupby_node = last_node_demog.groupby(['NodeID'])
-                groupby_node.aggregate({'NumIndividuals': ['sum']})
-                total_population = sum(last_node_demog['NumIndividuals'])
+                node_populations = last_node_demog.groupby('NodeID')['NumIndividuals'].sum()
+                total_population = last_node_demog['NumIndividuals'].sum()
 
                 for source_node_id in (migration_bin_json['DecodedNodeOffsets'].keys()):
                     outfile.write('\tProcessing node {}.....\n '.format(source_node_id))
-                    actual_population = sum(groupby_node.get_group(source_node_id)['NumIndividuals'])
+                    actual_population = 0
+                    if source_node_id in node_populations.index:
+                        actual_population = node_populations[source_node_id]
+                    else:
+                        outfile.write(f"Node {source_node_id} not found.\n")
                     expected_population = total_population * stationary_dist[source_node_id-1]
                     if debug:
-                        outfile.write('\tactual population:{}, expected population:{}\n'.format(actual_population,
-                                                                                      expected_population))
                         print('\tactual population:{}, expected population:{}\n'.format(actual_population,
-                                                                                      expected_population))
+                                                                                    expected_population))
                     tolerance = 0.03
                     if not np.isclose(actual_population, expected_population, rtol=tolerance):
                         outfile.write('\t\t!!! Bad actual population {}, calculated at node {}, expected {}\n'.format(
@@ -398,7 +399,7 @@ def create_report_file_stationary_distribution(param_obj, node_demog_df, report_
                             source_node_id, actual_population, expected_population))
 
             else:
-                print("!!! Stationary Distribution validation only work with Random walk, {} was given\n".format(migration_pattern))
+                outfile.write("!!! Stationary Distribution validation only work with Random walk, {} was given\n".format(migration_pattern))
                 success = False
 
         outfile.write(sft.format_success_msg(success))
@@ -603,7 +604,7 @@ def create_report_file(param_obj, node_demog_df, human_migration_df, report_name
 
                                 for t in range(1, simulation_duration):
                                     outfile.write("\t\tvalidating for time {}\n".format(t))
-                                    node_population_time_t = sum(node_demog_df.groupby(['Time', 'NodeID']).get_group((t, source_node_id)).NumIndividuals)
+                                    node_population_time_t = node_demog_df.groupby(['Time', 'NodeID']).get_group((t, source_node_id)).NumIndividuals.sum()
                                     if debug:
                                         print("node_population_time_t ={}".format(node_population_time_t))
                                         print(node_demog_df.groupby(['Time', 'NodeID']).get_group((t, source_node_id)))

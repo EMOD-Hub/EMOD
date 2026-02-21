@@ -349,7 +349,7 @@ def create_report_file(expected_infections_obj, actual_new_infections,
                               outbreak_day, actual_new_infections,
                               min_expected, max_expected))
         outfile.write(sft.format_success_msg(success))
-    sft.plot_data_unsorted(actual_new_infections, mean_expected,
+    sft.plot_data(actual_new_infections, mean_expected,
                            label1= "Actual", label2 = "Expected",
                            ylabel="new infection", xlabel="red: actual data, blue: expected data",
                            title = "Actual new infection vs. expected new infection",

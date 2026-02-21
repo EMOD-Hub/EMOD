@@ -51,7 +51,7 @@ class HIVTransmission():
         self.results = {} 
 
     def binom_test(self, success, fail, prob_success, alpha):
-        p_val = sps.binom_test( [success,fail], p=prob_success)
+        p_val = sps.binomtest( [success,fail], p=prob_success)
         return {'Valid': p_val >= alpha, 'P_Value': p_val}
 
     def map(self, output_data):
@@ -78,7 +78,7 @@ class HIVTransmission():
         #for rid in [rel_uids[2]]:
         for rid in rel_uids:
             if self.verbose:
-                print "Rel_ID: " + str(rid)
+                print("Rel_ID: " + str(rid))
 
             # Choose rows corresponding to this relationship
             rid_rows = [r for r in rows if r[colMap['Rel_ID']] == str(rid)]
@@ -93,19 +93,19 @@ class HIVTransmission():
                 , None)
 
             infected = [ ( \
-                    bool(float(r[colMap['A_Is_Infected']])), \
+                    bool(float(r[colMap['A_Is_Infected']])),
                     bool(float(r[colMap['B_Is_Infected']])) \
                 ) for r in rid_rows]
 
             if self.verbose:
-                print 'Infected: '
-                print infected
+                print('Infected: ')
+                print(infected)
 
             discordant = [a ^ b for (a,b) in infected]
 
             if self.verbose:
-                print 'Discordant: '
-                print discordant
+                print('Discordant: ')
+                print(discordant)
 
             try:
                 first_discordant = discordant.index(True)
@@ -113,12 +113,12 @@ class HIVTransmission():
                 continue    # rel is never discordant
 
             if self.verbose:
-                print 'First discordant: ' + str(first_discordant)
+                print('First discordant: ' + str(first_discordant))
 
             concordant_pos = [a and b for (a,b) in infected]
             if self.verbose:
-                print 'Concordant Pos: '
-                print concordant_pos
+                print('Concordant Pos: ')
+                print(concordant_pos)
 
             n_discordant_acts = None
             transmission = False
@@ -129,7 +129,7 @@ class HIVTransmission():
                 transmission = True
             except ValueError:
                 if self.verbose:
-                    print "Rel is discordant, but no transmission"
+                    print("Rel is discordant, but no transmission")
                 first_concordant_pos = None
                 # No transmission even after n_discordant_acts
                 n_discordant_acts = sum(discordant)
@@ -150,7 +150,8 @@ class HIVTransmission():
 
                 transmission_this_dt = trans_time is not None and float(rid_time_rows[0][colMap['Time']]) == trans_time
                 if self.verbose:
-                    print "Time: " + str(t) + ", Acts this DT: " + str(len(rid_time_rows)) + ", Transmission this DT: " + str(transmission_this_dt)
+                    print("Time: " + str(t) + ", Acts this DT: " + str(
+                        len(rid_time_rows)) + ", Transmission this DT: " + str(transmission_this_dt))
 
                 meta_vec = []
 
@@ -162,7 +163,7 @@ class HIVTransmission():
                     b_inf = bool(float(r[colMap['B_Is_Infected']]))
 
                     if (a_inf and b_inf) or (not a_inf and not b_inf):
-                        print "ERROR: Somehow encountered a concordant act?"
+                        print("ERROR: Somehow encountered a concordant act?")
 
                     # Base
                     prob_per_act = Base_Infectivity
@@ -266,7 +267,7 @@ class HIVTransmission():
             my_items = [ (key,val) for (key,val) in p.emit_data.items() if key[0] == id(self) ]
 
             if self.verbose:
-                print my_items
+                print(my_items)
 
             for (key, val) in my_items:
                 tup = key[1]
@@ -284,14 +285,16 @@ class HIVTransmission():
             n = float(val[YES]+val[NO])
             prob_per_act = meta.prob_per_act
             self.results[tup] = self.binom_test( val[YES], val[NO], prob_per_act, self.alpha)
-            print "For prob %f, observed %f of %f --> %f, p=%f, [ %s ]" % (prob_per_act, val[YES], n, val[YES]/n, self.results[tup]["P_Value"], yes_no[ self.results[tup]['Valid'] ] )
-            print '\t' + str(meta)
+            print("For prob %f, observed %f of %f --> %f, p=%f, [ %s ]" % (prob_per_act, val[YES], n, val[YES] / n,
+                                                                           self.results[tup]["P_Value"],
+                                                                           yes_no[self.results[tup]['Valid']]))
+            print('\t' + str(meta))
 
     def finalize(self):
         each_valid = [y['Valid'] for y in [ self.results[x] for x in self.results]]
 
         if self.verbose:
-            print each_valid
+            print(each_valid)
 
         all_valid = all( each_valid )
 

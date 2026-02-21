@@ -116,9 +116,9 @@ def create_report_file(param_obj, campaign_obj, stdout_df, property_df, property
                 failed_count = 0
                 for t in range(duration - 1):
                     # calculate infectivity
-                    # infectivity = base_infectivity * infected.iloc[t][0] / population.iloc[t][0]
+                    # infectivity = base_infectivity * infected.iloc[t, 0] / population.iloc[t, 0]
                     # normalized with total population
-                    infectivity = base_infectivity * infected.iloc[t][0] / stat_pop[t]
+                    infectivity = base_infectivity * infected.iloc[t, 0] / stat_pop[t]
 
                     # calculate contagion
                     calculated_contagion = infectivity * transmission_matrix[property_values.index(group)][
@@ -151,10 +151,10 @@ def create_report_file(param_obj, campaign_obj, stdout_df, property_df, property
                         ))
 
                     # calculate expected new infection for this group
-                    susceptible_population = population.iloc[t][0] - infected.iloc[t][0]
+                    susceptible_population = population.iloc[t, 0] - infected.iloc[t, 0]
                     expected_new_infection = susceptible_population * calculated_prob
                     expected_new_infection_list.append(expected_new_infection)
-                    actual_new_infection = new_infection.iloc[t + 1][0]
+                    actual_new_infection = new_infection.iloc[t + 1, 0]
                     with open("DEBUG_binomial_test_{}.txt".format(group), 'w') as file:
                         if expected_new_infection < 5 or susceptible_population * (1 - calculated_prob) < 5:
                             binom_pmf = stats.binom.pmf(k=actual_new_infection, n=susceptible_population, p=calculated_prob)

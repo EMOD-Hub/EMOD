@@ -120,8 +120,11 @@ def test_discrete_duration_get_death_proportion(infection_to_death_durations, ch
 
     output_report_file.write("Statistical testing:\n")
     # Using AD k sample test.
-    result = stats.anderson_ksamp([infection_to_death_durations, expected_durations])
-    p_value = result.significance_level
+    result = stats.anderson_ksamp(samples=[infection_to_death_durations, expected_durations])
+    if hasattr(result, "pvalue"): # SciPy > v1.17
+        p_value = result.pvalue
+    else:
+        p_value = result.significance_level
     s = result.statistic
     msg = f"anderson_ksamp() with scale = {child_slow_scale_day} and shape = {child_slow_shape} return p value = " \
         f"{p_value} and statistic = {s}.\n"
@@ -171,7 +174,10 @@ def test_ferrand_weibull_continuous(infection_to_death_durations, child_slow_sca
     output_report_file.write("Statistical testing:\n")
     # Using AD k sample test.
     result = stats.anderson_ksamp([infection_to_death_durations, expected_duration])
-    p_value = result.significance_level
+    if hasattr(result, "pvalue"): # SciPy > v1.17
+        p_value = result.pvalue
+    else:
+        p_value = result.significance_level
     s = result.statistic
     msg = f"anderson_ksamp() with scale = {child_slow_scale_day} and shape = {child_slow_shape} return p value = " \
         f"{p_value} and statistic = {s}.\n"

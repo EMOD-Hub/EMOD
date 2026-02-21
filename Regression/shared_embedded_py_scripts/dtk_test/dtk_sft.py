@@ -354,7 +354,7 @@ def calc_cdf(dist, num_bin=20):
     step = float(max_num - min_num) / num_bin
     bin_range = np.arange(min_num, max_num + step, step)
     # Use the histogram function to bin the data
-    counts, bin_edges = np.histogram(dist, bins=bin_range, normed=True)
+    counts, bin_edges = np.histogram(dist, bins=bin_range, density=True)
     # Now find the cdf
     cdf = np.cumsum(counts)
     max_p = float(max(cdf))
@@ -424,52 +424,6 @@ def check_for_plotting():
         return True
     else:
         return False
-
-
-def plot_data_unsorted(dist1, dist2=None, label1="test data 1", label2="test data 2", title=None, xlabel=None, ylabel=None,
-              category='plot_data_unsorted', show=True, line=False, alpha=1, overlap=False):
-    """
-    -----------------------------------------------------
-    This function plot the data of one\two distributions
-            :param dist1:
-            :param dist1:
-            :param title:
-            :param xlabel:
-            :param ylabel:
-            :return:
-    -----------------------------------------------------
-    """
-    exception = "plot_data_unsorted is deprecated, please use plot_data() with sort argument instead."
-    warnings.warn(exception, FutureWarning)
-
-    if not check_for_plotting():
-        show = False
-
-    plot_data(dist1=dist1, dist2=dist2, label1=label1, label2=label2, title=title,
-                  xlabel=xlabel, ylabel=ylabel, category=category, show=show, line=line,alpha=alpha, overlap=overlap, sort=False)
-
-def plot_data_sorted(dist1, dist2=None, label1="test data 1", label2="test data 2", title=None, xlabel=None, ylabel=None,
-              category='plot_data_sorted', show=True, line=False, alpha=1, overlap=False):
-    """
-    -----------------------------------------------------
-    This function sort and plot the data of one\two distributions
-            :param dist1:
-            :param dist1:
-            :param title:
-            :param xlabel:
-            :param ylabel:
-            :return:
-    -----------------------------------------------------
-    """
-    exception = "plot_data_sorted is deprecated, please use plot_data() with sort argument instead."
-    warnings.warn(exception, FutureWarning)
-
-    if not check_for_plotting():
-        show = False
-
-    plot_data(dist1=dist1, dist2=dist2, label1=label1, label2=label2, title=title, xlabel=xlabel, ylabel=ylabel,
-              category=category, show=show, line=line,alpha=alpha, overlap=overlap, sort=True)
-
 
 def plot_scatter_fit_line(dist1, dist2=None, label1="test data 1", label2=None, title=None,
                           xlabel=None, ylabel=None, xmin=None, xmax=None, ymin=None, ymax=None,
@@ -1145,7 +1099,10 @@ def test_exponential(dist, p1, report_file=None, integers=False, roundup=False, 
             dist_exponential_np = [round_down(x, 0) for x in dist_exponential_np]
 
         result = stats.anderson_ksamp([dist, dist_exponential_np])
-        p = result.significance_level
+        if hasattr(result, "pvalue"):  # SciPy > v1.17
+            p= result.pvalue
+        else:
+            p = result.significance_level
         s = result.statistic
     else:
         # loc = 0
@@ -1253,7 +1210,10 @@ def test_weibull(dist, p1, p2, report_file=None, round=False, integer=False):
             else:
                 dist_weibull_scipy2.append(round_to_n_digit(n, 7))
         result = stats.anderson_ksamp([dist, dist_weibull_scipy2])
-        p = result.significance_level
+        if hasattr(result, "pvalue"):  # SciPy > v1.17
+            p = result.pvalue
+        else:
+            p = result.significance_level
         s = result.statistic
     else:
         # update to use one sample ks test with weibull cdf function.
@@ -1378,7 +1338,7 @@ def round_to_n_digit(x, n):
 
 
 def get_val(key, line):
-    regex = key + "(\d*\.*\d*)"
+    regex = key + r"(\d*\.*\d*)"
     match = re.search(regex, line)
     if match is not None:
         return match.group(1)
@@ -1440,7 +1400,7 @@ def has_match(target, matches):
 
 
 def get_char(key, line):
-    regex = key + "(\w*\d*\w*\d*)"
+    regex = key + r"(\w*\d*\w*\d*)"
     match = re.search(regex, line)
     if match != None:
         return match.group(1)
@@ -1679,11 +1639,11 @@ def three_plots(dist1, cdf_function=None, args=(), dist2=None,
         axarr[0].set_ylabel(ylabel)
 
     # 2nd plot: density plot
-    sns.distplot(dist1, ax=axarr[1], color=color1, vertical=True, label=label1)
+    sns.histplot(dist1, kde=True, ax=axarr[1], color=color1, label=label1)
     if dist2 is not None:  # "if dist2:" will not work with numpy.ndarray
-        sns.distplot(dist2, ax=axarr[1], color=color2, vertical=True, label=label2)
+        sns.histplot(dist2, kde=True, ax=axarr[1], color=color2, label=label2)
     axarr[1].set_xlabel("Probability")
-    axarr[1].set_title("distplot")
+    axarr[1].set_title("histplot")
     axarr[1].set_ylim(axarr[0].get_ylim())
 
     # 3rd plot: cdf plot

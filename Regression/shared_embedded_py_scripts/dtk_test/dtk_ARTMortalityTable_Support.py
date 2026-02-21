@@ -221,9 +221,7 @@ def prepare_df_to_test_by_cd4(event_df, start_day, base_year):
     ax = fig.add_axes([0.12, 0.15, 0.76, 0.76])
     for cd4_bin in cd4_bins:
         df = df_to_test[df_to_test[EventReport.cd4_bin] == cd4_bin]
-        # sns.distplot(df[EventReport.survival_duration], ax=ax, label=cd4_bin, hist_kws=dict(cumulative=True),
-        #              kde_kws=dict(cumulative=True))
-        sns.distplot(df[EventReport.survival_duration], ax=ax, label=cd4_bin)
+        sns.histplot(df[EventReport.survival_duration], kde=True, ax=ax, label=cd4_bin)
     ax.set_title("PDF of Survival Duration per CD4 Bin")
     ax.set_ylabel("Probability")
     ax.set_xlabel("Survival Duration(Years)")
@@ -389,7 +387,10 @@ def test_survival_time_on_age(df_to_test, age_bins, age_years_bins, mortality_ta
                 dist_expon_scipy = [x for x in dist_expon_scipy if x < simulation_duration_year * 1.1]
 
             result = stats.anderson_ksamp([duration_to_test, dist_expon_scipy])
-            p_value = result.significance_level
+            if hasattr(result, "pvalue"):  # SciPy > v1.17
+                p_value = result.pvalue
+            else:
+                p_value = result.significance_level
             s = result.statistic
             msg = f"anderson_ksamp() with rate = {rate}(per year) return p value = " \
                 f"{p_value} and statistic = {s}.\n"
@@ -551,7 +552,7 @@ def test_survival_time_on_duration(duration_to_test, dist_expon_scipy, rate, mes
     p_value = dtk_sft.get_p_s_from_ksresult(result)['p']
     s = dtk_sft.get_p_s_from_ksresult(result)['s']
     # result = stats.anderson_ksamp([duration_to_test, dist_expon_scipy])
-    # p_value = result.significance_level
+    # p_value = result.pvalue
     # s = result.statistic
     msg = f"ks_2samp() with rate = {rate}(per year) return p value = " \
         f"{p_value} and statistic = {s}.\n"

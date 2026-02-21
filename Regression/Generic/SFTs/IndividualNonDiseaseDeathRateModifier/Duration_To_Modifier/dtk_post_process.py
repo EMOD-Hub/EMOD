@@ -115,7 +115,7 @@ class DurationToModifierTest(INDDRMTest):
 
     @staticmethod
     def plot_modifier(modifier):
-        dtk_sft.plot_data_unsorted(modifier, dist2=None, label1="Death Rate Modifier", label2=None,
+        dtk_sft.plot_data(modifier, dist2=None, label1="Death Rate Modifier", label2=None,
                                    title='Death Rate Modifier during the simulation',
                                    xlabel='Time step', ylabel="Modifier",
                                    category='Death_Rate_Modifier', show=True, line=True, alpha=0.8,
@@ -123,7 +123,7 @@ class DurationToModifierTest(INDDRMTest):
 
     @staticmethod
     def plot_death_rate(death_rate):
-        dtk_sft.plot_data_unsorted(death_rate, dist2=None, label1="Death Rate applied with Modifier", label2=None,
+        dtk_sft.plot_data(death_rate, dist2=None, label1="Death Rate applied with Modifier", label2=None,
                                    title='Actual Death Rate during the simulation',
                                    xlabel='Time step', ylabel="Death Rate",
                                    category='Actual_Death_Rate', show=True, line=True, alpha=0.8,
@@ -180,7 +180,7 @@ class DurationToModifierTest(INDDRMTest):
                     ci_lower.append(0)
                     ci_upper.append(0)
                 else:
-                    ci = binom.interval(alpha=0.95, n=total_pop[i], p=death_rate[i])
+                    ci = binom.interval(confidence=0.95, n=total_pop[i], p=death_rate[i])
                     ci_lower.append(ci[0])
                     ci_upper.append(ci[1] + 1)
         return ci_lower, ci_upper
