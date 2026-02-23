@@ -91,39 +91,62 @@ jobs:
       disease_type: 'All'
       build_jobs: '4'
 
+  setup:
+    name: Configure Matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Build suite matrix
+        id: set-matrix
+        run: |
+          includes='[]'
+          if [ "${{ inputs.run_airborne_science }}" = "true" ]; then
+            includes=$(echo "$includes" | jq '. += [{"name":"Airborne Science","suite":"airborne_science"}]')
+          fi
+          if [ "${{ inputs.run_dengue_science }}" = "true" ]; then
+            includes=$(echo "$includes" | jq '. += [{"name":"Dengue Science","suite":"dengue_science"}]')
+          fi
+          if [ "${{ inputs.run_environmental_science }}" = "true" ]; then
+            includes=$(echo "$includes" | jq '. += [{"name":"Environmental Science","suite":"environmental_science"}]')
+          fi
+          if [ "${{ inputs.run_generic_science }}" = "true" ]; then
+            includes=$(echo "$includes" | jq '. += [{"name":"Generic Science","suite":"generic_science"}]')
+          fi
+          if [ "${{ inputs.run_hiv_science }}" = "true" ]; then
+            includes=$(echo "$includes" | jq '. += [{"name":"HIV Science","suite":"hiv_science"}]')
+          fi
+          if [ "${{ inputs.run_malaria_science }}" = "true" ]; then
+            includes=$(echo "$includes" | jq '. += [{"name":"Malaria Science","suite":"malaria_science"}]')
+          fi
+          if [ "${{ inputs.run_polio_science }}" = "true" ]; then
+            includes=$(echo "$includes" | jq '. += [{"name":"Polio Science","suite":"polio_science"}]')
+          fi
+          if [ "${{ inputs.run_py_science }}" = "true" ]; then
+            includes=$(echo "$includes" | jq '. += [{"name":"Py Science","suite":"py_science"}]')
+          fi
+          if [ "${{ inputs.run_sti_science }}" = "true" ]; then
+            includes=$(echo "$includes" | jq '. += [{"name":"STI Science","suite":"sti_science"}]')
+          fi
+          if [ "${{ inputs.run_tbhiv_science }}" = "true" ]; then
+            includes=$(echo "$includes" | jq '. += [{"name":"TBHIV Science","suite":"tbhiv_science"}]')
+          fi
+          if [ "${{ inputs.run_typhoid_science }}" = "true" ]; then
+            includes=$(echo "$includes" | jq '. += [{"name":"Typhoid Science","suite":"typhoid_science"}]')
+          fi
+          if [ "${{ inputs.run_vector_science }}" = "true" ]; then
+            includes=$(echo "$includes" | jq '. += [{"name":"Vector Science","suite":"vector_science"}]')
+          fi
+          echo "matrix=$(echo "$includes" | jq -c '{include: .}')" >> $GITHUB_OUTPUT
+
   test:
     name: Test - ${{ matrix.name }}
-    needs: build
-    if: always() && (needs.build.result == 'success' || needs.build.result == 'skipped') && ((matrix.suite == 'airborne_science' && inputs.run_airborne_science) || (matrix.suite == 'dengue_science' && inputs.run_dengue_science) || (matrix.suite == 'environmental_science' && inputs.run_environmental_science) || (matrix.suite == 'generic_science' && inputs.run_generic_science) || (matrix.suite == 'hiv_science' && inputs.run_hiv_science) || (matrix.suite == 'malaria_science' && inputs.run_malaria_science) || (matrix.suite == 'polio_science' && inputs.run_polio_science) || (matrix.suite == 'py_science' && inputs.run_py_science) || (matrix.suite == 'sti_science' && inputs.run_sti_science) || (matrix.suite == 'tbhiv_science' && inputs.run_tbhiv_science) || (matrix.suite == 'typhoid_science' && inputs.run_typhoid_science) || (matrix.suite == 'vector_science' && inputs.run_vector_science))
+    needs: [build, setup]
+    if: ${{ always() && (needs.build.result == 'success' || needs.build.result == 'skipped') && needs.setup.result == 'success' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          - name: Airborne Science
-            suite: airborne_science
-          - name: Dengue Science
-            suite: dengue_science
-          - name: Environmental Science
-            suite: environmental_science
-          - name: Generic Science
-            suite: generic_science
-          - name: HIV Science
-            suite: hiv_science
-          - name: Malaria Science
-            suite: malaria_science
-          - name: Polio Science
-            suite: polio_science
-          - name: Py Science
-            suite: py_science
-          - name: STI Science
-            suite: sti_science
-          - name: TBHIV Science
-            suite: tbhiv_science
-          - name: Typhoid Science
-            suite: typhoid_science
-          - name: Vector Science
-            suite: vector_science
+      matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
 
     steps:
       - name: Checkout repository
