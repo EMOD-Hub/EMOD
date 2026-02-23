@@ -56,25 +56,41 @@ jobs:
       disease_type: 'All'
       build_jobs: '4'
 
+  setup:
+    name: Configure Matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Build suite matrix
+        id: set-matrix
+        run: |
+          includes='[]'
+          if [ "${{ inputs.run_generic }}" = "true" ]; then
+            includes=$(echo "$includes" | jq '. += [{"name":"Generic","suite":"generic"}]')
+          fi
+          if [ "${{ inputs.run_hiv }}" = "true" ]; then
+            includes=$(echo "$includes" | jq '. += [{"name":"HIV","suite":"hiv"}]')
+          fi
+          if [ "${{ inputs.run_malaria }}" = "true" ]; then
+            includes=$(echo "$includes" | jq '. += [{"name":"Malaria","suite":"malaria"}]')
+          fi
+          if [ "${{ inputs.run_sti }}" = "true" ]; then
+            includes=$(echo "$includes" | jq '. += [{"name":"STI","suite":"sti"}]')
+          fi
+          if [ "${{ inputs.run_vector }}" = "true" ]; then
+            includes=$(echo "$includes" | jq '. += [{"name":"Vector","suite":"vector"}]')
+          fi
+          echo "matrix=$(echo "$includes" | jq -c '{include: .}')" >> $GITHUB_OUTPUT
+
   test:
     name: Test - ${{ matrix.name }}
-    needs: build
-    if: always() && (needs.build.result == 'success' || needs.build.result == 'skipped') && ((matrix.suite == 'generic' && inputs.run_generic) || (matrix.suite == 'hiv' && inputs.run_hiv) || (matrix.suite == 'malaria' && inputs.run_malaria) || (matrix.suite == 'sti' && inputs.run_sti) || (matrix.suite == 'vector' && inputs.run_vector))
+    needs: [build, setup]
+    if: ${{ always() && (needs.build.result == 'success' || needs.build.result == 'skipped') && needs.setup.result == 'success' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          - name: Generic
-            suite: generic
-          - name: HIV
-            suite: hiv
-          - name: Malaria
-            suite: malaria
-          - name: STI
-            suite: sti
-          - name: Vector
-            suite: vector
+      matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
 
     steps:
       - name: Checkout repository
