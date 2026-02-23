@@ -1,4 +1,4 @@
-name: Regression Tests
+name: Science Feature Tests
 
 on:
   workflow_dispatch:
@@ -16,11 +16,6 @@ on:
         required: false
         type: boolean
         default: true
-      use_existing_build:
-        description: 'Skip build and download most recently built artifact'
-        required: false
-        type: boolean
-        default: false
       run_airborne_science:
         description: 'Run Airborne Science suite'
         required: false
@@ -85,11 +80,11 @@ on:
 jobs:
   build:
     name: Build
-    if: ${{ !inputs.use_existing_build }}
     uses: ./.github/workflows/build_reusable.yml
     with:
       disease_type: 'All'
       build_jobs: '4'
+      extra_build_flags: '--TestSugar'
 
   setup:
     name: Configure Matrix
@@ -142,7 +137,7 @@ jobs:
   test:
     name: Test - ${{ matrix.name }}
     needs: [build, setup]
-    if: ${{ always() && (needs.build.result == 'success' || needs.build.result == 'skipped') && needs.setup.result == 'success' }}
+    if: ${{ always() && needs.build.result == 'success' && needs.setup.result == 'success' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -154,47 +149,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Find Latest Build Artifact
-        if: ${{ inputs.use_existing_build }}
-        id: find-artifact
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const artifactName = 'emod-all-build';
-
-            const artifacts = await github.rest.actions.listArtifactsForRepo({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              name: artifactName,
-              per_page: 10
-            });
-
-            const valid = artifacts.data.artifacts.filter(a => !a.expired);
-            if (valid.length === 0) {
-              core.setFailed(`No valid artifact '${artifactName}' found`);
-              return;
-            }
-
-            valid.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-            const latest = valid[0];
-            core.setOutput('run-id', latest.workflow_run.id.toString());
-            core.setOutput('name', artifactName);
-            console.log(`Found '${artifactName}' from run ${latest.workflow_run.id} (${latest.created_at})`);
-
       - name: Download Build Artifacts
-        if: ${{ !inputs.use_existing_build }}
         uses: actions/download-artifact@v5
         with:
           name: ${{ needs.build.outputs.artifact_name }}
-          path: .
-
-      - name: Download Existing Build Artifacts
-        if: ${{ inputs.use_existing_build }}
-        uses: actions/download-artifact@v5
-        with:
-          name: ${{ steps.find-artifact.outputs.name }}
-          run-id: ${{ steps.find-artifact.outputs.run-id }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           path: .
 
       - name: Restore executable permissions

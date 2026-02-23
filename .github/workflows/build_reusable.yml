@@ -12,6 +12,11 @@ on:
         required: false
         type: string
         default: '4'
+      extra_build_flags:
+        description: 'Additional SCons build flags (e.g. --TestSugar)'
+        required: false
+        type: string
+        default: ''
     outputs:
       artifact_name:
         description: 'Name of the uploaded build artifact'
@@ -51,7 +56,7 @@ jobs:
               python3 --version && \
               python3 -m pip list && \
               echo 'Building EMOD with SCons for ${{ inputs.disease_type }} disease type' && \
-              scons ${DISEASE_FLAG} --Release --jobs=${{ inputs.build_jobs }} && \
+              scons ${DISEASE_FLAG} --Release --jobs=${{ inputs.build_jobs }} ${{ inputs.extra_build_flags }} && \
               strip build/x64/Release/Eradication/Eradication && \
               ./build/x64/Release/Eradication/Eradication --get-schema --schema-path schema.json && \
               grep DTK_Version schema.json | sed 's/[^0-9.]//g' > version && \
