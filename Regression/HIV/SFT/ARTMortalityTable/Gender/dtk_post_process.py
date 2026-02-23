@@ -121,7 +121,10 @@ def create_report_file( event_df, config_filename, report_name):
             # reporting precision for year in csv report is 2 decimal places.
             dist_expon_scipy = [dtk_sft.round_up(x, 2) for x in dist_expon_scipy]
             result = stats.anderson_ksamp([duration_to_test, dist_expon_scipy])
-            p_value = result.significance_level
+            if hasattr(result, "pvalue"):  # SciPy > v1.17
+                p_value = result.pvalue
+            else:
+                p_value = result.significance_level
             s = result.statistic
             msg = f"anderson_ksamp() with rate = {rate}(per year) return p value = " \
                 f"{p_value} and statistic = {s}.\n"

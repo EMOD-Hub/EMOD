@@ -50,8 +50,8 @@ def plot_age_distribution(event_startART_df, df_to_test):
     axarr[0, 1].set_title("age tested")
     axarr[0, 1].set_xlabel("data points")
 
-    sns.distplot(event_startART_df[amt_s.EventReport.age], ax=axarr[1, 0])
-    sns.distplot(df_to_test[amt_s.EventReport.age], ax=axarr[1, 1])
+    sns.histplot(event_startART_df[amt_s.EventReport.age], kde=True, ax=axarr[1, 0])
+    sns.histplot(df_to_test[amt_s.EventReport.age], kde=True, ax=axarr[1, 1])
     axarr[1, 0].set_ylabel("Probability")
 
     fig.suptitle('Age Distribution')

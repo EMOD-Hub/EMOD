@@ -88,7 +88,7 @@ class InsetChartTest(SFT):
                 self.success = False
         self.write_result(fail_count, Channels.births, Channels.newPregnancies)
 
-        dtk_sft.plot_data_unsorted(new_births, predict_new_births, label1="new births", label2="new pregnancies(off_set 280 days)",
+        dtk_sft.plot_data(new_births, predict_new_births, label1="new births", label2="new pregnancies(off_set 280 days)",
                                    title='New births vs. new pregnancies(off_set 280 days)', xlabel='time step', ylabel='count',
                                    category='New_births_vs_new_pregnancies', show=True, line=False, alpha=1, overlap=False)
 
@@ -103,7 +103,7 @@ class InsetChartTest(SFT):
                 fail_count.append(i)
         self.write_result(fail_count, Channels.currentlyPregnant, [Channels.newPregnancies, Channels.births])
 
-        dtk_sft.plot_data_unsorted(currently_pregnancies, expected_currently_pregnancies, label1="currently_pregnancies",
+        dtk_sft.plot_data(currently_pregnancies, expected_currently_pregnancies, label1="currently_pregnancies",
                                    label2="pre_cur + new_pregnancies - new births",
                                    title='currently_pregnancies vs. expected_currently_pregnancies',
                                    xlabel='time step', ylabel='pregnancies',
@@ -117,7 +117,7 @@ class InsetChartTest(SFT):
             self.success = False
         else:
             self.msg.append(f"GOOD: {Channels.possibleMothers} remains the same value during the whole simulations.\n")
-        dtk_sft.plot_data_unsorted(possible_mothers, dist2=None,
+        dtk_sft.plot_data(possible_mothers, dist2=None,
                                    label1="possible_mothers",
                                    label2=None,
                                    title='possible_mothers',
