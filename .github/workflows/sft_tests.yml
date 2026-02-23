@@ -15,7 +15,7 @@ on:
         description: 'Copy built Eradication, reporter_plugins, schema'
         required: false
         type: boolean
-        default: true
+        default: false
       run_generic_science:
         description: 'Run Generic Science suite'
         required: false

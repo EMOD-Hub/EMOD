@@ -15,7 +15,7 @@ on:
         description: 'Copy built Eradication, reporter_plugins, schema'
         required: false
         type: boolean
-        default: true
+        default: false
       use_existing_build:
         description: 'Skip build and download most recently built artifact'
         required: false

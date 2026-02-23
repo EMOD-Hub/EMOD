@@ -8,10 +8,11 @@
 | Regression Tests | `regression_tests.yml` | `workflow_dispatch` |
 | Science Feature Tests | `sft_tests.yml` | `workflow_dispatch` |
 | Build EMOD (Reusable) | `build_reusable.yml` | Called by other workflows |
+| Publish to PyPI (Reusable) | `publish_pypi_reusable.yml` | Called by E2E pipeline |
 
 ---
 
-## E2E Parallel Pipeline (`e2e_parallel_pipeline.yml`)
+## Build, Test and Publish (E2E) Pipeline (`e2e_parallel_pipeline.yml`)
 
 The primary integration pipeline. Runs automatically on every push to `main` and can also be triggered manually.
 
@@ -69,6 +70,53 @@ Runs only when all test jobs succeed, and only when:
 
 ---
 
+## Publishing to PyPI (`publish_pypi_reusable.yml`)
+
+Called by the E2E pipeline's `publish-pypi` job in parallel for three packages: `emod-common`, `emod-hiv`, and `emod-malaria`. Not triggered directly.
+
+### Jobs
+
+```
+prepare  ──►  review (manual approval)  ──►  publish
+```
+
+### prepare
+
+Builds the Python distribution for a given package type:
+
+1. Resolves paths and names from the `package_type` input (`common`, `hiv`, or `malaria`)
+2. Downloads the `emod-all-build` artifact
+3. Packages `Eradication` and `schema.json` into zip files inside the appropriate `pypi_<type>/src/emod_<type>/` directory
+4. Runs `python3 -m build` to produce a wheel and source tarball
+5. Uploads the `dist/` output as `emod-<type>-dist` (retained 1 day)
+
+### review
+
+> **Manual approval required.** This job pauses and waits for a reviewer to approve before proceeding.
+
+The job runs in the `pypi-review` GitHub environment, which must be configured in the repository settings with one or more required reviewers. When the job runs, it prints the distribution file listing and the full contents of the wheel and source tarball to the job log so reviewers can inspect what will be published before approving.
+
+To approve: navigate to the workflow run in the GitHub Actions UI, find the paused `review` job, and click **Approve**.
+
+> If no reviewer approves within the environment's configured timeout, the job (and the subsequent `publish` job) will be cancelled automatically.
+
+### publish
+
+Runs in the `pypi` GitHub environment, which must be configured with a trusted publisher pointing to `pypi.org`. Uses OIDC (`id-token: write`) for keyless authentication — no stored PyPI API token is required.
+
+Downloads the `emod-<type>-dist` artifact and publishes it using `pypa/gh-action-pypi-publish`. On success, the workflow links directly to the package at `https://pypi.org/project/emod-<type>`.
+
+### Required Repository Configuration
+
+Before the PyPI publish flow will work, two GitHub environments must exist in the repository settings (**Settings → Environments**):
+
+| Environment | Purpose | Required configuration |
+|---|---|---|
+| `pypi-review` | Gates publication behind human approval | Add required reviewers |
+| `pypi` | Authorises upload to PyPI | Add a trusted publisher for this repo/workflow |
+
+---
+
 ## Regression Tests (`regression_tests.yml`)
 
 Manual workflow for running regression test suites against a fresh or existing build. Supports running any subset of suites in parallel.
@@ -100,7 +148,7 @@ A `setup` job dynamically builds the matrix from the boolean suite inputs. Only 
 |---|---|---|
 | `regression_test_cores` | `4` | Cores passed via `--config-constraints Num_Cores` |
 | `regression_test_options` | `--scons --use-dlls` | Extra flags passed to `regression_test.py` |
-| `copy_binaries` | `true` | Copies `Eradication`, `reporter_plugins`, `schema.json`, `version` to a per-suite artifact |
+| `copy_binaries` | `false` | Copies `Eradication`, `reporter_plugins`, `schema.json`, `version` to a per-suite artifact |
 | `use_existing_build` | `false` | Skip the build job and reuse the most recent `emod-all-build` artifact |
 | `run_generic` | `true` | Include Generic suite |
 | `run_hiv` | `true` | Include HIV suite |
@@ -148,7 +196,7 @@ Same dynamic matrix pattern as the regression pipeline. Only suites with their i
 |---|---|---|
 | `regression_test_cores` | `4` | Cores passed via `--config-constraints Num_Cores` |
 | `regression_test_options` | `--scons --use-dlls` | Extra flags passed to `regression_test.py` |
-| `copy_binaries` | `true` | Copies binaries to a per-suite artifact |
+| `copy_binaries` | `false` | Copies binaries to a per-suite artifact |
 | `run_generic_science` | `true` | Include Generic Science suite |
 | `run_hiv_science` | `true` | Include HIV Science suite |
 | `run_malaria_science` | `true` | Include Malaria Science suite |
