@@ -21,6 +21,31 @@ on:
         required: false
         type: boolean
         default: false
+      run_generic:
+        description: 'Run Generic suite'
+        required: false
+        type: boolean
+        default: true
+      run_hiv:
+        description: 'Run HIV suite'
+        required: false
+        type: boolean
+        default: true
+      run_malaria:
+        description: 'Run Malaria suite'
+        required: false
+        type: boolean
+        default: true
+      run_sti:
+        description: 'Run STI suite'
+        required: false
+        type: boolean
+        default: true
+      run_vector:
+        description: 'Run Vector suite'
+        required: false
+        type: boolean
+        default: true
 
 jobs:
   build:
@@ -34,7 +59,7 @@ jobs:
   test:
     name: Test - ${{ matrix.name }}
     needs: build
-    if: ${{ always() && (needs.build.result == 'success' || needs.build.result == 'skipped') }}
+    if: always() && (needs.build.result == 'success' || needs.build.result == 'skipped') && ((matrix.suite == 'generic' && inputs.run_generic) || (matrix.suite == 'hiv' && inputs.run_hiv) || (matrix.suite == 'malaria' && inputs.run_malaria) || (matrix.suite == 'sti' && inputs.run_sti) || (matrix.suite == 'vector' && inputs.run_vector))
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
