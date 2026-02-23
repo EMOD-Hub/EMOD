@@ -46,28 +46,8 @@ on:
         required: false
         type: boolean
         default: true
-      run_polio_science:
-        description: 'Run Polio Science suite'
-        required: false
-        type: boolean
-        default: true
-      run_py_science:
-        description: 'Run Py Science suite'
-        required: false
-        type: boolean
-        default: true
       run_sti_science:
         description: 'Run STI Science suite'
-        required: false
-        type: boolean
-        default: true
-      run_tbhiv_science:
-        description: 'Run TBHIV Science suite'
-        required: false
-        type: boolean
-        default: true
-      run_typhoid_science:
-        description: 'Run Typhoid Science suite'
         required: false
         type: boolean
         default: true
@@ -114,20 +94,8 @@ jobs:
           if [ "${{ inputs.run_malaria_science }}" = "true" ]; then
             includes=$(echo "$includes" | jq '. += [{"name":"Malaria Science","suite":"malaria_science"}]')
           fi
-          if [ "${{ inputs.run_polio_science }}" = "true" ]; then
-            includes=$(echo "$includes" | jq '. += [{"name":"Polio Science","suite":"polio_science"}]')
-          fi
-          if [ "${{ inputs.run_py_science }}" = "true" ]; then
-            includes=$(echo "$includes" | jq '. += [{"name":"Py Science","suite":"py_science"}]')
-          fi
           if [ "${{ inputs.run_sti_science }}" = "true" ]; then
             includes=$(echo "$includes" | jq '. += [{"name":"STI Science","suite":"sti_science"}]')
-          fi
-          if [ "${{ inputs.run_tbhiv_science }}" = "true" ]; then
-            includes=$(echo "$includes" | jq '. += [{"name":"TBHIV Science","suite":"tbhiv_science"}]')
-          fi
-          if [ "${{ inputs.run_typhoid_science }}" = "true" ]; then
-            includes=$(echo "$includes" | jq '. += [{"name":"Typhoid Science","suite":"typhoid_science"}]')
           fi
           if [ "${{ inputs.run_vector_science }}" = "true" ]; then
             includes=$(echo "$includes" | jq '. += [{"name":"Vector Science","suite":"vector_science"}]')
