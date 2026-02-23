@@ -130,7 +130,7 @@ jobs:
   publish:
     name: Publish Artifacts
     needs: [build, test]
-    if: ${{ inputs.publish_artifacts && success() }}
+    if: ${{ (inputs.publish_artifacts || github.event_name == 'push') && success() }}
     runs-on: ubuntu-latest
 
     steps:
@@ -155,7 +155,7 @@ jobs:
   publish-pypi:
     name: Publish emod-${{ matrix.package_type }} to PyPI
     needs: [build, test]
-    if: ${{ inputs.publish_artifacts && success() }}
+    if: ${{ (inputs.publish_artifacts || github.event_name == 'push') && success() }}
     strategy:
       fail-fast: false
       matrix:
