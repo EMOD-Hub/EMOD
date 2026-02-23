@@ -1,4 +1,4 @@
-name: Build EMOD (Reusable)
+name: Build EMOD
 
 on:
   workflow_call:

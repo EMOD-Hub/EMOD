@@ -16,21 +16,6 @@ on:
         required: false
         type: boolean
         default: true
-      run_airborne_science:
-        description: 'Run Airborne Science suite'
-        required: false
-        type: boolean
-        default: true
-      run_dengue_science:
-        description: 'Run Dengue Science suite'
-        required: false
-        type: boolean
-        default: true
-      run_environmental_science:
-        description: 'Run Environmental Science suite'
-        required: false
-        type: boolean
-        default: true
       run_generic_science:
         description: 'Run Generic Science suite'
         required: false
@@ -76,15 +61,6 @@ jobs:
         id: set-matrix
         run: |
           includes='[]'
-          if [ "${{ inputs.run_airborne_science }}" = "true" ]; then
-            includes=$(echo "$includes" | jq '. += [{"name":"Airborne Science","suite":"airborne_science"}]')
-          fi
-          if [ "${{ inputs.run_dengue_science }}" = "true" ]; then
-            includes=$(echo "$includes" | jq '. += [{"name":"Dengue Science","suite":"dengue_science"}]')
-          fi
-          if [ "${{ inputs.run_environmental_science }}" = "true" ]; then
-            includes=$(echo "$includes" | jq '. += [{"name":"Environmental Science","suite":"environmental_science"}]')
-          fi
           if [ "${{ inputs.run_generic_science }}" = "true" ]; then
             includes=$(echo "$includes" | jq '. += [{"name":"Generic Science","suite":"generic_science"}]')
           fi
