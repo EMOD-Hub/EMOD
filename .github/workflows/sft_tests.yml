@@ -40,16 +40,30 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: Generic
-            suite: generic
-          - name: HIV
-            suite: hiv
-          - name: Malaria
-            suite: malaria
-          - name: STI
-            suite: sti
-          - name: Vector
-            suite: vector
+          - name: Airborne Science
+            suite: airborne_science
+          - name: Dengue Science
+            suite: dengue_science
+          - name: Environmental Science
+            suite: environmental_science
+          - name: Generic Science
+            suite: generic_science
+          - name: HIV Science
+            suite: hiv_science
+          - name: Malaria Science
+            suite: malaria_science
+          - name: Polio Science
+            suite: polio_science
+          - name: Py Science
+            suite: py_science
+          - name: STI Science
+            suite: sti_science
+          - name: TBHIV Science
+            suite: tbhiv_science
+          - name: Typhoid Science
+            suite: typhoid_science
+          - name: Vector Science
+            suite: vector_science
 
     steps:
       - name: Checkout repository
