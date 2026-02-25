@@ -3,12 +3,12 @@ name: Science Feature Tests
 on:
   workflow_dispatch:
     inputs:
-      regression_test_cores:
-        description: 'Number of cores to run regression tests with'
+      sft_test_cores:
+        description: 'Number of cores to run SFT tests with'
         required: false
         default: '4'
-      regression_test_options:
-        description: 'Additional regression_test.py command-line options'
+      sft_test_options:
+        description: 'Additional SFT test command-line options'
         required: false
         default: '--scons --use-dlls'
       copy_binaries:
@@ -106,8 +106,8 @@ jobs:
           chmod +x build/x64/Release/Eradication/Eradication
           echo "✓ Permissions restored"
 
-      - name: Run Regression Tests
-        id: regression_tests
+      - name: Run SFT Tests
+        id: sft_tests
         continue-on-error: true
         run: |
           docker run --rm \
@@ -115,14 +115,14 @@ jobs:
             docker-production.packages.idmod.org/idm/dtk-centos-sfts:3.0 \
             bash -c "\
               cd /EMOD && \
-              mkdir -p /EMOD/regression_test_output && \
-              echo 'Running ${{ matrix.name }} regression tests' && \
-              cd Regression && \
+              mkdir -p /EMOD/sft_test_output && \
+              echo 'Running ${{ matrix.name }} SFT tests' && \
+              cd SFT && \
               python3 regression_test.py \
                 ${{ matrix.suite }} \
                 ../build/x64/Release/Eradication/Eradication \
-                --hidegraphs --config-constraints Num_Cores:${{ inputs.regression_test_cores || '4' }} \
-                ${{ inputs.regression_test_options || '--scons --use-dlls' }} \
+                --hidegraphs --config-constraints Num_Cores:${{ inputs.sft_test_cores }} \
+                ${{ inputs.sft_test_options }} \
                 --local \
                 --linux\
             "

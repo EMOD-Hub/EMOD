@@ -2,8 +2,6 @@ name: Build, Test and Publish Pipeline
 
 on:
   push:
-    branches:
-      - main
   workflow_dispatch:
     inputs:
       regression_test_cores:
@@ -13,7 +11,7 @@ on:
       regression_test_options:
         description: 'Additional regression_test.py command-line options'
         required: false
-        default: '--scons --use-dlls'
+        default: '--all-outputs --scons --use-dlls'
       publish_artifacts:
         description: 'Publish final artifacts (tarball + PyPI)'
         required: false
@@ -78,8 +76,8 @@ jobs:
               python3 regression_test.py \
                 ${{ matrix.suite }} \
                 ../build/x64/Release/Eradication/Eradication \
-                --hidegraphs --config-constraints Num_Cores:${{ inputs.regression_test_cores || '4' }} \
-                ${{ inputs.regression_test_options || '--scons --use-dlls' }} \
+                --hidegraphs --config-constraints Num_Cores:${{ inputs.regression_test_cores }} \
+                ${{ inputs.regression_test_options }} \
                 --local \
                 --linux\
             "
@@ -130,7 +128,7 @@ jobs:
   publish:
     name: Publish Artifacts
     needs: [build, test]
-    if: ${{ (inputs.publish_artifacts || github.event_name == 'push') && success() }}
+    if: ${{ inputs.publish_artifacts && success() }}
     runs-on: ubuntu-latest
 
     steps:
@@ -155,7 +153,7 @@ jobs:
   publish-pypi:
     name: Publish emod-${{ matrix.package_type }} to PyPI
     needs: [build, test]
-    if: ${{ (inputs.publish_artifacts || github.event_name == 'push') && success() }}
+    if: ${{ inputs.publish_artifacts && success() }}
     strategy:
       fail-fast: false
       matrix:

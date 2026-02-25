@@ -77,7 +77,7 @@ Called by the E2E pipeline's `publish-pypi` job in parallel for three packages: 
 ### Jobs
 
 ```
-prepare  ──►  review (manual approval)  ──►  publish
+prepare  ──►  publish
 ```
 
 ### prepare
@@ -90,16 +90,6 @@ Builds the Python distribution for a given package type:
 4. Runs `python3 -m build` to produce a wheel and source tarball
 5. Uploads the `dist/` output as `emod-<type>-dist` (retained 1 day)
 
-### review
-
-> **Manual approval required.** This job pauses and waits for a reviewer to approve before proceeding.
-
-The job runs in the `pypi-review` GitHub environment, which must be configured in the repository settings with one or more required reviewers. When the job runs, it prints the distribution file listing and the full contents of the wheel and source tarball to the job log so reviewers can inspect what will be published before approving.
-
-To approve: navigate to the workflow run in the GitHub Actions UI, find the paused `review` job, and click **Approve**.
-
-> If no reviewer approves within the environment's configured timeout, the job (and the subsequent `publish` job) will be cancelled automatically.
-
 ### publish
 
 Runs in the `pypi` GitHub environment, which must be configured with a trusted publisher pointing to `pypi.org`. Uses OIDC (`id-token: write`) for keyless authentication — no stored PyPI API token is required.
@@ -108,12 +98,7 @@ Downloads the `emod-<type>-dist` artifact and publishes it using `pypa/gh-action
 
 ### Required Repository Configuration
 
-Before the PyPI publish flow will work, two GitHub environments must exist in the repository settings (**Settings → Environments**):
-
-| Environment | Purpose | Required configuration |
-|---|---|---|
-| `pypi-review` | Gates publication behind human approval | Add required reviewers |
-| `pypi` | Authorises upload to PyPI | Add a trusted publisher for this repo/workflow |
+Before the PyPI publish flow will work, the `pypi` environment must exist in the repository settings (**Settings → Environments**) and be configured with a trusted publisher pointing to `pypi.org`.
 
 ---
 

@@ -69,48 +69,9 @@ jobs:
           path: ${{ steps.config.outputs.pypi_dir }}/dist/
           retention-days: 1
 
-  review:
-    name: Review emod-${{ inputs.package_type }} before publish
-    needs: prepare
-    runs-on: ubuntu-latest
-    # Requires a "pypi-review" environment configured in GitHub repo settings
-    # with required reviewers — the job pauses here until a reviewer approves.
-    environment: pypi-review
-    permissions:
-      contents: read
-
-    steps:
-      - name: Download dist artifact
-        uses: actions/download-artifact@v5
-        with:
-          name: ${{ needs.prepare.outputs.dist_artifact_name }}
-          path: dist/
-
-      - name: Show package contents for review
-        run: |
-          echo "========================================"
-          echo "  Package: ${{ needs.prepare.outputs.pypi_package_name }}"
-          echo "  Target:  PyPI (pypi.org)"
-          echo "========================================"
-          echo ""
-          echo "=== Distribution files ==="
-          ls -lh dist/
-          echo ""
-          echo "=== Wheel contents ==="
-          for f in dist/*.whl; do
-            [ -f "$f" ] && echo "--- $(basename $f) ---" && unzip -l "$f"
-          done
-          echo ""
-          echo "=== Source tarball contents ==="
-          for f in dist/*.tar.gz; do
-            [ -f "$f" ] && echo "--- $(basename $f) ---" && tar -tzf "$f"
-          done
-          echo ""
-          echo "Approve this job in the GitHub Actions UI to proceed with publishing."
-
   publish:
     name: Publish emod-${{ inputs.package_type }} to PyPI
-    needs: [prepare, review]
+    needs: prepare
     runs-on: ubuntu-latest
     # Requires a "pypi" environment configured in GitHub repo settings
     # with a trusted publisher pointing to pypi.org
