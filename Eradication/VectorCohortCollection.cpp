@@ -456,6 +456,7 @@ namespace Kernel
                         it->second[ i ]->Merge( it->second[ i - 1 ] );
                         delete it->second[ i - 1 ];
                         it->second[ i - 1 ] = nullptr;
+                        --m_Size;
                     }
                     else if( (i == (it->second.size() - 1)) &&
                              (it->second[ i ] != nullptr) &&
