@@ -1,4 +1,4 @@
-name: Build only
+name: Build EMOD
 
 on:
   # Allows manual run from the Actions tab
@@ -12,6 +12,12 @@ on:
           - 'Generic'
           - 'HIV'
           - 'Malaria'
+      science_test:
+        description: 'TestSugar build'
+        type: choice
+        options:
+          - ' '
+          - '--TestSugar'
 
 jobs:
   build_artifacts:
@@ -19,3 +25,4 @@ jobs:
     uses: ./.github/workflows/build_archive.yml
     with:
       disease_type: ${{ inputs.disease_type }}
+      science_test: ${{ inputs.science_test }}

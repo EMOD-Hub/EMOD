@@ -1,4 +1,4 @@
-name: Build MALARIA and publish to PyPI
+name: Build EMOD-MALARIA and publish to PyPI
 
 on:
   workflow_dispatch:
@@ -9,6 +9,7 @@ jobs:
     uses: ./.github/workflows/build_archive.yml
     with:
       disease_type: Malaria
+      science_test: ' '
 
   publish:
     name: Publish distribution to PyPI
@@ -22,23 +23,23 @@ jobs:
       id-token: write  # IMPORTANT: mandatory for trusted publishing
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
-          python-version: "3.x"
+          python-version: '3.x'
       - name: Download executable
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v7
         with:
           name: Eradication
           path: pypi_malaria/src/eradication_dir
       - name: Download schema
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v7
         with:
           name: schema.json
           path: pypi_malaria/src/schema_dir
       - name: Download version
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v7
         with:
           name: version
           path: pypi_malaria/src/version_dir
