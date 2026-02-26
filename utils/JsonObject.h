@@ -5,6 +5,7 @@
 //
 #pragma once
 
+#include <cstdint>
 using namespace std;
 
 namespace Kernel {

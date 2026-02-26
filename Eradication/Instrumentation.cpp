@@ -72,7 +72,7 @@ double Stopwatch::ResultNanoseconds()
     QueryPerformanceFrequency(&frequency);
     double cyclesPerNanosecond = static_cast<double>(frequency.QuadPart) / 1000000000.0;
 
-    uint64_t elapsed = _stop - _start;
+    std::uint64_t elapsed = _stop - _start;
     return elapsed / cyclesPerNanosecond;
 }
 
