@@ -11,8 +11,8 @@ on:
         description: 'Additional SFT test command-line options'
         required: false
         default: '--scons --use-dlls'
-      copy_binaries:
-        description: 'Copy built Eradication, reporter_plugins, schema'
+      save_binaries:
+        description: 'Save binaries - Eradication, reporter_plugins, schema'
         required: false
         type: boolean
         default: false
@@ -45,7 +45,7 @@ on:
 jobs:
   build:
     name: Build
-    uses: ./.github/workflows/build_reusable.yml
+    uses: ./.github/actions/build_reusable.yml
     with:
       disease_type: 'All'
       build_jobs: '4'
@@ -171,7 +171,7 @@ jobs:
           fi
 
       - name: Copy Binaries to artifacts directory
-        if: ${{ github.event.inputs.copy_binaries == 'true' }}
+        if: ${{ github.event.inputs.save_binaries == 'true' }}
         run: |
           mkdir -p artifacts
           cp build/x64/Release/Eradication/Eradication artifacts/
@@ -182,7 +182,7 @@ jobs:
           fi
 
       - name: Upload Build Artifacts
-        if: ${{ github.event.inputs.copy_binaries == 'true' }}
+        if: ${{ github.event.inputs.save_binaries == 'true' }}
         uses: actions/upload-artifact@v5
         with:
           name: emod-${{ matrix.name }}-binaries

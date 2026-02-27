@@ -1,4 +1,4 @@
-name: Build EMOD
+name: Build EMOD - Reusable
 
 on:
   workflow_call:
