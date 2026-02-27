@@ -1,0 +1,164 @@
+name: Build, Test and Publish Pipeline
+
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      regression_test_cores:
+        description: 'Number of cores to run regression tests with'
+        required: false
+        default: '4'
+      regression_test_options:
+        description: 'Additional regression_test.py command-line options'
+        required: false
+        default: '--all-outputs --scons --use-dlls'
+      publish_artifacts:
+        description: 'Publish final artifacts (tarball + PyPI)'
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/build_reusable.yml
+    with:
+      disease_type: 'All'
+      build_jobs: '4'
+
+  test:
+    name: Test - ${{ matrix.name }}
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Generic
+            suite: generic
+          - name: HIV
+            suite: hiv
+          - name: Malaria
+            suite: malaria
+          - name: STI
+            suite: sti
+          - name: Vector
+            suite: vector
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v5
+        with:
+          name: ${{ needs.build.outputs.artifact_name }}
+          path: .
+
+      - name: Restore executable permissions
+        run: |
+          chmod +x build/x64/Release/Eradication/Eradication
+
+      - name: Run Regression Tests
+        id: regression_tests
+        continue-on-error: true
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/EMOD" \
+            docker-production.packages.idmod.org/idm/dtk-centos-sfts:3.0 \
+            bash -c "\
+              cd /EMOD && \
+              mkdir -p /EMOD/regression_test_output && \
+              echo 'Running ${{ matrix.name }} regression tests' && \
+              cd Regression && \
+              python3 regression_test.py \
+                ${{ matrix.suite }} \
+                ../build/x64/Release/Eradication/Eradication \
+                --hidegraphs --config-constraints Num_Cores:${{ inputs.regression_test_cores }} \
+                ${{ inputs.regression_test_options }} \
+                --local \
+                --linux\
+            "
+
+      - name: Check Test Results
+        if: always()
+        run: |
+          echo "=== Looking for regression test reports ==="
+
+          REPORT_FILE=$(find Regression/reports -name "report_*.xml" 2>/dev/null | head -1)
+
+          if [ -n "$REPORT_FILE" ] && [ -f "$REPORT_FILE" ]; then
+            FAILURES=$(grep -oP 'failures="\K[0-9]+' "$REPORT_FILE" || echo "0")
+            ERRORS=$(grep -oP 'errors="\K[0-9]+' "$REPORT_FILE" || echo "0")
+            TESTS=$(grep -oP 'tests="\K[0-9]+' "$REPORT_FILE" || echo "0")
+
+            echo "Test Summary (${{ matrix.name }}):"
+            echo "  Total tests: $TESTS"
+            echo "  Failures: $FAILURES"
+            echo "  Errors: $ERRORS"
+
+            if [ "$FAILURES" != "0" ] || [ "$ERRORS" != "0" ]; then
+              echo "❌ ${{ matrix.name }} REGRESSION TESTS FAILED"
+              exit 1
+            else
+              echo "✅ All $TESTS ${{ matrix.name }} regression tests passed!"
+            fi
+          else
+            echo "⚠️  No regression report found"
+            echo "Test step outcome: ${{ steps.regression_tests.outcome }}"
+            if [ "${{ steps.regression_tests.outcome }}" != "success" ]; then
+              echo "❌ ${{ matrix.name }} regression tests failed to complete"
+              exit 1
+            fi
+          fi
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: e2e-parallel-${{ matrix.name }}-test-results
+          path: |
+            regression_test_output/
+            Regression/reports/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  publish:
+    name: Publish Artifacts
+    needs: [build, test]
+    if: ${{ inputs.publish_artifacts && success() }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v5
+        with:
+          name: ${{ needs.build.outputs.artifact_name }}
+          path: publish/
+
+      - name: Create Release Package
+        run: |
+          cd publish
+          tar -czf emod-all-$(cat version).tar.gz *
+
+      - name: Upload Final Package
+        uses: actions/upload-artifact@v5
+        with:
+          name: emod-all-release
+          path: publish/*.tar.gz
+          retention-days: 30
+
+  publish-pypi:
+    name: Publish emod-${{ matrix.package_type }} to PyPI
+    needs: [build, test]
+    if: ${{ inputs.publish_artifacts && success() }}
+    strategy:
+      fail-fast: false
+      matrix:
+        package_type: [common, hiv, malaria]
+    uses: ./.github/workflows/publish_pypi_reusable.yml
+    with:
+      package_type: ${{ matrix.package_type }}
+      build_artifact_name: ${{ needs.build.outputs.artifact_name }}

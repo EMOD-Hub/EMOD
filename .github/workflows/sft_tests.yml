@@ -1,0 +1,201 @@
+name: Science Feature Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      sft_test_cores:
+        description: 'Number of cores to run SFT tests with'
+        required: false
+        default: '4'
+      sft_test_options:
+        description: 'Additional SFT test command-line options'
+        required: false
+        default: '--scons --use-dlls'
+      copy_binaries:
+        description: 'Copy built Eradication, reporter_plugins, schema'
+        required: false
+        type: boolean
+        default: false
+      run_generic_science:
+        description: 'Run Generic Science suite'
+        required: false
+        type: boolean
+        default: true
+      run_hiv_science:
+        description: 'Run HIV Science suite'
+        required: false
+        type: boolean
+        default: true
+      run_malaria_science:
+        description: 'Run Malaria Science suite'
+        required: false
+        type: boolean
+        default: true
+      run_sti_science:
+        description: 'Run STI Science suite'
+        required: false
+        type: boolean
+        default: true
+      run_vector_science:
+        description: 'Run Vector Science suite'
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/build_reusable.yml
+    with:
+      disease_type: 'All'
+      build_jobs: '4'
+      extra_build_flags: '--TestSugar'
+
+  setup:
+    name: Configure Matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Build suite matrix
+        id: set-matrix
+        run: |
+          includes='[]'
+          if [ "${{ inputs.run_generic_science }}" = "true" ]; then
+            includes=$(echo "$includes" | jq '. += [{"name":"Generic Science","suite":"generic_science"}]')
+          fi
+          if [ "${{ inputs.run_hiv_science }}" = "true" ]; then
+            includes=$(echo "$includes" | jq '. += [{"name":"HIV Science","suite":"hiv_science"}]')
+          fi
+          if [ "${{ inputs.run_malaria_science }}" = "true" ]; then
+            includes=$(echo "$includes" | jq '. += [{"name":"Malaria Science","suite":"malaria_science"}]')
+          fi
+          if [ "${{ inputs.run_sti_science }}" = "true" ]; then
+            includes=$(echo "$includes" | jq '. += [{"name":"STI Science","suite":"sti_science"}]')
+          fi
+          if [ "${{ inputs.run_vector_science }}" = "true" ]; then
+            includes=$(echo "$includes" | jq '. += [{"name":"Vector Science","suite":"vector_science"}]')
+          fi
+          echo "matrix=$(echo "$includes" | jq -c '{include: .}')" >> $GITHUB_OUTPUT
+
+  test:
+    name: Test - ${{ matrix.name }}
+    needs: [build, setup]
+    if: ${{ always() && needs.build.result == 'success' && needs.setup.result == 'success' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v5
+        with:
+          name: ${{ needs.build.outputs.artifact_name }}
+          path: .
+
+      - name: Restore executable permissions
+        run: |
+          echo "Checking downloaded artifact structure..."
+          ls -la build/x64/Release/Eradication/
+          chmod +x build/x64/Release/Eradication/Eradication
+          echo "✓ Permissions restored"
+
+      - name: Run SFT Tests
+        id: sft_tests
+        continue-on-error: true
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/EMOD" \
+            docker-production.packages.idmod.org/idm/dtk-centos-sfts:3.0 \
+            bash -c "\
+              cd /EMOD && \
+              mkdir -p /EMOD/sft_test_output && \
+              echo 'Running ${{ matrix.name }} SFT tests' && \
+              cd SFT && \
+              python3 regression_test.py \
+                ${{ matrix.suite }} \
+                ../build/x64/Release/Eradication/Eradication \
+                --hidegraphs --config-constraints Num_Cores:${{ inputs.sft_test_cores }} \
+                ${{ inputs.sft_test_options }} \
+                --local \
+                --linux\
+            "
+
+      - name: Check Test Results
+        if: always()
+        run: |
+          echo "=== Looking for regression test reports ==="
+
+          # Find the XML report file(s)
+          REPORT_FILE=$(find Regression/reports -name "report_*.xml" 2>/dev/null | head -1)
+
+          if [ -n "$REPORT_FILE" ] && [ -f "$REPORT_FILE" ]; then
+
+            # Parse XML for failures and errors
+            FAILURES=$(grep -oP 'failures="\K[0-9]+' "$REPORT_FILE" || echo "0")
+            ERRORS=$(grep -oP 'errors="\K[0-9]+' "$REPORT_FILE" || echo "0")
+            TESTS=$(grep -oP 'tests="\K[0-9]+' "$REPORT_FILE" || echo "0")
+
+            echo "Test Summary (${{ matrix.name }}):"
+            echo "  Total tests: $TESTS"
+            echo "  Failures: $FAILURES"
+            echo "  Errors: $ERRORS"
+            echo ""
+
+            # Fail if there are any failures or errors
+            if [ "$FAILURES" != "0" ] || [ "$ERRORS" != "0" ]; then
+              echo "❌ ${{ matrix.name }} REGRESSION TESTS FAILED"
+              echo "   $FAILURES test(s) failed, $ERRORS error(s)"
+              echo "   Check the test results artifact for details"
+              exit 1
+            else
+              echo "✅ All $TESTS ${{ matrix.name }} regression tests passed!"
+            fi
+          else
+            echo "⚠️  No regression report found at Regression/reports/report_*.xml"
+            echo "Test step outcome: ${{ steps.regression_tests.outcome }}"
+
+            if [ "${{ steps.regression_tests.outcome }}" != "success" ]; then
+              echo "❌ ${{ matrix.name }} regression tests failed to complete"
+              exit 1
+            else
+              echo "⚠️  Tests completed but no report was generated"
+              echo "This may indicate the test suite was empty or had configuration issues"
+            fi
+          fi
+
+      - name: Copy Binaries to artifacts directory
+        if: ${{ github.event.inputs.copy_binaries == 'true' }}
+        run: |
+          mkdir -p artifacts
+          cp build/x64/Release/Eradication/Eradication artifacts/
+          cp build/x64/Release/schema.json artifacts/ 2>/dev/null || cp schema.json artifacts/
+          cp build/x64/Release/version artifacts/ 2>/dev/null || cp version artifacts/
+          if [ -d "build/x64/Release/reporter_plugins" ]; then
+            cp -r build/x64/Release/reporter_plugins artifacts/
+          fi
+
+      - name: Upload Build Artifacts
+        if: ${{ github.event.inputs.copy_binaries == 'true' }}
+        uses: actions/upload-artifact@v5
+        with:
+          name: emod-${{ matrix.name }}-binaries
+          path: artifacts/
+          retention-days: 7
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: emod-${{ matrix.name }}-regression-test-results
+          path: |
+            regression_test_output/
+            Regression/reports/
+          retention-days: 7
+          if-no-files-found: ignore

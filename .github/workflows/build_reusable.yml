@@ -1,0 +1,76 @@
+name: Build EMOD
+
+on:
+  workflow_call:
+    inputs:
+      disease_type:
+        description: 'Disease type to build (Generic, HIV, Malaria, etc. or "All" for all types)'
+        required: true
+        type: string
+      build_jobs:
+        description: 'Number of parallel jobs for SCons build'
+        required: false
+        type: string
+        default: '4'
+      extra_build_flags:
+        description: 'Additional SCons build flags (e.g. --TestSugar)'
+        required: false
+        type: string
+        default: ''
+    outputs:
+      artifact_name:
+        description: 'Name of the uploaded build artifact'
+        value: ${{ jobs.build.outputs.artifact_name }}
+
+jobs:
+  build:
+    name: Build EMOD - ${{ inputs.disease_type }}
+    runs-on: ubuntu-latest
+    outputs:
+      artifact_name: ${{ steps.set-artifact-name.outputs.name }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set artifact name
+        id: set-artifact-name
+        run: |
+          DISEASE_LOWER=$(echo "${{ inputs.disease_type }}" | tr '[:upper:]' '[:lower:]')
+          echo "name=emod-${DISEASE_LOWER}-build" >> $GITHUB_OUTPUT
+
+      - name: Build with SCons
+        run: |
+          DISEASE_FLAG=""
+          if [ "${{ inputs.disease_type }}" != "All" ]; then
+            DISEASE_FLAG="--Disease=${{ inputs.disease_type }}"
+          fi
+
+          docker run --rm \
+            -v "${{ github.workspace }}:/EMOD" \
+            docker-production.packages.idmod.org/idm/dtk-centos-sfts:3.0 \
+            bash -c "\
+              cd /EMOD && \
+              python3 --version && \
+              python3 -m pip list && \
+              echo 'Building EMOD with SCons for ${{ inputs.disease_type }} disease type' && \
+              scons ${DISEASE_FLAG} --Release --jobs=${{ inputs.build_jobs }} ${{ inputs.extra_build_flags }} && \
+              strip build/x64/Release/Eradication/Eradication && \
+              ./build/x64/Release/Eradication/Eradication --get-schema --schema-path schema.json && \
+              grep DTK_Version schema.json | sed 's/[^0-9.]//g' > version && \
+              echo 'Build completed successfully'\
+            "
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v5
+        with:
+          name: ${{ steps.set-artifact-name.outputs.name }}
+          path: |
+            build/x64/Release/Eradication/Eradication
+            build/x64/Release/reporter_plugins/
+            schema.json
+            version
+          retention-days: 7
+          if-no-files-found: error
