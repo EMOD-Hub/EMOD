@@ -1,4 +1,4 @@
-name: Workflow - Build EMOD; create artifacts
+name: Workflow - Build EMOD; create artifacts - reusable
 
 on:
   # Allows re-use in other workflows
