@@ -70,8 +70,8 @@ class ReportRelationshipStartTest(SFT):
         if id not in csv_event_reporter['Individual_ID'].values:
             return None, None
         else:
-            infection_time = int(csv_event_reporter[(csv_event_reporter['Individual_ID'] == id) &
-                                                    (csv_event_reporter["Event_Name"] == "NewInfectionEvent")]["Time"])
+            infection_time = csv_event_reporter[(csv_event_reporter['Individual_ID'] == id) &
+                                                (csv_event_reporter["Event_Name"] == "NewInfectionEvent")]["Time"].values[0].astype(int)
             if time < infection_time:
                 return None, infection_time
             elif time == infection_time:
@@ -80,7 +80,7 @@ class ReportRelationshipStartTest(SFT):
                 aids_df = csv_event_reporter[(csv_event_reporter['Individual_ID'] == id) &
                                              (csv_event_reporter["Event_Name"] == "HIVInfectionStageEnteredAIDS")]
                 if not aids_df.empty:
-                    aids_time = int(aids_df['Time'])
+                    aids_time = aids_df['Time'].values[0].astype(int)
                     if time >= aids_time:
                         return "AIDS", infection_time
                     else:

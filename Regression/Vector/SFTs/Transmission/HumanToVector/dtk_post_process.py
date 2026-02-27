@@ -130,7 +130,7 @@ def create_report_file(param_obj, infections_and_feeds_df, infectivity_df, repor
                     if valid:
                         valid_tests += 1
                         successful_tests += 1 if result else 0
-                        all_data_df.iloc[i, all_data_df.columns.get_loc('Binomial Test')] = result
+                        all_data_df.iloc[i, all_data_df.columns.get_loc('Binomial Test')] = 1 if result else 0
 
             outfile.write("Out of {} total tests, {} were valid, out of those {} were successful."
                           "\n".format(total_tests, valid_tests, successful_tests))

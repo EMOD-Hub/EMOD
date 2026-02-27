@@ -20,8 +20,8 @@ def processChannels(channelSpec):
         try:
             channels.append(expansion[upper])
         except:
-            print "Unknown channel '%s'" % (entry)
-    
+            print("Unknown channel '%s'" % (entry))
+
     if len(channels) == 0:
         raise PlottingError("No channels found to plot.")
     
@@ -55,11 +55,11 @@ def finish_plotting(save):
     plt.legend(loc='upper right')
     if save:
         filename = save + '.png'
-        print "Saving chart to '%s'" % (filename)
+        print("Saving chart to '%s'" % (filename))
         try:
             pylab.savefig( filename, bbox_inches='tight', orientation='landscape', dpi=128 )
-        except (Exception) as e:
-            print "Error '%s' saving chart to '%s'" % (e, filename)
+        except Exception as e:
+            print("Error '%s' saving chart to '%s'" % (e, filename))
     plt.show()
 
 
@@ -69,7 +69,7 @@ def main(filename, title, channels, save):
 
     try:
         for channel in channels:
-            print 'Plotting %s...' % (channel)
+            print('Plotting %s...' % (channel))
             values = json_data['Channels'][channel]['Data']
             axes.plot(values, label=channel)
     except (KeyError) as e:
@@ -88,14 +88,14 @@ if __name__ == "__main__":
     
     try:
         channels = processChannels(args.channels)
-        
-        print "Plotting '%s'" % (args.filename)
-        print "Displaying channels '%s'" %(args.channels)
-        print "Chart Title = '%s'" % (args.title)
-        print "Save filename = '%s'" % (args.save)
+
+        print("Plotting '%s'" % (args.filename))
+        print("Displaying channels '%s'" % args.channels)
+        print("Chart Title = '%s'" % args.title)
+        print("Save filename = '%s'" % args.save)
 
         main(args.filename, args.title, channels, args.save)
     except (PlottingError) as pe:
-        print pe
+        print(pe)
     except (Exception) as e:
-        print "Caught exception '%s' during execution." % e
+        print("Caught exception '%s' during execution." % e)

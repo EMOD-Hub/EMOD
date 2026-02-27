@@ -1,7 +1,0 @@
-sphinxext.remoteliteralinclude~=0.4.0
-sphinx~=6.2.1
-pydata-sphinx-theme
-plantweb~=1.2.1
-sphinxcontrib-programoutput~=0.17
-myst-parser~=2.0.0
-pygithub~=1.57

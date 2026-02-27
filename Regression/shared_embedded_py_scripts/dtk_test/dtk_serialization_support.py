@@ -26,7 +26,6 @@ class SneakyStuff:
 
 
 def load_config_file(config_filename="config.json", debug=False):
-
     with open(config_filename) as infile:
         params = json.load(infile)[ConfigKeys.PARAMETERS_KEY]
 
@@ -41,14 +40,14 @@ def load_config_file(config_filename="config.json", debug=False):
     for key in config_params:
         if key in params:
             config_object[key] = params[key]
-    num_cores_tmp = 1 # Num cores is not required by schema. Assume 1
+    num_cores_tmp = 1  # Num cores is not required by schema. Assume 1
     if ConfigKeys.NUM_CORES_KEY in params:
         config_object[ConfigKeys.NUM_CORES_KEY] = params[ConfigKeys.NUM_CORES_KEY]
     else:
         config_object[ConfigKeys.NUM_CORES_KEY] = num_cores_tmp
 
     if debug:
-        with open("DEBUG_config_object.json","w") as outfile:
+        with open("DEBUG_config_object.json", "w") as outfile:
             json.dump(config_object, outfile, indent=4)
     return config_object
 
@@ -61,7 +60,7 @@ def check_nodes(config_object, nodes_object):
     messages = []
     demo_nodes = demo_json["Nodes"]
     success = False
-    if len(demo_nodes) == len (nodes_object):
+    if len(demo_nodes) == len(nodes_object):
         success = True
         messages.append("GOOD: Nubmer of nodes is correct")
     else:
@@ -89,16 +88,17 @@ def generate_report_file(config_object, report_name, output_folder="output",
         dtk_filelist = glob.glob(glob_pathname, recursive=False)
         if ConfigKeys.Serialization.TIMESTEPS_KEY in config_object:
             file_count_message_template = "{0}: Expected count of {1} files, got these {2}\n"
-            expected_count = len(config_object[ConfigKeys.Serialization.TIMESTEPS_KEY]) * config_object[ConfigKeys.NUM_CORES_KEY]
+            expected_count = len(config_object[ConfigKeys.Serialization.TIMESTEPS_KEY]) * config_object[
+                ConfigKeys.NUM_CORES_KEY]
             actual_count = len(dtk_filelist)
             if actual_count == expected_count:
                 success = True
-                outfile.write(file_count_message_template.format("GOOD",expected_count, dtk_filelist))
+                outfile.write(file_count_message_template.format("GOOD", expected_count, dtk_filelist))
             else:
                 outfile.write(file_count_message_template.format("BAD", expected_count, dtk_filelist))
 
         for m in messages:
-            outfile.write(m+ "\n")
+            outfile.write(m + "\n")
             if m.startswith("BAD"):
                 success = False
         if success_formatter:
@@ -128,7 +128,8 @@ def clean_serialization_test(debug=False):
             else:
                 print(f"Couldn't find {f}")
         else:
-            print (f"DEBUG: would delete {f.rstrip()}")
+            print(f"DEBUG: would delete {f.rstrip()}")
+
 
 class DtkFile:
     def __init__(self, dtk_filename, file_suffix="new"):
@@ -140,14 +141,14 @@ class DtkFile:
     def write_json_file(self, json_content, json_filename):
         with open(json_filename, 'w') as outfile:
             json.dump(json_content, outfile, indent=4)
-        with open(SneakyStuff.DEBUG_FILELIST,'a') as outfile:
+        with open(SneakyStuff.DEBUG_FILELIST, 'a') as outfile:
             outfile.write(json_filename + '\n')
 
     def write_simulation_to_disk(self, sim_filename="simulation"):
         self.s = self.f.simulation
         json_filename = "{0}-{1}.{2}".format(sim_filename,
-                                                 self.filename_suffix,
-                                                 self.file_extension)
+                                             self.filename_suffix,
+                                             self.file_extension)
         self.write_json_file(self.s, json_filename)
 
     def write_node_to_disk(self, node_index=0, preserve_people=False,
@@ -168,7 +169,8 @@ class DtkFile:
                              ignore_suids=[],
                              debug=False):
         if desired_intervention and not min_interventions:
-            raise AssertionError("Should not have a desired intervention with no min interventions. Set min_interventions to 1")
+            raise AssertionError(
+                "Should not have a desired intervention with no min interventions. Set min_interventions to 1")
         n = self.ns[node_index]
         found_human = None
         all_humans = n.individualHumans
@@ -176,7 +178,7 @@ class DtkFile:
             if debug:
                 print("Looking for suid: {0}".format(suid))
             for h in all_humans:
-               if h["suid"]["id"] == suid:
+                if h["suid"]["id"] == suid:
                     found_human = h
                     break
         else:
@@ -267,6 +269,7 @@ class SerializedHuman:
                 return SerializedInfection(infection, self.suid)
         return None
 
+
 class SerializedInfection:
     def __init__(self, json_infection, human_suid):
         self.suid = json_infection['suid']['id']
@@ -287,9 +290,11 @@ class SerializedInfection:
         messages = []
         expected_duration_sofar = older_infection.duration_sofar + time_since_older
         if self.strain_antigen != older_infection.strain_antigen:
-            messages.append(f"BAD: {self.name} used to have antigen {older_infection.strain_antigen} and now has {self.strain_antigen}")
+            messages.append(
+                f"BAD: {self.name} used to have antigen {older_infection.strain_antigen} and now has {self.strain_antigen}")
         if self.strain_genetic != older_infection.strain_genetic:
-            messages.append(f"BAD: {self.name} used to have geneID {older_infection.strain_genetic} and now has {self.strain_genetic}")
+            messages.append(
+                f"BAD: {self.name} used to have geneID {older_infection.strain_genetic} and now has {self.strain_genetic}")
         if self.duration_sofar != expected_duration_sofar:
             messages.append("BAD: Infection {0} from human {1} should be {2} days old, is {3}".format(
                 self.suid,
@@ -302,5 +307,6 @@ class SerializedInfection:
     def validate_own_timers(self):
         messages = []
         if self.duration_sofar > self.duration_total:
-            messages.append(f"BAD: {self.name} is {self.duration_sofar} old, longer than final age of {self.duration_total}")
+            messages.append(
+                f"BAD: {self.name} is {self.duration_sofar} old, longer than final age of {self.duration_total}")
         return messages

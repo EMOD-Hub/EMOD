@@ -1,0 +1,28 @@
+name: Build docs
+
+on:
+  pull_request:
+    branches:
+      - main
+
+  # Allows manual run from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build-docs:
+    name: Build docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+      - name: Setup python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+      - name: Install packages
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install ./pypi_common[docs]
+      - name: Build static files
+        run: |
+          python -m sphinx -T --keep-going -b html ./docs ./site

@@ -91,7 +91,7 @@
     },         
     "PRIMARY": {
         "Run_Number": 1, 
-        "Simulation_Duration": 3650, 
+        "Simulation_Duration": 1825, 
         "Config_Name": "21_Malaria_InputEIR -- multicore -- Madagascar_Nosibe", 
         "Geography": "Madagascar_Nosibe"
     }, 
@@ -100,7 +100,9 @@
     }, 
     "Default_Config_Path": "../../defaults/malaria_default_config.json", 
     "FUDGE_FACTORS": {
-        "x_Temporary_Larval_Habitat": 0
+        "x_Base_Population": 0.25,
+        "x_Temporary_Larval_Habitat": 0,
+        "x_Local_Migration": 1
     },
     "Enable_Interventions": 1
 }

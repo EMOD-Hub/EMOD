@@ -1,10 +1,13 @@
-name: Build and create artifacts
+name: Workflow - Build EMOD; create artifacts
 
 on:
   # Allows re-use in other workflows
   workflow_call:
     inputs:
       disease_type:
+        required: true
+        type: string
+      science_test:
         required: true
         type: string
 
@@ -16,7 +19,7 @@ jobs:
       scons_option: ${{ inputs.disease_type != 'All' && format('--Disease={0}', inputs.disease_type) || ' ' }}
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Check python; build executable; strip symbols; make schema; extract version
@@ -28,29 +31,33 @@ jobs:
               python3 --version && \
               python3 -m pip list && \
               cd /EMOD && \
-              scons --Release --jobs=4 ${{ env.scons_option }} && \
+              scons --Release --jobs=4 ${{ env.scons_option }} ${{ inputs.science_test }} && \
               strip build/x64/Release/Eradication/Eradication && \
               ./build/x64/Release/Eradication/Eradication --get-schema --schema-path schema.json && \
               grep DTK_Version schema.json | sed 's/[^0-9.]//g' > version\
             "
       - name: Archive binary
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: Eradication
           path: ./build/x64/Release/Eradication/Eradication
+          retention-days: 7
       - name: Archive schema
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: schema.json
           path: schema.json
+          retention-days: 7
       - name: Archive version
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: version
           path: version
+          retention-days: 7
       - name: Archive component tests
         if: ${{ inputs.disease_type == 'All' }}
         uses: actions/upload-artifact@v4
         with:
           name: componentTests
           path: ./build/x64/Release/componentTests/componentTests
+          retention-days: 7
