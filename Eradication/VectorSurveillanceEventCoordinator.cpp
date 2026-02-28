@@ -708,6 +708,15 @@ namespace Kernel
 
     bool VectorSurveillanceEventCoordinator::Configure( const Configuration* inputJson )
     {
+        if( EnvPtr->MPI.NumTasks > 1 )
+        {
+            std::ostringstream msg;
+            msg << "ERROR: Multicore Not Supported\n";
+            msg << "This appears to be a multicore simulation (num_cores=" << EnvPtr->MPI.NumTasks << ").\n";
+            msg << "VectorSurveillanceEventCoordinator is not supported on multicore because\n";
+            msg << "we only support python scripts on the Rank=0 core.";
+            throw InitializationException(__FILE__, __LINE__, __FUNCTION__, msg.str().c_str());
+        }
         initConfigTypeMap( "Coordinator_Name",  &m_CoordinatorName, Coordinator_Name_DESC_TEXT, m_CoordinatorName.c_str() );
         initConfigTypeMap( "Counter",           m_pCounter,         VSEC_Counter_DESC_TEXT );
         initConfigTypeMap( "Responder",         m_pResponder,       VSEC_Responder_DESC_TEXT );
