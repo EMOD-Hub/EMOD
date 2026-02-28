@@ -6,13 +6,13 @@ on:
       regression_test_cores:
         description: 'Number of cores to run regression tests with'
         required: false
-        default: '4'
+        default: '1'
       regression_test_options:
         description: 'Additional regression_test.py command-line options'
         required: false
         default: '--all-outputs --scons --use-dlls'
-      copy_binaries:
-        description: 'Copy built Eradication, reporter_plugins, schema'
+      save_binaries:
+        description: 'Save binaries - Eradication, reporter_plugins, schema'
         required: false
         type: boolean
         default: false
@@ -46,12 +46,17 @@ on:
         required: false
         type: boolean
         default: true
+      run_multicore:
+        description: 'Run Multicore suite'
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   build:
     name: Build
     if: ${{ !inputs.use_existing_build }}
-    uses: ./.github/workflows/build_reusable.yml
+    uses: ./.github/workflows/reusable_build.yml
     with:
       disease_type: 'All'
       build_jobs: '4'
@@ -80,6 +85,9 @@ jobs:
           fi
           if [ "${{ inputs.run_vector }}" = "true" ]; then
             includes=$(echo "$includes" | jq '. += [{"name":"Vector","suite":"vector"}]')
+          fi
+          if [ "${{ inputs.run_multicore }}" = "true" ]; then
+            includes=$(echo "$includes" | jq '. += [{"name":"Multicore","suite":"multicore_regression"}]')
           fi
           echo "matrix=$(echo "$includes" | jq -c '{include: .}')" >> $GITHUB_OUTPUT
 
@@ -213,7 +221,7 @@ jobs:
           fi
 
       - name: Copy Binaries to artifacts directory
-        if: ${{ github.event.inputs.copy_binaries == 'true' }}
+        if: ${{ github.event.inputs.save_binaries == 'true' }}
         run: |
           mkdir -p artifacts
           cp build/x64/Release/Eradication/Eradication artifacts/
@@ -224,7 +232,7 @@ jobs:
           fi
 
       - name: Upload Build Artifacts
-        if: ${{ github.event.inputs.copy_binaries == 'true' }}
+        if: ${{ github.event.inputs.save_binaries == 'true' }}
         uses: actions/upload-artifact@v5
         with:
           name: emod-${{ matrix.name }}-binaries

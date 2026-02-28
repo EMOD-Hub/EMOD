@@ -1,4 +1,4 @@
-name: Workflow - Build EMOD; create artifacts
+name: Z-Reusable - Build EMOD archive
 
 on:
   # Allows re-use in other workflows

@@ -25,8 +25,7 @@
         { "path": "Malaria/77_Malaria_SummaryReport_Multicore", "Num_Cores": 4 },
         { "path": "Malaria/90_Malaria_FPG_TwoMarkers_Multicore", "Num_Cores": 4 },
         { "path": "STI/63_STI_All_Rel_Types_All_Rel_States_Multicore", "Num_Cores": 4 },
-        { "path": "Vector/21_Vector_Garki", "Num_Cores": 4},
-        { "path": "Vector/128_Vector_VectorSurveillanceEventCoordinator_Multinode", "Num_Cores": 3 }
+        { "path": "Vector/21_Vector_Garki", "Num_Cores": 4}
     ],
     "8_cores": [
         { "path": "Vector/22_Vector_Garki_MultiCore_VectorMigration", "Num_Cores": 8 },

@@ -1,4 +1,4 @@
-name: Build EMOD
+name: Build EMOD - Release or TestSugar
 
 on:
   # Allows manual run from the Actions tab
@@ -22,7 +22,7 @@ on:
 jobs:
   build_artifacts:
     name: Build and create artifacts
-    uses: ./.github/workflows/build_archive.yml
+    uses: ./.github/workflows/reusable_build_archive.yml
     with:
       disease_type: ${{ inputs.disease_type }}
       science_test: ${{ inputs.science_test }}

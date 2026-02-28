@@ -1,4 +1,4 @@
-name: Build EMOD
+name: Z-Reusable - Build EMOD
 
 on:
   workflow_call:
