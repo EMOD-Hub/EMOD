@@ -1,4 +1,4 @@
-name: Publish to PyPI - reusable
+name: Z-Reusable - Publish to PyPI
 
 on:
   workflow_call:
