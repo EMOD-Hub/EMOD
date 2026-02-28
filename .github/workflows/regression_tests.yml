@@ -56,7 +56,7 @@ jobs:
   build:
     name: Build
     if: ${{ !inputs.use_existing_build }}
-    uses: ./.github/actions/build_reusable.yml
+    uses: ./.github/workflows/reusable_build.yml
     with:
       disease_type: 'All'
       build_jobs: '4'

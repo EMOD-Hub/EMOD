@@ -1,4 +1,4 @@
-name: Build, Test and Publish Pipeline
+name: Z-E2E-Build, Test and Publish Pipeline
 
 on:
   workflow_dispatch:
@@ -20,7 +20,7 @@ on:
 jobs:
   build:
     name: Build
-    uses: ./.github/actions/build_reusable.yml
+    uses: ./.github/workflows/reusable_build.yml
     with:
       disease_type: 'All'
       build_jobs: '4'
@@ -159,7 +159,7 @@ jobs:
       fail-fast: false
       matrix:
         package_type: [common, hiv, malaria]
-    uses: ./.github/actions/publish_pypi_reusable.yml
+    uses: ./.github/workflows/reusable_publish_pypi.yml
     with:
       package_type: ${{ matrix.package_type }}
       build_artifact_name: ${{ needs.build.outputs.artifact_name }}

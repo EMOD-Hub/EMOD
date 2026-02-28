@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     name: Build and create artifacts
-    uses: ./.github/actions/build_archive.yml
+    uses: ./.github/workflows/reusable_build_archive.yml
     with:
       disease_type: Malaria
       science_test: ' '
