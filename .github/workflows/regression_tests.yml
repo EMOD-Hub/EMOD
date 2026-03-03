@@ -6,7 +6,7 @@ on:
       regression_test_cores:
         description: 'Number of cores to run regression tests with'
         required: false
-        default: '1'
+        default: '4'
       regression_test_options:
         description: 'Additional regression_test.py command-line options'
         required: false
@@ -50,7 +50,7 @@ on:
         description: 'Run Multicore suite'
         required: false
         type: boolean
-        default: false
+        default: true
 
 jobs:
   build:
