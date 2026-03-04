@@ -5,6 +5,7 @@
 #include "IndividualEventContext.h"
 #include "IIndividualHuman.h"
 #include "AdditionalRestrictionsFactory.h"
+#include "ObjectFactoryTemplates.h"
 
 SETUP_LOGGING( "DemographicRestrictions" )
 
