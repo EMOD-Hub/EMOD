@@ -162,7 +162,7 @@ jobs:
         run: |
           docker run --rm \
             -v "${{ github.workspace }}:/EMOD" \
-            docker-production.packages.idmod.org/idm/dtk-centos-sfts:3.0 \
+            ghcr.io/emod-hub/emod-ubuntu-testenv:latest \
             bash -c "\
               cd /EMOD && \
               mkdir -p /EMOD/regression_test_output && \

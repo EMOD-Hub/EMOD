@@ -50,7 +50,7 @@ jobs:
 
           docker run --rm \
             -v "${{ github.workspace }}:/EMOD" \
-            docker-production.packages.idmod.org/idm/dtk-centos-sfts:3.0 \
+            ghcr.io/emod-hub/emod-ubuntu-buildenv:latest \
             bash -c "\
               cd /EMOD && \
               python3 --version && \

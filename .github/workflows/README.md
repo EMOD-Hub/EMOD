@@ -33,7 +33,7 @@ Uses `build_reusable.yml` to compile EMOD for all disease types (`--Disease` fla
 
 ### Test
 
-Runs 5 suites in parallel against the build artifact using `docker-production.packages.idmod.org/idm/dtk-centos-sfts:3.0`:
+Runs 5 suites in parallel against the build artifact using `ghcr.io/emod-hub/emod-ubuntu-testenv:latest`:
 
 | Suite | Passed to `regression_test.py` |
 |---|---|

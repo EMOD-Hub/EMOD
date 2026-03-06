@@ -26,7 +26,7 @@ jobs:
         run: |
           docker run --rm \
             -v "${{ github.workspace }}:/EMOD" \
-            docker-production.packages.idmod.org:443/idm/dtk-centos-buildenv:3.0 \
+            ghcr.io/emod-hub/emod-ubuntu-buildenv:latest \
             bash -c "\
               python3 --version && \
               python3 -m pip list && \
