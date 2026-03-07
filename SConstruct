@@ -218,7 +218,7 @@ else:
     env.Append( CCFLAGS=["-w"] )
     env.Append( CCFLAGS=["-ffloat-store"] )
     env.Append( CCFLAGS=["-Wno-unknown-pragmas"] )
-    #env.Append( CCFLAGS=["-mavx2"] )
+    env.Append( CCFLAGS=["-mavx2"] )
 
     # Python
     if(sys.version_info.minor == 9):
