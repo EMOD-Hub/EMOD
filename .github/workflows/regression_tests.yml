@@ -174,7 +174,8 @@ jobs:
                 --hidegraphs --config-constraints Num_Cores:${{ inputs.regression_test_cores }} \
                 ${{ inputs.regression_test_options }} \
                 --local \
-                --linux\
+                --linux \
+                --print-error\
             "
 
       - name: Check Test Results
