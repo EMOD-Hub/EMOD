@@ -112,6 +112,7 @@ jobs:
         run: |
           docker run --rm \
             --user $(id -u):$(id -g) \
+            -e HOME=/tmp \
             -v "${{ github.workspace }}:/EMOD" \
             ghcr.io/emod-hub/emod-ubuntu-testenv:latest \
             bash -c "\
