@@ -112,7 +112,7 @@ class Report:
         sysout_txt = self.doc.createTextNode("n/a") # could fill this out more in the future, but not right now...
         sysout_el.appendChild(sysout_txt)
 
-        stderr_filename = simulation_path + "/StdErr.txt"
+        stderr_filename = simulation_path + "/stderr.txt"
         stderr_txt = "n/a"
         if( os.path.exists( stderr_filename ) ):
             with open( stderr_filename, "r" ) as stderr_file:
