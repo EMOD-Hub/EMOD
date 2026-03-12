@@ -120,7 +120,7 @@ jobs:
               cd /EMOD && \
               mkdir -p /EMOD/sft_test_output && \
               echo 'Running ${{ matrix.name }} SFT tests' && \
-              cd SFT && \
+              cd Regression && \
               python3 regression_test.py \
                 ${{ matrix.suite }} \
                 ../build/x64/Release/Eradication/Eradication \
