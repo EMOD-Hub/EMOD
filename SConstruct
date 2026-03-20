@@ -197,7 +197,7 @@ if os.sys.platform == 'win32':
     print('MSVC Version: ',env['MSVC_VERSION'])
 
     env['OS_FAMILY'] = 'win'
-    
+
     # Boost
     env.Append( EXTRACPPPATH=[ os.environ['IDM_BOOST_PATH'] ] )
 
@@ -236,6 +236,9 @@ else:
     elif(sys.version_info.minor == 13):
         env.Append( LIBS=["python3.13"] )
         env.Append( EXTRACPPPATH=["/usr/include/python3.13"] )
+    elif(sys.version_info.minor == 14):
+        env.Append( LIBS=["python3.14"] )
+        env.Append( EXTRACPPPATH=["/usr/include/python3.14"] )
     else:
         raise RuntimeError("Unsupported python version")
 
@@ -273,7 +276,7 @@ if os.sys.platform.startswith("linux"):
         nixLibPrefix = "lib64"
         env.Append( EXTRALIBPATH=["/usr/lib64" , "/lib64" ] )
 
-    env.Append( LIBS=["pthread", "dl", "m", "sqlite3"] )
+    env.Append( LIBS=["pthread", "dl", "m"] )
     env.Append( EXTRALIBPATH=[ "/usr/local/lib", "/usr/lib64/mpich/lib" ] )
 
     if static:
