@@ -5,23 +5,15 @@
 | Workflow | File | Trigger |
 |---|---|---|
 | Build, Test and Publish Pipeline | `e2e_parallel_pipeline.yml` | Push to `main`, `workflow_dispatch` |
-| Regression Tests | `regression_tests.yml` | `workflow_dispatch` |
-| Science Feature Tests | `sft_tests.yml` | `workflow_dispatch` |
+| Regression Tests | `tests_regression.yml` | `workflow_dispatch` |
+| Science Feature Tests | `tests_sft.yml` | `workflow_dispatch` |
 | Build EMOD (Reusable) | `build_reusable.yml` | Called by other workflows |
-| Publish to PyPI (Reusable) | `publish_pypi_reusable.yml` | Called by E2E pipeline |
 
 ---
 
 ## Build, Test and Publish (E2E) Pipeline (`e2e_parallel_pipeline.yml`)
 
 The primary integration pipeline. Runs automatically on every push to `main` and can also be triggered manually.
-
-### Jobs
-
-```
-build  ──►  test (×5 parallel)  ──►  publish
-                                 └──►  publish-pypi (×3 parallel)
-```
 
 ### Build
 
@@ -55,18 +47,9 @@ Results are uploaded as `e2e-parallel-<suite>-test-results` (retained 7 days).
 
 ---
 
-## Regression Tests (`regression_tests.yml`)
+## Regression Tests (`tests_regression.yml`)
 
 Manual workflow for running regression test suites against a fresh or existing build. Supports running any subset of suites in parallel.
-
-### Jobs
-
-```
-build (optional)  ──►
-                       setup  ──►  test (×N parallel)
-```
-
-The `build` job is skipped when `use_existing_build` is `true`; in that case the test job downloads the most recently uploaded `emod-all-build` artifact from any prior run.
 
 ### Suite Selection
 
@@ -86,8 +69,6 @@ A `setup` job dynamically builds the matrix from the boolean suite inputs. Only 
 |---|---|---|
 | `regression_test_cores` | `4` | Cores passed via `--config-constraints Num_Cores` |
 | `regression_test_options` | `--scons --use-dlls` | Extra flags passed to `regression_test.py` |
-| `copy_binaries` | `false` | Copies `Eradication`, `reporter_plugins`, `schema.json`, `version` to a per-suite artifact |
-| `use_existing_build` | `false` | Skip the build job and reuse the most recent `emod-all-build` artifact |
 | `run_generic` | `true` | Include Generic suite |
 | `run_hiv` | `true` | Include HIV suite |
 | `run_malaria` | `true` | Include Malaria suite |
@@ -97,24 +78,16 @@ A `setup` job dynamically builds the matrix from the boolean suite inputs. Only 
 ### Artifacts
 
 - `emod-<suite>-regression-test-results` — XML report and raw output (retained 7 days)
-- `emod-<suite>-binaries` — copied binaries, only when `copy_binaries` is `true` (retained 7 days)
 
 ---
 
-## Science Feature Tests (`sft_tests.yml`)
+## Science Feature Tests (`tests_sft.yml`)
 
 Manual workflow for running science feature test (SFT) suites. Always performs a fresh build with `--TestSugar` enabled to activate science-specific test scaffolding.
 
-### Jobs
-
-```
-build  ──►
-            setup  ──►  test (×N parallel)
-```
-
 ### Build
 
-Always builds with `extra_build_flags: '--TestSugar'`. There is no option to reuse an existing build, as the `--TestSugar` flag produces a build that differs from the standard release artifact.
+Always builds with `extra_build_flags: '--TestSugar'`. The `--TestSugar` flag produces a build that differs from the standard release artifact.
 
 ### Suite Selection
 
@@ -134,7 +107,6 @@ Same dynamic matrix pattern as the regression pipeline. Only suites with their i
 |---|---|---|
 | `regression_test_cores` | `4` | Cores passed via `--config-constraints Num_Cores` |
 | `regression_test_options` | `--scons --use-dlls` | Extra flags passed to `regression_test.py` |
-| `copy_binaries` | `false` | Copies binaries to a per-suite artifact |
 | `run_generic_science` | `true` | Include Generic Science suite |
 | `run_hiv_science` | `true` | Include HIV Science suite |
 | `run_malaria_science` | `true` | Include Malaria Science suite |
@@ -144,7 +116,6 @@ Same dynamic matrix pattern as the regression pipeline. Only suites with their i
 ### Artifacts
 
 - `emod-<suite>-regression-test-results` — XML report and raw output (retained 7 days)
-- `emod-<suite>-binaries` — copied binaries, only when `copy_binaries` is `true` (retained 7 days)
 
 ---
 
