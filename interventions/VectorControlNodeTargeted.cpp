@@ -243,9 +243,9 @@ namespace Kernel
 
     bool Larvicides::Configure( const Configuration * inputJson )
     {
-        initConfig( "Habitat_Target", m_HabitatTarget, inputJson, MetadataDescriptor::Enum("Habitat_Target", LV_Habitat_Target_DESC_TEXT, MDD_ENUM_ARGS(VectorHabitatType)) );
+        initConfig( "Habitat_Target", m_HabitatTarget, inputJson, MetadataDescriptor::Enum("Habitat_Target", Habitat_Target_DESC_TEXT, MDD_ENUM_ARGS(VectorHabitatType)) );
         initConfigComplexType("Larval_Killing_Config", &m_LarvalKillingConfig, LV_Larval_Killing_Config_DESC_TEXT );
-        initConfigTypeMap("Spray_Coverage", &m_Coverage, Spray_Coverage_DESC_TEXT, 0.0f, 1.0f, 1.0f);
+        initConfigTypeMap("Spray_Coverage", &m_Coverage, Habitat_Coverage_DESC_TEXT, 0.0f, 1.0f, 1.0f);
 
         bool configured = SimpleVectorControlNode::Configure( inputJson );
         if( configured && !JsonConfigurable::_dryrun )
@@ -282,6 +282,74 @@ namespace Kernel
 
         return data;
     }
+
+
+
+    // ---------------------------------------------------------------------------------------------------------
+    //-------------------------------- LarvalMicrosporidiaIntervention -----------------------------------------
+    // ---------------------------------------------------------------------------------------------------------
+
+    LarvalMicrosporidiaIntervention::LarvalMicrosporidiaIntervention()
+        : SimpleVectorControlNode()
+        , m_Coverage(1.0f)
+        , m_StrainName("")
+    {
+    }
+
+    LarvalMicrosporidiaIntervention::LarvalMicrosporidiaIntervention(const LarvalMicrosporidiaIntervention& rMaster)
+        : SimpleVectorControlNode(rMaster)
+        , m_Coverage(rMaster.m_Coverage)
+        , m_StrainName(rMaster.m_StrainName)
+    {
+    }
+
+    LarvalMicrosporidiaIntervention::~LarvalMicrosporidiaIntervention()
+    {
+    }
+
+    bool LarvalMicrosporidiaIntervention::Configure(const Configuration* inputJson)
+    {
+        initConfig("Habitat_Target", m_HabitatTarget, inputJson, MetadataDescriptor::Enum("Habitat_Target", Habitat_Target_DESC_TEXT, MDD_ENUM_ARGS(VectorHabitatType)));
+		initConfigComplexType("Larval_Infectivity_Config", &m_LarvalKillingConfig, LMI_Larval_Infectivity_Config_DESC_TEXT); // re-use larval killing config for infectivity config since they have the same parameters
+        initConfigTypeMap("Habitat_Coverage", &m_Coverage, Habitat_Coverage_DESC_TEXT, 0.0f, 1.0f, 1.0f);
+        initConfigTypeMap("Strain_Name", &m_StrainName, Strain_Name_DESC_TEXT, 0.0f, 1.0f, 1.0f);
+
+        bool configured = SimpleVectorControlNode::Configure(inputJson);
+        if (configured && !JsonConfigurable::_dryrun)
+        {
+            CheckHabitatTarget(m_HabitatTarget, "Habitat_Target");
+        }
+        return configured;
+    }
+
+    void LarvalMicrosporidiaIntervention::initConfigKilling()
+    {
+    }
+
+    bool LarvalMicrosporidiaIntervention::Distribute(INodeEventContext* pNodeContext, IEventCoordinator2* pEC)
+    {
+        // stacked automatically, SimpleVectorControlNode Distribute() purges existing by name
+        return BaseNodeIntervention::Distribute(pNodeContext, pEC);
+    }
+
+    void LarvalMicrosporidiaIntervention::ApplyEffects(float dt)
+    {
+        release_assert(m_pINVIC != nullptr);
+
+        GeneticProbability larval_killing = GetKilling(ResistanceType::LARVAL_KILLING) * m_Coverage;
+        m_pINVIC->UpdateLarvalKilling(GetHabitatTarget(), larval_killing);
+    }
+
+    ReportInterventionData LarvalMicrosporidiaIntervention::GetReportInterventionData() const
+    {
+        // only has larval killing so don't call SimpleVectorControlNode::GetReportInterventionData()
+        ReportInterventionData data = BaseNodeIntervention::GetReportInterventionData();
+
+        data.efficacy_killing = m_pInsecticideWaningEffect->GetCurrent(ResistanceType::LARVAL_KILLING).GetSum() * m_Coverage;
+
+        return data;
+    }
+
 
     // ---------------------------------------------------------------------------------------------------------
     //--------------------------------------------- SpaceSpraying ---------------------------------------------
@@ -768,7 +836,7 @@ namespace Kernel
 
         WaningConfig killing_config;
 
-        initConfig( "Habitat_Target", m_HabitatTarget, inputJson, MetadataDescriptor::Enum("Habitat_Target", OT_Habitat_Target_DESC_TEXT, MDD_ENUM_ARGS(VectorHabitatType)) );
+        initConfig( "Habitat_Target", m_HabitatTarget, inputJson, MetadataDescriptor::Enum("Habitat_Target", Habitat_Target_DESC_TEXT, MDD_ENUM_ARGS(VectorHabitatType)) );
         initConfigComplexType("Killing_Config",  &killing_config, OT_Killing_Config_DESC_TEXT  );
 
         bool configured = SimpleVectorControlNode::Configure( inputJson );

@@ -437,7 +437,7 @@ namespace Kernel
         {
             std::stringstream ss;
             ss << "Duplicate drug name.\n";
-            ss << "The names of the species in 'Vector_Species_Params' must be unique.\n";
+            ss << "The names of the drugs must be unique.\n";
             ss << "The following names are defined:\n";
             for( auto p_drug : m_Collection )
             {

@@ -9,7 +9,7 @@ description = "PyPI distribution of EMOD for the Malaria sim type"
 license = "MIT"
 authors = [
 ]
-readme = "README.md"
+readme = "../README.md"
 requires-python = ">=3.9"
 dependencies = [
 ]
