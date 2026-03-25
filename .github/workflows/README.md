@@ -45,21 +45,6 @@ Runs 5 suites in parallel against the build artifact using `docker-production.pa
 
 Results are uploaded as `e2e-parallel-<suite>-test-results` (retained 7 days).
 
-### Publish
-
-Runs only when all test jobs succeed, and only when:
-- Triggered by a push to `main`, **or**
-- `publish_artifacts` input is `true` (on `workflow_dispatch`)
-
-> **Note:** When triggered via `workflow_dispatch`, the `publish_artifacts` input defaults to `true`, so publishing happens by default unless explicitly unchecked. When triggered by a push to `main`, publishing always runs.
-
-**`publish` job** — packages the build artifact into a versioned tarball (`emod-all-<version>.tar.gz`) and uploads it as `emod-all-release` (retained 30 days).
-
-**`publish-pypi` job** — calls `publish_pypi_reusable.yml` in parallel for three packages:
-- `emod-common`
-- `emod-hiv`
-- `emod-malaria`
-
 ### Inputs (`workflow_dispatch` only)
 
 | Input | Default | Description |
@@ -67,38 +52,6 @@ Runs only when all test jobs succeed, and only when:
 | `regression_test_cores` | `4` | Cores passed via `--config-constraints Num_Cores` |
 | `regression_test_options` | `--scons --use-dlls` | Extra flags passed to `regression_test.py` |
 | `publish_artifacts` | `true` | Whether to run the publish jobs |
-
----
-
-## Publishing to PyPI (`publish_pypi_reusable.yml`)
-
-Called by the E2E pipeline's `publish-pypi` job in parallel for three packages: `emod-common`, `emod-hiv`, and `emod-malaria`. Not triggered directly.
-
-### Jobs
-
-```
-prepare  ──►  publish
-```
-
-### prepare
-
-Builds the Python distribution for a given package type:
-
-1. Resolves paths and names from the `package_type` input (`common`, `hiv`, or `malaria`)
-2. Downloads the `emod-all-build` artifact
-3. Packages `Eradication` and `schema.json` into zip files inside the appropriate `pypi_<type>/src/emod_<type>/` directory
-4. Runs `python3 -m build` to produce a wheel and source tarball
-5. Uploads the `dist/` output as `emod-<type>-dist` (retained 1 day)
-
-### publish
-
-Runs in the `pypi` GitHub environment, which must be configured with a trusted publisher pointing to `pypi.org`. Uses OIDC (`id-token: write`) for keyless authentication — no stored PyPI API token is required.
-
-Downloads the `emod-<type>-dist` artifact and publishes it using `pypa/gh-action-pypi-publish`. On success, the workflow links directly to the package at `https://pypi.org/project/emod-<type>`.
-
-### Required Repository Configuration
-
-Before the PyPI publish flow will work, the `pypi` environment must exist in the repository settings (**Settings → Environments**) and be configured with a trusted publisher pointing to `pypi.org`.
 
 ---
 

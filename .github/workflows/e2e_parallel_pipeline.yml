@@ -150,16 +150,3 @@ jobs:
           name: emod-all-release
           path: publish/*.tar.gz
           retention-days: 30
-
-  publish-pypi:
-    name: Publish emod-${{ matrix.package_type }} to PyPI
-    needs: [build, test]
-    if: ${{ inputs.publish_artifacts && success() }}
-    strategy:
-      fail-fast: false
-      matrix:
-        package_type: [common, hiv, malaria]
-    uses: ./.github/workflows/reusable_publish_pypi.yml
-    with:
-      package_type: ${{ matrix.package_type }}
-      build_artifact_name: ${{ needs.build.outputs.artifact_name }}
