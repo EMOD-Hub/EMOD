@@ -49,7 +49,7 @@ Manual workflow for running science feature test (SFT) suites. Always performs a
 
 ### Build
 
-Always builds with `extra_build_flags: '--TestSugar'`. The `--TestSugar` flag produces a build that differs from the standard release artifact.
+Always enables the `--TestSugar` science-test build option (via the `science_test` input), which produces a build that differs from the standard release artifact.
 
 ### Suite Selection
 
