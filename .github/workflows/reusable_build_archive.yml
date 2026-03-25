@@ -1,4 +1,4 @@
-name: Z-Reusable - Build EMOD archive
+name: Workflow - Build EMOD; create artifacts
 
 on:
   # Allows re-use in other workflows
@@ -16,26 +16,27 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     env:
-      scons_option: ${{ inputs.disease_type != 'All' && format('--Disease={0}', inputs.disease_type) || ' ' }}
+      SCONS_OPTION: ${{ inputs.disease_type != 'All' && format('--Disease={0}', inputs.disease_type) || ' ' }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - name: Check python; build executable; strip symbols; make schema; extract version
+      - name: Build executable
+        uses: docker://docker-production.packages.idmod.org:443/idm/dtk-centos-buildenv:3.0
+        with:
+          args: "scons --Release --jobs=4 ${{ env.SCONS_OPTION }} ${{ inputs.science_test }}"
+      - name: Strip executable
+        uses: docker://docker-production.packages.idmod.org:443/idm/dtk-centos-buildenv:3.0
+        with:
+          args: "strip ./build/x64/Release/Eradication/Eradication"
+      - name: Generate schema
+        uses: docker://docker-production.packages.idmod.org:443/idm/dtk-centos-buildenv:3.0
+        with:
+          args: "./build/x64/Release/Eradication/Eradication --get-schema --schema-path schema.json"
+      - name: Generate version file
         run: |
-          docker run --rm \
-            -v "${{ github.workspace }}:/EMOD" \
-            docker-production.packages.idmod.org:443/idm/dtk-centos-buildenv:3.0 \
-            bash -c "\
-              python3 --version && \
-              python3 -m pip list && \
-              cd /EMOD && \
-              scons --Release --jobs=4 ${{ env.scons_option }} ${{ inputs.science_test }} && \
-              strip build/x64/Release/Eradication/Eradication && \
-              ./build/x64/Release/Eradication/Eradication --get-schema --schema-path schema.json && \
-              grep DTK_Version schema.json | sed 's/[^0-9.]//g' > version\
-            "
+          grep DTK_Version schema.json | sed 's/[^0-9.]//g' > version
       - name: Archive binary
         uses: actions/upload-artifact@v6
         with:
@@ -56,7 +57,7 @@ jobs:
           retention-days: 7
       - name: Archive component tests
         if: ${{ inputs.disease_type == 'All' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: componentTests
           path: ./build/x64/Release/componentTests/componentTests
