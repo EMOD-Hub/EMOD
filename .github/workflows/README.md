@@ -67,8 +67,8 @@ Same dynamic matrix pattern as the regression pipeline. Only suites with their i
 
 | Input | Default | Description |
 |---|---|---|
-| `regression_test_cores` | `4` | Cores passed via `--config-constraints Num_Cores` |
-| `regression_test_options` | `--scons --use-dlls` | Extra flags passed to `regression_test.py` |
+| `sft_test_cores` | `4` | Cores passed via `--config-constraints Num_Cores` |
+| `sft_test_options` | `--scons --use-dlls` | Extra flags passed to `regression_test.py` |
 | `run_generic_science` | `true` | Include Generic Science suite |
 | `run_hiv_science` | `true` | Include HIV Science suite |
 | `run_malaria_science` | `true` | Include Malaria Science suite |
