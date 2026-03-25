@@ -11,11 +11,6 @@ on:
         description: 'Additional regression_test.py command-line options'
         required: false
         default: '--all-outputs --scons --use-dlls'
-      save_binaries:
-        description: 'Save binaries - Eradication, reporter_plugins, schema'
-        required: false
-        type: boolean
-        default: false
       run_generic:
         description: 'Run Generic suite'
         required: false
@@ -176,25 +171,6 @@ jobs:
               echo "This may indicate the test suite was empty or had configuration issues"
             fi
           fi
-
-      - name: Copy Binaries to artifacts directory
-        if: ${{ github.event.inputs.save_binaries == 'true' }}
-        run: |
-          mkdir -p artifacts
-          cp build/x64/Release/Eradication/Eradication artifacts/
-          cp build/x64/Release/schema.json artifacts/ 2>/dev/null || cp schema.json artifacts/
-          cp build/x64/Release/version artifacts/ 2>/dev/null || cp version artifacts/
-          if [ -d "build/x64/Release/reporter_plugins" ]; then
-            cp -r build/x64/Release/reporter_plugins artifacts/
-          fi
-
-      - name: Upload Build Artifacts
-        if: ${{ github.event.inputs.save_binaries == 'true' }}
-        uses: actions/upload-artifact@v5
-        with:
-          name: emod-${{ matrix.name }}-binaries
-          path: artifacts/
-          retention-days: 7
 
       - name: Upload Test Results
         if: always()
