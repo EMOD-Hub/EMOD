@@ -24,19 +24,19 @@ jobs:
           fetch-depth: 0
       # Weird Ubuntu22 + Git specific issue. See https://github.com/actions/runner-images/issues/6775
       - name: Add safety exceptions to git commands
-        uses: docker://ghcr.io/emod-hub/emod-ubuntu-buildenv:sha-ba3289b
+        uses: docker://ghcr.io/emod-hub/emod-ubuntu-buildenv:sha-6770fa1
         with:
           args: "git config --global --add safe.directory *"
       - name: Build executable
-        uses: docker://ghcr.io/emod-hub/emod-ubuntu-buildenv:sha-ba3289b
+        uses: docker://ghcr.io/emod-hub/emod-ubuntu-buildenv:sha-6770fa1
         with:
           args: "scons --Release --jobs=4 ${{ env.SCONS_OPTION }} ${{ inputs.science_test }}"
       - name: Strip executable
-        uses: docker://ghcr.io/emod-hub/emod-ubuntu-buildenv:sha-ba3289b
+        uses: docker://ghcr.io/emod-hub/emod-ubuntu-buildenv:sha-6770fa1
         with:
           args: "strip ./build/x64/Release/Eradication/Eradication"
       - name: Generate schema
-        uses: docker://ghcr.io/emod-hub/emod-ubuntu-buildenv:sha-ba3289b
+        uses: docker://ghcr.io/emod-hub/emod-ubuntu-buildenv:sha-6770fa1
         with:
           args: "./build/x64/Release/Eradication/Eradication --get-schema --schema-path schema.json"
       - name: Generate version file
