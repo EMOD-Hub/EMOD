@@ -23,9 +23,10 @@ jobs:
         with:
           fetch-depth: 0
       # Weird Ubuntu22 + Git specific issue. See https://github.com/actions/runner-images/issues/6775
-      - name: Change owner of container working directory
-        run: |
-          chown root:root .
+      - name: Add safety exceptions to git commands
+        uses: docker://ghcr.io/emod-hub/emod-ubuntu-buildenv:sha-ba3289b
+        with:
+          args: "git config --global --add safe.directory *"
       - name: Build executable
         uses: docker://ghcr.io/emod-hub/emod-ubuntu-buildenv:sha-ba3289b
         with:
