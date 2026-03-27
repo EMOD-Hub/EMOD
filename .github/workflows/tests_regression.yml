@@ -113,6 +113,7 @@ jobs:
         continue-on-error: true
         run: |
           docker run --rm \
+            --user $(id -u):$(id -g) \
             -v "${{ github.workspace }}:/EMOD" \
             docker-production.packages.idmod.org/idm/dtk-centos-sfts:3.0 \
             bash -c "\
@@ -126,7 +127,8 @@ jobs:
                 --hidegraphs --config-constraints Num_Cores:${{ inputs.regression_test_cores }} \
                 ${{ inputs.regression_test_options }} \
                 --local \
-                --linux\
+                --linux \
+                --print-error \
             "
 
       - name: Check Test Results
@@ -134,27 +136,24 @@ jobs:
         run: |
           echo "=== Looking for regression test reports ==="
 
-          # Find the XML report file(s)
           REPORT_FILE=$(find Regression/reports -name "report_*.xml" 2>/dev/null | head -1)
 
           if [ -n "$REPORT_FILE" ] && [ -f "$REPORT_FILE" ]; then
-
-            # Parse XML for failures and errors
             FAILURES=$(grep -oP 'failures="\K[0-9]+' "$REPORT_FILE" || echo "0")
             ERRORS=$(grep -oP 'errors="\K[0-9]+' "$REPORT_FILE" || echo "0")
             TESTS=$(grep -oP 'tests="\K[0-9]+' "$REPORT_FILE" || echo "0")
 
             echo "Test Summary (${{ matrix.name }}):"
             echo "  Total tests: $TESTS"
-            echo "  Failures: $FAILURES"
-            echo "  Errors: $ERRORS"
+            echo "  Failures:    $FAILURES"
+            echo "  Errors:      $ERRORS"
             echo ""
 
-            # Fail if there are any failures or errors
             if [ "$FAILURES" != "0" ] || [ "$ERRORS" != "0" ]; then
-              echo "❌ ${{ matrix.name }} REGRESSION TESTS FAILED"
-              echo "   $FAILURES test(s) failed, $ERRORS error(s)"
-              echo "   Check the test results artifact for details"
+              echo "=== Failing Tests ==="
+              python3 -c "import xml.etree.ElementTree as ET,sys;root=ET.parse(sys.argv[1]).getroot();[print(('[ERROR] ' if tc.find('error') is not None else '[FAIL]  ')+tc.get('name','?')+('\n        '+(tc.find('error') if tc.find('error') is not None else tc.find('failure')).text.strip() if (tc.find('error') if tc.find('error') is not None else tc.find('failure')).text and (tc.find('error') if tc.find('error') is not None else tc.find('failure')).text.strip() else '')) for tc in root.findall('testcase') if tc.find('error') is not None or tc.find('failure') is not None]" "$REPORT_FILE"
+              echo ""
+              echo "❌ ${{ matrix.name }} REGRESSION TESTS FAILED ($FAILURES failed, $ERRORS errored)"
               exit 1
             else
               echo "✅ All $TESTS ${{ matrix.name }} regression tests passed!"
