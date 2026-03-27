@@ -1,13 +1,9 @@
-#!/usr/bin/python
-
 import os
 import json
 import threading
 import subprocess
 import glob
 import regression_local_monitor
-import regression_hpc_monitor
-import regression_hpc_linux_monitor
 import regression_utils as ru
 import sys
 import shutil
@@ -585,10 +581,7 @@ class MyRegressionRunner(object):
         if self.is_local_simulation():
             monitorThread = regression_local_monitor.Monitor(sim_id, scenario_path, report, self.params, reply_json, scenario_type,serialization_test_type)
         else:
-            if self.params.linux:
-                monitorThread = regression_hpc_linux_monitor.LinuxHpcMonitor(sim_id, scenario_path, report, self.params, self.params.label, reply_json, scenario_type, serialization_test_type)
-            else:
-                monitorThread = regression_hpc_monitor.HpcMonitor(sim_id, scenario_path, report, self.params, self.params.label, reply_json, scenario_type, serialization_test_type)
+            raise ValueError('Must be using local monitor.')
 
         # monitorThread.daemon = True
         monitorThread.daemon = False
@@ -602,16 +595,7 @@ class MyRegressionRunner(object):
         if self.is_local_simulation():
             pass  # No test submissions for local simulations
         else:
-            monitor_thread = regression_hpc_monitor.HpcMonitor("TestJob", None, None, self.params, self.params.label,
-                                                               None, None, None, priority="Highest")
-
-            # Test whether we can submit jobs to the cluster as specified
-            try:
-                monitor_thread.test_submission()
-            except (subprocess.TimeoutExpired, AssertionError) as ex:
-                print("FAILED to submit test job to the cluster. Make sure that you have valid credentials "
-                      "cached with the cluster and that the cluster at the specified address is available.")
-                raise ex
+            raise ValueError('Must be using local monitor.')
 
     def doSchemaTest(self):
         # print( "Testing schema generation..." )
