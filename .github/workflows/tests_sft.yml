@@ -83,16 +83,14 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
-
-      - name: Download Build Artifacts
-        uses: actions/download-artifact@v5
+      - name: Download executable
+        uses: actions/download-artifact@v7
         with:
-          name: ${{ needs.build.outputs.artifact_name }}
-          path: .
-
+          name: Eradication
+          path: build/x64/Release/Eradication/
       - name: Restore executable permissions
         run: |
           echo "Checking downloaded artifact structure..."
