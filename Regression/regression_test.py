@@ -1,18 +1,6 @@
-#!/usr/bin/python
-
 """
 This file is the root of regression. Almost everything here is about copying files around.
 """
-
-# These imports are from original version of regression_test.py that ran as a REST-ful web service 
-# inside mod_wsgi/apache setup. Was a good idea then and still might be...
-#import BaseHTTPServer
-#import SimpleHTTPServer
-#import SocketServer
-#import cgi
-#import httplib
-#import urllib
-#import urlparse
 
 import argparse
 import datetime

@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 from __future__ import print_function
 import os
 import sys
@@ -68,7 +66,6 @@ class RuntimeParameters:
         print( "[cfg] Shared input:               ", self.shared_input )
         print( "[cfg] User input:                 ", self.user_input )
         print( "[cfg] Use user input:             ", self.use_user_input_root )
-        #print( "[cfg] Python input:               ", self.py_input )
         print( "[cfg] Sim root:                   ", self.sim_root )
 
         print( "[cfg] Local bin root:             ", self.local_bin_root )
