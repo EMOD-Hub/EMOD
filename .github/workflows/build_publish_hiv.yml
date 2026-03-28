@@ -29,17 +29,17 @@ jobs:
         with:
           python-version: '3.x'
       - name: Download executable
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: Eradication
           path: pypi_hiv/src/eradication_dir
       - name: Download schema
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: schema.json
           path: pypi_hiv/src/schema_dir
       - name: Download version
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: version
           path: pypi_hiv/src/version_dir
