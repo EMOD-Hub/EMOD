@@ -1,4 +1,5 @@
 
+#include <memory>
 #include "stdafx.h"
 #include "MpiDataExchanger.h"
 #include "BinaryArchiveWriter.h"

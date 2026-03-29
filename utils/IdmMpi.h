@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include <mpi.h>
+
 #include "IdmApi.h"
 
 namespace IdmMpi
@@ -17,7 +19,7 @@ namespace IdmMpi
         Request();
         ~Request();
     private:
-        int m_Data;
+        MPI_Request m_Data;
     };
 
     class RequestList
@@ -30,7 +32,7 @@ namespace IdmMpi
 
         void Add( const Request& request );
     private:
-        std::vector<int> m_DataList;
+        std::vector<MPI_Request> m_DataList;
     };
 
     class IDMAPI MessageInterface
