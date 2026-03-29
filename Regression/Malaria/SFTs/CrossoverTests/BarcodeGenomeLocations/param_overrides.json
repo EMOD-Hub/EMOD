@@ -8,7 +8,7 @@
     "PRIMARY": {
         "Config_Name": "Malaria::SFTs::CrossoverTests::BarcodeGenomeLocations",
         "Geography": "Namawala",
-        "Run_Number": 1,
+        "Run_Number": 2,
         "Simulation_Duration": 250
     },
     "REPORTS": {
