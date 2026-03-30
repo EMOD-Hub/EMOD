@@ -2,6 +2,8 @@
 #pragma once
 
 #include <list>
+#include <map>
+
 #include "ISerializable.h"
 #include "VectorEnums.h"
 #include "Types.h"
@@ -45,7 +47,7 @@ namespace Kernel
 
         virtual float GetLocalLarvalGrowthModifier() const = 0;
         virtual float GetLocalLarvalMortality(float species_aquatic_mortality, float progress) const = 0;
-        virtual const std::vector<std::tuple<int, float>>& GetLarvalMicrosporidiaInfections() const = 0;
+        virtual const std::map<int, float>& GetLarvalMicrosporidiaInfections() const = 0;
 
         virtual ~IVectorHabitat() {}
     };

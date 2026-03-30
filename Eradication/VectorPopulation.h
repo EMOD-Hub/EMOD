@@ -204,7 +204,7 @@ namespace Kernel
         float GetLarvalDevelopmentProgress (float dt, IVectorCohort* larva) const;
         GeneticProbability GetLarvalMortalityProbability(float dt, IVectorCohort* larva) const;
         float GetRelativeSurvivalWeight(VectorHabitat* habitat) const;
-        const std::vector<std::tuple<int, float>>& GetLarvalMicrosporidiaInfections(IVectorCohort* larva) const;
+        const std::map<int, float>& GetLarvalMicrosporidiaInfections(IVectorCohort* larva) const;
 
         // VectorPopulation accounting helper function
         virtual void queueIncrementTotalPopulation( IVectorCohort* cohort );

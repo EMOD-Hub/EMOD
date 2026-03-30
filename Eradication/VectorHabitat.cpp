@@ -27,7 +27,7 @@ namespace Kernel
         , m_larvicide_habitat_scaling(1.0f)
         , m_rainfall_mortality(0.0f)
         , m_egg_crowding_correction(0.0f)
-        , m_portion_larva_infected_microsporidia(std::vector<std::tuple<int, float>>())
+        , m_portion_larva_infected_microsporidia()
     {
     }
 
@@ -552,7 +552,7 @@ namespace Kernel
         return m_egg_crowding_correction;
     }
 
-    const std::vector<std::tuple<int, float>>& VectorHabitat::GetLarvalMicrosporidiaInfections() const
+    const std::map<int, float>& VectorHabitat::GetLarvalMicrosporidiaInfections() const
     {
         return m_portion_larva_infected_microsporidia;
     }

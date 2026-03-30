@@ -230,8 +230,7 @@ namespace Kernel
 
     void NodeVectorEventContextHost::UpdateLarvalMicrosporidiaInterventions(VectorHabitatType::Enum habitat, const std::string& species_name, int strain_index, float coverage, float current_effect)
     {
-        // add a new larval microsporidia intervention to the list with the given habitat, species index, strain index, coverage, and current_effect
-        larvalMicrosporidiaInterventions.push_back(std::make_tuple(habitat, species_name, strain_index, coverage, current_effect));
+        larvalMicrosporidiaInterventions.push_back({ habitat, species_name, strain_index, coverage, current_effect });
     }
 
     //
@@ -300,43 +299,25 @@ namespace Kernel
         return pSugarFeedKilling;
     }
 
-    std::vector<std::tuple<int, float>> NodeVectorEventContextHost::GetLarvalMicrosporidiaInfectivity(
+    std::map<int, float> NodeVectorEventContextHost::GetLarvalMicrosporidiaInfectivity(
         VectorHabitatType::Enum habitat_query,
         const std::string& species) const
     {
-        // Returns a vector of (strain_index, fraction_newly_infected) for each microsporidia
+        // Returns a map of strain_index -> fraction_newly_infected for each microsporidia
         // strain affecting larvae in the given habitat and species. Multiple interventions
         // targeting the same strain accumulate their effects; each successive intervention
         // draws from the remaining uninfected fraction.
         float uninfected = 1.0f;
-        std::vector<std::tuple<int, float>> final_numbers;
-        for (auto& intervention : larvalMicrosporidiaInterventions)
+        std::map<int, float> result;
+        for (const auto& iv : larvalMicrosporidiaInterventions)
         {
-            VectorHabitatType::Enum habitat = std::get<0>(intervention);
-            std::string species_name        = std::get<1>(intervention);
-            int   strain_index              = std::get<2>(intervention);
-            float coverage                  = std::get<3>(intervention);
-            float current_effect            = std::get<4>(intervention);
-            if ((habitat == habitat_query || habitat == VectorHabitatType::ALL_HABITATS) && species_name == species)
+            if ((iv.habitat == habitat_query || iv.habitat == VectorHabitatType::ALL_HABITATS) && iv.species_name == species)
             {
-                bool found = false;
-                for (auto& fn : final_numbers)
-                {
-                    if (std::get<0>(fn) == strain_index)
-                    {
-                        std::get<1>(fn) += uninfected * coverage * current_effect;
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found)
-                {
-                    final_numbers.push_back(std::make_tuple(strain_index, uninfected * coverage * current_effect));
-                }
-                uninfected *= (1.0f - coverage * current_effect);
+                result[iv.strain_index] += uninfected * iv.coverage * iv.current_effect;
+                uninfected *= (1.0f - iv.coverage * iv.current_effect);
             }
         }
-        return final_numbers;
+        return result;
     }
 
     float NodeVectorEventContextHost::GetOviTrapKilling( VectorHabitatType::Enum habitat_query ) const

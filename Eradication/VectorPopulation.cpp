@@ -2096,7 +2096,9 @@ namespace Kernel
             IVectorCohort* cohort = *it;
 
             // Get the fraction of this larval cohort newly infected with each microsporidia strain.
-            const std::vector<std::tuple<int, float>> larval_microsporidia_infections = GetLarvalMicrosporidiaInfections(cohort);
+            // Copy into a vector of pairs so we can pass to GetRandomIndexes for random-order iteration.
+            const std::map<int, float>& infections_map = GetLarvalMicrosporidiaInfections(cohort);
+            const std::vector<std::pair<int, float>> larval_microsporidia_infections(infections_map.begin(), infections_map.end());
 
             // -----------------------------------------------------------------
             // --- Split off sub-cohorts for each microsporidia strain that has
@@ -2113,8 +2115,8 @@ namespace Kernel
                 std::vector<uint32_t> strain_order = GetRandomIndexes(m_context->GetRng(), larval_microsporidia_infections.size());
                 for (uint32_t random_strain : strain_order)
                 {
-                    int   strain_index           = std::get<0>(larval_microsporidia_infections[random_strain]);
-                    float percent_newly_infected = std::get<1>(larval_microsporidia_infections[random_strain]);
+                    int   strain_index           = larval_microsporidia_infections[random_strain].first;
+                    float percent_newly_infected = larval_microsporidia_infections[random_strain].second;
                     if (percent_newly_infected <= 0.0f)
                     {
                         continue;
@@ -2290,11 +2292,9 @@ namespace Kernel
         return p_larval_mortality;
     }
 
-    const std::vector<std::tuple<int, float>>& VectorPopulation::GetLarvalMicrosporidiaInfections( IVectorCohort* larva) const
+    const std::map<int, float>& VectorPopulation::GetLarvalMicrosporidiaInfections(IVectorCohort* larva) const
     {
-        IVectorHabitat* habitat = larva->GetHabitat();
-        return habitat->GetLarvalMicrosporidiaInfections();
-
+        return larva->GetHabitat()->GetLarvalMicrosporidiaInfections();
     }
 
     void VectorPopulation::Update_Egg_Laying( float dt )

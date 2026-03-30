@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <map>
 #include <string>
 
 #include "ISupports.h"
@@ -15,6 +16,14 @@
 
 namespace Kernel
 {
+    struct LarvalMicrosporidiaInterventionEffect
+    {
+        VectorHabitatType::Enum habitat;
+        std::string             species_name;
+        int                     strain_index;
+        float                   coverage;
+        float                   current_effect;
+    };
     class Simulation;
 
     class INodeVectorInterventionEffectsApply : public ISupports
@@ -83,7 +92,7 @@ namespace Kernel
         virtual const GeneticProbability& GetIndoorKilling() const override;
         virtual bool  IsUsingSugarTrap() const override;
         virtual const GeneticProbability& GetSugarFeedKilling() const override;
-        virtual std::vector<std::tuple<int, float>> GetLarvalMicrosporidiaInfectivity(VectorHabitatType::Enum, const std::string& species ) const override;
+        virtual std::map<int, float> GetLarvalMicrosporidiaInfectivity(VectorHabitatType::Enum, const std::string& species) const override;
 
         VectorHabitatType::Enum larval_reduction_target;
         LarvalHabitatMultiplier larval_reduction;
@@ -113,7 +122,7 @@ namespace Kernel
         GeneticProbability pIndoorKilling;
         bool               isUsingSugarTrap;
         GeneticProbability pSugarFeedKilling;
-        std::vector<std::tuple<VectorHabitatType::Enum, std::string, int, float, float>> larvalMicrosporidiaInterventions; // tuple of habitat, species name, strain index, coverage, and current_effect
+        std::vector<LarvalMicrosporidiaInterventionEffect> larvalMicrosporidiaInterventions;
 
     private:
         float CombineProbabilities( float prob1, float prob2 );
