@@ -374,7 +374,7 @@ namespace Kernel
             throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }
 
-		int8_t sporidia_strains_defined = 0;
+        int sporidia_strains_defined = 0;
         for( auto p_vsp : m_Collection )
         {
             m_SpeciesNames.insert( p_vsp->name );
@@ -382,11 +382,11 @@ namespace Kernel
             {
                 if (strain_name == "NoMicrosporidia")
                 {
-					continue; // skip the "NoMicrosporidia" strain since it's not really a strain and is present in each species by default
-				}
+                    continue; // skip the "NoMicrosporidia" strain since it's not really a strain and is present in each species by default
+                }
                 m_MicrosporidiaNames.insert( strain_name );
-				sporidia_strains_defined++;
-			}
+                sporidia_strains_defined++;
+            }
         }
 
         if( m_SpeciesNames.size() != m_Collection.size() )

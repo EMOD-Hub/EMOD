@@ -2111,7 +2111,6 @@ namespace Kernel
                 // disadvantaged by seeing a smaller uninfected remainder.
                 // We build indices for strains 1..N-1 only (index 0 = no strain).
                 std::vector<uint32_t> strain_order = GetRandomIndexes(m_context->GetRng(), larval_microsporidia_infections.size());
-                // GetRandomIndexes produces indices [0, num_strains-2]; shift each by 1 to skip strain 0
                 for (uint32_t random_strain : strain_order)
                 {
                     int   strain_index           = std::get<0>(larval_microsporidia_infections[random_strain]);
@@ -2123,7 +2122,7 @@ namespace Kernel
 
                     if (cohort->GetPopulation() == 0)
                     {
-                        break; // cohort exhausted — no point checking further strains
+                        break; // cohort exhausted ï¿½ no point checking further strains
                     }
                     
                     uint32_t num_to_infect = uint32_t(m_context->GetRng()->binomial_approx(cohort->GetPopulation(), percent_newly_infected));
@@ -2156,9 +2155,9 @@ namespace Kernel
 
                     if (new_infected_cohort->GetPopulation() > 0)
                     {
-                        queueIncrementTotalPopulation(cohort); 
+                        queueIncrementTotalPopulation(new_infected_cohort);
 
-						// this cohort is not in any queue yet, we need to decide whether it goes to immature or into larva queue based on its state post progress
+                        // this cohort is not in any queue yet, we need to decide whether it goes to immature or into larva queue based on its state post progress
                         if (new_infected_cohort->GetState() == VectorStateEnum::STATE_IMMATURE)
                         {
                             m_ProgressedLarvaeToImmatureCount  += new_infected_cohort->GetPopulation();

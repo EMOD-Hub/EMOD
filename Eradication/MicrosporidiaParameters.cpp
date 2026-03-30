@@ -62,7 +62,7 @@ namespace Kernel
             else if( strain_name == "NoMicrosporidia" )
             {
                 throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, "The 'Name' of the microsporidia strain cannot be 'NoMicrosporidia' since that name is reserved for the special case of no microsporidia." );
-			}
+            }
         }
 
         return ret;

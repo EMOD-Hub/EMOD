@@ -295,7 +295,7 @@ namespace Kernel
         , m_Coverage(1.0f)
         , m_StrainIndex(-1)
         , waning_effect(nullptr)
-		, m_SpeciesName("")
+        , m_SpeciesName("")
     {
     }
 
@@ -304,7 +304,7 @@ namespace Kernel
         , m_Coverage(rMaster.m_Coverage)
         , m_StrainIndex(rMaster.m_StrainIndex)
         , waning_effect(nullptr)
-		, m_SpeciesName(rMaster.m_SpeciesName)
+        , m_SpeciesName(rMaster.m_SpeciesName)
     {
         if (rMaster.waning_effect != nullptr)
         {
@@ -329,8 +329,9 @@ namespace Kernel
             strain_name.constraints = "Vector_Species_Params[X].Microsporidia[X].Strain_Name";
         }
 
+        WaningConfig infectivity_config;
         initConfig("Habitat_Target", m_HabitatTarget, inputJson, MetadataDescriptor::Enum("Habitat_Target", Habitat_Target_DESC_TEXT, MDD_ENUM_ARGS(VectorHabitatType)));
-		initConfigComplexType("Infectivity_Config", &m_LarvalKillingConfig, LMI_Larval_Infectivity_Config_DESC_TEXT); // re-use larval killing config for infectivity config since they have the same parameters
+        initConfigComplexType("Infectivity_Config", &infectivity_config, LMI_Larval_Infectivity_Config_DESC_TEXT);
         initConfigTypeMap("Habitat_Coverage", &m_Coverage, Habitat_Coverage_DESC_TEXT, 0.0f, 1.0f, 1.0f);
         initConfigTypeMap("Strain_Name", &strain_name, Strain_Name_DESC_TEXT);
 
@@ -338,22 +339,21 @@ namespace Kernel
         if (configured && !JsonConfigurable::_dryrun)
         {
             CheckHabitatTarget(m_HabitatTarget, "Habitat_Target");
-            waning_effect = WaningEffectFactory::getInstance()->CreateInstance(m_LarvalKillingConfig._json,
+            waning_effect = WaningEffectFactory::getInstance()->CreateInstance(infectivity_config._json,
                                                                                inputJson->GetDataLocation(),
                                                                                "Infectivity_Config");
-			m_LarvalKillingConfig = WaningConfig(); // try to get rid of memory no longer needed
 
             if (GET_CONFIGURABLE(SimulationConfig) != nullptr)
             {
-				bool found_strain = false;
+                bool found_strain = false;
                 VectorParameters* p_vp = GET_CONFIGURABLE(SimulationConfig)->vector_params;
                 for (int i = 0; i < p_vp->vector_species.Size(); ++i)
                 {
                     for (int j = 0; j < p_vp->vector_species[i]->microsporidia_strains.Size(); ++j)
                     {
-						if (strain_name == p_vp->vector_species[i]->microsporidia_strains[j]->strain_name) // strain_name is guaranteed be in one of the species microsporidia, so this should always find a match
+                        if (strain_name == p_vp->vector_species[i]->microsporidia_strains[j]->strain_name)
                         {
-                            if (m_HabitatTarget != VectorHabitatType::ALL_HABITATS && !p_vp->vector_species[i]->habitat_params.HasHabitatType(m_HabitatTarget)) //check that the habitat target is valid for this species
+                            if (m_HabitatTarget != VectorHabitatType::ALL_HABITATS && !p_vp->vector_species[i]->habitat_params.HasHabitatType(m_HabitatTarget))
                             {
                                 const char* p_habitat_name = VectorHabitatType::pairs::lookup_key(m_HabitatTarget);
                                 std::stringstream ss;
@@ -367,11 +367,11 @@ namespace Kernel
                                     const char* p_configured_habitat_name = VectorHabitatType::pairs::lookup_key(r_habitats[k]->GetVectorHabitatType());
                                     ss << p_configured_habitat_name << "\n";
                                 }
-								throw InvalidInputDataException(__FILE__, __LINE__, __FUNCTION__, ss.str().c_str());
+                                throw InvalidInputDataException(__FILE__, __LINE__, __FUNCTION__, ss.str().c_str());
                             }
                             m_SpeciesName = p_vp->vector_species[i]->name;
                             m_StrainIndex = j;
-							found_strain = true;
+                            found_strain = true;
                             break;
                         }
                     }
@@ -379,8 +379,8 @@ namespace Kernel
                     {
                         break;
                     }
-				}
-				release_assert(found_strain); // strain_name is guaranteed to be in the set of microsporidia strain names, so this should always be true
+                }
+                release_assert(found_strain); // strain_name is constrained to valid microsporidia names, so a match is always expected
             }
 
         }

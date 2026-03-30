@@ -72,6 +72,7 @@ namespace Kernel
         float                    m_larvicide_habitat_scaling;
         float                    m_rainfall_mortality;
         float                    m_egg_crowding_correction;
+        // Not serialized: recomputed each timestep from node-level microsporidia interventions.
         std::vector<std::tuple<int, float>> m_portion_larva_infected_microsporidia;
     };
 

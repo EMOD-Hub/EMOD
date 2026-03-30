@@ -101,11 +101,11 @@ namespace Kernel
         virtual void initConfigKilling() override;
         virtual bool ConfigureKilling(const Configuration* inputJson) override;
         virtual void ApplyEffects(float dt) override;
-        void LarvalMicrosporidiaIntervention::Update(float dt) override;
+        virtual void Update(float dt) override;
 
         float m_Coverage;
         int m_StrainIndex;
-		std::string m_SpeciesName;
+        std::string m_SpeciesName;
         IWaningEffect* waning_effect;
     };
 
