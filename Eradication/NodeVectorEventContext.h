@@ -33,6 +33,7 @@ namespace Kernel
         virtual void UpdateAnimalFeedKilling(const GeneticProbability& killing) = 0;
         virtual void UpdateOutdoorRestKilling(const GeneticProbability& killing) = 0;
         virtual void UpdateIndoorKilling(const GeneticProbability& killing) = 0;
+		virtual void UpdateLarvalMicrosporidiaInterventions(VectorHabitatType::Enum habitat, const std::string& species_name, int strain_index, float coverage, float current_effect) = 0;
     };
 
     class NodeVectorEventContextHost :
@@ -65,6 +66,7 @@ namespace Kernel
         virtual void UpdateAnimalFeedKilling(const GeneticProbability& killing) override;
         virtual void UpdateOutdoorRestKilling(const GeneticProbability& killing) override;
         virtual void UpdateIndoorKilling(const GeneticProbability& killing) override;
+        virtual void UpdateLarvalMicrosporidiaInterventions(VectorHabitatType::Enum habitat, const std::string& species_name, int strain_index, float coverage, float current_effect) override;
 
         // INodeVectorInterventionEffects;
         virtual const GeneticProbability& GetLarvalKilling(VectorHabitatType::Enum) const override;
@@ -81,6 +83,7 @@ namespace Kernel
         virtual const GeneticProbability& GetIndoorKilling() const override;
         virtual bool  IsUsingSugarTrap() const override;
         virtual const GeneticProbability& GetSugarFeedKilling() const override;
+		virtual std::vector<std::tuple<int, float>> GetLarvalMicrosporidiaInfectivity(VectorHabitatType::Enum, const std::string& species ) const override;
 
         VectorHabitatType::Enum larval_reduction_target;
         LarvalHabitatMultiplier larval_reduction;
@@ -110,7 +113,9 @@ namespace Kernel
         GeneticProbability pIndoorKilling;
         bool               isUsingSugarTrap;
         GeneticProbability pSugarFeedKilling;
+        std::vector<std::tuple<VectorHabitatType::Enum, std::string, int, float, float>> larvalMicrosporidiaInterventions; // tuple of habitat, species name, strain index, coverage, and current_effect for each larval microsporidia intervention in the node
 
+		
     private:
         float CombineProbabilities( float prob1, float prob2 );
         NodeVectorEventContextHost() : NodeEventContextHost(nullptr) { }

@@ -1668,7 +1668,7 @@ namespace Kernel
     // This function adds newborns to the node according to behavior determined by the settings of various flags:
     // (1) ind_sampling_type: TRACK_ALL, FIXED_SAMPLING, ADAPTED_SAMPLING_BY_POPULATION_SIZE, ADAPTED_SAMPLING_BY_AGE_GROUP, ADAPTED_SAMPLING_BY_AGE_GROUP_AND_POP_SIZE
     // (3) enable_maternal_infection_transmission
-    // (4) vital_birth_dependence: FIXED_BIRTH_RATE, POPULATION_DEP_RATE, DEMOGRAPHIC_DEP_RATE. (INDIVIDUAL_PREGNANCIES handled in PopulateNewIndividualFromPregnancy)
+    // (4) vital_birth_dependence: FIXED_BIRTH_RATE, POPULATION_DEP_RATE, DEMOGRAPHIC_DEP_RATE. (INDIVIDUAL_PREGNANCIES handled elsewhere)
     void Node::populateNewIndividualsByBirth(int count_new_individuals)
     {
         // Set default values for configureAndAddIndividual arguments, sampling rate, etc.

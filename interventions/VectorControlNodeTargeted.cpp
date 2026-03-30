@@ -24,6 +24,7 @@ namespace Kernel
     END_QUERY_INTERFACE_BODY(SimpleVectorControlNode)
 
     //IMPLEMENT_FACTORY_REGISTERED(SimpleVectorControlNode) // don't register unusable base class
+    IMPLEMENT_FACTORY_REGISTERED(LarvalMicrosporidiaIntervention)
     IMPLEMENT_FACTORY_REGISTERED(Larvicides)
     IMPLEMENT_FACTORY_REGISTERED(SpaceSpraying)
     IMPLEMENT_FACTORY_REGISTERED(MultiInsecticideSpaceSpraying)
@@ -292,32 +293,96 @@ namespace Kernel
     LarvalMicrosporidiaIntervention::LarvalMicrosporidiaIntervention()
         : SimpleVectorControlNode()
         , m_Coverage(1.0f)
-        , m_StrainName("")
+        , m_StrainIndex(-1)
+        , waning_effect(nullptr)
+		, m_SpeciesName("")
     {
     }
 
     LarvalMicrosporidiaIntervention::LarvalMicrosporidiaIntervention(const LarvalMicrosporidiaIntervention& rMaster)
         : SimpleVectorControlNode(rMaster)
         , m_Coverage(rMaster.m_Coverage)
-        , m_StrainName(rMaster.m_StrainName)
+        , m_StrainIndex(rMaster.m_StrainIndex)
+        , waning_effect(nullptr)
+		, m_SpeciesName(rMaster.m_SpeciesName)
     {
+        if (rMaster.waning_effect != nullptr)
+        {
+            waning_effect = rMaster.waning_effect->Clone();
+        }
     }
 
     LarvalMicrosporidiaIntervention::~LarvalMicrosporidiaIntervention()
     {
+        delete waning_effect;
+        waning_effect = nullptr;
     }
 
     bool LarvalMicrosporidiaIntervention::Configure(const Configuration* inputJson)
     {
+        jsonConfigurable::ConstrainedString strain_name;
+        if (GET_CONFIGURABLE(SimulationConfig) != nullptr)
+        {
+            VectorParameters* p_vp = GET_CONFIGURABLE(SimulationConfig)->vector_params;
+            const jsonConfigurable::tDynamicStringSet& microsporidia_names = p_vp->vector_species.GetMicrosporidiaNames();
+            strain_name.constraint_param = &microsporidia_names;
+            strain_name.constraints = "Vector_Species_Params[X].Microsporidia[X].Strain_Name";
+        }
+
         initConfig("Habitat_Target", m_HabitatTarget, inputJson, MetadataDescriptor::Enum("Habitat_Target", Habitat_Target_DESC_TEXT, MDD_ENUM_ARGS(VectorHabitatType)));
-		initConfigComplexType("Larval_Infectivity_Config", &m_LarvalKillingConfig, LMI_Larval_Infectivity_Config_DESC_TEXT); // re-use larval killing config for infectivity config since they have the same parameters
+		initConfigComplexType("Infectivity_Config", &m_LarvalKillingConfig, LMI_Larval_Infectivity_Config_DESC_TEXT); // re-use larval killing config for infectivity config since they have the same parameters
         initConfigTypeMap("Habitat_Coverage", &m_Coverage, Habitat_Coverage_DESC_TEXT, 0.0f, 1.0f, 1.0f);
-        initConfigTypeMap("Strain_Name", &m_StrainName, Strain_Name_DESC_TEXT, 0.0f, 1.0f, 1.0f);
+        initConfigTypeMap("Strain_Name", &strain_name, Strain_Name_DESC_TEXT);
 
         bool configured = SimpleVectorControlNode::Configure(inputJson);
         if (configured && !JsonConfigurable::_dryrun)
         {
             CheckHabitatTarget(m_HabitatTarget, "Habitat_Target");
+            waning_effect = WaningEffectFactory::getInstance()->CreateInstance(m_LarvalKillingConfig._json,
+                                                                               inputJson->GetDataLocation(),
+                                                                               "Infectivity_Config");
+			m_LarvalKillingConfig = WaningConfig(); // try to get rid of memory no longer needed
+
+            if (GET_CONFIGURABLE(SimulationConfig) != nullptr)
+            {
+				bool found_strain = false;
+                VectorParameters* p_vp = GET_CONFIGURABLE(SimulationConfig)->vector_params;
+                for (int i = 0; i < p_vp->vector_species.Size(); ++i)
+                {
+                    for (int j = 0; j < p_vp->vector_species[i]->microsporidia_strains.Size(); ++j)
+                    {
+						if (strain_name == p_vp->vector_species[i]->microsporidia_strains[j]->strain_name) // strain_name is guaranteed be in one of the species microsporidia, so this should always find a match
+                        {
+                            if (m_HabitatTarget != VectorHabitatType::ALL_HABITATS && !p_vp->vector_species[i]->habitat_params.HasHabitatType(m_HabitatTarget)) //check that the habitat target is valid for this species
+                            {
+                                const char* p_habitat_name = VectorHabitatType::pairs::lookup_key(m_HabitatTarget);
+                                std::stringstream ss;
+                                ss << "Invalid parameter value: 'Habitat_Target' = '" << p_habitat_name << "'\n";
+                                ss << "This habitat is not configured for the species '" << p_vp->vector_species[i]->name;
+                                ss << "' which is associated with microsporidia strain '" << strain_name << "'.\n";
+                                ss << "Please select from one of the configured types:\n";
+                                const std::vector<IVectorHabitat*>& r_habitats = p_vp->vector_species[i]->habitat_params.GetHabitats();
+                                for (int k = 0; k < r_habitats.size(); ++k)
+                                {
+                                    const char* p_configured_habitat_name = VectorHabitatType::pairs::lookup_key(r_habitats[k]->GetVectorHabitatType());
+                                    ss << p_configured_habitat_name << "\n";
+                                }
+								throw InvalidInputDataException(__FILE__, __LINE__, __FUNCTION__, ss.str().c_str());
+                            }
+                            m_SpeciesName = p_vp->vector_species[i]->name;
+                            m_StrainIndex = j;
+							found_strain = true;
+                            break;
+                        }
+                    }
+                    if (found_strain)
+                    {
+                        break;
+                    }
+				}
+				release_assert(found_strain); // strain_name is guaranteed to be in the set of microsporidia strain names, so this should always be true
+            }
+
         }
         return configured;
     }
@@ -326,27 +391,43 @@ namespace Kernel
     {
     }
 
+    bool LarvalMicrosporidiaIntervention::ConfigureKilling(const Configuration* inputJson)
+    {
+        // skip other stuff in base class
+        return BaseNodeIntervention::Configure(inputJson);
+    }
+
     bool LarvalMicrosporidiaIntervention::Distribute(INodeEventContext* pNodeContext, IEventCoordinator2* pEC)
     {
         // stacked automatically, SimpleVectorControlNode Distribute() purges existing by name
         return BaseNodeIntervention::Distribute(pNodeContext, pEC);
     }
 
+    void LarvalMicrosporidiaIntervention::Update(float dt)
+    {
+        if (!BaseNodeIntervention::UpdateNodesInterventionStatus()) return;
+
+        if (waning_effect != nullptr)
+        {
+            waning_effect->Update(dt);
+        }
+        ApplyEffects(dt);
+    }
+
     void LarvalMicrosporidiaIntervention::ApplyEffects(float dt)
     {
         release_assert(m_pINVIC != nullptr);
-
-        GeneticProbability larval_killing = GetKilling(ResistanceType::LARVAL_KILLING) * m_Coverage;
-        m_pINVIC->UpdateLarvalKilling(GetHabitatTarget(), larval_killing);
+        if (waning_effect->Current() < FLT_EPSILON) // don't apply if there is no effect
+        {
+            return;
+		}
+        m_pINVIC->UpdateLarvalMicrosporidiaInterventions(GetHabitatTarget(), m_SpeciesName,  m_StrainIndex, m_Coverage, waning_effect->Current());
     }
 
     ReportInterventionData LarvalMicrosporidiaIntervention::GetReportInterventionData() const
     {
-        // only has larval killing so don't call SimpleVectorControlNode::GetReportInterventionData()
+        // first intervention of its kind?? What to do for this?
         ReportInterventionData data = BaseNodeIntervention::GetReportInterventionData();
-
-        data.efficacy_killing = m_pInsecticideWaningEffect->GetCurrent(ResistanceType::LARVAL_KILLING).GetSum() * m_Coverage;
-
         return data;
     }
 

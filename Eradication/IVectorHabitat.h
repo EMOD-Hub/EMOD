@@ -45,6 +45,7 @@ namespace Kernel
 
         virtual float GetLocalLarvalGrowthModifier() const = 0;
         virtual float GetLocalLarvalMortality(float species_aquatic_mortality, float progress) const = 0;
+        virtual const std::vector<std::tuple<int, float>>& GetLarvalMicrosporidiaInfections() const = 0;
 
         virtual ~IVectorHabitat() {}
     };

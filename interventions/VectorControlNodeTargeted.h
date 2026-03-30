@@ -99,10 +99,14 @@ namespace Kernel
 
     protected:
         virtual void initConfigKilling() override;
+        virtual bool ConfigureKilling(const Configuration* inputJson) override;
         virtual void ApplyEffects(float dt) override;
+        void LarvalMicrosporidiaIntervention::Update(float dt) override;
 
         float m_Coverage;
-		std::string m_StrainName;
+        int m_StrainIndex;
+		std::string m_SpeciesName;
+        IWaningEffect* waning_effect;
     };
 
     class SpaceSpraying : public SimpleVectorControlNode

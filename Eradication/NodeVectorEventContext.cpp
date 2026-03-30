@@ -31,6 +31,7 @@ namespace Kernel
     , pIndoorKilling( 0.0f )
     , isUsingSugarTrap(false)
     , pSugarFeedKilling()
+	, larvalMicrosporidiaInterventions(std::vector<std::tuple<VectorHabitatType::Enum, std::string, int, float, float>>())
     {
     }
 
@@ -91,6 +92,7 @@ namespace Kernel
         pIndoorKilling = GeneticProbability( 0.0f );
         isUsingSugarTrap = false;
         pSugarFeedKilling = GeneticProbability( 0.0f );
+		larvalMicrosporidiaInterventions = std::vector<std::tuple<VectorHabitatType::Enum, std::string, int, float, float>>(); // reset the list of larval microsporidia interventions to an empty list
 
         NodeEventContextHost::UpdateInterventions(dt);
     }
@@ -225,6 +227,13 @@ namespace Kernel
         pIndoorKilling.CombineProbabilities( killing );
     }
 
+
+    void NodeVectorEventContextHost::UpdateLarvalMicrosporidiaInterventions(VectorHabitatType::Enum habitat, const std::string& species_name, int strain_index, float coverage, float current_effect)
+    {
+        // add a new larval microsporidia intervention to the list with the given habitat, species index, strain index, coverage, and current_effect
+        larvalMicrosporidiaInterventions.push_back(std::make_tuple(habitat, species_name, strain_index, coverage, current_effect));
+    }
+
     //
     // INodeVectorInterventionEffects; (The Getters)
     // 
@@ -289,6 +298,49 @@ namespace Kernel
     const GeneticProbability& NodeVectorEventContextHost::GetSugarFeedKilling() const
     {
         return pSugarFeedKilling;
+    }
+
+    std::vector<std::tuple<int, float>> NodeVectorEventContextHost::GetLarvalMicrosporidiaInfectivity(
+        VectorHabitatType::Enum habitat_query, 
+        const std::string& species) const
+    {
+		// returns a vector of tuples of strain index and portion affected for the larval microsporidia interventions that apply to the given habitat and species
+		std::vector<std::tuple<int, float, float>> applicableInterventions;
+		// get the interventions that apply to the given habitat and species
+        //TBD PLACEHOLDED
+        float uninfected = 1.0f;
+        std::vector<std::tuple<int, float>> final_numbers;
+        bool found = false;
+        for (auto& intervention : larvalMicrosporidiaInterventions)
+        {
+            VectorHabitatType::Enum habitat = std::get<0>(intervention);
+            std::string species_name = std::get<1>(intervention);
+            int strain_index = std::get<2>(intervention);
+            float coverage = std::get<3>(intervention);
+            float current_effect = std::get<4>(intervention);
+            if ((habitat == habitat_query || habitat == VectorHabitatType::ALL_HABITATS) && species_name == species)
+            {
+                applicableInterventions.push_back(std::make_tuple(strain_index, coverage, current_effect));
+                for(auto& fn : final_numbers)
+                {
+                    int st_ind = std::get<0>(fn);
+                    float effect = std::get<1>(fn);
+                    if (st_ind == strain_index)
+                    {
+                        effect = effect + uninfected * coverage * current_effect;
+                        fn = std::make_tuple(st_ind, effect);
+                        break;
+						found = true;
+					}
+				}
+                if (!found)
+                {
+                    final_numbers.push_back(std::make_tuple(strain_index, uninfected * coverage * current_effect));
+                }
+                uninfected = uninfected * (1 - coverage * current_effect);
+            }
+		}
+		return final_numbers;
     }
 
     float NodeVectorEventContextHost::GetOviTrapKilling( VectorHabitatType::Enum habitat_query ) const

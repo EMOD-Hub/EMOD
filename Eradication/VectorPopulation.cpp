@@ -2087,41 +2087,139 @@ namespace Kernel
         m_ReleasedMales.clear();
     }
 
-    void VectorPopulation::Update_Larval_Queue( float dt )
+
+    void VectorPopulation::Update_Larval_Queue(float dt)
     {
         // Use the verbose "for" construct here because we may be modifying the list
-        for( auto it = LarvaQueues.begin(); it != LarvaQueues.end(); ++it )
+        for (auto it = LarvaQueues.begin(); it != LarvaQueues.end(); ++it)
         {
             IVectorCohort* cohort = *it;
 
+            // Get the fraction of this larval cohort newly infected with each microsporidia strain.
+            const std::vector<std::tuple<int, float>> larval_microsporidia_infections = GetLarvalMicrosporidiaInfections(cohort);
+
+            // -----------------------------------------------------------------
+            // --- Split off sub-cohorts for each microsporidia strain that has
+            // --- newly infected larvae, before applying development/mortality
+            // --- to the surviving uninfected remainder.
+            // --- Only process cohorts that are not already infected and that
+            // --- have population left to split.
+            // -----------------------------------------------------------------
+            if (!cohort->HasMicrosporidia() && (cohort->GetPopulation() > 0))
+            {           
+                // Randomize strain iteration order so no strain is systematically
+                // disadvantaged by seeing a smaller uninfected remainder.
+                // We build indices for strains 1..N-1 only (index 0 = no strain).
+                std::vector<uint32_t> strain_order = GetRandomIndexes(m_context->GetRng(), larval_microsporidia_infections.size());
+                // GetRandomIndexes produces indices [0, num_strains-2]; shift each by 1 to skip strain 0
+                for (uint32_t random_strain : strain_order)
+                {
+                    int   strain_index           = std::get<0>(larval_microsporidia_infections[random_strain]);
+                    float percent_newly_infected = std::get<1>(larval_microsporidia_infections[random_strain]);
+                    if (percent_newly_infected <= 0.0f)
+                    {
+                        continue;
+                    }
+
+                    if (cohort->GetPopulation() == 0)
+                    {
+                        break; // cohort exhausted — no point checking further strains
+                    }
+                    
+                    uint32_t num_to_infect = uint32_t(m_context->GetRng()->binomial_approx(cohort->GetPopulation(), percent_newly_infected));
+
+                    if (num_to_infect == 0)
+                    {
+                        continue;
+					}
+
+                    IVectorCohort* new_infected_cohort = cohort->SplitNumber(m_context->GetRng(),
+                                                                             m_pNodeVector->GetNextVectorSuid().data,
+                                                                             num_to_infect);
+                    release_assert(new_infected_cohort != nullptr);
+                    new_infected_cohort->InfectWithMicrosporidia(strain_index);
+
+                    // Apply development and mortality to the newly-infected split
+                    // cohort using the same logic as the main cohort below.
+                    new_infected_cohort->Update(m_context->GetRng(),
+                                                dt,
+                                                species()->trait_modifiers,
+                                                GetLarvalDevelopmentProgress(dt, new_infected_cohort),
+                                                new_infected_cohort->HasMicrosporidia());       
+                    float p_larval_mortality = GetLarvalMortalityProbability(dt, new_infected_cohort).GetValue(m_SpeciesIndex, new_infected_cohort->GetGenome());
+                    uint32_t nowPop = new_infected_cohort->GetPopulation();
+                    uint32_t newPop = nowPop - uint32_t(m_context->GetRng()->binomial_approx(nowPop, p_larval_mortality));
+                    LOG_VALID_F("Adjusting larval population from %d to %d based on overcrowding considerations, id = %d.\n", nowPop, newPop, new_infected_cohort->GetID());
+                    LOG_DEBUG_F("Larval cohort split for microsporidia infection: species = %s, strain index = %d, percent newly infected = %f, population infected = %d, population remaining uninfected = %d, id = %d.\n",
+                        species()->name.c_str(), strain_index, percent_newly_infected, num_to_infect, cohort->GetPopulation(), new_infected_cohort->GetID());
+                    new_infected_cohort->SetPopulation(newPop);             
+
+                    if (new_infected_cohort->GetPopulation() > 0)
+                    {
+                        queueIncrementTotalPopulation(cohort); 
+
+						// this cohort is not in any queue yet, we need to decide whether it goes to immature or into larva queue based on its state post progress
+                        if (new_infected_cohort->GetState() == VectorStateEnum::STATE_IMMATURE)
+                        {
+                            m_ProgressedLarvaeToImmatureCount  += new_infected_cohort->GetPopulation();
+                            m_ProgressedLarvaeToImmatureSumDur += new_infected_cohort->GetAge() * new_infected_cohort->GetPopulation();
+
+                            new_infected_cohort->ClearProgress();
+                            new_infected_cohort->SetAge(0.0);
+                            ImmatureQueues.add(new_infected_cohort, 0.0, false);
+                            LOG_DEBUG_F("Immature adults emerging from larva queue: population = %d, genome bits = %lld,"
+                                        " id = %d, age = %f, has microsporidia %d\n",
+                                        new_infected_cohort->GetPopulation(),
+                                        new_infected_cohort->GetGenome().GetBits(),
+                                        new_infected_cohort->GetID(), new_infected_cohort->GetAge(),
+                                        new_infected_cohort->HasMicrosporidia());
+                        }
+                        else
+                        {
+                            new_infected_cohort->GetHabitat()->AddLarva(new_infected_cohort->GetPopulation(), new_infected_cohort->GetProgress());
+                            LarvaQueues.add(new_infected_cohort, 0.0, false);
+                        }
+                    }
+                    else
+                    {
+                        delete new_infected_cohort;
+                    }
+                }
+            }
+
             // Apply temperature and over-crowding dependent larval development
-            cohort->Update( m_context->GetRng(), dt, species()->trait_modifiers, GetLarvalDevelopmentProgress(dt, cohort), cohort->HasMicrosporidia() );
+            // to the (possibly reduced) uninfected remainder of the cohort.
+            cohort->Update(m_context->GetRng(), 
+                           dt, 
+                           species()->trait_modifiers,
+                           GetLarvalDevelopmentProgress(dt, cohort),
+                           cohort->HasMicrosporidia());
 
-            // Apply larval mortality, the probability of which may depend on over-crowding and Notre Dame instar-specific dynamics
-            float p_larval_mortality = GetLarvalMortalityProbability(dt, cohort).GetValue( m_SpeciesIndex, cohort->GetGenome() );
+            // Apply larval mortality
+            float p_larval_mortality = GetLarvalMortalityProbability(dt, cohort).GetValue(m_SpeciesIndex, cohort->GetGenome());
             uint32_t nowPop = cohort->GetPopulation();
-            uint32_t newPop = nowPop - uint32_t( m_context->GetRng()->binomial_approx( nowPop, p_larval_mortality ) );
-            LOG_VALID_F( "Adjusting larval population from %d to %d based on overcrowding considerations, id = %d.\n", nowPop, newPop, cohort->GetID() );
-            cohort->SetPopulation( newPop );
+            uint32_t newPop = nowPop - uint32_t(m_context->GetRng()->binomial_approx(nowPop, p_larval_mortality));
+            LOG_VALID_F("Adjusting larval population from %d to %d based on overcrowding considerations, id = %d.\n", nowPop, newPop, cohort->GetID());
+            cohort->SetPopulation(newPop);
 
-            queueIncrementTotalPopulation( cohort );
+            queueIncrementTotalPopulation(cohort);
 
-            if( (cohort->GetState() == VectorStateEnum::STATE_IMMATURE) || (cohort->GetPopulation() <= 0) )
+            if ((cohort->GetState() == VectorStateEnum::STATE_IMMATURE) || (cohort->GetPopulation() <= 0))
             {
-                LarvaQueues.remove( it );
-                if ( cohort->GetPopulation() > 0)
+                LarvaQueues.remove(it);
+                if (cohort->GetPopulation() > 0)
                 {
                     m_ProgressedLarvaeToImmatureCount  += cohort->GetPopulation();
-                    m_ProgressedLarvaeToImmatureSumDur += cohort->GetAge()*cohort->GetPopulation();
+                    m_ProgressedLarvaeToImmatureSumDur += cohort->GetAge() * cohort->GetPopulation();
 
-                    // same issue as below with updating the larva in the habitat
                     cohort->ClearProgress();
-                    cohort->SetAge( 0.0 );
+                    cohort->SetAge(0.0);
 
-                    ImmatureQueues.add( cohort, 0.0, false );
-                    LOG_DEBUG_F("Immature adults emerging from larva queue: population = %d, genome bits = %lld, id = %d, age = %f , has microsporidia %d\n",
-                                cohort->GetPopulation(), 
-                                cohort->GetGenome().GetBits(), 
+                    ImmatureQueues.add(cohort, 0.0, false);
+                    LOG_DEBUG_F("Immature adults emerging from larva queue: population = %d, genome bits = %lld,"
+                                " id = %d, age = %f, has microsporidia %d\n",
+                                cohort->GetPopulation(),
+                                cohort->GetGenome().GetBits(),
                                 cohort->GetID(), cohort->GetAge(),
                                 cohort->HasMicrosporidia());
                 }
@@ -2132,15 +2230,7 @@ namespace Kernel
             }
             else
             {
-                // ---------------------------------------------------------------------
-                // --- I want to move ths into VectorCohort::Update(), but it depends
-                // --- on both population AND progress.  The population also depends on
-                // --- progress so unless you have the population calculation dependent
-                // --- on the progress from last update or you move the population
-                // --- calculation into VectorCohort, we are kind of stuck.
-                // ---------------------------------------------------------------------
-                // Pass back larva in this cohort to total count in habitat
-                cohort->GetHabitat()->AddLarva( cohort->GetPopulation(), cohort->GetProgress() );
+                cohort->GetHabitat()->AddLarva(cohort->GetPopulation(), cohort->GetProgress());
             }
         }
         LarvaQueues.compact();
@@ -2199,6 +2289,13 @@ namespace Kernel
                      __FUNCTION__, p_larval_mortality.GetDefaultValue(), locallarvalmortality, rainfallmortality, artificialmortality.GetDefaultValue() );
 
         return p_larval_mortality;
+    }
+
+    const std::vector<std::tuple<int, float>>& VectorPopulation::GetLarvalMicrosporidiaInfections( IVectorCohort* larva) const
+    {
+        IVectorHabitat* habitat = larva->GetHabitat();
+        return habitat->GetLarvalMicrosporidiaInfections();
+
     }
 
     void VectorPopulation::Update_Egg_Laying( float dt )

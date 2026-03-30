@@ -25,7 +25,7 @@ namespace Kernel
         bool Configure( const ::Configuration *json ) override;
 
         std::string strain_name;
-        int index; // index of species in collection and in the std::vector of VectorPopulations
+		int index; // microsporidia strain indicator and index in the m_Collection (std::vector of MicrosporidiaParameters) in the MicrosporidiaCollection. 
 
         // "A microsporidian impairs Plasmodium falciparum transmission in Anopheles arabiensis mosquitoes"
         // https://www.nature.com/articles/s41467-020-16121-y
