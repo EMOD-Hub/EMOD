@@ -1,0 +1,15 @@
+{
+    "Microsporidia": [
+        {
+            "Strain_Name": "Strain_E",
+            "Duration_To_Disease_Acquisition_Modification": {
+                "Times":  [0.0, 10.0],
+                "Values": [1.0,  0.0]
+            },
+            "Duration_To_Disease_Transmission_Modification": {
+                "Times":  [0.0, 10.0],
+                "Values": [0.0,  1.0]
+            }
+        }
+    ]
+}

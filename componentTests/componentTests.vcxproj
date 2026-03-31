@@ -171,6 +171,7 @@
     <ClCompile Include="MalariaDrugTypeParametersTest.cpp" />
     <ClCompile Include="MigrateIndividualsTest.cpp" />
     <ClCompile Include="MigrationTest.cpp" />
+    <ClCompile Include="MicrosporidiaTest.cpp" />
     <ClCompile Include="MosquitoReleaseTest.cpp" />
     <ClCompile Include="NodePropertiesTest.cpp" />
     <ClCompile Include="numpy-filesTest.cpp" />
