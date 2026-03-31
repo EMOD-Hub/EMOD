@@ -1,14 +1,12 @@
 
 #include <stdafx.h>
 #include <memory.h> //needed for memcpy on linux
-#include <mpi.h>
-
 #include "IdmMpi.h"
 
 namespace IdmMpi
 {
     Request::Request()
-        : m_Data(MPI_REQUEST_NULL)
+    : m_Data()
     {
     }
     
@@ -17,7 +15,7 @@ namespace IdmMpi
     }
 
     RequestList::RequestList()
-        : m_DataList()
+    : m_DataList()
     {
     }
 
@@ -85,13 +83,13 @@ namespace IdmMpi
 
         virtual void SendIntegers( const uint32_t* pBuf, int count, int toRank, Request* pRequest )
         {
-            MPI_Request* p_mpi_request = static_cast<MPI_Request*>(pRequest->m_Data);
+            MPI_Request* p_mpi_request = &(pRequest->m_Data);
             MPI_Isend( (void*)pBuf, count, MPI_UNSIGNED, toRank, 0, MPI_COMM_WORLD, p_mpi_request ); 
         }
 
         virtual void SendChars( const char* pBuf, int count, int toRank, Request* pRequest )
         {
-            MPI_Request* p_mpi_request = static_cast<MPI_Request*>(pRequest->m_Data);
+            MPI_Request* p_mpi_request = &(pRequest->m_Data);
             MPI_Isend( (void*)pBuf, count, MPI_BYTE, toRank, 0, MPI_COMM_WORLD, p_mpi_request ); 
         }
 
@@ -177,12 +175,7 @@ namespace IdmMpi
         virtual void WaitAll( RequestList& rRequestList )
         {
             std::vector<MPI_Status> status( rRequestList.m_DataList.size() );
-            std::vector<MPI_Request> requests( rRequestList.m_DataList.size() );
-            for (size_t k1 = 0; k1 < requests.size(); k1++)
-            {
-                requests[k1] = static_cast<MPI_Request>(rRequestList.m_DataList[k1]);
-            }
-            MPI_Waitall( static_cast<int>(rRequestList.m_DataList.size()), static_cast<MPI_Request*>(requests.data()), static_cast<MPI_Status*>(status.data()) );
+            MPI_Waitall( static_cast<int>(rRequestList.m_DataList.size()), static_cast<MPI_Request*>(rRequestList.m_DataList.data()), static_cast<MPI_Status*>(status.data()) );
         }
 
         virtual void Finalize()
