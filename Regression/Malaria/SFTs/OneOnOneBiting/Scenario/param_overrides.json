@@ -11,7 +11,7 @@
             "Enable_Climate_Stochasticity": 0
         },
         "PRIMARY": {
-            "Num_Cores": 4,
+            "Num_Cores": 2,
             "Enable_Aging": 0,
             "Human_Feeding_Mortality": 0,
             "Config_Name": "Malaria::SFTs::OneOnOneBiting::Scenario",
