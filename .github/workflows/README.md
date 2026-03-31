@@ -4,116 +4,14 @@
 
 | Workflow | File | Trigger |
 |---|---|---|
-| Build, Test and Publish Pipeline | `e2e_parallel_pipeline.yml` | Push to `main`, `workflow_dispatch` |
-| Regression Tests | `regression_tests.yml` | `workflow_dispatch` |
-| Science Feature Tests | `sft_tests.yml` | `workflow_dispatch` |
-| Build EMOD (Reusable) | `build_reusable.yml` | Called by other workflows |
-| Publish to PyPI (Reusable) | `publish_pypi_reusable.yml` | Called by E2E pipeline |
+| Regression Tests | `tests_regression.yml` | `workflow_dispatch` |
+| Science Feature Tests | `tests_sft.yml` | `workflow_dispatch` |
 
 ---
 
-## Build, Test and Publish (E2E) Pipeline (`e2e_parallel_pipeline.yml`)
+## Regression Tests (`tests_regression.yml`)
 
-The primary integration pipeline. Runs automatically on every push to `main` and can also be triggered manually.
-
-### Jobs
-
-```
-build  ──►  test (×5 parallel)  ──►  publish
-                                 └──►  publish-pypi (×3 parallel)
-```
-
-### Build
-
-Uses `build_reusable.yml` to compile EMOD for all disease types (`--Disease` flag omitted) with 4 parallel SCons jobs. Produces a single artifact `emod-all-build` containing:
-- `build/x64/Release/Eradication/Eradication`
-- `build/x64/Release/reporter_plugins/`
-- `schema.json`
-- `version`
-
-### Test
-
-Runs 5 suites in parallel against the build artifact using `docker-production.packages.idmod.org/idm/dtk-centos-sfts:3.0`:
-
-| Suite | Passed to `regression_test.py` |
-|---|---|
-| Generic | `generic` |
-| HIV | `hiv` |
-| Malaria | `malaria` |
-| STI | `sti` |
-| Vector | `vector` |
-
-Results are uploaded as `e2e-parallel-<suite>-test-results` (retained 7 days).
-
-### Publish
-
-Runs only when all test jobs succeed, and only when:
-- Triggered by a push to `main`, **or**
-- `publish_artifacts` input is `true` (on `workflow_dispatch`)
-
-> **Note:** When triggered via `workflow_dispatch`, the `publish_artifacts` input defaults to `true`, so publishing happens by default unless explicitly unchecked. When triggered by a push to `main`, publishing always runs.
-
-**`publish` job** — packages the build artifact into a versioned tarball (`emod-all-<version>.tar.gz`) and uploads it as `emod-all-release` (retained 30 days).
-
-**`publish-pypi` job** — calls `publish_pypi_reusable.yml` in parallel for three packages:
-- `emod-common`
-- `emod-hiv`
-- `emod-malaria`
-
-### Inputs (`workflow_dispatch` only)
-
-| Input | Default | Description |
-|---|---|---|
-| `regression_test_cores` | `4` | Cores passed via `--config-constraints Num_Cores` |
-| `regression_test_options` | `--scons --use-dlls` | Extra flags passed to `regression_test.py` |
-| `publish_artifacts` | `true` | Whether to run the publish jobs |
-
----
-
-## Publishing to PyPI (`publish_pypi_reusable.yml`)
-
-Called by the E2E pipeline's `publish-pypi` job in parallel for three packages: `emod-common`, `emod-hiv`, and `emod-malaria`. Not triggered directly.
-
-### Jobs
-
-```
-prepare  ──►  publish
-```
-
-### prepare
-
-Builds the Python distribution for a given package type:
-
-1. Resolves paths and names from the `package_type` input (`common`, `hiv`, or `malaria`)
-2. Downloads the `emod-all-build` artifact
-3. Packages `Eradication` and `schema.json` into zip files inside the appropriate `pypi_<type>/src/emod_<type>/` directory
-4. Runs `python3 -m build` to produce a wheel and source tarball
-5. Uploads the `dist/` output as `emod-<type>-dist` (retained 1 day)
-
-### publish
-
-Runs in the `pypi` GitHub environment, which must be configured with a trusted publisher pointing to `pypi.org`. Uses OIDC (`id-token: write`) for keyless authentication — no stored PyPI API token is required.
-
-Downloads the `emod-<type>-dist` artifact and publishes it using `pypa/gh-action-pypi-publish`. On success, the workflow links directly to the package at `https://pypi.org/project/emod-<type>`.
-
-### Required Repository Configuration
-
-Before the PyPI publish flow will work, the `pypi` environment must exist in the repository settings (**Settings → Environments**) and be configured with a trusted publisher pointing to `pypi.org`.
-
----
-
-## Regression Tests (`regression_tests.yml`)
-
-Manual workflow for running regression test suites against a fresh or existing build. Supports running any subset of suites in parallel.
-
-### Jobs
-
-```
-build (optional)  ──►
-                       setup  ──►  test (×N parallel)
-```
-
-The `build` job is skipped when `use_existing_build` is `true`; in that case the test job downloads the most recently uploaded `emod-all-build` artifact from any prior run.
+Manual workflow for running regression test suites. Supports running any subset of suites in parallel.
 
 ### Suite Selection
 
@@ -133,8 +31,6 @@ A `setup` job dynamically builds the matrix from the boolean suite inputs. Only 
 |---|---|---|
 | `regression_test_cores` | `4` | Cores passed via `--config-constraints Num_Cores` |
 | `regression_test_options` | `--scons --use-dlls` | Extra flags passed to `regression_test.py` |
-| `copy_binaries` | `false` | Copies `Eradication`, `reporter_plugins`, `schema.json`, `version` to a per-suite artifact |
-| `use_existing_build` | `false` | Skip the build job and reuse the most recent `emod-all-build` artifact |
 | `run_generic` | `true` | Include Generic suite |
 | `run_hiv` | `true` | Include HIV suite |
 | `run_malaria` | `true` | Include Malaria suite |
@@ -144,24 +40,16 @@ A `setup` job dynamically builds the matrix from the boolean suite inputs. Only 
 ### Artifacts
 
 - `emod-<suite>-regression-test-results` — XML report and raw output (retained 7 days)
-- `emod-<suite>-binaries` — copied binaries, only when `copy_binaries` is `true` (retained 7 days)
 
 ---
 
-## Science Feature Tests (`sft_tests.yml`)
+## Science Feature Tests (`tests_sft.yml`)
 
 Manual workflow for running science feature test (SFT) suites. Always performs a fresh build with `--TestSugar` enabled to activate science-specific test scaffolding.
 
-### Jobs
-
-```
-build  ──►
-            setup  ──►  test (×N parallel)
-```
-
 ### Build
 
-Always builds with `extra_build_flags: '--TestSugar'`. There is no option to reuse an existing build, as the `--TestSugar` flag produces a build that differs from the standard release artifact.
+Always enables the `--TestSugar` science-test build option (via the `science_test` input), which produces a build that differs from the standard release artifact.
 
 ### Suite Selection
 
@@ -179,9 +67,8 @@ Same dynamic matrix pattern as the regression pipeline. Only suites with their i
 
 | Input | Default | Description |
 |---|---|---|
-| `regression_test_cores` | `4` | Cores passed via `--config-constraints Num_Cores` |
-| `regression_test_options` | `--scons --use-dlls` | Extra flags passed to `regression_test.py` |
-| `copy_binaries` | `false` | Copies binaries to a per-suite artifact |
+| `sft_test_cores` | `4` | Cores passed via `--config-constraints Num_Cores` |
+| `sft_test_options` | `--scons --use-dlls` | Extra flags passed to `regression_test.py` |
 | `run_generic_science` | `true` | Include Generic Science suite |
 | `run_hiv_science` | `true` | Include HIV Science suite |
 | `run_malaria_science` | `true` | Include Malaria Science suite |
@@ -191,26 +78,3 @@ Same dynamic matrix pattern as the regression pipeline. Only suites with their i
 ### Artifacts
 
 - `emod-<suite>-regression-test-results` — XML report and raw output (retained 7 days)
-- `emod-<suite>-binaries` — copied binaries, only when `copy_binaries` is `true` (retained 7 days)
-
----
-
-## Shared: Build EMOD (`build_reusable.yml`)
-
-Reusable workflow called by all three pipelines. Not triggered directly.
-
-### Inputs
-
-| Input | Required | Default | Description |
-|---|---|---|---|
-| `disease_type` | Yes | — | Disease type passed to SCons (`Generic`, `HIV`, `Malaria`, or `All`) |
-| `build_jobs` | No | `4` | Parallel SCons jobs |
-| `extra_build_flags` | No | `''` | Additional SCons flags (e.g. `--TestSugar`) |
-
-### Output
-
-| Output | Description |
-|---|---|
-| `artifact_name` | Name of the uploaded build artifact (e.g. `emod-all-build`) |
-
-The artifact name is derived from `disease_type` lowercased: `emod-<disease_type>-build`.

@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 import sys
 import os
 import subprocess
@@ -421,9 +419,10 @@ class Monitor(threading.Thread):
                                report_name.startswith( "ReportVectorGenetics_arabiensis_Female_GENOME.json" ) or
                                report_name.startswith( "AlleleFrequency.json" ))
             if len(failures) > 0 and not self.params.hide_graphs and plotable_report:
-                #print( "Plotting charts for failure deep dive." )  
-                # Note: Use python version 2 for plotAllCharts.py
-                subprocess.Popen( ["python", "plotAllCharts.py", ref_path, test_path ] )
+                bin_path = "python"
+                if os.name == "posix":
+                    bin_path = "python3"
+                subprocess.Popen( [bin_path, "plotAllCharts.py", ref_path, test_path ] )
         else:
             ser_test_str = ""
             if (self.serialization_test_type == "FULL") or (self.serialization_test_type == "CONCAT"):

@@ -73,11 +73,11 @@ def create_report_file(children, param_obj, report_name, debug):
                 fails.append(children[num])
 
             if not success:
-                with open(fails_log_file, "w") as outfile:
+                with open(fails_log_file, "w") as failfile:
                     for group in fails:
                         for i in range(len(group)):
-                            outfile.write(f"{group[i]}\n")
-                        outfile.write("\n")
+                            failfile.write(f"{group[i]}\n")
+                        failfile.write("\n")
 
         outfile.write(dtk_sft.format_success_msg(success))
 

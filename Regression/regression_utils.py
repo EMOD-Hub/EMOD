@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 import json
 import collections
 import os
@@ -151,12 +149,6 @@ def flattenConfig( configjson_path, new_config_name="config" ):
     if "Default_Config_Path" in configjson["parameters"]:
         configjson["parameters"].pop("Default_Config_Path")
 
-    # let's write out a flat version in case someone wants
-    # to use regression examples as configs for debug mode
-    with open( configjson_path.replace( "param_overrides", new_config_name ), 'w', newline='\r\n') as handle:
-        # this is really funky and awkward but is here to maintain python 2/3 compatability
-        handle.write( bytearray(json.dumps(configjson, sort_keys=True, indent=4), 'utf-8').decode('utf-8') )
-    
     return configjson
 
 
