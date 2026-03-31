@@ -6,7 +6,7 @@
 namespace IdmMpi
 {
     Request::Request()
-    : m_Data()
+        : m_Data(MPI_REQUEST_NULL)
     {
     }
     
@@ -15,7 +15,7 @@ namespace IdmMpi
     }
 
     RequestList::RequestList()
-    : m_DataList()
+        : m_DataList()
     {
     }
 
@@ -35,9 +35,9 @@ namespace IdmMpi
         int m_Rank;
     public:
         MessageInterfaceBase( int argc, char* argv[] )
-        : MessageInterface()
-        , m_NumTasks(1)
-        , m_Rank(0)
+            : MessageInterface()
+            , m_NumTasks(1)
+            , m_Rank(0)
         {
             // this could take &argc, argv
             MPI_Init( nullptr, nullptr );
@@ -188,7 +188,7 @@ namespace IdmMpi
     {
     public:
         MessageInterfaceNull()
-        : MessageInterface()
+            : MessageInterface()
         {
         }
 

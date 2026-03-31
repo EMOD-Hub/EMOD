@@ -6,8 +6,6 @@
 #include <vector>
 #include <mpi.h>
 
-#include "IdmApi.h"
-
 namespace IdmMpi
 {
     class Request
@@ -35,7 +33,7 @@ namespace IdmMpi
         std::vector<MPI_Request> m_DataList;
     };
 
-    class IDMAPI MessageInterface
+    class MessageInterface
     {
     public:
         static MessageInterface* Create( int argc, char* argv[] );
