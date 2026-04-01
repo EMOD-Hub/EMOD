@@ -127,10 +127,6 @@ namespace Kernel
                 {
                     m_antibody_capacity += ( 1.0f - m_antibody_capacity ) * B_CELL_PROLIFERATION_CONSTANT * dt;
                 }
-                if(m_antibody_capacity > 1.0)
-                {
-                    m_antibody_capacity = 1.0;
-                }
             }
         }
     }
