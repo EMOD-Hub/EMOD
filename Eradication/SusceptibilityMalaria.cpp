@@ -154,7 +154,7 @@ namespace Kernel
 
             if(pyrogenic_threshold_max < pyrogenic_threshold_min)
             {
-                throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, "Pyrogenic_Threshold_Max must be greater or equal to than Pyrogenic_Threshold_Min." );
+                throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, "Pyrogenic_Threshold_Max must be greater than or equal to Pyrogenic_Threshold_Min." );
             }
         }
 
@@ -265,7 +265,7 @@ namespace Kernel
                !r_demographics["IndividualAttributes"].Contains( "InnateImmuneDistribution1" ) ||
                !r_demographics["IndividualAttributes"].Contains( "InnateImmuneDistribution2" ))
             {
-                std::string msg = "InnateImmuneDistributionFlag, InnateImmuneDistribution1, or InnateImmuneDistribution1 ";
+                std::string msg = "InnateImmuneDistributionFlag, InnateImmuneDistribution1, or InnateImmuneDistribution2 ";
                 msg += "were not found in demographics in IndividualAttributes section.\n";
                 msg += "This is required when Innate_Immune_Variation_Type is set to anything but NONE.\n";
                 msg += "Hint: If you want to use this Innate_Immune_Variation_Type but without variation, set InnateImmuneDistributionFlag to 0 and InnateImmuneDistribution1 to 1.\n";
@@ -1145,6 +1145,7 @@ namespace Kernel
         ar.labelElement("m_cytokines") & susceptibility.m_cytokines;
         ar.labelElement("m_ind_pyrogenic_threshold") & susceptibility.m_ind_pyrogenic_threshold;
         ar.labelElement("m_ind_fever_kill_rate") & susceptibility.m_ind_fever_kill_rate;
+        ar.labelElement("m_variation_modifier") & susceptibility.m_variation_modifier;
         ar.labelElement("m_cytokine_stimulation") & susceptibility.m_cytokine_stimulation;
         ar.labelElement("m_parasite_density") & susceptibility.m_parasite_density;
         ar.labelElement("m_PfHRP2_pg") & susceptibility.m_PfHRP2_pg;
