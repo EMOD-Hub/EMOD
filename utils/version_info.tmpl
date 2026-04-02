@@ -132,9 +132,10 @@
 //                      Malaria: Fixed issue with blood capacity calculations when people turned 20.
 // 2.32 - 2/05/2026  -  Malaria: ReportFPGNewInfections now has a new optional parameter - "Report_Crossover_Data_Instead"
 //                                   This keeps basic new infection info and adds a new GenomeCrossoverLocations column.
+// 2.33 - 4/01/2026  -  Malaria: Changes to pyrogenic threshold options. 
 
 #define    MAJOR_VERSION    2
-#define    MINOR_VERSION    32
+#define    MINOR_VERSION    33
 
 #ifndef REVISION_NUMBER
 #define    REVISION_NUMBER  $REVISION$
@@ -165,7 +166,8 @@ static const char* BUILD_DATE = __DATE__ " " __TIME__;
 //7.0.0 - 06/09/2025 - https://github.com/EMOD-Hub/EMOD/issues/89 - new data for ReportFPGNewInfections
 //8.0.0 - 11/05/2025 - New serialized parameters to support Antibody decay after inactivity
 //9.0.0 - 12/08/2025 - Change serialized file structure so humans are separate from Nodes.
+//10.0.0 - 04/01/2026 - New serialized parameter to support dynamic pyrogenic threshold option.
 
-#define SER_POP_MAJOR_VERSION   9
+#define SER_POP_MAJOR_VERSION   10
 #define SER_POP_MINOR_VERSION   0
 #define SER_POP_PATCH_VERSION   0
