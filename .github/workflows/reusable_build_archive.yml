@@ -58,8 +58,10 @@ jobs:
       - name: Archive sti reporter dll
         uses: actions/upload-artifact@v7
         with:
-          name: libstirelationshipqueuereporter.dll
-          path: .build/x64/Release/reporter_plugins/libstirelationshipqueuereporter
+          name: stirelationshipqueuereporter.dll
+          path: ./build/x64/Release/reporter_plugins/stirelationshipqueuereporter
+          retention-days: 7
+          if-no-files-found: error   # 'error' | 'warn' | 'ignore'
       - name: Archive component tests
         if: ${{ inputs.disease_type == 'All' }}
         uses: actions/upload-artifact@v7
