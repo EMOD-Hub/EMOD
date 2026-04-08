@@ -1,0 +1,80 @@
+{
+    "Events": [
+        {
+            "class": "CampaignEvent",
+            "Comment": "Deploy LarvalMicrosporidiaIntervention for Strain_A with 50% coverage and constant infectivity",
+            "Start_Day": 50,
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            },
+            "Event_Coordinator_Config": {
+                "class": "StandardInterventionDistributionEventCoordinator",
+                "Number_Repetitions": 1,
+                "Timesteps_Between_Repetitions": 1,
+                "Intervention_Config": {
+                    "class": "LarvalMicrosporidiaIntervention",
+                    "Cost_To_Consumer": 10,
+                    "Habitat_Target": "ALL_HABITATS",
+                    "Habitat_Coverage": 0.4,
+                    "Strain_Name": "Strain_A",
+                    "Infectivity_Config": {
+                        "class": "WaningEffectBox",
+                        "Initial_Effect": 0.1,
+                        "Box_Duration": 40                 
+                        }
+                }
+            }
+        },
+        {
+            "class": "CampaignEvent",
+            "Comment": "Deploy LarvalMicrosporidiaIntervention for Strain_B with 30% coverage, starting later",
+            "Start_Day": 50,
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            },
+            "Event_Coordinator_Config": {
+                "class": "StandardInterventionDistributionEventCoordinator",
+                "Number_Repetitions": 1,
+                "Timesteps_Between_Repetitions": 1,
+                "Intervention_Config": {
+                    "class": "LarvalMicrosporidiaIntervention",
+                    "Cost_To_Consumer": 10,
+                    "Habitat_Target": "TEMPORARY_RAINFALL",
+                    "Habitat_Coverage": 0.3,
+                    "Strain_Name": "Strain_B",
+                    "Infectivity_Config": {
+                        "class": "WaningEffectBox",
+                        "Initial_Effect": 0.1,
+                        "Box_Duration": 80
+                    }
+                }
+            }
+        },
+                {
+            "class": "CampaignEvent",
+            "Comment": "Deploy LarvalMicrosporidiaIntervention for Strain_B with 30% coverage, starting later",
+            "Start_Day": 50,
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            },
+            "Event_Coordinator_Config": {
+                "class": "StandardInterventionDistributionEventCoordinator",
+                "Number_Repetitions": 1,
+                "Timesteps_Between_Repetitions": 1,
+                "Intervention_Config": {
+                    "class": "LarvalMicrosporidiaIntervention",
+                    "Cost_To_Consumer": 10,
+                    "Habitat_Target": "TEMPORARY_RAINFALL",
+                    "Habitat_Coverage": 0.7,
+                    "Strain_Name": "Strain_C",
+                    "Infectivity_Config": {
+                        "class": "WaningEffectBox",
+                        "Initial_Effect": 0.1,
+                        "Box_Duration": 80
+                    }
+                }
+            }
+        }
+    ],
+    "Use_Defaults": 1
+}
