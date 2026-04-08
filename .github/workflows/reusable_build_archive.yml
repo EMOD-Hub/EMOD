@@ -59,7 +59,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: libstirelationshipqueuereporter.dll
-          path: .build/x64/Release/reporter_plugins/
+          path: .build/x64/Release/reporter_plugins/libstirelationshipqueuereporter.dll
           if-no-files-found: ignore
       - name: Archive component tests
         if: ${{ inputs.disease_type == 'All' }}
