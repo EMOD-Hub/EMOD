@@ -348,7 +348,7 @@ namespace Kernel
                 }
                 else
                 {
-                    temp_result[iv.strain_index] = { iv_recalc_coverage, iv.current_effect };
+                    temp_result[iv.strain_index] = ResolvedStrainEffect(iv_recalc_coverage, iv.current_effect);
                 }
             }
         }

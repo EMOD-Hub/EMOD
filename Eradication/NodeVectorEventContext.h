@@ -29,6 +29,13 @@ namespace Kernel
     {
         float coverage       = 0.0f;
         float current_effect = 0.0f;
+
+        ResolvedStrainEffect() = default;
+        ResolvedStrainEffect( float coverage, float current_effect )
+            : coverage(coverage)
+            , current_effect(current_effect)
+        {
+        }
     };
 
     class Simulation;
