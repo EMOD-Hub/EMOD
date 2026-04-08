@@ -24,6 +24,13 @@ namespace Kernel
         float                   coverage;
         float                   current_effect;
     };
+
+    struct ResolvedStrainEffect
+    {
+        float coverage       = 0.0f;
+        float current_effect = 0.0f;
+    };
+
     class Simulation;
 
     class INodeVectorInterventionEffectsApply : public ISupports

@@ -2098,7 +2098,6 @@ namespace Kernel
             // Get the fraction of this larval cohort newly infected with each microsporidia strain.
             // Copy into a vector of pairs so we can pass to GetRandomIndexes for random-order iteration.
             const std::map<int, float>& infections_map = GetLarvalMicrosporidiaInfections(cohort);
-            const std::vector<std::pair<int, float>> larval_microsporidia_infections(infections_map.begin(), infections_map.end());
 
             // -----------------------------------------------------------------
             // --- Split off sub-cohorts for each microsporidia strain that has
@@ -2107,11 +2106,15 @@ namespace Kernel
             // --- Only process cohorts that are not already infected and that
             // --- have population left to split.
             // -----------------------------------------------------------------
-            if (!cohort->HasMicrosporidia() && (cohort->GetPopulation() > 0))
+            if (!cohort->HasMicrosporidia() && (cohort->GetPopulation() > 0) && infections_map.size()>0)
             {           
                 // Randomize strain iteration order so no strain is systematically
                 // disadvantaged by seeing a smaller uninfected remainder.
-                // We build indices for strains 1..N-1 only (index 0 = no strain).
+                if (infections_map.size() > 1)
+                {
+                    bool here = true;
+                }
+                const std::vector<std::pair<int, float>> larval_microsporidia_infections(infections_map.begin(), infections_map.end());
                 std::vector<uint32_t> strain_order = GetRandomIndexes(m_context->GetRng(), larval_microsporidia_infections.size());
                 for (uint32_t random_strain : strain_order)
                 {

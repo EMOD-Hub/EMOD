@@ -304,18 +304,59 @@ namespace Kernel
         const std::string& species) const
     {
         // Returns a map of strain_index -> fraction_newly_infected for each microsporidia
-        // strain affecting larvae in the given habitat and species. Multiple interventions
-        // targeting the same strain accumulate their effects; each successive intervention
-        // draws from the remaining uninfected fraction.
-        float uninfected = 1.0f;
-        std::map<int, float> result;
+        // strain affecting larvae in the given habitat and species. 
+        // Multiple interventions distributing the same strain accumulate their effects; 
+        // 
+
+        std::map<int, ResolvedStrainEffect> temp_result;
         for (const auto& iv : larvalMicrosporidiaInterventions)
         {
             if ((iv.habitat == habitat_query || iv.habitat == VectorHabitatType::ALL_HABITATS) && iv.species_name == species)
             {
-                result[iv.strain_index] += uninfected * iv.coverage * iv.current_effect;
-                uninfected *= (1.0f - iv.coverage * iv.current_effect);
+                float uninfected = 1.0f;
+                float iv_recalc_coverage = 0.0f;
+
+                // Redistribute coverage among previously resolved strains.
+                // Where the new intervention overlaps an existing strain's coverage,
+                // the overlapping portion is split proportionally by effect strength.
+                for (auto& previously_resolved : temp_result)
+                {
+                    uninfected -= previously_resolved.second.coverage;
+
+                    // Portion of previous strain's coverage not reached by the new intervention
+                    float previously_resolved_coverage_new = (1 - iv.coverage) * previously_resolved.second.coverage;
+
+                    // Overlapping portion split by relative effect strengths
+                    float coverage_to_effect_proportions = iv.coverage * previously_resolved.second.coverage / (previously_resolved.second.current_effect + iv.current_effect);
+                    previously_resolved_coverage_new += previously_resolved.second.current_effect * coverage_to_effect_proportions;
+                    iv_recalc_coverage += iv.current_effect * coverage_to_effect_proportions;
+
+                    previously_resolved.second.coverage = previously_resolved_coverage_new;
+                }
+
+                // The remaining uninfected fraction is covered directly by the new intervention
+                iv_recalc_coverage += uninfected * iv.coverage;
+
+                // Merge into an existing entry for the same strain, or create a new one.
+                // When merging, the combined effect is the coverage-weighted average.
+                auto it = temp_result.find(iv.strain_index);
+                if (it != temp_result.end())
+                {
+                    float new_coverage = it->second.coverage + iv_recalc_coverage;
+                    it->second.current_effect = (it->second.coverage * it->second.current_effect + iv_recalc_coverage * iv.current_effect) / new_coverage;
+                    it->second.coverage = new_coverage;
+                }
+                else
+                {
+                    temp_result[iv.strain_index] = { iv_recalc_coverage, iv.current_effect };
+                }
             }
+        }
+
+        std::map<int, float> result;
+        for (auto& resolved : temp_result)
+        {
+            result[resolved.first] = resolved.second.coverage * resolved.second.current_effect;
         }
         return result;
     }

@@ -10,7 +10,7 @@
 namespace Kernel
 {
 // based on their being 3 bits in VectorGamete for microsporidia - zero is for no microsporidia
-#define MAX_MICROSPORIDIA_STRAINS (8)
+#define MAX_MICROSPORIDIA_STRAINS (4) // 3 strains per species plus the "no microsporidia" strain
 
     class MicrosporidiaParameters : public JsonConfigurable
     {

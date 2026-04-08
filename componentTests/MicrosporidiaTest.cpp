@@ -299,8 +299,12 @@ SUITE(MicrosporidiaTest)
 
     TEST_FIXTURE(InfectivityFixture, TestInfectivity_TwoInterventionsDifferentStrains)
     {
-        // Strain 1: coverage=0.4 of 1.0 uninfected → 0.40; remaining = 0.60
-        // Strain 2: coverage=0.5 of 0.6 remaining  → 0.30
+        // IV1: strain 1, cov=0.4, eff=1.0 → temp[1] = {0.4, 1.0}
+        // IV2: strain 2, cov=0.5, eff=1.0
+        //   overlap with strain 1: 0.5*0.4 split 50/50 by equal effects → each gets 0.1
+        //   strain 1 keeps (1-0.5)*0.4 + 0.1 = 0.3
+        //   strain 2 gets  0.1 from overlap + 0.6*0.5 from uninfected = 0.4
+        // Final: strain 1 cov = 0.3, strain 2 cov = 0.4
         m_pNEC->UpdateLarvalMicrosporidiaInterventions(
             VectorHabitatType::TEMPORARY_RAINFALL, "species_A", 1, 0.4f, 1.0f);
         m_pNEC->UpdateLarvalMicrosporidiaInterventions(
@@ -310,8 +314,108 @@ SUITE(MicrosporidiaTest)
             VectorHabitatType::TEMPORARY_RAINFALL, "species_A");
 
         CHECK_EQUAL(2, (int)result.size());
-        CHECK_CLOSE(0.40f, result.at(1), 0.001f);
+        CHECK_CLOSE(0.30f, result.at(1), 0.001f);
+        CHECK_CLOSE(0.40f, result.at(2), 0.001f);
+    }
+
+    TEST_FIXTURE(InfectivityFixture, TestInfectivity_ThreeStrains)
+    {
+        // IV1: strain 1, cov=0.3, eff=1.0 → temp[1] = {0.3, 1.0}
+        // IV2: strain 2, cov=0.4, eff=1.0
+        //   overlap with strain 1: 0.4*0.3/2 = 0.06 to each
+        //   strain 1 → (1-0.4)*0.3 + 0.06 = 0.24
+        //   strain 2 → 0.06 + 0.7*0.4 = 0.34
+        // IV3: strain 3, cov=0.5, eff=1.0
+        //   overlap with strain 1 (0.24): 0.5*0.24/2 = 0.06 each → strain 1 → 0.18
+        //   overlap with strain 2 (0.34): 0.5*0.34/2 = 0.085 each → strain 2 → 0.255
+        //   strain 3 → 0.06 + 0.085 + 0.42*0.5 = 0.355
+        m_pNEC->UpdateLarvalMicrosporidiaInterventions(
+            VectorHabitatType::TEMPORARY_RAINFALL, "species_A", 1, 0.3f, 1.0f);
+        m_pNEC->UpdateLarvalMicrosporidiaInterventions(
+            VectorHabitatType::TEMPORARY_RAINFALL, "species_A", 2, 0.4f, 1.0f);
+        m_pNEC->UpdateLarvalMicrosporidiaInterventions(
+            VectorHabitatType::TEMPORARY_RAINFALL, "species_A", 3, 0.5f, 1.0f);
+
+        auto result = m_pNEC->GetLarvalMicrosporidiaInfectivity(
+            VectorHabitatType::TEMPORARY_RAINFALL, "species_A");
+
+        CHECK_EQUAL(3, (int)result.size());
+        CHECK_CLOSE(0.180f, result.at(1), 0.001f);
+        CHECK_CLOSE(0.255f, result.at(2), 0.001f);
+        CHECK_CLOSE(0.355f, result.at(3), 0.001f);
+    }
+
+    TEST_FIXTURE(InfectivityFixture, TestInfectivity_ThreeInterventionsTwoStrains)
+    {
+        // IV1: strain 1, cov=0.4, eff=1.0 → temp[1] = {0.4, 1.0}
+        // IV2: strain 2, cov=0.5, eff=1.0
+        //   strain 1 → 0.3, strain 2 → 0.4 (same as TwoDifferentStrains test)
+        // IV3: strain 1, cov=0.5, eff=1.0
+        //   overlap with strain 1 (0.3): 0.5*0.3/2 = 0.075 each → strain 1 → 0.225
+        //   overlap with strain 2 (0.4): 0.5*0.4/2 = 0.1 each → strain 2 → 0.3
+        //   iv3 gets 0.075 + 0.1 + 0.3*0.5 = 0.325
+        //   merge iv3 into strain 1: coverage = 0.225 + 0.325 = 0.55, effect = 1.0
+        // Final: strain 1 = 0.55, strain 2 = 0.30
+        m_pNEC->UpdateLarvalMicrosporidiaInterventions(
+            VectorHabitatType::TEMPORARY_RAINFALL, "species_A", 1, 0.4f, 1.0f);
+        m_pNEC->UpdateLarvalMicrosporidiaInterventions(
+            VectorHabitatType::TEMPORARY_RAINFALL, "species_A", 2, 0.5f, 1.0f);
+        m_pNEC->UpdateLarvalMicrosporidiaInterventions(
+            VectorHabitatType::TEMPORARY_RAINFALL, "species_A", 1, 0.5f, 1.0f);
+
+        auto result = m_pNEC->GetLarvalMicrosporidiaInfectivity(
+            VectorHabitatType::TEMPORARY_RAINFALL, "species_A");
+
+        CHECK_EQUAL(2, (int)result.size());
+        CHECK_CLOSE(0.55f, result.at(1), 0.001f);
         CHECK_CLOSE(0.30f, result.at(2), 0.001f);
+    }
+
+    TEST_FIXTURE(InfectivityFixture, TestInfectivity_ThreeInterventionsTwoStrainsDifferentOrder)
+    {
+        // IV1: strain 1, cov=0.4, eff=1.0 → temp[1] = {0.4, 1.0}
+        // IV2: strain 1, cov=0.5, eff=1.0
+        //   overlap with strain 1 (0.4): 0.5*0.4/2 = 0.1 each → strain 1 → 0.3
+        //   iv2 gets 0.1 from overlap + 0.6*0.5 from uninfected = 0.4
+        //   merge iv2 into strain 1: coverage = 0.3 + 0.4 = 0.7, effect = 1.0
+        // IV3: strain 2, cov=0.5, eff=1.0
+        //   overlap with strain 1 (0.7): 0.5*0.7/2 = 0.175 each → strain 1 → 0.525
+        //   strain 2 gets 0.175 from overlap + 0.3*0.5 from uninfected = 0.325
+        // Final: strain 1 = 0.525, strain 2 = 0.325
+        m_pNEC->UpdateLarvalMicrosporidiaInterventions(
+            VectorHabitatType::TEMPORARY_RAINFALL, "species_A", 1, 0.4f, 1.0f);
+        m_pNEC->UpdateLarvalMicrosporidiaInterventions(
+            VectorHabitatType::TEMPORARY_RAINFALL, "species_A", 1, 0.5f, 1.0f);
+        m_pNEC->UpdateLarvalMicrosporidiaInterventions(
+            VectorHabitatType::TEMPORARY_RAINFALL, "species_A", 2, 0.5f, 1.0f);
+
+        auto result = m_pNEC->GetLarvalMicrosporidiaInfectivity(
+            VectorHabitatType::TEMPORARY_RAINFALL, "species_A");
+
+        CHECK_EQUAL(2, (int)result.size());
+        CHECK_CLOSE(0.525f, result.at(1), 0.001f);
+        CHECK_CLOSE(0.325f, result.at(2), 0.001f);
+    }
+
+    TEST_FIXTURE(InfectivityFixture, TestInfectivity_TwoStrainsDifferentEffects)
+    {
+        // IV1: strain 1, cov=0.5, eff=0.6 → temp[1] = {0.5, 0.6}
+        // IV2: strain 2, cov=0.5, eff=0.4
+        //   c2ep = 0.5*0.5 / (0.6+0.4) = 0.25
+        //   strain 1 → (1-0.5)*0.5 + 0.6*0.25 = 0.40
+        //   iv2 gets 0.4*0.25 = 0.10 from overlap + 0.5*0.5 = 0.25 from uninfected = 0.35
+        // Final: strain 1 = 0.40*0.6 = 0.24, strain 2 = 0.35*0.4 = 0.14
+        m_pNEC->UpdateLarvalMicrosporidiaInterventions(
+            VectorHabitatType::TEMPORARY_RAINFALL, "species_A", 1, 0.5f, 0.6f);
+        m_pNEC->UpdateLarvalMicrosporidiaInterventions(
+            VectorHabitatType::TEMPORARY_RAINFALL, "species_A", 2, 0.5f, 0.4f);
+
+        auto result = m_pNEC->GetLarvalMicrosporidiaInfectivity(
+            VectorHabitatType::TEMPORARY_RAINFALL, "species_A");
+
+        CHECK_EQUAL(2, (int)result.size());
+        CHECK_CLOSE(0.24f, result.at(1), 0.001f);
+        CHECK_CLOSE(0.14f, result.at(2), 0.001f);
     }
 
     TEST_FIXTURE(InfectivityFixture, TestInfectivity_HabitatFilter)
