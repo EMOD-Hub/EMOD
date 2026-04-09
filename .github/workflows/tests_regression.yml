@@ -104,7 +104,7 @@ jobs:
         uses: actions/download-artifact@v5
         with:
           name: libstirelationshipqueuereporter
-          path: build/x64/Release/Eradication/
+          path: build/x64/Release/reporter_plugins/
       - name: Restore executable permissions
         run: |
           echo "Checking downloaded artifact structure..."
