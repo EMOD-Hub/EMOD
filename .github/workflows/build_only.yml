@@ -19,7 +19,7 @@ on:
           - ' '
           - '--TestSugar'
       development:
-        description: 'Publish as a development version (appends .devN to version)'
+        description: 'development version (appends .devN to version)'
         required: false
         type: boolean
         default: false
