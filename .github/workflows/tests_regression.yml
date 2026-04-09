@@ -96,14 +96,15 @@ jobs:
           fetch-depth: 0
 
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: Eradication
           path: build/x64/Release/Eradication/
-      - name: Download Build Artifacts DLL
-        uses: actions/download-artifact@v5
+      - name: Download Build Artifacts reporter_plugins
+        if: ${{ inputs.run_sti }}
+        uses: actions/download-artifact@v8
         with:
-          name: libstirelationshipqueuereporter
+          name: reporter_plugins
           path: build/x64/Release/reporter_plugins/
       - name: Restore executable permissions
         run: |

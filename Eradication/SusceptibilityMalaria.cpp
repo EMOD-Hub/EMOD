@@ -154,6 +154,9 @@ namespace Kernel
 
             if(pyrogenic_threshold_max < pyrogenic_threshold_min)
             {
+                std::stringstream ss;
+                ss << "Pyrogenic_Threshold_Max ( "<< pyrogenic_threshold_max << " ) must be greater than or equal to Pyrogenic_Threshold_Min ( " << pyrogenic_threshold_min << " ).";
+                throw InvalidInputDataException(__FILE__, __LINE__, __FUNCTION__, ss.str().c_str());
                 throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, "Pyrogenic_Threshold_Max must be greater than or equal to Pyrogenic_Threshold_Min." );
             }
         }
@@ -248,6 +251,7 @@ namespace Kernel
 
         recalculateBloodCapacity( _age );
         m_RBC  = m_RBCcapacity;
+        m_variation_modifier = 1.0f; // default to no variation, and then apply variation below if configured
 
         if(SusceptibilityMalariaConfig::innate_immune_variation_type ==
             InnateImmuneVariationType::PYROGENIC_THRESHOLD_VS_AGE_INCREASING_AND_CYTOKINE_KILLING_INVERSE)
@@ -625,9 +629,11 @@ namespace Kernel
                 if(m_ind_pyrogenic_threshold < SusceptibilityMalariaConfig::pyrogenic_threshold_max)
                 {
                     m_ind_pyrogenic_threshold = m_variation_modifier * SusceptibilityMalariaConfig::pyrogenic_threshold;
-                    m_ind_pyrogenic_threshold = m_ind_pyrogenic_threshold * pow( 10, ( 0.132 * _age / DAYSPERYEAR ) );
+                    m_ind_pyrogenic_threshold = m_ind_pyrogenic_threshold * powf( 10.0f, ( 0.132f * _age / DAYSPERYEAR ) );
                 }
-               
+
+                // m_variation_modifier acts as an inverse modifier for fever kill rate — higher values mean less effective fever-driven parasite
+                // killing. The (2 - x) construction turns the 0 - to - 1 range of m_variation_modifier into a 2 - to - 1 multiplier for fever_IRBC_killrate.
                 m_ind_fever_kill_rate = ( 2 - m_variation_modifier ) * SusceptibilityMalariaConfig::fever_IRBC_killrate;
                 break;
 

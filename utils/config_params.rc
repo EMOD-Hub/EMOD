@@ -599,4 +599,4 @@
 #define Antibody_Days_To_Long_Term_Decay_DESC_TEXT "The number of days since the antibody (MSP & EMP1) was last active to start the long term decay of the concentration."
 #define Antibody_Long_Term_Decay_Days_DESC_TEXT "The exponential decay time for an antibody (MSP & EMP1) concentration (in days) after the time since the antibody was last active exceeds Antibody_Days_To_Long_Term_Decay."
 
-#define MSP1_Aligned_DESC_TEXT "If true(1), the formula for calculating the MSP1 antibody capacity growth is aligned with the formula for calculating the PfEMP1 antibody capacity growth. If false(0), the original formula for calculating MSP1 antibody capacity growth is used."
+#define MSP1_Aligned_DESC_TEXT "If true (1), the formula for calculating the MSP1 antibody capacity growth is aligned with the formula for calculating the PfEMP1 antibody capacity growth. If false(0), the original formula for calculating MSP1 antibody capacity growth is used."
