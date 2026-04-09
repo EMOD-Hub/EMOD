@@ -96,13 +96,13 @@ jobs:
           fetch-depth: 0
 
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v7
         with:
           name: Eradication
           path: build/x64/Release/Eradication/
       - name: Download Build Artifacts DLL
         if: ${{ inputs.run_sti }}
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v7
         with:
           name: libstirelationshipqueuereporter
           path: build/x64/Release/reporter_plugins/
