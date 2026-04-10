@@ -2096,7 +2096,7 @@ namespace Kernel
             IVectorCohort* cohort = *it;
 
             // Get the fraction of this larval cohort newly infected with each microsporidia strain.
-            const std::vector<float>& infections_vec = GetLarvalMicrosporidiaInfections(cohort);
+            const std::vector<float>& infections_vec = cohort->GetHabitat()->GetLarvalMicrosporidiaInfections();
 
             // -----------------------------------------------------------------
             // --- Split off sub-cohorts for each microsporidia strain that has
@@ -2266,11 +2266,6 @@ namespace Kernel
                      __FUNCTION__, p_larval_mortality.GetDefaultValue(), locallarvalmortality, rainfallmortality, artificialmortality.GetDefaultValue() );
 
         return p_larval_mortality;
-    }
-
-    const std::vector<float>& VectorPopulation::GetLarvalMicrosporidiaInfections(IVectorCohort* larva) const
-    {
-        return larva->GetHabitat()->GetLarvalMicrosporidiaInfections();
     }
 
     void VectorPopulation::Update_Egg_Laying( float dt )

@@ -204,7 +204,6 @@ namespace Kernel
         float GetLarvalDevelopmentProgress (float dt, IVectorCohort* larva) const;
         GeneticProbability GetLarvalMortalityProbability(float dt, IVectorCohort* larva) const;
         float GetRelativeSurvivalWeight(VectorHabitat* habitat) const;
-        const std::vector<float>& GetLarvalMicrosporidiaInfections(IVectorCohort* larva) const;
 
         // Larval queue update helpers
         void ApplyLarvalDevelopmentAndMortality(float dt, IVectorCohort* cohort);

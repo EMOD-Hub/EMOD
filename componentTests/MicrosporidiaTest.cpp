@@ -264,11 +264,7 @@ SUITE(MicrosporidiaTest)
         auto result = m_pNEC->GetLarvalMicrosporidiaInfectivity(
             VectorHabitatType::TEMPORARY_RAINFALL, "species_A");
 
-        CHECK_EQUAL(MAX_MICROSPORIDIA_STRAINS, (int)result.size());
-        for (int i = 0; i < MAX_MICROSPORIDIA_STRAINS; ++i)
-        {
-            CHECK_CLOSE(0.0f, result[i], FLT_EPSILON);
-        }
+        CHECK_EQUAL(true, result.empty());
     }
 
     TEST_FIXTURE(InfectivityFixture, TestInfectivity_SingleIntervention)
@@ -438,11 +434,7 @@ SUITE(MicrosporidiaTest)
         auto result = m_pNEC->GetLarvalMicrosporidiaInfectivity(
             VectorHabitatType::TEMPORARY_RAINFALL, "species_A");
 
-        CHECK_EQUAL(MAX_MICROSPORIDIA_STRAINS, (int)result.size());
-        for (int i = 0; i < MAX_MICROSPORIDIA_STRAINS; ++i)
-        {
-            CHECK_CLOSE(0.0f, result[i], FLT_EPSILON);
-        }
+        CHECK_EQUAL(true, result.empty());
     }
 
     TEST_FIXTURE(InfectivityFixture, TestInfectivity_AllHabitatsMatchesAny)
@@ -472,10 +464,6 @@ SUITE(MicrosporidiaTest)
         auto result = m_pNEC->GetLarvalMicrosporidiaInfectivity(
             VectorHabitatType::TEMPORARY_RAINFALL, "species_A");
 
-        CHECK_EQUAL(MAX_MICROSPORIDIA_STRAINS, (int)result.size());
-        for (int i = 0; i < MAX_MICROSPORIDIA_STRAINS; ++i)
-        {
-            CHECK_CLOSE(0.0f, result[i], FLT_EPSILON);
-        }
+        CHECK_EQUAL(true, result.empty());
     }
 }
