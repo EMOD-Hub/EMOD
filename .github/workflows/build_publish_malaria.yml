@@ -107,12 +107,12 @@ jobs:
         with:
           name: version
           path: pypi/src/version_dir
-      - name: Download libstirelationshipqueuereporter
+      - name: Download reporter_plugins
         if: ${{ inputs.package_type == 'hiv' }}
         uses: actions/download-artifact@v8
         with:
-          name: libstirelationshipqueuereporter
-          path: pypi/src/stireporter_dir
+          name: reporter_plugins
+          path: pypi/src/reporter_plugins_dir
 
       - name: Prep files
         run: |
@@ -123,8 +123,8 @@ jobs:
           zip -j "${PKG}/schema.zip" schema_dir/schema.json
           rm -r version_dir eradication_dir schema_dir
           if [ "${{ inputs.package_type }}" = "hiv" ]; then
-            zip -j "${PKG}/libstirelationshipqueuereporter.zip" stireporter_dir/libstirelationshipqueuereporter
-            rm -r stireporter_dir
+            zip -j "${PKG}/reporter_plugins.zip" reporter_plugins_dir/*
+            rm -r reporter_plugins_dir
           fi
 
       - name: Build PyPI distribution

@@ -50,7 +50,7 @@ jobs:
             exit 1
           fi
           if ! echo "${{ inputs.dev_number }}" | grep -qE '^[0-9]+$'; then
-            echo "::error::Dev number must be a positive integer, got '${{ inputs.dev_number }}'"
+            echo "::error::Dev number must be a non-negative integer, got '${{ inputs.dev_number }}'"
             exit 1
           fi
           echo "Will publish as development version with .dev${{ inputs.dev_number }} suffix"
@@ -70,8 +70,8 @@ jobs:
 
           # Update pyproject.toml with correct package name and description
           DESCRIPTIONS="common:testing features common to all sim types"
-          DESCRIPTIONS="${DESCRIPTIONS};malaria:the Malaria sim type"
-          DESCRIPTIONS="${DESCRIPTIONS};hiv:the HIV sim type"
+          DESCRIPTIONS="${DESCRIPTIONS};malaria: running Malaria and Vector simulations"
+          DESCRIPTIONS="${DESCRIPTIONS};hiv: running HIV and STI simulations"
           DESC=$(echo "$DESCRIPTIONS" | tr ';' '\n' | grep "^${{ inputs.package_type }}:" | cut -d: -f2)
 
           sed -i "s/emod-PACKAGE_TYPE/emod-${{ inputs.package_type }}/" pypi/pyproject.toml
@@ -107,12 +107,12 @@ jobs:
         with:
           name: version
           path: pypi/src/version_dir
-      - name: Download libstirelationshipqueuereporter
+      - name: Download reporter_plugins
         if: ${{ inputs.package_type == 'hiv' }}
         uses: actions/download-artifact@v8
         with:
-          name: libstirelationshipqueuereporter
-          path: pypi/src/stireporter_dir
+          name: reporter_plugins
+          path: pypi/src/reporter_plugins_dir
 
       - name: Prep files
         run: |
@@ -123,8 +123,8 @@ jobs:
           zip -j "${PKG}/schema.zip" schema_dir/schema.json
           rm -r version_dir eradication_dir schema_dir
           if [ "${{ inputs.package_type }}" = "hiv" ]; then
-            zip -j "${PKG}/libstirelationshipqueuereporter.zip" stireporter_dir/libstirelationshipqueuereporter
-            rm -r stireporter_dir
+            zip -j "${PKG}/reporter_plugins.zip" reporter_plugins_dir/*
+            rm -r reporter_plugins_dir
           fi
 
       - name: Build PyPI distribution
