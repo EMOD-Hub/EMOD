@@ -113,6 +113,11 @@ SUITE(SerializationTest)
             for( int i = 0 ; i < json["Objects"].size() ; i++ )
             {
                 string class_name = json["Objects"][i]["Test"]["__class__"].AsString();
+                if (class_name == "SusceptibilityMalaria")
+                {
+                    // This class has a pointer to an EventTriggerFactory which is not serialized and will cause the test to fail.
+                    bool here = true;
+                }
                 printf("testing  %s\n",class_name.c_str());
 
                 string expected_json_str = json["Objects"][i].ToString();

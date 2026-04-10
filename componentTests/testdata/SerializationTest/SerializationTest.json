@@ -649,6 +649,7 @@
                 "m_cytokines"                  : 0.1,
                 "m_ind_pyrogenic_threshold"    : 0.2,
                 "m_ind_fever_kill_rate"        : 0.3,
+                "m_variation_modifier"         : 0.7,
                 "m_cytokine_stimulation"       : 0.4,
                 "m_parasite_density"           : 0.5,
                 "m_PfHRP2_pg"                  : 0.6,
