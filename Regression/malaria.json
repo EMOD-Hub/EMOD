@@ -1,7 +1,7 @@
 {
    "not running" :[
-		{ "nOTES": "Removing regression test 100_ until https://github.com/InstituteforDiseaseModeling/DtkTrunk/issues/5019 is resolved"},
-		{ "path": "Malaria/100_Malaria_FPG_Drug_Resistance_Strain_Dominance"}
+        { "nOTES": "Removing regression test 100_ until https://github.com/InstituteforDiseaseModeling/DtkTrunk/issues/5019 is resolved"},
+        { "path": "Malaria/100_Malaria_FPG_Drug_Resistance_Strain_Dominance"}
    ],
    "tests": [
         { "path": "Scenarios/VectorAndMalaria/02_Namawala_Full_Malaria_Model" },
@@ -97,6 +97,9 @@
         { "path": "Malaria/113_Malaria_AntibodyLongTermDecay" },
         { "path": "Malaria/114_Malaria_Serialization_AntibodyLongTermDecay" },
         { "path": "Malaria/115_Malaria_Serialization_MultiNodeMultiHumanCollection" },
+        { "path": "Malaria/116_Malaria_New_Pyrogenic_Threshold" },
+        { "path": "Malaria/117_Malaria_MSP1_Antibody_Growth_Aligned" },
+        { "path": "Malaria/118_Malaria_Serialization_PyrogenicThreshold" },
         { "path": "Multicore_Nosibe/23_Malaria_Intervention_RTSSVaccine" },
         { "path": "Malaria/fpg_vs_base/1_Mort-1" },
         { "path": "Malaria/fpg_vs_base/2_Mort-2" },
