@@ -18,6 +18,16 @@ on:
         options:
           - ' '
           - '--TestSugar'
+      development:
+        description: 'development version (appends .devN to version)'
+        required: false
+        type: boolean
+        default: false
+      dev_number:
+        description: 'Dev version number N (used when development is true, e.g. 1 for .dev1)'
+        required: false
+        type: string
+        default: '0'
 
 jobs:
   build_artifacts:
@@ -26,3 +36,4 @@ jobs:
     with:
       disease_type: ${{ inputs.disease_type }}
       science_test: ${{ inputs.science_test }}
+      dev_version: ${{ inputs.development == true && inputs.dev_number || '' }}

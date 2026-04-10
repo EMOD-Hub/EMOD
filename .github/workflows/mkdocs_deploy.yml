@@ -22,7 +22,7 @@ jobs:
       - name: Install packages
         run: |
           python3 -m pip install --upgrade pip
-          python3 -m pip install ./pypi_common[docs]
+          python3 -m pip install ./pypi[docs]
       - name: Build static files
         run: |
           python -m sphinx -T --keep-going -b html ./docs ./site

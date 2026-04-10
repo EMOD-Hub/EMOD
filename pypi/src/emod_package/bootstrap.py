@@ -31,7 +31,7 @@ def setup(local_dir="stash"):
     """
         Extract binary and schema into a local directory.
     """
-    extract('emod_malaria', local_dir)
+    extract('PACKAGE_NAME', local_dir)
 
 
 if __name__ == "__main__":

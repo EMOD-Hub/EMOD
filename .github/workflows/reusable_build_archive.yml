@@ -10,6 +10,10 @@ on:
       science_test:
         required: true
         type: string
+      dev_version:
+        required: false
+        type: string
+        default: ''
 
 jobs:
   build:
@@ -37,6 +41,15 @@ jobs:
       - name: Generate version file
         run: |
           grep DTK_Version schema.json | sed 's/[^0-9.]//g' > version
+          if [ -n "${{ inputs.dev_version }}" ]; then
+            if ! echo "${{ inputs.dev_version }}" | grep -qE '^[0-9]+$'; then
+              echo "::error::dev_version must be a non-negative integer, got '${{ inputs.dev_version }}'"
+              exit 1
+            fi
+            VERSION=$(cat version)
+            echo "${VERSION}.dev${{ inputs.dev_version }}" > version
+            echo "Development version: $(cat version)"
+          fi
       - name: Archive binary
         uses: actions/upload-artifact@v7
         with:
