@@ -294,8 +294,8 @@ namespace Kernel
         : SimpleVectorControlNode()
         , m_Coverage(1.0f)
         , m_StrainIndex(-1)
-        , waning_effect(nullptr)
         , m_SpeciesName("")
+        , waning_effect(nullptr)
     {
     }
 
@@ -303,8 +303,8 @@ namespace Kernel
         : SimpleVectorControlNode(rMaster)
         , m_Coverage(rMaster.m_Coverage)
         , m_StrainIndex(rMaster.m_StrainIndex)
-        , waning_effect(nullptr)
         , m_SpeciesName(rMaster.m_SpeciesName)
+        , waning_effect(nullptr)
     {
         if (rMaster.waning_effect != nullptr)
         {
@@ -321,13 +321,10 @@ namespace Kernel
     bool LarvalMicrosporidiaIntervention::Configure(const Configuration* inputJson)
     {
         jsonConfigurable::ConstrainedString strain_name;
-        if (GET_CONFIGURABLE(SimulationConfig) != nullptr)
-        {
-            VectorParameters* p_vp = GET_CONFIGURABLE(SimulationConfig)->vector_params;
-            const jsonConfigurable::tDynamicStringSet& microsporidia_names = p_vp->vector_species.GetMicrosporidiaNames();
-            strain_name.constraint_param = &microsporidia_names;
-            strain_name.constraints = "Vector_Species_Params[X].Microsporidia[X].Strain_Name";
-        }
+        VectorParameters* p_vp = GET_CONFIGURABLE(SimulationConfig)->vector_params;
+        const jsonConfigurable::tDynamicStringSet& microsporidia_names = p_vp->vector_species.GetMicrosporidiaNames();
+        strain_name.constraint_param = &microsporidia_names;
+        strain_name.constraints = "Vector_Species_Params[X].Microsporidia[X].Strain_Name";
 
         WaningConfig infectivity_config;
         initConfig("Habitat_Target", m_HabitatTarget, inputJson, MetadataDescriptor::Enum("Habitat_Target", Habitat_Target_DESC_TEXT, MDD_ENUM_ARGS(VectorHabitatType)));
@@ -343,46 +340,43 @@ namespace Kernel
                                                                                inputJson->GetDataLocation(),
                                                                                "Infectivity_Config");
 
-            if (GET_CONFIGURABLE(SimulationConfig) != nullptr)
+            bool found_strain = false;
+            VectorParameters* p_vp = GET_CONFIGURABLE(SimulationConfig)->vector_params;
+            for (int i = 0; i < p_vp->vector_species.Size(); ++i)
             {
-                bool found_strain = false;
-                VectorParameters* p_vp = GET_CONFIGURABLE(SimulationConfig)->vector_params;
-                for (int i = 0; i < p_vp->vector_species.Size(); ++i)
+                for (int j = 0; j < p_vp->vector_species[i]->microsporidia_strains.Size(); ++j)
                 {
-                    for (int j = 0; j < p_vp->vector_species[i]->microsporidia_strains.Size(); ++j)
+                    if (strain_name == p_vp->vector_species[i]->microsporidia_strains[j]->strain_name)
                     {
-                        if (strain_name == p_vp->vector_species[i]->microsporidia_strains[j]->strain_name)
+                        if (m_HabitatTarget != VectorHabitatType::ALL_HABITATS && !p_vp->vector_species[i]->habitat_params.HasHabitatType(m_HabitatTarget))
                         {
-                            if (m_HabitatTarget != VectorHabitatType::ALL_HABITATS && !p_vp->vector_species[i]->habitat_params.HasHabitatType(m_HabitatTarget))
+                            const char* p_habitat_name = VectorHabitatType::pairs::lookup_key(m_HabitatTarget);
+                            std::stringstream ss;
+                            ss << "Invalid parameter value: 'Habitat_Target' = '" << p_habitat_name << "'\n";
+                            ss << "This habitat is not configured for the species '" << p_vp->vector_species[i]->name;
+                            ss << "' which is associated with microsporidia strain '" << strain_name << "'.\n";
+                            ss << "Please select from one of the configured types:\n";
+                            const std::vector<IVectorHabitat*>& r_habitats = p_vp->vector_species[i]->habitat_params.GetHabitats();
+                            for (int k = 0; k < r_habitats.size(); ++k)
                             {
-                                const char* p_habitat_name = VectorHabitatType::pairs::lookup_key(m_HabitatTarget);
-                                std::stringstream ss;
-                                ss << "Invalid parameter value: 'Habitat_Target' = '" << p_habitat_name << "'\n";
-                                ss << "This habitat is not configured for the species '" << p_vp->vector_species[i]->name;
-                                ss << "' which is associated with microsporidia strain '" << strain_name << "'.\n";
-                                ss << "Please select from one of the configured types:\n";
-                                const std::vector<IVectorHabitat*>& r_habitats = p_vp->vector_species[i]->habitat_params.GetHabitats();
-                                for (int k = 0; k < r_habitats.size(); ++k)
-                                {
-                                    const char* p_configured_habitat_name = VectorHabitatType::pairs::lookup_key(r_habitats[k]->GetVectorHabitatType());
-                                    ss << p_configured_habitat_name << "\n";
-                                }
-                                throw InvalidInputDataException(__FILE__, __LINE__, __FUNCTION__, ss.str().c_str());
+                                const char* p_configured_habitat_name = VectorHabitatType::pairs::lookup_key(r_habitats[k]->GetVectorHabitatType());
+                                ss << p_configured_habitat_name << "\n";
                             }
-                            m_SpeciesName = p_vp->vector_species[i]->name;
-                            m_StrainIndex = j;
-                            found_strain = true;
-                            break;
+                            throw InvalidInputDataException(__FILE__, __LINE__, __FUNCTION__, ss.str().c_str());
                         }
-                    }
-                    if (found_strain)
-                    {
+                        m_SpeciesName = p_vp->vector_species[i]->name;
+                        m_StrainIndex = j;
+                        found_strain = true;
                         break;
                     }
                 }
-                release_assert(found_strain); // strain_name is constrained to valid microsporidia names, so a match is always expected
+                if (found_strain)
+                {
+                    break;
+                }
             }
-
+            release_assert(found_strain); // strain_name is constrained to valid microsporidia names, so a match is always expected
+            
         }
         return configured;
     }
@@ -410,15 +404,16 @@ namespace Kernel
         if (waning_effect != nullptr)
         {
             waning_effect->Update(dt);
+            ApplyEffects(dt);
         }
-        ApplyEffects(dt);
     }
 
     void LarvalMicrosporidiaIntervention::ApplyEffects(float dt)
     {
         release_assert(m_pINVIC != nullptr);
-        if (waning_effect->Current() < FLT_EPSILON) // don't apply if there is no effect
+        if (waning_effect->Current() < FLT_EPSILON) // expire if efficacy very low
         {
+            SetExpired(true);
             return;
 		}
         m_pINVIC->UpdateLarvalMicrosporidiaInterventions(GetHabitatTarget(), m_SpeciesName,  m_StrainIndex, m_Coverage, waning_effect->Current());

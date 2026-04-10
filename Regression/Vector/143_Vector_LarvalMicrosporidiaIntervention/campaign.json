@@ -2,7 +2,7 @@
     "Events": [
         {
             "class": "CampaignEvent",
-            "Comment": "Deploy LarvalMicrosporidiaIntervention for Strain_A with 50% coverage and constant infectivity",
+            "Comment": "Strain_A, 40% coverage, ALL_HABITATS, box infectivity 0.1 for 40 days",
             "Start_Day": 50,
             "Nodeset_Config": {
                 "class": "NodeSetAll"
@@ -27,7 +27,7 @@
         },
         {
             "class": "CampaignEvent",
-            "Comment": "Deploy LarvalMicrosporidiaIntervention for Strain_B with 30% coverage, starting later",
+            "Comment": "Strain_B, 30% coverage, TEMPORARY_RAINFALL, box infectivity 0.1 for 80 days",
             "Start_Day": 50,
             "Nodeset_Config": {
                 "class": "NodeSetAll"
@@ -52,7 +52,7 @@
         },
                 {
             "class": "CampaignEvent",
-            "Comment": "Deploy LarvalMicrosporidiaIntervention for Strain_B with 30% coverage, starting later",
+            "Comment": "Strain_C, 70% coverage, TEMPORARY_RAINFALL, box infectivity 0.1 for 80 days",
             "Start_Day": 50,
             "Nodeset_Config": {
                 "class": "NodeSetAll"

@@ -41,7 +41,7 @@ namespace Kernel
         virtual float GetEggCrowdingCorrection( bool refresh = false ) override;
         virtual float GetLocalLarvalGrowthModifier() const override;
         virtual float GetLocalLarvalMortality(float species_aquatic_mortality, float progress) const override;
-        virtual const std::map<int, float>& GetLarvalMicrosporidiaInfections() const override;
+        virtual const std::vector<float>& GetLarvalMicrosporidiaInfections() const override;
 
     protected:
         VectorHabitat( VectorHabitatType::Enum type );
@@ -73,7 +73,7 @@ namespace Kernel
         float                    m_rainfall_mortality;
         float                    m_egg_crowding_correction;
         // Not serialized: recomputed each timestep from node-level microsporidia interventions.
-        std::map<int, float> m_portion_larva_infected_microsporidia;
+        std::vector<float> m_portion_larva_infected_microsporidia;
     };
 
     void serialize(IArchive&, map<VectorHabitatType::Enum, float>&);

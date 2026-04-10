@@ -16,7 +16,7 @@
 
 namespace Kernel
 {
-    struct LarvalMicrosporidiaInterventionEffect
+    struct LarvalMicrosporidiaInterventionData
     {
         VectorHabitatType::Enum habitat;
         std::string             species_name;
@@ -25,13 +25,13 @@ namespace Kernel
         float                   current_effect;
     };
 
-    struct ResolvedStrainEffect
+    struct ResolvedStrainData
     {
         float coverage       = 0.0f;
         float current_effect = 0.0f;
 
-        ResolvedStrainEffect() = default;
-        ResolvedStrainEffect( float coverage, float current_effect )
+        ResolvedStrainData() = default;
+        ResolvedStrainData( float coverage, float current_effect )
             : coverage(coverage)
             , current_effect(current_effect)
         {
@@ -106,7 +106,7 @@ namespace Kernel
         virtual const GeneticProbability& GetIndoorKilling() const override;
         virtual bool  IsUsingSugarTrap() const override;
         virtual const GeneticProbability& GetSugarFeedKilling() const override;
-        virtual std::map<int, float> GetLarvalMicrosporidiaInfectivity(VectorHabitatType::Enum, const std::string& species) const override;
+        virtual std::vector<float> GetLarvalMicrosporidiaInfectivity(VectorHabitatType::Enum, const std::string& species) const override;
 
         VectorHabitatType::Enum larval_reduction_target;
         LarvalHabitatMultiplier larval_reduction;
@@ -136,7 +136,7 @@ namespace Kernel
         GeneticProbability pIndoorKilling;
         bool               isUsingSugarTrap;
         GeneticProbability pSugarFeedKilling;
-        std::vector<LarvalMicrosporidiaInterventionEffect> larvalMicrosporidiaInterventions;
+        std::vector<LarvalMicrosporidiaInterventionData> larvalMicrosporidiaInterventions;
 
     private:
         float CombineProbabilities( float prob1, float prob2 );

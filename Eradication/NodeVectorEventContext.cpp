@@ -7,6 +7,7 @@
 #include "NodeVector.h"
 #include "SimulationEventContext.h"
 #include "Debug.h"
+#include "MicrosporidiaParameters.h"
 
 SETUP_LOGGING( "NodeVectorEventContext" )
 
@@ -299,16 +300,16 @@ namespace Kernel
         return pSugarFeedKilling;
     }
 
-    std::map<int, float> NodeVectorEventContextHost::GetLarvalMicrosporidiaInfectivity(
+    std::vector<float> NodeVectorEventContextHost::GetLarvalMicrosporidiaInfectivity(
         VectorHabitatType::Enum habitat_query,
         const std::string& species) const
     {
-        // Returns a map of strain_index -> fraction_newly_infected for each microsporidia
-        // strain affecting larvae in the given habitat and species. 
-        // Multiple interventions distributing the same strain accumulate their effects; 
-        // 
+        // Returns a vector of fraction_newly_infected for each microsporidia
+        // strain infecting larvae in the given habitat and species. 
+        // index of the vector corresponds to the strain_index
+        // Multiple interventions distributing the same strain accumulate their effects
 
-        std::map<int, ResolvedStrainEffect> temp_result;
+        std::map<int, ResolvedStrainData> temp_result;
         for (const auto& iv : larvalMicrosporidiaInterventions)
         {
             if ((iv.habitat == habitat_query || iv.habitat == VectorHabitatType::ALL_HABITATS) && iv.species_name == species)
@@ -348,17 +349,17 @@ namespace Kernel
                 }
                 else
                 {
-                    temp_result[iv.strain_index] = ResolvedStrainEffect(iv_recalc_coverage, iv.current_effect);
+                    temp_result[iv.strain_index] = ResolvedStrainData(iv_recalc_coverage, iv.current_effect);
                 }
             }
         }
 
-        std::map<int, float> result;
+        std::vector<float> result_by_strain_index(MAX_MICROSPORIDIA_STRAINS, 0.0f);
         for (auto& resolved : temp_result)
         {
-            result[resolved.first] = resolved.second.coverage * resolved.second.current_effect;
+            result_by_strain_index[resolved.first] = resolved.second.coverage * resolved.second.current_effect;
         }
-        return result;
+        return result_by_strain_index;
     }
 
     float NodeVectorEventContextHost::GetOviTrapKilling( VectorHabitatType::Enum habitat_query ) const

@@ -51,14 +51,10 @@ namespace Kernel
         const Configuration * inputJson
     )
     {
-        if( GET_CONFIGURABLE(SimulationConfig) != nullptr )
-        {
-            VectorParameters* p_vp = GET_CONFIGURABLE( SimulationConfig )->vector_params;
-            const jsonConfigurable::tDynamicStringSet& species_names = p_vp->vector_species.GetSpeciesNames();
-            m_ReleasedSpecies.constraint_param = &species_names;
-            m_ReleasedSpecies.constraints = p_vp->vector_species.SPECIES_NAME_CONSTRAINTS;
-        }
-
+        VectorParameters* p_vp = GET_CONFIGURABLE( SimulationConfig )->vector_params;
+        const jsonConfigurable::tDynamicStringSet& species_names = p_vp->vector_species.GetSpeciesNames();
+        m_ReleasedSpecies.constraint_param = &species_names;
+        m_ReleasedSpecies.constraints = p_vp->vector_species.SPECIES_NAME_CONSTRAINTS;
 
         std::vector<std::vector<std::string>> combo_strings;
         std::vector<std::vector<std::string>> combo_strings_mate;

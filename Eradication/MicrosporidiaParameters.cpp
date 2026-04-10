@@ -92,11 +92,11 @@ namespace Kernel
 
     void MicrosporidiaCollection::CheckConfiguration()
     {
-        if( m_Collection.size() > MAX_MICROSPORIDIA_STRAINS )
+        if (m_Collection.size() > MAX_MICROSPORIDIA_STRAINS) // the max_size and collection include "NoMicrosporidia"
         {
-            //  Subtract one for the "NoMicrosporida" strain
+            //  Subtract one for the "NoMicrosporidia" strain
             std::stringstream ss;
-            ss << m_Collection.size() << " (>" << (MAX_MICROSPORIDIA_STRAINS-1) << ") strains is not allowed in 'Microsporidia'.\n";
+            ss << m_Collection.size() -1  << " (>" << (MAX_MICROSPORIDIA_STRAINS-1) << ") strains per species is not allowed in 'Microsporidia'.\n";
             ss << "Please reduce the number of strains you have to the maximum of " << (MAX_MICROSPORIDIA_STRAINS-1);
             throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }

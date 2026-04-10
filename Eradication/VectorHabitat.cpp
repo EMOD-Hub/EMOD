@@ -552,7 +552,7 @@ namespace Kernel
         return m_egg_crowding_correction;
     }
 
-    const std::map<int, float>& VectorHabitat::GetLarvalMicrosporidiaInfections() const
+    const std::vector<float>& VectorHabitat::GetLarvalMicrosporidiaInfections() const
     {
         return m_portion_larva_infected_microsporidia;
     }
