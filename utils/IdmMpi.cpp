@@ -3,14 +3,10 @@
 #include <memory.h> //needed for memcpy on linux
 #include "IdmMpi.h"
 
-#ifndef DISABLE_MPI
-#include <mpi.h>
-#endif
-
 namespace IdmMpi
 {
     Request::Request()
-    : m_Data(0)
+        : m_Data(MPI_REQUEST_NULL)
     {
     }
     
@@ -19,7 +15,7 @@ namespace IdmMpi
     }
 
     RequestList::RequestList()
-    : m_DataList()
+        : m_DataList()
     {
     }
 
@@ -32,8 +28,6 @@ namespace IdmMpi
         m_DataList.push_back( request.m_Data );
     }
 
-
-#ifndef DISABLE_MPI
     class MessageInterfaceBase : public MessageInterface
     {
     private:
@@ -41,9 +35,9 @@ namespace IdmMpi
         int m_Rank;
     public:
         MessageInterfaceBase( int argc, char* argv[] )
-        : MessageInterface()
-        , m_NumTasks(1)
-        , m_Rank(0)
+            : MessageInterface()
+            , m_NumTasks(1)
+            , m_Rank(0)
         {
             // this could take &argc, argv
             MPI_Init( nullptr, nullptr );
@@ -89,13 +83,13 @@ namespace IdmMpi
 
         virtual void SendIntegers( const uint32_t* pBuf, int count, int toRank, Request* pRequest )
         {
-            MPI_Request* p_mpi_request = (MPI_Request*)&(pRequest->m_Data);
+            MPI_Request* p_mpi_request = &(pRequest->m_Data);
             MPI_Isend( (void*)pBuf, count, MPI_UNSIGNED, toRank, 0, MPI_COMM_WORLD, p_mpi_request ); 
         }
 
         virtual void SendChars( const char* pBuf, int count, int toRank, Request* pRequest )
         {
-            MPI_Request* p_mpi_request = (MPI_Request*)&(pRequest->m_Data);
+            MPI_Request* p_mpi_request = &(pRequest->m_Data);
             MPI_Isend( (void*)pBuf, count, MPI_BYTE, toRank, 0, MPI_COMM_WORLD, p_mpi_request ); 
         }
 
@@ -181,7 +175,7 @@ namespace IdmMpi
         virtual void WaitAll( RequestList& rRequestList )
         {
             std::vector<MPI_Status> status( rRequestList.m_DataList.size() );
-            MPI_Waitall( (int)rRequestList.m_DataList.size(), (MPI_Request*)rRequestList.m_DataList.data(), (MPI_Status*)status.data() );
+            MPI_Waitall( static_cast<int>(rRequestList.m_DataList.size()), static_cast<MPI_Request*>(rRequestList.m_DataList.data()), static_cast<MPI_Status*>(status.data()) );
         }
 
         virtual void Finalize()
@@ -190,13 +184,11 @@ namespace IdmMpi
         }
     };
 
-#endif
-
     class MessageInterfaceNull: public MessageInterface
     {
     public:
         MessageInterfaceNull()
-        : MessageInterface()
+            : MessageInterface()
         {
         }
 
@@ -241,12 +233,7 @@ namespace IdmMpi
 
     MessageInterface* MessageInterface::Create( int argc, char* argv[] )
     {
-#ifndef DISABLE_MPI
         return new MessageInterfaceBase( argc, argv );
-        //return new MessageInterfaceNull();
-#else
-        return new MessageInterfaceNull();
-#endif
     }
 
     MessageInterface* MessageInterface::CreateNull()

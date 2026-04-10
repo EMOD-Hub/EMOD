@@ -83,16 +83,14 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
-
-      - name: Download Build Artifacts
-        uses: actions/download-artifact@v5
+      - name: Download executable
+        uses: actions/download-artifact@v8
         with:
-          name: ${{ needs.build.outputs.artifact_name }}
-          path: .
-
+          name: Eradication
+          path: build/x64/Release/Eradication/
       - name: Restore executable permissions
         run: |
           echo "Checking downloaded artifact structure..."
@@ -110,7 +108,7 @@ jobs:
             docker-production.packages.idmod.org/idm/dtk-centos-sfts:3.0 \
             bash -c "\
               cd /EMOD && \
-              mkdir -p /EMOD/sft_test_output && \
+              mkdir -p /EMOD/regression_test_output && \
               echo 'Running ${{ matrix.name }} SFT tests' && \
               cd Regression && \
               python3 regression_test.py \
@@ -162,11 +160,47 @@ jobs:
             fi
           fi
 
+      - name: Filter test output to failures only
+        if: always()
+        run: |
+          REPORT_FILE=$(find Regression/reports -name "report_*.xml" 2>/dev/null | head -1)
+          if [ -n "$REPORT_FILE" ] && [ -f "$REPORT_FILE" ] && [ -d "regression_test_output" ]; then
+            # Extract output subfolder names from failed/errored test cases
+            FAILED_DIRS=$(python3 -c "
+          import xml.etree.ElementTree as ET, re, sys
+          root = ET.parse(sys.argv[1]).getroot()
+          dirs = set()
+          for tc in root.findall('testcase'):
+              for tag in ('failure', 'error'):
+                  el = tc.find(tag)
+                  if el is not None:
+                      msg = el.get('message', '')
+                      m = re.search(r'/EMOD/regression_test_output/([^/]+)', msg)
+                      if m:
+                          dirs.add(m.group(1))
+          print('\n'.join(sorted(dirs)))
+          " "$REPORT_FILE")
+
+            if [ -n "$FAILED_DIRS" ]; then
+              echo "Keeping $(echo "$FAILED_DIRS" | wc -l) failed/errored output directories"
+              # Remove subdirectories that are not in the failed set
+              for dir in regression_test_output/*/; do
+                dirname=$(basename "$dir")
+                if ! echo "$FAILED_DIRS" | grep -qx "$dirname"; then
+                  rm -rf "$dir"
+                fi
+              done
+            else
+              echo "No failed output directories found in report; removing all output"
+              rm -rf regression_test_output/*
+            fi
+          fi
+
       - name: Upload Test Results
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
-          name: emod-${{ matrix.name }}-regression-test-results
+          name: emod-${{ matrix.name }}-sft-test-results
           path: |
             regression_test_output/
             Regression/reports/

@@ -38,26 +38,33 @@ jobs:
         run: |
           grep DTK_Version schema.json | sed 's/[^0-9.]//g' > version
       - name: Archive binary
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: Eradication
           path: ./build/x64/Release/Eradication/Eradication
           retention-days: 7
       - name: Archive schema
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: schema.json
           path: schema.json
           retention-days: 7
       - name: Archive version
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: version
           path: version
           retention-days: 7
+      - name: Archive sti reporter dll
+        if: ${{ inputs.disease_type == 'All' || inputs.disease_type == 'HIV' || inputs.disease_type == 'STI' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: reporter_plugins
+          path: ./build/x64/Release/reporter_plugins
+          retention-days: 7
       - name: Archive component tests
         if: ${{ inputs.disease_type == 'All' }}
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: componentTests
           path: ./build/x64/Release/componentTests/componentTests
