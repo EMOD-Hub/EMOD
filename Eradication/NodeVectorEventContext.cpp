@@ -354,6 +354,10 @@ namespace Kernel
             }
         }
 
+        if (temp_result.empty())
+        {
+            return std::vector<float>(); // No interventions affecting this habitat/species, return empty vector
+        }
         std::vector<float> result_by_strain_index(MAX_MICROSPORIDIA_STRAINS, 0.0f);
         for (auto& resolved : temp_result)
         {

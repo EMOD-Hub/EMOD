@@ -321,10 +321,13 @@ namespace Kernel
     bool LarvalMicrosporidiaIntervention::Configure(const Configuration* inputJson)
     {
         jsonConfigurable::ConstrainedString strain_name;
-        VectorParameters* p_vp = GET_CONFIGURABLE(SimulationConfig)->vector_params;
-        const jsonConfigurable::tDynamicStringSet& microsporidia_names = p_vp->vector_species.GetMicrosporidiaNames();
-        strain_name.constraint_param = &microsporidia_names;
-        strain_name.constraints = "Vector_Species_Params[X].Microsporidia[X].Strain_Name";
+        if (GET_CONFIGURABLE(SimulationConfig) != nullptr)
+        {
+            VectorParameters* p_vp = GET_CONFIGURABLE(SimulationConfig)->vector_params;
+            const jsonConfigurable::tDynamicStringSet& microsporidia_names = p_vp->vector_species.GetMicrosporidiaNames();
+            strain_name.constraint_param = &microsporidia_names;
+            strain_name.constraints = "Vector_Species_Params[X].Microsporidia[X].Strain_Name";
+        }
 
         WaningConfig infectivity_config;
         initConfig("Habitat_Target", m_HabitatTarget, inputJson, MetadataDescriptor::Enum("Habitat_Target", Habitat_Target_DESC_TEXT, MDD_ENUM_ARGS(VectorHabitatType)));

@@ -51,10 +51,14 @@ namespace Kernel
         const Configuration * inputJson
     )
     {
-        VectorParameters* p_vp = GET_CONFIGURABLE( SimulationConfig )->vector_params;
-        const jsonConfigurable::tDynamicStringSet& species_names = p_vp->vector_species.GetSpeciesNames();
-        m_ReleasedSpecies.constraint_param = &species_names;
-        m_ReleasedSpecies.constraints = p_vp->vector_species.SPECIES_NAME_CONSTRAINTS;
+        if( GET_CONFIGURABLE(SimulationConfig) != nullptr )
+        {
+            VectorParameters* p_vp = GET_CONFIGURABLE( SimulationConfig )->vector_params;
+            const jsonConfigurable::tDynamicStringSet& species_names = p_vp->vector_species.GetSpeciesNames();
+            m_ReleasedSpecies.constraint_param = &species_names;
+            m_ReleasedSpecies.constraints = p_vp->vector_species.SPECIES_NAME_CONSTRAINTS;
+        }
+
 
         std::vector<std::vector<std::string>> combo_strings;
         std::vector<std::vector<std::string>> combo_strings_mate;
@@ -84,8 +88,6 @@ namespace Kernel
         bool ret = BaseNodeIntervention::Configure( inputJson );
         if( ret && !JsonConfigurable::_dryrun )
         {
-            if( GET_CONFIGURABLE( SimulationConfig ) != nullptr )
-            {
                 m_IsRatio = (release_type == MosquitoReleaseType::RATIO);
 
                 VectorGeneCollection*       p_genes   = nullptr;
@@ -159,7 +161,6 @@ namespace Kernel
                         }
                     }
                 }
-            }
         }
 
         return ret;
