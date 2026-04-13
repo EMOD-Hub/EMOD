@@ -6,14 +6,14 @@
 #.  Scroll down and download one of the **x86-64** bit installers (you may use the executable installer
     or the web-based installer.)
 
-#.  Double-click the executable file and, in the installer window, select the **Add Python 3.9 to PATH**
+#.  Double-click the executable file and, in the installer window, select the **Add Python 3.13 to PATH**
     checkbox and click **Customize installation**.
 
 #.  On the **Optional Features** window that opens, leave all default values selected and click **Next**. The 
     Python package manager, pip, is used to install other Python packages.
 
 #.  If you are running |EMOD_s| locally, |IDM_s| recommends that you select the **Advanced Options** window
-    to customize the installation directory to "C:\\Python39".
+    to customize the installation directory to "C:\\Python313".
 
     You may install Python in another location, but the Python plotting scripts included in the
     `EMOD scenarios`_ zip file assume that Python is installed directly under the C: drive. If you

@@ -77,4 +77,4 @@ Same dynamic matrix pattern as the regression pipeline. Only suites with their i
 
 ### Artifacts
 
-- `emod-<suite>-regression-test-results` — XML report and raw output (retained 7 days)
+- `emod-<suite>-regression-test-results` — XML report and raw output of failed tests if any (retained 7 days)
