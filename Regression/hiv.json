@@ -41,7 +41,6 @@
         { "path" : "HIV/47_HIV_ProportionalAdjustmentEventCoordinator_HIVNegative_Vaccine"},
         { "path" : "HIV/48_HIV_NChooser" },
         { "path" : "HIV/49_HIV_GH533_RTEC" },
-        { "path" : "HIV/50_HIV_GH611" },
         { "path" : "HIV/51_HIV_GH620_NChooser" },
         { "path" : "HIV/52_HIV_GH690_RTEC" },
         { "path" : "HIV/56_HIV_Concordant_Relationships" },
@@ -112,6 +111,7 @@
         { "path": "Scenarios/STIAndHIV/05_Intervention_Examples/7c_HIVProphylaxis_LongActingInjectable_F_15to49" }
     ],
     "multicore": [
+        { "path" : "HIV/50_HIV_GH611" },
         { "path" : "HIV/45_HIV_CascadeOfCare_MultiNode_MultiCore" },
         { "path" : "HIV/53_HIV_GH459" },
         { "path" : "HIV/55_HIV_CascadeOfCare_MultiNode_MultiCore_RngPerNode" }
