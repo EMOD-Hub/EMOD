@@ -205,6 +205,12 @@ SUITE( VectorSpeciesParametersTest )
                                        "Duplicate vector species name.\nThe names of the species in 'Vector_Species_Params' must be unique.\nThe following names are defined:\nspecies_1\nspecies_2\nspecies_1" );
     }
 
+    TEST_FIXTURE(VspFixture, TestDuplicateMicrosporidiaNames)
+    {
+        TestHelper_ConfigureException(__LINE__, "testdata/VectorSpeciesParametersTest/TestDuplicateMicrosporidiaNames.json",
+            "Duplicate microsporidia strain name.\nThe names of the microsporidia strains in 'Vector_Species_Params' must be unique across all species.\nThe following names are defined:\nStrain_C");
+    }
+
     TEST_FIXTURE( VspFixture, TestEmptyName )
     {
         TestHelper_ConfigureException( __LINE__, "testdata/VectorSpeciesParametersTest/TestEmptyName.json",

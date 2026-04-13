@@ -7,6 +7,7 @@
 #include "NodeVector.h"
 #include "SimulationEventContext.h"
 #include "Debug.h"
+#include "MicrosporidiaParameters.h"
 
 SETUP_LOGGING( "NodeVectorEventContext" )
 
@@ -31,6 +32,7 @@ namespace Kernel
     , pIndoorKilling( 0.0f )
     , isUsingSugarTrap(false)
     , pSugarFeedKilling()
+    , larvalMicrosporidiaInterventions()
     {
     }
 
@@ -91,6 +93,7 @@ namespace Kernel
         pIndoorKilling = GeneticProbability( 0.0f );
         isUsingSugarTrap = false;
         pSugarFeedKilling = GeneticProbability( 0.0f );
+        larvalMicrosporidiaInterventions.clear();
 
         NodeEventContextHost::UpdateInterventions(dt);
     }
@@ -225,6 +228,12 @@ namespace Kernel
         pIndoorKilling.CombineProbabilities( killing );
     }
 
+
+    void NodeVectorEventContextHost::UpdateLarvalMicrosporidiaInterventions(VectorHabitatType::Enum habitat, const std::string& species_name, int strain_index, float coverage, float current_effect)
+    {
+        larvalMicrosporidiaInterventions.push_back({ habitat, species_name, strain_index, coverage, current_effect });
+    }
+
     //
     // INodeVectorInterventionEffects; (The Getters)
     // 
@@ -289,6 +298,72 @@ namespace Kernel
     const GeneticProbability& NodeVectorEventContextHost::GetSugarFeedKilling() const
     {
         return pSugarFeedKilling;
+    }
+
+    std::vector<float> NodeVectorEventContextHost::GetLarvalMicrosporidiaInfectivity(
+        VectorHabitatType::Enum habitat_query,
+        const std::string& species) const
+    {
+        // Returns a vector of fraction_newly_infected for each microsporidia
+        // strain infecting larvae in the given habitat and species. 
+        // index of the vector corresponds to the strain_index
+        // Multiple interventions distributing the same strain accumulate their effects
+
+        std::map<int, ResolvedStrainData> temp_result;
+        for (const auto& iv : larvalMicrosporidiaInterventions)
+        {
+            if ((iv.habitat == habitat_query || iv.habitat == VectorHabitatType::ALL_HABITATS) && iv.species_name == species)
+            {
+                float uninfected = 1.0f;
+                float iv_recalc_coverage = 0.0f;
+
+                // Redistribute coverage among previously resolved strains.
+                // Where the new intervention overlaps an existing strain's coverage,
+                // the overlapping portion is split proportionally by effect strength.
+                for (auto& previously_resolved : temp_result)
+                {
+                    uninfected -= previously_resolved.second.coverage;
+
+                    // Portion of previous strain's coverage not reached by the new intervention
+                    float previously_resolved_coverage_new = (1 - iv.coverage) * previously_resolved.second.coverage;
+
+                    // Overlapping portion split by relative effect strengths
+                    float coverage_to_effect_proportions = iv.coverage * previously_resolved.second.coverage / (previously_resolved.second.current_effect + iv.current_effect);
+                    previously_resolved_coverage_new += previously_resolved.second.current_effect * coverage_to_effect_proportions;
+                    iv_recalc_coverage += iv.current_effect * coverage_to_effect_proportions;
+
+                    previously_resolved.second.coverage = previously_resolved_coverage_new;
+                }
+
+                // The remaining uninfected fraction is covered directly by the new intervention
+                iv_recalc_coverage += uninfected * iv.coverage;
+
+                // Merge into an existing entry for the same strain, or create a new one.
+                // When merging, the combined effect is the coverage-weighted average.
+                auto it = temp_result.find(iv.strain_index);
+                if (it != temp_result.end())
+                {
+                    float new_coverage = it->second.coverage + iv_recalc_coverage;
+                    it->second.current_effect = (it->second.coverage * it->second.current_effect + iv_recalc_coverage * iv.current_effect) / new_coverage;
+                    it->second.coverage = new_coverage;
+                }
+                else
+                {
+                    temp_result[iv.strain_index] = ResolvedStrainData(iv_recalc_coverage, iv.current_effect);
+                }
+            }
+        }
+
+        if (temp_result.empty())
+        {
+            return std::vector<float>(); // No interventions affecting this habitat/species, return empty vector
+        }
+        std::vector<float> result_by_strain_index(MAX_MICROSPORIDIA_STRAINS, 0.0f);
+        for (auto& resolved : temp_result)
+        {
+            result_by_strain_index[resolved.first] = resolved.second.coverage * resolved.second.current_effect;
+        }
+        return result_by_strain_index;
     }
 
     float NodeVectorEventContextHost::GetOviTrapKilling( VectorHabitatType::Enum habitat_query ) const

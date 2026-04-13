@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <map>
 #include <string>
 
 #include "ISupports.h"
@@ -15,6 +16,28 @@
 
 namespace Kernel
 {
+    struct LarvalMicrosporidiaInterventionData
+    {
+        VectorHabitatType::Enum habitat;
+        std::string             species_name;
+        int                     strain_index;
+        float                   coverage;
+        float                   current_effect;
+    };
+
+    struct ResolvedStrainData
+    {
+        float coverage       = 0.0f;
+        float current_effect = 0.0f;
+
+        ResolvedStrainData() = default;
+        ResolvedStrainData( float coverage, float current_effect )
+            : coverage(coverage)
+            , current_effect(current_effect)
+        {
+        }
+    };
+
     class Simulation;
 
     class INodeVectorInterventionEffectsApply : public ISupports
@@ -33,6 +56,7 @@ namespace Kernel
         virtual void UpdateAnimalFeedKilling(const GeneticProbability& killing) = 0;
         virtual void UpdateOutdoorRestKilling(const GeneticProbability& killing) = 0;
         virtual void UpdateIndoorKilling(const GeneticProbability& killing) = 0;
+		virtual void UpdateLarvalMicrosporidiaInterventions(VectorHabitatType::Enum habitat, const std::string& species_name, int strain_index, float coverage, float current_effect) = 0;
     };
 
     class NodeVectorEventContextHost :
@@ -65,6 +89,7 @@ namespace Kernel
         virtual void UpdateAnimalFeedKilling(const GeneticProbability& killing) override;
         virtual void UpdateOutdoorRestKilling(const GeneticProbability& killing) override;
         virtual void UpdateIndoorKilling(const GeneticProbability& killing) override;
+        virtual void UpdateLarvalMicrosporidiaInterventions(VectorHabitatType::Enum habitat, const std::string& species_name, int strain_index, float coverage, float current_effect) override;
 
         // INodeVectorInterventionEffects;
         virtual const GeneticProbability& GetLarvalKilling(VectorHabitatType::Enum) const override;
@@ -81,6 +106,7 @@ namespace Kernel
         virtual const GeneticProbability& GetIndoorKilling() const override;
         virtual bool  IsUsingSugarTrap() const override;
         virtual const GeneticProbability& GetSugarFeedKilling() const override;
+        virtual std::vector<float> GetLarvalMicrosporidiaInfectivity(VectorHabitatType::Enum, const std::string& species) const override;
 
         VectorHabitatType::Enum larval_reduction_target;
         LarvalHabitatMultiplier larval_reduction;
@@ -110,6 +136,7 @@ namespace Kernel
         GeneticProbability pIndoorKilling;
         bool               isUsingSugarTrap;
         GeneticProbability pSugarFeedKilling;
+        std::vector<LarvalMicrosporidiaInterventionData> larvalMicrosporidiaInterventions;
 
     private:
         float CombineProbabilities( float prob1, float prob2 );

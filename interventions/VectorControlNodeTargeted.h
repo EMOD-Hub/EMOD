@@ -84,6 +84,31 @@ namespace Kernel
         float m_Coverage;
     };
 
+    class LarvalMicrosporidiaIntervention : public SimpleVectorControlNode
+    {
+        DECLARE_FACTORY_REGISTERED(NodeIVFactory, LarvalMicrosporidiaIntervention, INodeDistributableIntervention)
+
+    public:
+        LarvalMicrosporidiaIntervention();
+        LarvalMicrosporidiaIntervention(const LarvalMicrosporidiaIntervention& rMaster);
+        virtual ~LarvalMicrosporidiaIntervention();
+
+        virtual bool Configure(const Configuration* config) override;
+        virtual bool Distribute(INodeEventContext* context, IEventCoordinator2* pEC = nullptr) override;
+        virtual ReportInterventionData GetReportInterventionData() const override;
+
+    protected:
+        virtual void initConfigKilling() override;
+        virtual bool ConfigureKilling(const Configuration* inputJson) override;
+        virtual void ApplyEffects(float dt) override;
+        virtual void Update(float dt) override;
+
+        float m_Coverage;
+        int m_StrainIndex;
+        std::string m_SpeciesName;
+        IWaningEffect* waning_effect;
+    };
+
     class SpaceSpraying : public SimpleVectorControlNode
     {
         DECLARE_FACTORY_REGISTERED(NodeIVFactory, SpaceSpraying, INodeDistributableIntervention) 

@@ -107,6 +107,7 @@ namespace Kernel
 
         virtual void CheckConfiguration() override;
         const jsonConfigurable::tDynamicStringSet& GetSpeciesNames() const;
+        const jsonConfigurable::tDynamicStringSet& GetMicrosporidiaNames() const;
 
         const VectorSpeciesParameters& GetSpecies( const std::string& rName ) const;
         static constexpr const char* SPECIES_NAME_CONSTRAINTS = "Vector_Species_Params[X].Name";
@@ -115,5 +116,6 @@ namespace Kernel
         virtual VectorSpeciesParameters* CreateObject() override;
 
         jsonConfigurable::tDynamicStringSet m_SpeciesNames;
+        jsonConfigurable::tDynamicStringSet m_MicrosporidiaNames;
     };
 }

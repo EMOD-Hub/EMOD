@@ -1,0 +1,139 @@
+name: Build EMOD and publish to PyPI
+
+on:
+  workflow_dispatch:
+    inputs:
+      package_type:
+        description: 'Disease type package to build and publish'
+        required: true
+        type: choice
+        options:
+          - common
+          - malaria
+          - hiv
+      development:
+        description: 'Publish as a development version (appends .devN to version)'
+        required: false
+        type: boolean
+        default: false
+      dev_number:
+        description: 'Dev version number N (used when development is true, e.g. 1 for .dev1)'
+        required: false
+        type: string
+        default: '0'
+
+jobs:
+  build:
+    name: Build and create artifacts
+    uses: ./.github/workflows/reusable_build_archive.yml
+    with:
+      disease_type: ${{ inputs.package_type == 'common' && 'Generic' || inputs.package_type == 'malaria' && 'Malaria' || 'HIV' }}
+      science_test: ' '
+      dev_version: ${{ inputs.development == true && inputs.dev_number || '' }}
+
+  publish:
+    name: Publish emod-${{ inputs.package_type }} to PyPI
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    environment:
+      name: pypi
+      url: https://pypi.org/project/emod-${{ inputs.package_type }}
+    permissions:
+      id-token: write  # IMPORTANT: mandatory for trusted publishing
+    steps:
+      - name: Validate dev version input
+        if: ${{ inputs.development == true }}
+        run: |
+          if [ -z "${{ inputs.dev_number }}" ]; then
+            echo "::error::Dev number is required when development is true"
+            exit 1
+          fi
+          if ! echo "${{ inputs.dev_number }}" | grep -qE '^[0-9]+$'; then
+            echo "::error::Dev number must be a non-negative integer, got '${{ inputs.dev_number }}'"
+            exit 1
+          fi
+          echo "Will publish as development version with .dev${{ inputs.dev_number }} suffix"
+      - name: Checkout repo
+        uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+
+      - name: Prepare package directory
+        run: |
+          PKG="emod_${{ inputs.package_type }}"
+
+          # Rename the package directory
+          mv pypi/src/emod_package "pypi/src/${PKG}"
+
+          # Update pyproject.toml with correct package name and description
+          DESCRIPTIONS="common:testing features common to all sim types"
+          DESCRIPTIONS="${DESCRIPTIONS};malaria: running Malaria and Vector simulations"
+          DESCRIPTIONS="${DESCRIPTIONS};hiv: running HIV and STI simulations"
+          DESC=$(echo "$DESCRIPTIONS" | tr ';' '\n' | grep "^${{ inputs.package_type }}:" | cut -d: -f2)
+
+          sed -i "s/emod-PACKAGE_TYPE/emod-${{ inputs.package_type }}/" pypi/pyproject.toml
+          sed -i "s/PACKAGE_TYPE sim type/${DESC}/" pypi/pyproject.toml
+
+          # Update bootstrap.py with correct package name
+          sed -i "s/PACKAGE_NAME/${PKG}/" "pypi/src/${PKG}/bootstrap.py"
+
+          # Copy README into pypi directory for the build, with package blurb
+          DISEASE_LABELS="common:Generic (common to all sim types)"
+          DISEASE_LABELS="${DISEASE_LABELS};malaria:Malaria"
+          DISEASE_LABELS="${DISEASE_LABELS};hiv:HIV"
+          DISEASE_LABEL=$(echo "$DISEASE_LABELS" | tr ';' '\n' | grep "^${{ inputs.package_type }}:" | cut -d: -f2)
+
+          {
+            echo "> **emod-${{ inputs.package_type }}** — This package is a disease-specific distribution of the EMOD binary for the **${DISEASE_LABEL}** simulation type."
+            echo ""
+            cat README.md
+          } > pypi/README.md
+
+      - name: Download executable
+        uses: actions/download-artifact@v8
+        with:
+          name: Eradication
+          path: pypi/src/eradication_dir
+      - name: Download schema
+        uses: actions/download-artifact@v8
+        with:
+          name: schema.json
+          path: pypi/src/schema_dir
+      - name: Download version
+        uses: actions/download-artifact@v8
+        with:
+          name: version
+          path: pypi/src/version_dir
+      - name: Download reporter_plugins
+        if: ${{ inputs.package_type == 'hiv' }}
+        uses: actions/download-artifact@v8
+        with:
+          name: reporter_plugins
+          path: pypi/src/reporter_plugins_dir
+
+      - name: Prep files
+        run: |
+          PKG="emod_${{ inputs.package_type }}"
+          cd pypi/src
+          mv version_dir/version version
+          zip -j "${PKG}/Eradication.zip" eradication_dir/Eradication
+          zip -j "${PKG}/schema.zip" schema_dir/schema.json
+          rm -r version_dir eradication_dir schema_dir
+          if [ "${{ inputs.package_type }}" = "hiv" ]; then
+            zip -j "${PKG}/reporter_plugins.zip" reporter_plugins_dir/*
+            rm -r reporter_plugins_dir
+          fi
+
+      - name: Build PyPI distribution
+        run: |
+          python3 -m pip install build
+          cd pypi
+          python3 -m build
+      - name: Upload files to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          verbose: true
+          packages-dir: pypi/dist

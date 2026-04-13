@@ -88,8 +88,6 @@ namespace Kernel
         bool ret = BaseNodeIntervention::Configure( inputJson );
         if( ret && !JsonConfigurable::_dryrun )
         {
-            if( GET_CONFIGURABLE( SimulationConfig ) != nullptr )
-            {
                 m_IsRatio = (release_type == MosquitoReleaseType::RATIO);
 
                 VectorGeneCollection*       p_genes   = nullptr;
@@ -163,7 +161,6 @@ namespace Kernel
                         }
                     }
                 }
-            }
         }
 
         return ret;

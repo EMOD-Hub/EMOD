@@ -1,0 +1,34 @@
+{
+    "Default_Config_Path": "../../defaults/malaria_default_config.json",
+    "parameters": {
+        "Climate_Model": "CLIMATE_CONSTANT",
+        "Enable_Birth": 1,
+        "Enable_Climate_Stochasticity": 0,
+        "Enable_Vital_Dynamics": 1,
+        "Demographics_Filenames": [
+            "Namawala_single_node_demographics.json"
+        ],
+        "Enable_Initial_Prevalence": 0,
+        "Inset_Chart_Reporting_Include_30Day_Avg_Infection_Duration": 0,
+        "Config_Name": "118_Malaria_Serialization_PyrogenicThreshold",
+        "Geography": "Namawala",
+        "Run_Number": 1,
+        "Simulation_Duration": 500,
+        "x_Temporary_Larval_Habitat": 0.1,
+        "Enable_Demographics_Reporting": 0,
+        "Serialization_Test": 1,
+        "Serialized_Population_Writing_Type": "TIME",
+        "Serialization_Mask_Node_Write": 0,
+        "Serialization_Precision": "FULL",
+        "Serialization_Times": [
+            400
+        ],
+        "Age_Dependent_Biting_Risk_Type": "SURFACE_AREA_DEPENDENT",
+        "Age_Initialization_Distribution_Type": "DISTRIBUTION_SIMPLE",
+        "Innate_Immune_Variation_Type": "PYROGENIC_THRESHOLD_VS_AGE_INCREASING_AND_CYTOKINE_KILLING_INVERSE",
+        "Pyrogenic_Threshold": 15000.0,
+        "Pyrogenic_Threshold_Max": 50000,
+        "Pyrogenic_Threshold_Min": 100,
+        "Antibody_IRBC_Kill_Rate": 1.596
+    }
+}

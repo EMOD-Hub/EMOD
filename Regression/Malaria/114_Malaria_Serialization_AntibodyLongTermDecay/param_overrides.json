@@ -22,14 +22,12 @@
         "Antibody_Long_Term_Decay_Days": 100,
         "COMMENT": "Do not include because we cannot have a queue of previous days infections when starting from serialized file.",
         "Inset_Chart_Reporting_Include_30Day_Avg_Infection_Duration": 0,
-        
         "Serialization_Test" : 1,
         "Serialized_Population_Writing_Type" : "TIME",
         "Serialization_Mask_Node_Write": 0,
         "Serialization_Precision" : "FULL",
         "Serialization_Times" : [ 1000 ],
         "Serialization_Test_Start_Time": 0.0,
-
         "Age_Dependent_Biting_Risk_Type": "SURFACE_AREA_DEPENDENT",
         "Age_Initialization_Distribution_Type": "DISTRIBUTION_COMPLEX",
         "Falciparum_MSP_Variants": 12,

@@ -356,6 +356,7 @@ namespace Kernel
     VectorSpeciesCollection::VectorSpeciesCollection()
         : JsonConfigurableCollection( "Vector_Species_Parameters" )
         , m_SpeciesNames()
+		, m_MicrosporidiaNames()
     {
     }
 
@@ -373,9 +374,19 @@ namespace Kernel
             throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }
 
+        int sporidia_strains_defined = 0;
         for( auto p_vsp : m_Collection )
         {
             m_SpeciesNames.insert( p_vsp->name );
+            for( auto strain_name: p_vsp->microsporidia_strains.GetStrainNames())
+            {
+                if (strain_name == "NoMicrosporidia")
+                {
+                    continue; // skip the "NoMicrosporidia" strain since it's not really a strain and is present in each species by default
+                }
+                m_MicrosporidiaNames.insert( strain_name );
+                sporidia_strains_defined++;
+            }
         }
 
         if( m_SpeciesNames.size() != m_Collection.size() )
@@ -390,11 +401,29 @@ namespace Kernel
             }
             throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }
+
+        if( m_MicrosporidiaNames.size() != sporidia_strains_defined )
+        {
+            std::stringstream ss;
+            ss << "Duplicate microsporidia strain name.\n";
+            ss << "The names of the microsporidia strains in 'Vector_Species_Params' must be unique across all species.\n";
+            ss << "The following names are defined:\n";
+            for( auto name : m_MicrosporidiaNames )
+            {
+                ss << name << "\n";
+            }
+            throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
+		}
     }
 
     const jsonConfigurable::tDynamicStringSet& VectorSpeciesCollection::GetSpeciesNames() const
     {
         return m_SpeciesNames;
+    }
+
+    const jsonConfigurable::tDynamicStringSet& VectorSpeciesCollection::GetMicrosporidiaNames() const
+    {
+        return m_MicrosporidiaNames;
     }
 
     const VectorSpeciesParameters& VectorSpeciesCollection::GetSpecies( const std::string& rName ) const

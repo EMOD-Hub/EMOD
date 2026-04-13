@@ -27,6 +27,7 @@ namespace Kernel
         , m_larvicide_habitat_scaling(1.0f)
         , m_rainfall_mortality(0.0f)
         , m_egg_crowding_correction(0.0f)
+        , m_portion_larva_infected_microsporidia()
     {
     }
 
@@ -41,6 +42,7 @@ namespace Kernel
         , m_larvicide_habitat_scaling(   rMaster.m_larvicide_habitat_scaling   )
         , m_rainfall_mortality(          rMaster.m_rainfall_mortality          )
         , m_egg_crowding_correction(     rMaster.m_egg_crowding_correction     )
+        , m_portion_larva_infected_microsporidia(rMaster.m_portion_larva_infected_microsporidia)
     {
     }
 
@@ -334,6 +336,9 @@ namespace Kernel
 
         LOG_DEBUG_F("Updated larval probabilities: oviposition-trap killing = %f, artificial larval mortality = %f, larvicide habitat reduction = %f\n",
                      m_oviposition_trap_killing, m_artificial_larval_mortality.GetDefaultValue(), m_larvicide_habitat_scaling);
+
+        // Update larval microsporidia numbers due to interventions
+        m_portion_larva_infected_microsporidia = invie->GetLarvalMicrosporidiaInfectivity(m_habitat_type, species);
     }
 
     void VectorHabitat::UpdateRainfallMortality(float dt, float rainfall)
@@ -545,6 +550,11 @@ namespace Kernel
             CalculateEggCrowdingCorrection();
         }
         return m_egg_crowding_correction;
+    }
+
+    const std::vector<float>& VectorHabitat::GetLarvalMicrosporidiaInfections() const
+    {
+        return m_portion_larva_infected_microsporidia;
     }
 
     const SimulationConfig* VectorHabitat::params() const

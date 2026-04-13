@@ -89,6 +89,8 @@ namespace Kernel
                     p_vp->blood_meal_mortality += p_vp->vector_species[ i ]->vsp_blood_meal_mortality;
                 }
                 p_vp->blood_meal_mortality.SetDefaultValue( 1.0f - default_prob );
+
+              
             }
         }
 

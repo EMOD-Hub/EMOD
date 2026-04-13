@@ -1,0 +1,30 @@
+{
+	"Microsporidia": [
+		{
+			"Strain_Name": "Strain_C",
+			"Female_To_Egg_Transmission_Probability": 0.0,
+			"Male_To_Egg_Transmission_Probability": 0.0,
+			"Female_To_Male_Transmission_Probability": 1,
+			"Male_To_Female_Transmission_Probability": 0.4,
+			"Larval_Growth_Modifier": 0.8,
+			"Female_Mortality_Modifier": 1.5,
+			"Male_Mortality_Modifier": 1.2,
+			"Duration_To_Disease_Acquisition_Modification": {
+				"Times": [
+					0
+				],
+				"Values": [
+					1.0
+				]
+			},
+			"Duration_To_Disease_Transmission_Modification": {
+				"Times": [
+					0
+				],
+				"Values": [
+					1.0
+				]
+			}
+		}
+	]
+}

@@ -285,6 +285,8 @@ public:
     virtual const GeneticProbability& GetIndoorKilling() const override  { return m_Junk; }
     virtual bool  IsUsingSugarTrap() const override { return false; }
     virtual const GeneticProbability& GetSugarFeedKilling() const override { return m_Junk; }
+    virtual std::vector<float> GetLarvalMicrosporidiaInfectivity( VectorHabitatType::Enum, const std::string& species ) const override { return {}; }
+
 
 private:
     INodeContext* m_NodeContext;

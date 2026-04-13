@@ -205,6 +205,10 @@ namespace Kernel
         GeneticProbability GetLarvalMortalityProbability(float dt, IVectorCohort* larva) const;
         float GetRelativeSurvivalWeight(VectorHabitat* habitat) const;
 
+        // Larval queue update helpers
+        void ApplyLarvalDevelopmentAndMortality(float dt, IVectorCohort* cohort);
+        void PromoteLarvaToImmature(IVectorCohort* cohort);
+
         // VectorPopulation accounting helper function
         virtual void queueIncrementTotalPopulation( IVectorCohort* cohort );
         virtual void queueIncrementNumInfs( IVectorCohort* cohort );

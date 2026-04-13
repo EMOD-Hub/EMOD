@@ -3,9 +3,9 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "emod-common"
+name = "emod-PACKAGE_TYPE"
 dynamic = ["version"]
-description = "PyPI distribution of EMOD for testing features common to all sim types"
+description = "PyPI distribution of EMOD for the PACKAGE_TYPE sim type"
 license = "MIT"
 authors = [
 ]
@@ -35,7 +35,7 @@ tests = [
 [project.urls]
 Documentation = "https://docs.idmod.org/projects/emod/en/latest/"
 Repository = "https://github.com/EMOD-Hub/EMOD"
-Issues = "https://github.com/EMOD-Hub/EMOD/issues"
+Issues = "https://github.com/EMOD-Hub/issues-and-discussions/issues"
 
 [tool.setuptools.package-data]
 "*" = ["*.zip"]

@@ -59,6 +59,10 @@ namespace Kernel
             {
                 throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, "The 'Name' of the microsporidia strain must be defined and cannot be empty." );
             }
+            else if( strain_name == "NoMicrosporidia" )
+            {
+                throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, "The 'Name' of the microsporidia strain cannot be 'NoMicrosporidia' since that name is reserved for the special case of no microsporidia." );
+            }
         }
 
         return ret;
@@ -84,15 +88,15 @@ namespace Kernel
 
     MicrosporidiaCollection::~MicrosporidiaCollection()
     {
-    }
+    }  
 
     void MicrosporidiaCollection::CheckConfiguration()
     {
-        if( m_Collection.size() > MAX_MICROSPORIDIA_STRAINS )
+        if (m_Collection.size() > MAX_MICROSPORIDIA_STRAINS) // the max_size and collection include "NoMicrosporidia"
         {
-            //  Subtract one for the "NoMicrosporida" strain
+            //  Subtract one for the "NoMicrosporidia" strain
             std::stringstream ss;
-            ss << m_Collection.size() << " (>" << (MAX_MICROSPORIDIA_STRAINS-1) << ") straings is not allowed in 'Microsporidia'.\n";
+            ss << m_Collection.size() -1  << " (>" << (MAX_MICROSPORIDIA_STRAINS-1) << ") strains per species is not allowed in 'Microsporidia'.\n";
             ss << "Please reduce the number of strains you have to the maximum of " << (MAX_MICROSPORIDIA_STRAINS-1);
             throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }
@@ -107,15 +111,20 @@ namespace Kernel
         if( m_StrainNames.size() != m_Collection.size() )
         {
             std::stringstream ss;
-            ss << "Duplicate microsporidia 'Strain_Name' for the sampe species.\n";
+            ss << "Duplicate microsporidia 'Strain_Name' for the same species.\n";
             ss << "The names of the strains in 'Microsporidia' must be unique.\n";
             ss << "The following names are defined:\n";
             for( auto p_vsp : m_Collection )
             {
+                if( p_vsp->strain_name == "NoMicrosporidia" )
+                {
+					continue; // skip the "NoMicrosporidia" strain since it's not really a strain
+				}
                 ss << p_vsp->strain_name << "\n";
             }
             throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }
+
     }
 
     const jsonConfigurable::tDynamicStringSet& MicrosporidiaCollection::GetStrainNames() const
@@ -138,9 +147,9 @@ namespace Kernel
             std::stringstream ss;
             ss << "'" << rName << "' is an unknown strain of microsporidia.\n";
             ss << "Valid microsporidia strain names are:\n";
-            for( auto p_strain : m_Collection )
+            for( auto strain_name : m_StrainNames )
             {
-                ss << p_strain->strain_name << "\n";
+                ss << strain_name << "\n";
             }
             throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }

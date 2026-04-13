@@ -10,7 +10,7 @@
 namespace Kernel
 {
 // based on their being 3 bits in VectorGamete for microsporidia - zero is for no microsporidia
-#define MAX_MICROSPORIDIA_STRAINS (8)
+#define MAX_MICROSPORIDIA_STRAINS (4) // 3 strains per species plus the "no microsporidia" strain
 
     class MicrosporidiaParameters : public JsonConfigurable
     {
@@ -25,7 +25,7 @@ namespace Kernel
         bool Configure( const ::Configuration *json ) override;
 
         std::string strain_name;
-        int index; // index of species in collection and in the std::vector of VectorPopulations
+		int index; // microsporidia strain indicator and index in the m_Collection (std::vector of MicrosporidiaParameters) in the MicrosporidiaCollection. 
 
         // "A microsporidian impairs Plasmodium falciparum transmission in Anopheles arabiensis mosquitoes"
         // https://www.nature.com/articles/s41467-020-16121-y

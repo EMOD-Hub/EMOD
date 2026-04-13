@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <map>
+
 #include "VectorEnums.h"
 #include "IVectorHabitat.h"
 #include "VectorGenome.h"
@@ -111,6 +113,7 @@ namespace Kernel
         virtual const GeneticProbability& GetIndoorKilling() const = 0;
         virtual bool  IsUsingSugarTrap() const = 0;
         virtual const GeneticProbability& GetSugarFeedKilling() const = 0;
+        virtual std::vector<float> GetLarvalMicrosporidiaInfectivity(VectorHabitatType::Enum, const std::string& species) const = 0;
     };
 
 

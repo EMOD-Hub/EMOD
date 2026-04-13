@@ -26,6 +26,7 @@ namespace Kernel
         void  Decay( float dt );
         float StimulateCytokines( float dt, float inv_uL_blood );
         void  UpdateAntibodyCapacity( float dt, float inv_uL_blood );
+        void  UpdateAntibodyCapacityFunction( float growth_rate, float min_stimulation, float dt, float inv_uL_blood );
         void  UpdateAntibodyCapacityByRate( float dt, float growth_rate );
         void  UpdateAntibodyConcentration( float dt );
         void  ResetCounters();
