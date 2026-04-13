@@ -27,7 +27,7 @@ Use Git GUI to download the |EMOD_s| source
 
 #.  From the **Clone Existing Repository** window:
 
-    #.  In **Source Location**, enter https://github.com/InstituteforDiseaseModeling/EMOD
+    #.  In **Source Location**, enter https://github.com/EMOD-Hub/EMOD
 
     #.  In **Target Directory**, enter the location and target directory name: C:/IDM/EMOD
 
@@ -50,11 +50,11 @@ Use Git Bash to download the |EMOD_s| source
 
     #.  Clone the repository from GitHub::
 
-            git clone https://github.com/InstituteforDiseaseModeling/EMOD
+            git clone https://github.com/EMOD-Hub/EMOD
 
 Git Bash will copy the |EMOD_s| source to a directory named |EMOD_s| by default.
 
-Verify that all directories on https://github.com/InstituteforDiseaseModeling/EMOD are now reflected
+Verify that all directories on https://github.com/EMOD-Hub/EMOD are now reflected
 on your local clone of the repository.
 
 

@@ -14,5 +14,5 @@ using the steps below.
     *   Run simulations until you have an acceptable InsetChart.json that you wish to use as
         the reference.
 
-.. _Regression: https://github.com/InstituteforDiseaseModeling/EMOD/tree/master/Regression
+.. _Regression: https://github.com/EMOD-Hub/EMOD/tree/master/Regression
 

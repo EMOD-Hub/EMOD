@@ -16,7 +16,7 @@ produce output that should not be considered scientifically accurate.
     for the location of the working directory, input files, binary file, and cluster settings.
 
     * For local Windows simulations, set the values under [WINDOWS].
-    * For local |Centos| simulations, set the values under [POSIX]. Note that |Centos| simulations
+    * For local |Ubuntu| simulations, set the values under [POSIX]. Note that |Ubuntu| simulations
       are run locally by default and cannot be commissioned to an HPC cluster.
     * For simulations on |IDM_s| HPC clusters, no changes are necessary if your username and password
       are cached locally.
@@ -88,6 +88,6 @@ produce output that should not be considered scientifically accurate.
 If any of the regression tests fail and you have *not* made any changes to the |EMOD_s| source code,
 email idmsupport@gatesfoundation.org.
 
-.. _Regression: https://github.com/InstituteforDiseaseModeling/EMOD/tree/master/Regression
+.. _Regression: https://github.com/EMOD-Hub/EMOD/tree/master/Regression
 
 .. _JUnit: http://junit.org

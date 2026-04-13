@@ -34,4 +34,4 @@ addition, if you choose to do this, be sure to specify a different output direct
    dev-regression-run
    dev-regression-new
 
-.. _Regression: https://github.com/InstituteforDiseaseModeling/EMOD/tree/master/Regression
+.. _Regression: https://github.com/EMOD-Hub/EMOD/tree/master/Regression

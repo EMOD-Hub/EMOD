@@ -108,10 +108,4 @@ Python packages
 .. include:: reuse/python-utility-install.txt
 
 
-(Optional) R
-------------
-
-The |IDM_s| test team uses |R_supp| for regression testing, but it is considered optional.
-
-.. include:: reuse/r-install.txt
 

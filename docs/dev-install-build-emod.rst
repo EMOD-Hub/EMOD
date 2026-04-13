@@ -3,7 +3,7 @@ Build |EMOD_s| from source code
 ===============================
 
 You can build the |exe_s| for |Windows_supp| using Microsoft Visual Studio or SCons. You can build
-the |linux_binary| for |Centos_supp| using SCons.
+the |linux_binary| for |Ubuntu_supp| using SCons.
 
 If you want full debugging support, you must build using Visual Studio. However, Visual Studio is
 only capable of a :term:`monolithic build` that includes all supported simulation types.
@@ -13,7 +13,7 @@ only capable of a :term:`monolithic build` that includes all supported simulatio
 If you want to create a disease-specific build, you must build using SCons. However, SCons builds
 build only the release version without extensive debugging information.
 
-.. _EMOD releases on GitHub: https://github.com/InstituteforDiseaseModeling/EMOD/releases
+.. _EMOD releases on GitHub: https://github.com/EMOD-Hub/EMOD/releases
 
 .. _idmod.org: http://idmod.org/
 

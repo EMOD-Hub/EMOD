@@ -1,3 +1,0 @@
-R is a free software environment for statistical computing and graphics.
-
-*  Go to |R_supp_path| and install |R_supp|.

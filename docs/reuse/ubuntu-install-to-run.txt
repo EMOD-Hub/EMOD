@@ -22,4 +22,4 @@ Before you begin, you must have the following:
 
 
 
-.. _EMOD releases: https://github.com/InstituteforDiseaseModeling/EMOD/releases
+.. _EMOD releases: https://github.com/EMOD-Hub/EMOD/releases

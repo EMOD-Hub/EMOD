@@ -14,17 +14,13 @@
 .. change in the future, use the :term: on first use, and then use the replace variable for each
 .. subsequent use. If the term changes, you will only need to manually update the :term: links.
 
-.. |Boost_151| replace:: Boost 1.51.0
-.. |Boost_161| replace:: Boost 1.61.0
 .. |Boost_177| replace:: Boost 1.77.0
 .. |Boost_supp_path| replace:: https://sourceforge.net/projects/boost/files/boost/1.77.0/
 .. |Boost_supp| replace:: Boost 1.77.0
-.. |Centos_supp| replace:: CentOS 7.1
-.. |Centos| replace:: CentOS
+.. |Ubuntu_supp| replace:: Ubuntu 22.04
+.. |Ubuntu| replace:: Ubuntu
 .. |COMPS_l| replace:: COmputational Modeling Platform Service (COMPS)
 .. |COMPS_s| replace:: COMPS
-.. |DTM| replace:: DTK-Tools-Malaria
-.. |DT| replace:: DTK-Tools
 .. |EMOD_l| replace:: Epidemiological MODeling software (EMOD)
 .. |EMOD_s| replace:: EMOD
 .. |EMODPY_hiv| replace:: emodpy-hiv
@@ -42,37 +38,28 @@
 .. |IDM_s| replace:: IDM
 .. |IT_s| replace:: idmtools
 .. |linux_binary| replace:: Eradication binary for Linux
-.. |Linux_dtksupp| replace:: CentOS 7.1 or Ubuntu 18
+.. |Linux_dtksupp| replace:: Ubuntu 22.04
 .. |Mac_dtksupp| replace:: Mac OS X
-.. |MATLAB_supp_path| replace:: http://www.mathworks.com/products/matlab/
-.. |MATLAB_supp| replace:: MATLAB R2021b
 .. |matplotlib_supp_path| replace:: http://www.lfd.uci.edu/~gohlke/pythonlibs/#matplotlib
-.. |matplotlib_supp| replace:: Matplotlib 3.5.1 (64-bit)
+.. |matplotlib_supp| replace:: Matplotlib 3.10.8 (64-bit)
 .. |modules| replace:: EMODules
 .. |module| replace:: EMODule
 .. |MRHINT| replace:: Multi-route HINT
-.. |MSMPI_supp_path| replace:: https://www.microsoft.com/en-us/download/details.aspx?id=100593
+.. |MSMPI_supp_path| replace:: https://www.microsoft.com/en-us/download/details.aspx?id=105289
 .. |MSMPI_supp| replace:: Microsoft MPI v10
 .. |numpy_supp_path| replace:: http://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy
-.. |numpy_supp| replace:: NumPy 1.22.1 (64-bit)
-.. |Python_27| replace:: Python 2.7
-.. |Python_36| replace:: Python 3.6 64-bit
-.. |Python_supp_path| replace:: https://www.python.org/downloads/release/python-399/
-.. |Python_supp| replace:: Python 3.9 64-bit
+.. |numpy_supp| replace:: NumPy 2.4.2 (64-bit)
+.. |Python_supp_path| replace:: https://www.python.org/downloads/release/python-31312/
+.. |Python_supp| replace:: Python 3.13 64-bit
 .. |quick| replace:: Quick Start
-.. |R_supp_path| replace:: https://www.r-project.org/
-.. |R_supp| replace:: R 4.1.2 (64-bit)
-.. |Scons_25| replace:: SCons 2.5.0
-.. |Scons_supp_path| replace:: https://scons.org/scons-301-is-available.html
-.. |Scons_supp| replace:: SCons 3.0.1
+.. |Scons_supp_path| replace:: https://scons.org/scons-4101-is-available.html
+.. |Scons_supp| replace:: SCons 4.10.1
 .. |SSMT_l| replace:: Server-Side Modeling Tools (SSMT)
 .. |SSMT_s| replace:: SSMT
 .. |stats_supp_path| replace:: https://www.mathworks.com/products/statistics.html
 .. |stats_supp| replace:: MATLAB Statistics and Machine Learning Toolbox™ R2021b
 .. |VC++_supp_path| replace:: https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
 .. |VC++_supp| replace:: Microsoft Visual C++ 2022 Redistributable (64-bit)
-.. |VS_2012| replace:: Visual Studio 2012
-.. |VS_2015| replace:: Visual Studio 2015
 .. |VS_supp| replace:: Visual Studio 2022 (Professional, Premium, or Ultimate)
-.. |Windows_dtksupp| replace:: Windows 10
-.. |Windows_supp| replace:: Windows 10, Windows Server 12, and Windows HPC Server 12 (64-bit)
+.. |Windows_dtksupp| replace:: Windows 11
+.. |Windows_supp| replace:: Windows 11, Windows Server 12, and Windows HPC Server 12 (64-bit)

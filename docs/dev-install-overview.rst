@@ -7,7 +7,7 @@ from the |EMOD_s| source code. This is necessary if you want to modify the sourc
 capabilities of the model beyond what's available with the latest |EMOD_s| release. For example, you
 may want to model a disease that isn't currently supported in |EMOD_s|. You can build |exe_s| from
 source code on computers running |Windows_supp| or build the |linux_binary| on computers running
-|Centos_supp|.
+|Ubuntu_supp|.
 
 After building, you should run a single simulation to verify basic functionality. We recommend the
 27_Vector_Sandbox scenario in the Regression_ directory, which is a simple five-year vector
@@ -31,10 +31,10 @@ functionality. See :doc:`dev-regression` for more information.
    :maxdepth: 2
 
    dev-install-windows-prerequisites
-   dev-install-centos-prerequisites
+   dev-install-ubuntu-prerequisites
    dev-install-download-emod
    dev-install-build-emod
-   dev-install-centos-docker
+   dev-install-ubuntu-docker
 
-.. _Regression: https://github.com/InstituteforDiseaseModeling/EMOD/tree/master/Regression
+.. _Regression: https://github.com/EMOD-Hub/EMOD/tree/master/Regression
 

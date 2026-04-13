@@ -67,7 +67,7 @@ dynamic link library (DLL)
 EMODule
     A modular component of |EMOD_s| that are consumed and used by the |exe_l|.
     Under Windows, a |module| is implemented as a :term:`dynamic link library (DLL)` and,
-    under |Centos|, |modules| are currently not supported. |modules| are primarily custom reporters.
+    under |Ubuntu|, |modules| are currently not supported. |modules| are primarily custom reporters.
 
 Epidemiological MODeling software (EMOD)
     The modeling software from the |IDM_l| for disease researchers and developers to investigate

@@ -1,22 +1,22 @@
 =================================================================================
-Building |EMOD_s| source code from |Centos| Docker images on Windows host machine
+Building |EMOD_s| source code from |Ubuntu| Docker images on Windows host machine
 =================================================================================
 
-These steps walk you through building the |EMOD_s| source code from |Centos| Docker images on a Windows host. Before following these steps you must meet the prerequisites in :doc:`dev-install-centos-docker`. Although these steps are specific to the "dtk-build" image, you can use them for the other images by replacing "dtk-build" with the desired image name, such as "dtk-runtime" or "dtk-sfts".
+These steps walk you through building the |EMOD_s| source code from |Ubuntu| Docker images on a Windows host. Before following these steps you must meet the prerequisites in :doc:`dev-install-ubuntu-docker`. Although these steps are specific to the "emod-ubuntu-build" image, you can use them for the other images by replacing "emod-ubuntu-build" with the desired image name, such as "emod-ubuntu-runtime".
 
 Download Docker image to Windows host machine
 =============================================
 
 To download Docker image to your Windows host machine type the following at command line prompt::
 
-    docker pull docker-production.packages.idmod.org/idm/centos:dtk-build
+    docker pull docker://ghcr.io/emod-hub/emod-ubuntu-buildenv:latest
 
 Run Docker container from Windows host machine
 ==============================================
 
 To run Docker image from your Windows host machine type the following at command line prompt::
 
-    docker run -it -v C:\EMOD:/EMOD docker-production.packages.idmod.org/idm/centos:dtk-build
+    docker run -it -v C:\EMOD:/EMOD docker://ghcr.io/emod-hub/emod-ubuntu-buildenv:latest
 
 To see additional information about the options used with the "docker run" command, type "docker run --help" at a command line prompt.
 
@@ -30,7 +30,7 @@ To then build the |EMOD_s| executable, |exe_s|, move to the /EMOD directory::
 
 This directories contains the necessary build script and files.
 
-Build binary executable from Docker image running Linux |Centos| 7.7 within Windows host machine
+Build binary executable from Docker image running Linux |Ubuntu| 22.04 within Windows host machine
 ================================================================================================
 
 To build a binary executable you run the "scons" script. For more information about the build script options, type "scons --help" from within the |EMOD_s| directory. To specify a specific user name associated with the built binary executable, you can enter a specific user name by setting the "USER" environment variable that the build script uses. For example::

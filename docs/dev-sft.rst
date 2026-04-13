@@ -48,7 +48,7 @@ Run on Windows using run_test.cmd
         ../../run_test.cmd 
 
 
-Run on |Centos| using run_test.sh
+Run on |Ubuntu| using run_test.sh
 ---------------------------------
 
 #.  Generate a single config.json file from a base file and the parameter_overrides.json that contains.
@@ -67,4 +67,4 @@ Run on |Centos| using run_test.sh
 
         ../../run_test.sh 
   
-.. _EMOD: https://github.com/InstituteforDiseaseModeling/EMOD/tree/master/Regression
+.. _EMOD: https://github.com/EMOD-Hub/EMOD/tree/master/Regression

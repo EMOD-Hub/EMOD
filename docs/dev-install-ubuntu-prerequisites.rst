@@ -1,9 +1,9 @@
 =======================================================
-Install |Centos| prerequisites for |EMOD_s| source code
+Install |Ubuntu| prerequisites for |EMOD_s| source code
 =======================================================
 
 This section describes the software packages or utilities must be installed on computers running
-|Centos_supp| to build the  |linux_binary| from source code and run regression tests.
+|Ubuntu_supp| to build the  |linux_binary| from source code and run regression tests.
 
 If additional software is needed for the prerequisite software due to your specific environment, the
 installer for the prerequisite software should provide instructions. For example, if |MSMPI_supp|
@@ -28,7 +28,7 @@ or :doc:`emodpy-malaria:emod/install-overview` for malaria.
 Install prerequisites for compiling from source code
 ====================================================
 
-For |Centos_supp|, all prerequisites for building the |linux_binary| are installed by the setup
+For |Ubuntu_supp|, all prerequisites for building the |linux_binary| are installed by the setup
 script described above. However, if you originally installed |EMOD_s| without including
 the source code and input files that are optional for running simulations using a pre-built
 |linux_binary|, rerun the script and install those.
@@ -42,12 +42,4 @@ changes created a discrepancy in the regression test output. For more informatio
 :doc:`dev-regression`. You may want to install R or MATLAB, but both are optional.
 
 .. include:: reuse/gohlke.txt
-
-
-(Optional) R
-------------
-
-The |IDM_s| test team uses |R_supp| for regression testing, but it is considered optional.
-
-.. include:: reuse/r-install.txt
 

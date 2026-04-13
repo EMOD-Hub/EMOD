@@ -25,5 +25,5 @@ obtained prior to your changes.
         the ability to add break points and step through the code, inspecting the values of different
         variables throughout the simulation.
 
-.. _Regression: https://github.com/InstituteforDiseaseModeling/EMOD/tree/master/Regression
+.. _Regression: https://github.com/EMOD-Hub/EMOD/tree/master/Regression
 

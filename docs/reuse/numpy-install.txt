@@ -6,4 +6,4 @@ The NumPy package adds support for large, multi-dimensional arrays and matrices 
 #.  Open a Command Prompt window and navigate to the Python installation directory, then enter the
     following, substituting the name of the specific NumPy WHL file you downloaded::
 
-        pip install numpy-1.x.x+mkl-cp39-cp39m-win_amd64.whl
+        pip install numpy-2.x.x+mkl-cp313-cp313m-win_amd64.whl
