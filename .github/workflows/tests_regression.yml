@@ -116,6 +116,7 @@ jobs:
         id: regression_tests
         continue-on-error: true
         run: |
+          START_TIME=$(date +%s)
           docker run --rm \
             --user $(id -u):$(id -g) \
             -v "${{ github.workspace }}:/EMOD" \
@@ -134,6 +135,18 @@ jobs:
                 --linux \
                 --print-error \
             "
+          END_TIME=$(date +%s)
+          ELAPSED=$((END_TIME - START_TIME))
+          MINUTES=$((ELAPSED / 60))
+          SECONDS=$((ELAPSED % 60))
+          echo "ELAPSED_TIME=${ELAPSED}" >> $GITHUB_ENV
+          echo "ELAPSED_DISPLAY=${MINUTES}m ${SECONDS}s" >> $GITHUB_ENV
+
+      - name: Report Suite Duration
+        if: always()
+        run: |
+          echo "=== ${{ matrix.name }} Suite Duration ==="
+          echo "Total time: ${{ env.ELAPSED_DISPLAY }} (${{ env.ELAPSED_TIME }} seconds)"
 
       - name: Check Test Results
         if: always()
