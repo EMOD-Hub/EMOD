@@ -11,7 +11,6 @@
         { "path": "HIV/53_HIV_GH459", "Num_Cores": 2 },
         { "path": "STI/61_STI_Marital_Only_Relationship_Migration_Multicore", "Num_Cores": 2 },
         { "path": "Vector/81_Vector_Insecticide_SimpleBednet_Multicore", "Num_Cores": 2 },
-        
         { "path": "Generic/33_Generic_Seattle_MultiCore", "Num_Cores": 4 },
         { "path": "Generic/70_Generic_RngPerNode", "Num_Cores": 4 },
         { "path": "HIV/45_HIV_CascadeOfCare_MultiNode_MultiCore", "Num_Cores": 4 },
