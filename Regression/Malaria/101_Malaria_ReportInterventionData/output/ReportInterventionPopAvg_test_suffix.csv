@@ -2931,7 +2931,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 226,4,1000,AntimalarialDrug,0.196,1.04082,0,0,0,0,0,0,0,0,0.204706
 226,4,1000,HumanHostSeekingTrap,0.095,1,0.2,0,0,0.3,0,0,0,0,0
 226,4,1000,Ivermectin,0.096,1,0,0,0,0.3,0,0,0,0,0
-226,4,1000,MultiPackComboDrug-Lumefantrine+Artemether,0.095,1,0,0,0,0,0,0,0,0,0.00561152
+226,4,1000,MultiPackComboDrug-Lumefantrine+Artemether,0.095,1,0,0,0,0,0,0,0,0,0.00561153
 226,4,1000,SimpleBednet,0.173,1,0,0.1,0,0.55629,1,0,0,0,0
 226,4,1000,SimpleIndividualRepellent,0.108,1,0,0.2,0,0,0,0,0,0,0
 226,4,1000,SpatialRepellentHousingModification,0.099,1,0,0.3,0,0,0,0,0,0,0
