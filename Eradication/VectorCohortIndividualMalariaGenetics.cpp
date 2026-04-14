@@ -745,7 +745,7 @@ namespace Kernel
         ar.labelElement( "m_OocystCohorts"     ) & cohort.m_OocystCohorts;
         ar.labelElement( "m_SporozoiteCohorts" ) & cohort.m_SporozoiteCohorts;
 
-        // These get reset at the beginning of eacht time step so
+        // These get reset at the beginning of each time step so
         // we don't need to serialize them
         //bool m_InfectiousToAdult;
         //bool m_InfectiousToInfected;

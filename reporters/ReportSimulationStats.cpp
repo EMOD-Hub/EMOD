@@ -128,7 +128,7 @@ namespace Kernel
         GetDataFromOtherCores();
         if( EnvPtr->MPI.Rank == 0 )
         {
-            // add the total simulation duraiton onto the beginning of each line
+            // add the total simulation duration onto the beginning of each line
             IdmString data = reduced_stream.str();
             std::vector<IdmString> line_list = data.split( '\n' );
             std::stringstream ss;

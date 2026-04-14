@@ -65,7 +65,7 @@ namespace Kernel
                                               const VectorGenome& rGenome );
 
         void GermlineMutation( GameteProbPairVector_t& rGametes );
-        void DoMaternalDepostion( const VectorGenome& rMomGenome, GameteProbPairVector_t& rGametes ) const;
+        void DoMaternalDeposition( const VectorGenome& rMomGenome, GameteProbPairVector_t& rGametes ) const;
         void AdjustForNonFertileEggs( GenomeProbPairVector_t& rPossibilities ) const;
 
 

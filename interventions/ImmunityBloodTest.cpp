@@ -82,7 +82,7 @@ namespace Kernel
     {
         const IIndividualHuman* p_iih = parent->GetEventContext()->GetIndividualHumanConst();
 
-        // return true if individual has natural immunity or immunity aquired by intervention
+        // return true if individual has natural immunity or immunity acquired by intervention
         float acquisitionSusceptibility = p_iih->GetAcquisitionImmunity();   // actually susceptibility 
         bool has_attribute = (acquisitionSusceptibility <= (1.0 - threshold_acquisitionImmunity));
         LOG_DEBUG_F("acquisitionModifier = %f,  has_attribute = %d  threshold__AcquisitionImmunity = %f\n", acquisitionSusceptibility, has_attribute, threshold_acquisitionImmunity);

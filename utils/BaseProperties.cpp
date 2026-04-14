@@ -507,7 +507,7 @@ namespace Kernel
             if( rDemog[ ip_key_str ].size() != m_IPList.size() )
             {
                 std::stringstream ss;
-                ss << ip_key_str << " were first intialized for nodeID=" << m_ExternalNodeIdOfFirst << " and it had " << m_IPList.size() << " properties.\n";
+                ss << ip_key_str << " were first initialized for nodeID=" << m_ExternalNodeIdOfFirst << " and it had " << m_IPList.size() << " properties.\n";
                 ss << "nodeID=" << externalNodeId << " has " << rDemog[ ip_key_str ].size() << " properties.  All nodes must have the same keys and values.";
                 throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
             }

@@ -878,7 +878,7 @@ namespace SerializedState
         {
             fclose( f );
             ostringstream msg;
-            msg << "An error while reading serialized population file, '" << filename << "' occured." << std::endl << std::endl;
+            msg << "An error while reading serialized population file, '" << filename << "' occurred." << std::endl << std::endl;
             msg << se.GetMsg() << std::endl;
             throw Kernel::SerializationException( __FILE__, __LINE__, __FUNCTION__, msg.str().c_str() );
         }

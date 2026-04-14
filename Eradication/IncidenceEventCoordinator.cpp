@@ -413,7 +413,7 @@ namespace Kernel
 
     void IncidenceCounter::UnregisterForEvents( ISimulationEventContext * pSEC )
     {
-        //to be overriden
+        //to be overridden
     }
 
     void IncidenceCounter::RegisterForEvents( INodeEventContext* pNEC )

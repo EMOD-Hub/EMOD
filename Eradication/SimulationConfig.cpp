@@ -95,7 +95,7 @@ void SimulationConfig::SetFixedParameters(Configuration * inputJson)
         break;
     case SimType::HIV_SIM:
         // inputJson->Add("Enable_Immunity", 1);    // Immunity is already enabled in the code. Setting it here adds parameter
-                                                    // Enable_Immunity to the configuration what then requires all paramters that 
+                                                    // Enable_Immunity to the configuration what then requires all parameters that 
                                                     // depend on Enable_Immunity (also those not needed for HIV) to be specified. 
                                                     // For SimType HIV this means that all the Post_Infection_XXX parameters must be configured although they are not used.
         inputJson->Add("Enable_Immune_Decay", 0);   //must exist because Enable_Immunity: 1

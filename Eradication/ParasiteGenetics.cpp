@@ -351,7 +351,7 @@ namespace Kernel
             // --------------------------------------------------------------------------------
             // --- The first argument in the negative binomial is the "number of successes",
             // --- while the second argument is the probability of each success.  The return value
-            // --- is the number of failures before "number of successes" was acheived.  Since we
+            // --- is the number of failures before "number of successes" was achieved.  Since we
             // --- want to return the number of sporozoites that make it in the bite, the input
             // --- needs to be about those that fail.
             // --------------------------------------------------------------------------------

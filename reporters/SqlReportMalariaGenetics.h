@@ -41,7 +41,7 @@ namespace Kernel
     protected:
         virtual PatientInfection* CreatePatientInfection() override;
         virtual void ExtractInfectionInfo( IInfection* pInfection, PatientInfection* pPatientInfection ) override;
-        virtual void AddNewInfection( float currentTime, const SqlPatient* pPaitent, const PatientInfection* pInfection ) override;
+        virtual void AddNewInfection( float currentTime, const SqlPatient* pPatient, const PatientInfection* pInfection ) override;
         virtual int BindToInfection( float currentTime, int nextIndex, const SqlPatient* pPatient, const PatientInfection* pInfection ) override;
 
         void AddNewGenome( float currentTime, const ParasiteGenome& rGenome );

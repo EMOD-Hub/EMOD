@@ -926,7 +926,7 @@ SUITE(PropertiesTest)
     TEST_FIXTURE( PropertiesTestFixture, TestNotSameNumberOfIPs )
     {
         TestReadingError( true, __LINE__, "testdata/PropertiesTest/demog_TestNotSameNumberOfIPs.json",
-            "IndividualProperties were first intialized for nodeID=1 and it had 2 properties.\nnodeID=2 has 1 properties.  All nodes must have the same keys and values." );
+            "IndividualProperties were first initialized for nodeID=1 and it had 2 properties.\nnodeID=2 has 1 properties.  All nodes must have the same keys and values." );
     }
 
     TEST_FIXTURE( PropertiesTestFixture, TestDifferentKey )

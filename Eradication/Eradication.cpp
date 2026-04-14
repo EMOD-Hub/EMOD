@@ -493,7 +493,7 @@ bool ControllerInitWrapper( int argc, char *argv[], IdmMpi::MessageInterface* pM
                 _RPT0(_CRT_WARN,"Beginning check pass...\n");
 
                 _CrtMemCheckpoint(&initial_state);
-                int *intential_leak_marker = _new_ int[250]; // help us locate beginning of allocations during the check pass because DumpAllObjectsSince is not reliable and sometimes dumps everything
+                int *intentional_leak_marker = _new_ int[250]; // help us locate beginning of allocations during the check pass because DumpAllObjectsSince is not reliable and sometimes dumps everything
 
             //    _crtBreakAlloc = 106768; // break on this alloc number; get this from the object dump
             }

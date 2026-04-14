@@ -63,7 +63,7 @@ namespace Kernel
         // --- and we want the end of the timestep so that it matches the other reports.
         // --- Remove the Infected channel form Report and add the num_people_infected_id
         // --- channel as Infected.  Do this before postProcessAccumlatedData() divides by 
-        // --- the populaiton
+        // --- the population
         // --------------------------------------------------------------------------------------
         channelDataMap.RemoveChannel( Report::infected_id.GetName() );
         channelDataMap.SetChannelData( Report::infected_id.GetName(),

@@ -122,13 +122,13 @@ namespace Kernel
 
         // ----------------------------------------------------------------------------
         // --- Only broadcast WouldHaveXXX events if the events would have happened
-        // --- to the person if interventions like ART hadn't surpressed the infection.
+        // --- to the person if interventions like ART hadn't suppressed the infection.
         // --- Make sure not to broadcast the events if the person is in the process
         // --- of dying.  Also, don't broadcast the event if the duration is more than
         // --- dt old.  This means that the infection was fast forwarded and these
         // --- events occured in the past.
         // ----------------------------------------------------------------------------
-        if( m_has_been_suppressed && (StateChange != InfectionStateChange::Fatal) ) // not goint to die right now
+        if( m_has_been_suppressed && (StateChange != InfectionStateChange::Fatal) ) // not going to die right now
         {
             IIndividualEventBroadcaster* p_broadcaster = nullptr;
             INodeEventContext* p_nec = parent->GetEventContext()->GetNodeEventContext();
@@ -283,7 +283,7 @@ namespace Kernel
             m_time_infected -= fast_forward;    // Move infection time backwards
             hiv_parent->GetHIVSusceptibility()->FastForward( this, fast_forward );
 
-            // The infection is not surpressed so WouldHaveXXX events would not fire
+            // The infection is not suppressed so WouldHaveXXX events would not fire
             // so just reduct timers.
             m_duration_until_would_have_entered_latent -= fast_forward;
             m_duration_until_would_have_entered_aids   -= fast_forward;

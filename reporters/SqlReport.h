@@ -87,9 +87,9 @@ namespace Kernel
 
         void AddColumn( const char* pColumnName, const char* pDataTypeName );
         void AddPrimaryKey( const char* pKey );
-        void AddForiegnKey( const char* pKey, const char* pReference );
+        void AddForeignKey( const char* pKey, const char* pReference );
 
-        std::string GetCreateTableStatment() const;
+        std::string GetCreateTableStatement() const;
         std::string GetInsertStatement() const;
 
     private:
@@ -100,7 +100,7 @@ namespace Kernel
     };
 
     // SqlReport is the base-class (GENERIC_SIM) report that allows one to collect data on the
-    // populaiton during each time step.  This is a relational database where the data for one
+    // population during each time step.  This is a relational database where the data for one
     // person is contained in multiple tables that are related to each other.  The base-class
     // database has the following tables:
     //    Humans               - List of all the humans in the simulation during the time the report was collecting data
@@ -174,15 +174,15 @@ namespace Kernel
         // Hence, when setting the value for the row to be inserted for ColA, you want to use index=1
         // in the Bind() statement.
 
-        void Bind( sqlite3_stmt* pSqliteStatment, int index, int val );
-        void Bind( sqlite3_stmt* pSqliteStatment, int index, int64_t val );
-        void Bind( sqlite3_stmt* pSqliteStatment, int index, char val );
-        void Bind( sqlite3_stmt* pSqliteStatment, int index, const std::string& val );
-        void Bind( sqlite3_stmt* pSqliteStatment, int index, float val );
+        void Bind( sqlite3_stmt* pSqliteStatement, int index, int val );
+        void Bind( sqlite3_stmt* pSqliteStatement, int index, int64_t val );
+        void Bind( sqlite3_stmt* pSqliteStatement, int index, char val );
+        void Bind( sqlite3_stmt* pSqliteStatement, int index, const std::string& val );
+        void Bind( sqlite3_stmt* pSqliteStatement, int index, float val );
 
         // The Step() method executes the prepared statement.  It should be used after all of the
         // Bind() calls have been made to assign data to each column.
-        void Step( sqlite3_stmt* pSqliteStatment );
+        void Step( sqlite3_stmt* pSqliteStatement );
 
         // When cleaning up the report, we need the DeleteStatement() method to delete the different
         // prepared statement objects that were created.
@@ -217,18 +217,18 @@ namespace Kernel
         // The "newness" could be because the person was just born, the sim just started,
         // or the report just started collecting data.  The data that is added is data that
         // does not change for the human like their original node or the day they were added to the sim.
-        virtual void AddNewHuman( float currentTime, const SqlPatient* pPaitent );
+        virtual void AddNewHuman( float currentTime, const SqlPatient* pPatient );
 
         // For each human the database knows about, this method is called each time step to
         // add current data about the person, typically health related data.
-        virtual void AddHealth( float currentTime, const SqlPatient* pPaitent );
+        virtual void AddHealth( float currentTime, const SqlPatient* pPatient );
 
         // This method is intended to add data about the interventions a person has each time step
         virtual void AddInterventions( float currentTime, const SqlPatient* pPatient );
 
         // Like AddNewHuman(), this method is called to add data about an infection that does not change
         // over time like when it was created or whom it belongs to.
-        virtual void AddNewInfection( float currentTime, const SqlPatient* pPaitent, const PatientInfection* pInfection );
+        virtual void AddNewInfection( float currentTime, const SqlPatient* pPatient, const PatientInfection* pInfection );
 
         // Like AddHelath(), this method adds data about an infection each time step.  When an infection
         // stops appearing in this table, it is usually because it has been cleared.

@@ -88,7 +88,7 @@ namespace Kernel
         m_TableGenomeLocations.AddColumn( "GenomeLocation", "INT"  );
         m_TableGenomeLocations.AddColumn( "LocationTypeID", "INT"  );
         m_TableGenomeLocations.AddPrimaryKey( "(RunNumber,GenomeLocation)"   );
-        m_TableGenomeLocations.AddForiegnKey( "(LocationTypeID)", "GenomeLocationType (LocationTypeID)" );
+        m_TableGenomeLocations.AddForeignKey( "(LocationTypeID)", "GenomeLocationType (LocationTypeID)" );
 
         m_TableParasiteGenomes.AddColumn( "RunNumber", "INT"  );
         m_TableParasiteGenomes.AddColumn( "GenomeID",  "INT"  );
@@ -101,8 +101,8 @@ namespace Kernel
         m_TableGenomeSequenceData.AddColumn( "NucleotideSequence", "INT" );
         m_TableGenomeSequenceData.AddColumn( "AlleleRoots",        "INT" );
         m_TableGenomeSequenceData.AddColumn( "GenomeLocation",     "INT" );
-        m_TableGenomeSequenceData.AddForiegnKey( "(RunNumber,GenomeID)",       "ParasiteGenomes (RunNumber,GenomeID)"       );
-        m_TableGenomeSequenceData.AddForiegnKey( "(RunNumber,GenomeLocation)", "GenomeLocations (RunNumber,GenomeLocation)" );
+        m_TableGenomeSequenceData.AddForeignKey( "(RunNumber,GenomeID)",       "ParasiteGenomes (RunNumber,GenomeID)"       );
+        m_TableGenomeSequenceData.AddForeignKey( "(RunNumber,GenomeLocation)", "GenomeLocations (RunNumber,GenomeLocation)" );
     }
 
     SqlReportMalariaGenetics::~SqlReportMalariaGenetics()
@@ -135,10 +135,10 @@ namespace Kernel
 
         m_GenomeLocations = ParasiteGenetics::GetInstance()->GetLocations();
 
-        ExecuteStatement( m_TableGenomeLocationTypes.GetCreateTableStatment().c_str() );
-        ExecuteStatement( m_TableGenomeLocations.GetCreateTableStatment().c_str() );
-        ExecuteStatement( m_TableParasiteGenomes.GetCreateTableStatment().c_str() );
-        ExecuteStatement( m_TableGenomeSequenceData.GetCreateTableStatment().c_str() );
+        ExecuteStatement( m_TableGenomeLocationTypes.GetCreateTableStatement().c_str() );
+        ExecuteStatement( m_TableGenomeLocations.GetCreateTableStatement().c_str() );
+        ExecuteStatement( m_TableParasiteGenomes.GetCreateTableStatement().c_str() );
+        ExecuteStatement( m_TableGenomeSequenceData.GetCreateTableStatement().c_str() );
 
         FillLocationTypeTable();
         FillLocationsTable();

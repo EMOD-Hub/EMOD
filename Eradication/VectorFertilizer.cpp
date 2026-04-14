@@ -152,8 +152,8 @@ namespace Kernel
         // --- Pre-calculating allele changes due to maternal deposition of Cas9
         // -------------------------------------------------------------------------
 
-        DoMaternalDepostion( rFemale, gametes_female );
-        DoMaternalDepostion( rFemale, gametes_male );
+        DoMaternalDeposition( rFemale, gametes_female );
+        DoMaternalDeposition( rFemale, gametes_male );
 
         // -------------------------------------------------------------------------
         // --- Now that we have the gametes from each parent and the probability of
@@ -498,7 +498,7 @@ namespace Kernel
         return gppv;
     }
 
-    void VectorFertilizer::DoMaternalDepostion( const VectorGenome& rMomGenome, GameteProbPairVector_t& rGametes ) const
+    void VectorFertilizer::DoMaternalDeposition( const VectorGenome& rMomGenome, GameteProbPairVector_t& rGametes ) const
     {
         if( ( m_pGeneDrivers == nullptr ) || ( m_pGeneDrivers->Size() == 0 ) ||
             ( m_pMaternalDepositions == nullptr) || ( m_pMaternalDepositions->Size() == 0) )

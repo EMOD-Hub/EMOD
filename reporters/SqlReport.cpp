@@ -121,7 +121,7 @@ namespace Kernel
         m_PrimaryKeyStatement = ss.str();
     }
 
-    void Table::AddForiegnKey( const char* pKey, const char* pReference )
+    void Table::AddForeignKey( const char* pKey, const char* pReference )
     {
         release_assert( pKey != nullptr );
         release_assert( pReference != nullptr );
@@ -131,7 +131,7 @@ namespace Kernel
         m_ForeignKeyStatements.push_back( ss.str() );
     }
 
-    std::string Table::GetCreateTableStatment() const
+    std::string Table::GetCreateTableStatement() const
     {
         std::stringstream ss;
         ss << "CREATE TABLE " << m_TableName << " (";
@@ -233,19 +233,19 @@ namespace Kernel
         m_TableHealth.AddColumn( "NodeID",         "INT"  );
         m_TableHealth.AddColumn( "SimTime",        "REAL" );
         m_TableHealth.AddColumn( "Infectiousness", "REAL" );
-        m_TableHealth.AddForiegnKey( "(RunNumber,HumanID)", "Humans (RunNumber,HumanID)" );
+        m_TableHealth.AddForeignKey( "(RunNumber,HumanID)", "Humans (RunNumber,HumanID)" );
 
         m_TableInfections.AddColumn( "RunNumber",      "INT"  );
         m_TableInfections.AddColumn( "InfectionID",    "INT"  );
         m_TableInfections.AddColumn( "HumanID",        "INT"  );
         m_TableInfections.AddColumn( "SimTimeCreated", "REAL" );
         m_TableInfections.AddPrimaryKey( "(RunNumber,InfectionID)" );
-        m_TableInfections.AddForiegnKey( "(RunNumber,HumanID)", "Humans (RunNumber,HumanID)" );
+        m_TableInfections.AddForeignKey( "(RunNumber,HumanID)", "Humans (RunNumber,HumanID)" );
 
         m_TableInfectionData.AddColumn( "RunNumber",   "INT"  );
         m_TableInfectionData.AddColumn( "InfectionID", "INT"  );
         m_TableInfectionData.AddColumn( "SimTime",     "REAL" );
-        m_TableInfectionData.AddForiegnKey( "(RunNumber,InfectionID)", "Infections (RunNumber,InfectionID)" );
+        m_TableInfectionData.AddForeignKey( "(RunNumber,InfectionID)", "Infections (RunNumber,InfectionID)" );
 
         m_TableIndividualProperties.AddColumn( "RunNumber",  "INT"  );
         m_TableIndividualProperties.AddColumn( "KeyValueID", "INT"  );
@@ -307,28 +307,28 @@ namespace Kernel
         // -------------------------------------------------------------------------------
         ExecuteStatement( "PRAGMA journal_mode = OFF" );
 
-        ExecuteStatement( m_TableHuman.GetCreateTableStatment().c_str() );
+        ExecuteStatement( m_TableHuman.GetCreateTableStatement().c_str() );
         if( m_IncludeIP )
         {
-            ExecuteStatement( m_TableIndividualProperties.GetCreateTableStatment().c_str() );
+            ExecuteStatement( m_TableIndividualProperties.GetCreateTableStatement().c_str() );
             for( auto p_ip : IPFactory::GetInstance()->GetIPList() )
             {
                 std::string column_name = "IPKey_" + p_ip->GetKeyAsString();
                 m_TableHealth.AddColumn( column_name.c_str(), "INT");
 
-                std::string foriegn_key = "(RunNumber," + column_name + ")";
-                m_TableHealth.AddForiegnKey( foriegn_key.c_str(), "IndividualProperties (RunNumber,KeyValueID)");
+                std::string foreign_key = "(RunNumber," + column_name + ")";
+                m_TableHealth.AddForeignKey( foreign_key.c_str(), "IndividualProperties (RunNumber,KeyValueID)");
             }
             FillIndividualPropertiesTable();
         }
         if( m_IncludeTableHealth )
         {
-            ExecuteStatement( m_TableHealth.GetCreateTableStatment().c_str() );
+            ExecuteStatement( m_TableHealth.GetCreateTableStatement().c_str() );
         }
-        ExecuteStatement( m_TableInfections.GetCreateTableStatment().c_str() );
+        ExecuteStatement( m_TableInfections.GetCreateTableStatement().c_str() );
         if( m_IncludeTableInfectionData )
         {
-            ExecuteStatement( m_TableInfectionData.GetCreateTableStatment().c_str() );
+            ExecuteStatement( m_TableInfectionData.GetCreateTableStatement().c_str() );
         }
 
         if( m_pStatementInsertHuman == nullptr )
@@ -438,9 +438,9 @@ namespace Kernel
         }
     }
 
-    void SqlReport::Bind( sqlite3_stmt* pSqliteStatment, int index, int val )
+    void SqlReport::Bind( sqlite3_stmt* pSqliteStatement, int index, int val )
     {
-        int rc = sqlite3_bind_int( pSqliteStatment, index, val );
+        int rc = sqlite3_bind_int( pSqliteStatement, index, val );
 
         if( rc != SQLITE_OK )
         {
@@ -453,9 +453,9 @@ namespace Kernel
         }
     }
 
-    void SqlReport::Bind( sqlite3_stmt* pSqliteStatment, int index, int64_t val )
+    void SqlReport::Bind( sqlite3_stmt* pSqliteStatement, int index, int64_t val )
     {
-        int rc = sqlite3_bind_int64( pSqliteStatment, index, val );
+        int rc = sqlite3_bind_int64( pSqliteStatement, index, val );
 
         if( rc != SQLITE_OK )
         {
@@ -468,13 +468,13 @@ namespace Kernel
         }
     }
 
-    void SqlReport::Bind( sqlite3_stmt* pSqliteStatment, int index, char val )
+    void SqlReport::Bind( sqlite3_stmt* pSqliteStatement, int index, char val )
     {
         char buff[ 2 ];
         buff[ 0 ] = val;
         buff[ 1 ] = 0;
 
-        int rc = sqlite3_bind_text( pSqliteStatment, index, buff, 1, SQLITE_TRANSIENT );
+        int rc = sqlite3_bind_text( pSqliteStatement, index, buff, 1, SQLITE_TRANSIENT );
 
         if( rc != SQLITE_OK )
         {
@@ -487,9 +487,9 @@ namespace Kernel
         }
     }
 
-    void SqlReport::Bind( sqlite3_stmt* pSqliteStatment, int index, const std::string& val )
+    void SqlReport::Bind( sqlite3_stmt* pSqliteStatement, int index, const std::string& val )
     {
-        int rc = sqlite3_bind_text( pSqliteStatment, index, val.c_str(), val.length(), SQLITE_TRANSIENT );
+        int rc = sqlite3_bind_text( pSqliteStatement, index, val.c_str(), val.length(), SQLITE_TRANSIENT );
 
         if( rc != SQLITE_OK )
         {
@@ -502,9 +502,9 @@ namespace Kernel
         }
     }
 
-    void SqlReport::Bind( sqlite3_stmt* pSqliteStatment, int index, float val )
+    void SqlReport::Bind( sqlite3_stmt* pSqliteStatement, int index, float val )
     {
-        int rc = sqlite3_bind_double( pSqliteStatment, index, val );
+        int rc = sqlite3_bind_double( pSqliteStatement, index, val );
 
         if( rc != SQLITE_OK )
         {
@@ -517,9 +517,9 @@ namespace Kernel
         }
     }
 
-    void SqlReport::Step( sqlite3_stmt* pSqliteStatment )
+    void SqlReport::Step( sqlite3_stmt* pSqliteStatement )
     {
-        int rc = sqlite3_step( pSqliteStatment );
+        int rc = sqlite3_step( pSqliteStatement );
         if( rc != SQLITE_DONE )
         {
             std::stringstream ss;
@@ -530,7 +530,7 @@ namespace Kernel
             throw IllegalOperationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }
 
-        rc = sqlite3_reset( pSqliteStatment );
+        rc = sqlite3_reset( pSqliteStatement );
         if( rc != SQLITE_OK )
         {
             std::stringstream ss;
@@ -541,7 +541,7 @@ namespace Kernel
             throw IllegalOperationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }
 
-        rc = sqlite3_clear_bindings( pSqliteStatment );
+        rc = sqlite3_clear_bindings( pSqliteStatement );
         if( rc != SQLITE_OK )
         {
             std::stringstream ss;
@@ -553,9 +553,9 @@ namespace Kernel
         }
     }
 
-    void SqlReport::DeleteStatement( sqlite3_stmt** ppSqliteStatment )
+    void SqlReport::DeleteStatement( sqlite3_stmt** ppSqliteStatement )
     {
-        int rc = sqlite3_finalize( *ppSqliteStatment );
+        int rc = sqlite3_finalize( *ppSqliteStatement );
 
         if( rc != SQLITE_OK )
         {
@@ -566,7 +566,7 @@ namespace Kernel
 
             throw IllegalOperationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }
-        *ppSqliteStatment = nullptr;
+        *ppSqliteStatement = nullptr;
     }
 
     void SqlReport::BeginTimestep()

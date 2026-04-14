@@ -162,7 +162,7 @@ namespace Kernel
         m_TableHealth.AddColumn( "Cytokines",             "REAL" );
         m_TableHealth.AddColumn( "HRP2",                  "REAL" );
         m_TableHealth.AddColumn( "PfEMP1VariantFraction", "REAL" );
-        m_TableHealth.AddForiegnKey( "(SevereCaseTypeID)", "SevereCaseType (SevereCaseTypeID)" );
+        m_TableHealth.AddForeignKey( "(SevereCaseTypeID)", "SevereCaseType (SevereCaseTypeID)" );
 
         m_TableInfectionData.AddColumn( "InfectedRedBloodCells",      "INT" );
         m_TableInfectionData.AddColumn( "NumMatureGametocytesFemale", "INT" );
@@ -174,7 +174,7 @@ namespace Kernel
         m_TableDrugStatus.AddColumn( "DrugName",          "TEXT" );
         m_TableDrugStatus.AddColumn( "CurrentEfficacy",   "REAL" );
         m_TableDrugStatus.AddColumn( "NumRemainingDoses", "INT"  );
-        m_TableDrugStatus.AddForiegnKey( "(RunNumber,HumanID)", "Humans (RunNumber,HumanID)" );
+        m_TableDrugStatus.AddForeignKey( "(RunNumber,HumanID)", "Humans (RunNumber,HumanID)" );
     }
 
     SqlReportMalaria::~SqlReportMalaria()
@@ -204,12 +204,12 @@ namespace Kernel
 
         if( m_IncludeTableHealth )
         {
-            ExecuteStatement( m_TableSeverCaseType.GetCreateTableStatment().c_str() );
+            ExecuteStatement( m_TableSeverCaseType.GetCreateTableStatement().c_str() );
             FillSevereCaseTypeTable();
         }
         if( m_IncludeTableDrugStatus )
         {
-            ExecuteStatement( m_TableDrugStatus.GetCreateTableStatment().c_str() );
+            ExecuteStatement( m_TableDrugStatus.GetCreateTableStatement().c_str() );
             CreatePreparedStatement( m_TableDrugStatus.GetInsertStatement().c_str(), &m_pStatementInsertDrugStatus);
         }
     }

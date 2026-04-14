@@ -102,7 +102,7 @@ namespace Kernel
 
         // A hashcode based on the algorithm of Josh Bloch's Effective Java in Item 8 
         // This was intended to be the unique ID but we needed to go to 64-bits to avoid
-        // hash collitions.  Hence, we use the hash code to tell if two genomes have the
+        // hash collisions.  Hence, we use the hash code to tell if two genomes have the
         // same contents, but we use a seperate ID that is only 32-bits.
         int64_t m_HashCode;
 
