@@ -10,7 +10,7 @@ license = "MIT"
 authors = [
 ]
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.10"
 dependencies = [
 ]
 classifiers = [
@@ -33,7 +33,7 @@ tests = [
 ]
 
 [project.urls]
-Documentation = "https://docs.idmod.org/projects/emod/en/latest/"
+Documentation = "https://emod.idmod.org/EMOD/"
 Repository = "https://github.com/EMOD-Hub/EMOD"
 Issues = "https://github.com/EMOD-Hub/issues-and-discussions/issues"
 
