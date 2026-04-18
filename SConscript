@@ -9,8 +9,17 @@ import shutil
 
 Import('env')
 
+
+def OptionalScript(sconscript_name):
+    sconscript_path = os.path.join(Dir('#').abspath, sconscript_name)
+    if os.path.isfile(sconscript_path):
+        SConscript(sconscript_name)
+    else:
+        print("Skipping missing script: '{0}'".format(sconscript_path))
+
+
 def InstallEmodules(src, dst):
-    
+
     print( "\nInstalling from " + src + " to " + dst + "..." )
     if os.path.isfile(dst):
         print( "Warning: " + dst + " is a file\n" )
@@ -27,7 +36,8 @@ def InstallEmodules(src, dst):
                 full_fn = os.path.join(root,file);
                 print( "copying: " + full_fn )
                 shutil.copy2(full_fn, dst);
-    
+
+
 # if --install is on, just copy the dlls (assumed there already) and finish
 dst_path = env['Install']
 if dst_path != "":
@@ -94,12 +104,7 @@ SConscript( [ 'baseReportLib/SConscript',
 # Finally executable
 SConscript('Eradication/SConscript')
 
-def OptionalScript(sconscript_name):
-    sconscript_path = os.path.join(Dir('#').abspath, sconscript_name)
-    if os.path.isfile(sconscript_path):
-        SConscript(sconscript_name)
-    else:
-        print("Skipping missing script: '{0}'".format(sconscript_path))
+
 
 
 
