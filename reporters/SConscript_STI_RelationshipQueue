@@ -1,7 +1,4 @@
-# -*- mode: python; -*-
-# This Python script, SConscript, invoked by the SConscript in the upper directory,
-#
-import os, sys, shutil
+import os
 
 Import('env')
 report_env = env.Clone()
@@ -10,12 +7,6 @@ report_env[ "REPORT_DIR" ] = 'libstirelationshipqueuereporter'
 lib_report_dllSrcFiles = [ "$REPORT_DIR/StiRelationshipQueueReporter.cpp" ]
 if os.name != "posix":
     lib_report_dllSrcFiles.extend( [ "$REPORT_DIR/stdafx.cpp" ] )
-lib_report_dllIncFiles = [ "$REPORT_DIR/StiRelationshipQueueReporter.h" ]
-lib_report_dllLocalInc = [ "$REPORT_DIR/stdafx.h" ]
-
-
-
-
 
 report_dir = report_env[ "BUILD_DIR" ] + 'reporter_plugins/' + report_env[ "REPORT_DIR" ]
 
