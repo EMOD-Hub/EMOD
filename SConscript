@@ -60,11 +60,13 @@ env.Prepend( LIBPATH = [
               "$BUILD_DIR/lz4", 
               "$BUILD_DIR/utils"])
 
+disease = "ALL"
+if 'Disease' in env and len(env['Disease']) > 0:
+    disease = env["Disease"]
 
 # Shared objects before static libraries to avoid double statics in memory!
 if( (disease == "ALL") or (disease == "STI") or (disease == "HIV") ):
     OptionalScript('reporters/SConscript_STI_RelationshipQueue')
-
 
 env.Prepend( LIBS=[
               "reporters",
@@ -77,7 +79,7 @@ env.Prepend( LIBS=[
               "utils"])
 
 # First static libs
-print( "Build static libraries baseReportLib, cajun, campaign, coreLib, sqlite, snappy, and utils lib's." )
+print( "Build static libraries." )
 SConscript( [ 'baseReportLib/SConscript',
               'cajun/SConscript',
               'campaign/SConscript',
@@ -99,9 +101,7 @@ def OptionalScript(sconscript_name):
     else:
         print("Skipping missing script: '{0}'".format(sconscript_path))
 
-disease = "ALL"
-if 'Disease' in env and len(env['Disease']) > 0:
-    disease = env["Disease"]
+
 
 
 if( disease == "ALL"):
