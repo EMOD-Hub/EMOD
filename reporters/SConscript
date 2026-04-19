@@ -17,16 +17,6 @@ generic_cpp = [
     "ReportSimulationStats.cpp",
     "SqlReport.cpp"
 ]
-generic_h = [
-    "ReportDrugStatus.h",
-    "ReportHumanMigrationTracking.h",
-    "ReportPluginAgeAtInfectionHistogram.h",
-    "ReportPluginAgeAtInfection.h",
-    "ReportEventCounter.h",
-    "ReportNodeDemographics.h",
-    "ReportSimulationStats.h",
-    "SqlReport.h"
-]
 
 vector_cpp = [
     "ReportVectorGenetics.cpp",
@@ -34,13 +24,6 @@ vector_cpp = [
     "ReportVectorMigration.cpp",
     "ReportVectorStats.cpp",
     "ReportMicrosporidia.cpp"
-]
-vector_h = [
-    "ReportVectorGenetics.h",
-    "VectorHabitatReport.h",
-    "ReportVectorMigration.h",
-    "ReportVectorStats.h",
-    "ReportMicrosporidia.h"
 ]
 
 malaria_cpp = [
@@ -64,37 +47,14 @@ malaria_cpp = [
     "ReportVectorStatsMalariaGenetics.cpp",
     "ReportVectorGeneticsMalariaGenetics.cpp"
 ]
-malaria_h = [
-    "MalariaImmunityReport.h",
-    "ReportAntibodies.h",
-    "MalariaPatientJSONReport.h",
-    "SqlReportMalaria.h",
-    "SqlReportMalariaGenetics.h",
-    "MalariaSummaryReport.h",
-    "MalariaSurveyJSONAnalyzer.h",
-    "ReportFpgNewInfections.h",
-    "ReportMalariaFiltered.h",
-    "ReportMalariaFilteredIntraHost.h",
-    "ReportSimpleMalariaTransmission.h",
-    "ReportInterventionPopAvg.h",
-    "SpatialReportMalariaFiltered.h",
-    "ReportNodeDemographicsMalaria.h"
-    "ReportVectorGeneticsMalariaGenetics.h"
-]
 
 sti_cpp = [
     "ReportPfaQueues.cpp",
     "ReportRelationshipCensus.cpp",
     "ReportRelationshipMigrationTracking.cpp"
 ]
-sti_h = [
-    "ReportPfaQueues.h",
-    "ReportRelationshipCensus.h",
-    "ReportRelationshipMigrationTracking.h"
-]
 
 hiv_cpp = []
-hiv_h = []
 
 disease = "ALL"
 if 'Disease' in env and len(env['Disease']) > 0:
@@ -104,30 +64,22 @@ if 'Disease' in env and len(env['Disease']) > 0:
 reporters_cpp = [
     "stdafx.cpp"
 ]
-reporters_h = [
-]
 
 reporters_cpp = reporters_cpp + generic_cpp
-reporters_h   = reporters_h   + generic_h
  
 if( (disease == "ALL") or (disease == "Vector") or (disease == "Malaria") ):
     reporters_cpp = reporters_cpp + vector_cpp
-    reporters_h   = reporters_h   + vector_h
 
 if( (disease == "ALL") or (disease == "Malaria") ):
     reporters_cpp = reporters_cpp + malaria_cpp
-    reporters_h   = reporters_h   + malaria_h
 
 if( (disease == "ALL") or (disease == "STI") or (disease == "HIV") ):
     reporters_cpp = reporters_cpp + sti_cpp
-    reporters_h   = reporters_h   + sti_h
 
 if( (disease == "ALL") or (disease == "HIV") ):
     reporters_cpp = reporters_cpp + hiv_cpp
-    reporters_h   = reporters_h   + hiv_h
 
 
 reporters_local = ['stdafx.h']
 
 reporters_lib = env.StaticLibrary('reporters', reporters_cpp)
-

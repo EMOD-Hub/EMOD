@@ -8,7 +8,6 @@ import regression_utils as ru
 import sys
 import shutil
 import pdb
-from ctypes import *
 
 
 class MyRegressionRunner(object):
@@ -267,6 +266,18 @@ class MyRegressionRunner(object):
 
         return
 
+    def crunch_name(self, arg_string):
+        # Provides name mapping for the custom reporters; the report name
+        # and the file name will be the same after the mapping below.
+
+        arg_string = arg_string.upper()
+
+        arg_string = arg_string.replace('_',             '')
+        arg_string = arg_string.replace('LIB',           '')
+        arg_string = arg_string.replace('CUSTOMREPORT',  '')
+
+        return arg_string
+
     def transform_path( self, win_path ):
         return win_path.replace( "\\", "/" ).replace( "bayesianfil01", "mnt" ).replace( "IDM", "idm" ).replace( "//", "/" )
 
@@ -299,13 +310,10 @@ class MyRegressionRunner(object):
             print("Except that directory does not exist!  Not copying emodules.")
             return
 
-        # print "dll_root = " + params.dll_root
-
         dll_dirs = ["disease_plugins",  "reporter_plugins", "interventions"]
 
         for dll_subdir in dll_dirs:
             suffix = "*.dll" if os.name == "nt" and self.params.linux == False else "*.so"
-            #print( "Using suffix: " + str(suffix) )
             dlls = glob.glob(os.path.join( os.path.join(emodule_dir, dll_subdir), suffix )) 
             for dll in dlls:
                 dll_hash = ru.md5_hash_of_file(dll)
@@ -331,21 +339,12 @@ class MyRegressionRunner(object):
                         ru.copy(dll, os.path.join(target_dir, os.path.basename(dll)))
 
                     dll_path = os.path.join(target_dir, os.path.basename(dll))
-                    #print( "dll_path = " + dll_path )
-                    # dll_path has to be converted to /mnt for --linux
                     if self.params.linux:
                         dll_path = self.transform_path( dll_path )
                     self.emodules_map[dll_subdir].append(dll_path)
 
                     try:
-                        if os.name == "nt" and self.params.linux == False:
-                            dll_handle = cdll.LoadLibrary(dll)
-                        else:
-                            # this does lazy loading so not all dependencies have to be found
-                            dll_handle = CDLL(dll,mode=1)
-                        gettype = dll_handle.GetType
-                        gettype.restype = c_char_p
-                        name = dll_handle.GetType().decode("utf-8")
+                        name = self.crunch_name(os.path.basename(dll_path).split('.')[0])
                         self.dll_name_to_path[name] = dll_path
                     except Exception as ex:
                         print("ERROR: " + str(ex) )
@@ -390,11 +389,10 @@ class MyRegressionRunner(object):
         # Re-build the list of reporter DLL paths in the emodules map based on the reporters appearing above
         for reporter in reporters_set:
             try:
-                final_reporters.append(self.dll_name_to_path[reporter])
+                final_reporters.append(self.dll_name_to_path[self.crunch_name(reporter)])
             except KeyError:
-                continue
-                #print("Warning: when building reporter_plugins emodule list, no path found for '{0}'. "
-                #      "Continuing.".format(reporter))
+                print("Warning: when building reporter_plugins emodule list, no path found for '{0}'. "
+                      "Continuing.".format(reporter))
         return final_reporters
 
     def commissionFromConfigJson(self, sim_id, reply_json, scenario_path, report, scenario_type='tests',serialization_test_type=None):
@@ -406,11 +404,8 @@ class MyRegressionRunner(object):
         bin_dir = os.path.join(self.params.bin_root, self.dtk_hash) if self.dtk_hash else None
 
         if self.is_local_simulation():
-            #print("Commissioning locally (not on cluster)!")
             sim_dir = os.path.join(self.params.local_sim_root, sim_id)
             bin_dir = os.path.join(self.params.local_bin_root, self.dtk_hash) if self.dtk_hash else None
-        # else:
-            # print( "HPC!" )
 
         # create unique simulation directory
         self.sim_dir_sem.acquire()
@@ -531,33 +526,23 @@ class MyRegressionRunner(object):
             elif psp_param != "NO":
                 print(psp_param + " is not a valid value for Python_Script_Path. Valid values are NO, LOCAL, SHARED. Exiting.")
                 sys.exit() 
-            #del(reply_json["parameters"]["Python_Script_Path"])
 
         self.copy_input_files_to_user_input(sim_id, scenario_path, reply_json)
 
-        # print "Writing out config and campaign.json."
         # save config.json
         with open(sim_dir + "/config.json", 'w') as f:
             f.write(json.dumps(reply_json, sort_keys=True, indent=4))
 
         # now that config.json is written out, add Py Script Path back (if non-empty)
         if py_input is not None:
-            #reply_json["PSP"] = py_input
             reply_json["PSP"] = reply_json["parameters"]["Python_Script_Path"]
             del(reply_json["parameters"]["Python_Script_Path"])
 
-        # save campaign.json
-        #with open(sim_dir + "/" + self.campaign_filename, 'w') as f:
-            # f.write( json.dumps( campaign_json, sort_keys=True, indent=4 ) )
-            #f.write(str(campaign_json))
-
-        
         try:
             self.emodules_map["reporter_plugins"] = self.filter_emodules(reports_json)
         except UnboundLocalError:
             # reports_json is undefined, so use no reporters
             self.emodules_map["reporter_plugins"] = []
-            
         with open(sim_dir + "/emodules_map.json", 'w') as f:
             f.write(json.dumps(self.emodules_map, sort_keys=True, indent=4))
 
@@ -583,12 +568,9 @@ class MyRegressionRunner(object):
         else:
             raise ValueError('Must be using local monitor.')
 
-        # monitorThread.daemon = True
         monitorThread.daemon = False
-        # print "Starting run & monitor thread."
         monitorThread.start()
 
-        # print "Monitor thread started, notify data service, and return."
         return monitorThread
 
     def attempt_test(self):

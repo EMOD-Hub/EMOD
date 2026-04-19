@@ -17,14 +17,12 @@ namespace Kernel
     class DllInterfaceHelper
     {
     public:
-        DllInterfaceHelper( const char* rTypeName, 
-                            const char** simTypes,
+        DllInterfaceHelper(const char* rTypeName, const char** simTypes,
                             instantiator_function_t rif = nullptr )
-            : m_TypeName( rTypeName )
-            , m_SupportedSimTypes( simTypes )
+            : m_TypeName(rTypeName)
+            , m_SupportedSimTypes(simTypes)
             , m_ReportInstantiatorFunc( rif )
-        {
-        };
+        { };
 
         char* GetEModuleVersion( char* sVer, const Environment* pEnv )
         {            
@@ -65,33 +63,18 @@ namespace Kernel
 
         const char* GetType()
         {
-            //DLL_LOG( INFO, "GetType called for %s\n", m_TypeName );
+            DLL_LOG( INFO, "GetType called for %s\n", m_TypeName );
             return m_TypeName;
         };
 
         void GetReportInstantiator( Kernel::instantiator_function_t* pif )
         {
-            //DLL_LOG( INFO, "GetReportInstantiator called for %s\n", m_TypeName );
             *pif = m_ReportInstantiatorFunc ;
         };
 
-        static RANDOMBASE* CreateRandomNumberGenerator( const Environment* pEnv )
-        {
-            uint16_t run_number = 1;
-            if( pEnv != nullptr && pEnv->Config != nullptr )
-            {
-                run_number = GET_CONFIG_INTEGER( pEnv->Config, "Run_Number" );
-            }
-            uint16_t randomseed[2];
-            randomseed[0] = (uint16_t) run_number;
-            randomseed[1] = (uint16_t) pEnv->MPI.Rank;
-            RANDOMBASE* p_rng = new PSEUDO_DES( *((uint32_t*)randomseed) );
-            return p_rng;
-        }
-
     private:
-        const char* m_TypeName ;
-        const char** m_SupportedSimTypes ;
+        const char*   m_TypeName;
+        const char**  m_SupportedSimTypes;
         instantiator_function_t m_ReportInstantiatorFunc ;
     };
 

@@ -80,18 +80,11 @@ class Monitor(threading.Thread):
                 cmd.extend( [ "--python-script-path", self.config_json["PSP"] ] )
             #print( "Calling '" + str(cmd) + "' from " + self.sim_dir + "\n" )
             print( "Running '" + str(self.config_json["parameters"]["Config_Name"]) + "' in " + self.sim_dir + "\n" )
-            shell_val = False
-            #if self.scenario_type == 'pymod' and self.params.local_execution:
-            #    shell_val = True
 
-            proc = subprocess.Popen( cmd, stdout=stdout, stderr=stderr, cwd=self.sim_dir, shell=shell_val )
+            proc = subprocess.Popen( cmd, stdout=stdout, stderr=stderr, cwd=self.sim_dir )
             proc.wait()
-            if (os.name != "nt") and (proc.returncode == 134) and ("40_STI_Trivial_All_Reporters" in self.scenario_path):
-                print("40_STI_Trivial_All_Reporters: expected issue seen")
-                # The expected issue is a double-free corruption issue with using shared objects on Linux
-                # The sim can run completely fine but run into the error when destructing the objects.
-                # We want to keep the test because it is the only one exercising the use of shared objects.
-            elif proc.returncode != 0:
+
+            if proc.returncode != 0:
                 err_str = "received error code=" +str(proc.returncode)
                 self.report.addErroringTest( self.scenario_path, err_str, self.sim_dir, self.scenario_type )
                 

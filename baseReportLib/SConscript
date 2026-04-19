@@ -1,10 +1,5 @@
-# -*- mode: python; -*-
 # This Python script, SConscript, invoked by the SConscript in the upper directory,
-#
 # 1. builds baseReportlib static library
-import os
-
-#SVN_REV = os.popen("svn info | grep 'Last Changed Rev' | awk '{ print $4; }'").read()
 
 Import("env")
 
@@ -21,23 +16,7 @@ reportSrcFiles = [
     "ReportUtilities.cpp"
 ]
 
-reportIncFiles = [
-    'BaseChannelReport.h',
-    'BaseEventReport.h',
-    'BaseEventReportIntervalOutput.h',
-    'BaseTextReport.h',
-    'BaseTextReportEvents.h',
-    'BinnedReport.h',
-    'ChannelDataMap.h',
-    'ReportFilter.h',
-    'ReportFilterRelationship.h',
-    "ReportUtilities.h"
-]
-
 if ('Disease' in env) and ((env['Disease'] == 'Malaria') or (env['Disease'] == '')):
     reportSrcFiles.append( "ReportUtilitiesMalaria.cpp" )
-    reportIncFiles.append( "ReportUtilitiesMalaria.h" )
-
-reportLocalInc = ['stdafx.h']
 
 reportLib = env.StaticLibrary('baseReportLib', reportSrcFiles)

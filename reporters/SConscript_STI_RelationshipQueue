@@ -1,32 +1,16 @@
-# -*- mode: python; -*-
-# This Python script, SConscript, invoked by the SConscript in the upper directory,
-#
-import os, sys, shutil, pdb
-
+import os
 
 Import('env')
 report_env = env.Clone()
 report_env[ "REPORT_DIR" ] = 'libstirelationshipqueuereporter'
 
 lib_report_dllSrcFiles = [ "$REPORT_DIR/StiRelationshipQueueReporter.cpp" ]
-if os.name == "nt":
-    lib_report_dllSrcFiles.append( "$REPORT_DIR/stdafx.cpp" )
-lib_report_dllIncFiles = [ "$REPORT_DIR/StiRelationshipQueueReporter.h" ]
-lib_report_dllLocalInc = []
-if os.name == "nt":
-    lib_report_dllLocalInc.append( "$REPORT_DIR/stdafx.h" )
-
-#stdobj = env.Object()
-
-report_env.Append(LIBS=['baseReportLib'])
-report_env.Append(LIBS=['utils'])
-report_env.Append(LIBPATH=['$BUILD_DIR/baseReportLib'])
-report_env.Append(LIBPATH=['$BUILD_DIR/utils'])
+if os.name != "posix":
+    lib_report_dllSrcFiles.extend( [ "$REPORT_DIR/stdafx.cpp" ] )
 
 report_dir = report_env[ "BUILD_DIR" ] + 'reporter_plugins/' + report_env[ "REPORT_DIR" ]
 
 lib_report_Dll = report_env.SharedLibrary( report_dir, lib_report_dllSrcFiles )
-#print "building lib_report_dll: " + str(lib_report_Dll)
 
 # take lib_report.dll (exclude .lib, .exp) out to be the building target
 # to match the number of building variant

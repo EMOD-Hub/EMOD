@@ -9,8 +9,17 @@ import shutil
 
 Import('env')
 
+
+def OptionalScript(sconscript_name):
+    sconscript_path = os.path.join(Dir('#').abspath, sconscript_name)
+    if os.path.isfile(sconscript_path):
+        SConscript(sconscript_name)
+    else:
+        print("Skipping missing script: '{0}'".format(sconscript_path))
+
+
 def InstallEmodules(src, dst):
-    
+
     print( "\nInstalling from " + src + " to " + dst + "..." )
     if os.path.isfile(dst):
         print( "Warning: " + dst + " is a file\n" )
@@ -27,7 +36,8 @@ def InstallEmodules(src, dst):
                 full_fn = os.path.join(root,file);
                 print( "copying: " + full_fn )
                 shutil.copy2(full_fn, dst);
-    
+
+
 # if --install is on, just copy the dlls (assumed there already) and finish
 dst_path = env['Install']
 if dst_path != "":
@@ -60,6 +70,14 @@ env.Prepend( LIBPATH = [
               "$BUILD_DIR/lz4", 
               "$BUILD_DIR/utils"])
 
+disease = "ALL"
+if 'Disease' in env and len(env['Disease']) > 0:
+    disease = env["Disease"]
+
+# Shared objects before static libraries to avoid double statics in memory!
+if( (disease == "ALL") or (disease == "STI") or (disease == "HIV") ):
+    OptionalScript('reporters/SConscript_STI_RelationshipQueue')
+
 env.Prepend( LIBS=[
               "reporters",
               "baseReportLib", 
@@ -71,7 +89,7 @@ env.Prepend( LIBS=[
               "utils"])
 
 # First static libs
-print( "Build static libraries baseReportLib, cajun, campaign, coreLib, sqlite, snappy, and utils lib's." )
+print( "Build static libraries." )
 SConscript( [ 'baseReportLib/SConscript',
               'cajun/SConscript',
               'campaign/SConscript',
@@ -86,19 +104,12 @@ SConscript( [ 'baseReportLib/SConscript',
 # Finally executable
 SConscript('Eradication/SConscript')
 
-def OptionalScript(sconscript_name):
-    sconscript_path = os.path.join(Dir('#').abspath, sconscript_name)
-    if os.path.isfile(sconscript_path):
-        SConscript(sconscript_name)
-    else:
-        print("Skipping missing script: '{0}'".format(sconscript_path))
 
-disease = "ALL"
-if 'Disease' in env and len(env['Disease']) > 0:
-    disease = env["Disease"]
 
-if( (disease == "ALL") or (disease == "STI") or (disease == "HIV") ):
-    OptionalScript('reporters/SConscript_STI_RelationshipQueue')
+
+
+
+
 
 if( disease == "ALL"):
     OptionalScript('UnitTest++/SConscript')

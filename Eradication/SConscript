@@ -1,11 +1,7 @@
-# -*- mode: python; -*-
 # This Python script, SConscript, invoked by the SConscript in the upper directory,
-#
 # 1. builds main DTK core files and generate Eradication program
-import pdb
+
 import os
-import re
-import xml.etree.ElementTree as et
 
 Import('env')
 
@@ -25,7 +21,6 @@ if env['AllDlls'] or ( 'DiseaseDll' in env and env[ 'DiseaseDll' ] !="" ):
                            'Contexts.h']
 
 else:
-
     print( env["Disease"] )
 
     eradicationSrcFiles = [  "Eradication.cpp"  ]
@@ -38,21 +33,26 @@ else:
     # !!! These are only for the EXE.                                               !!!
     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     erad_env = env.Clone()
-    if os.sys.platform == 'win32':
+    if os.name != "posix":
         erad_env.Append( LINKFLAGS=[ "/STACK:\"100000000,100000000\"" ] )
         erad_env.Append( LINKFLAGS=[ "/DELAYLOAD:\"python3.dll\""] )
         erad_env.Append( LIBS=["delayimp.lib"] )
-        erad_env.Append(LIBPATH = ["$BUILD_DIR/Eradication"])
-        erad_env.Append(LIBS=["/WHOLEARCHIVE:coreLib"])
-        erad_env.Append(LIBS=["/WHOLEARCHIVE:reporters"])
+        erad_env.Append( LIBPATH = ["$BUILD_DIR/Eradication"] )
+        erad_env.Append( LIBS=["/WHOLEARCHIVE:coreLib"] )
+        erad_env.Append( LIBS=["/WHOLEARCHIVE:campaign"] )
+        erad_env.Append( LIBS=["/WHOLEARCHIVE:reporters"] )
     else:
         #NOTE: I couldn't get the use of $BUILD_DIR to work.  It kept putting in an extra '/'. 
+        # Need to whole-archive the libraries with factory registration so they're available at run time
         if env["Debug"]:
-            erad_env.Append(LINKFLAGS=["-Wl,--whole-archive,build/x64/Debug/Eradication/libcoreLib.a,build/x64/Debug/reporters/libreporters.a,build/x64/Debug/campaign/libcampaign.a,--no-whole-archive"])
+            erad_env.Append(LINKFLAGS=["-Wl,--whole-archive,build/x64/Debug/Eradication/libcoreLib.a,--no-whole-archive"])
+            erad_env.Append(LINKFLAGS=["-Wl,--whole-archive,build/x64/Debug/campaign/libcampaign.a,--no-whole-archive"])
+            erad_env.Append(LINKFLAGS=["-Wl,--whole-archive,build/x64/Debug/reporters/libreporters.a,--no-whole-archive"])
         else:
-            erad_env.Append(LINKFLAGS=["-Wl,--whole-archive,build/x64/Release/Eradication/libcoreLib.a,build/x64/Release/reporters/libreporters.a,build/x64/Release/campaign/libcampaign.a,--no-whole-archive"])
+            erad_env.Append(LINKFLAGS=["-Wl,--whole-archive,build/x64/Release/Eradication/libcoreLib.a,--no-whole-archive"])
+            erad_env.Append(LINKFLAGS=["-Wl,--whole-archive,build/x64/Release/campaign/libcampaign.a,--no-whole-archive"])
+            erad_env.Append(LINKFLAGS=["-Wl,--whole-archive,build/x64/Release/reporters/libreporters.a,--no-whole-archive"])
 
     # Monolithic
     eradicationExe = erad_env.Program('Eradication', eradicationSrcFiles)
     erad_env.Depends(eradicationExe, erad_env.Alias("CoreLibAlias") )
-
