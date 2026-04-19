@@ -18,23 +18,20 @@
 // !!! If you are creating a new report by copying this one, you will need to modify 
 // !!! the values below indicated by "<<<"
 
-// Name for logging, CustomReport.json, and DLL GetType()
-SETUP_LOGGING( "StiRelationshipQueueReporter" ) // <<< Name of this file
-
 using namespace std;
 
-namespace Kernel
-{
-// You can put 0 or more valid Sim types into _sim_types but has to end with nullptr.
-// "*" can be used if it applies to all simulation types.
-static const char * _sim_types[] = { "STI_SIM", "HIV_SIM", nullptr };// <<< Types of simulation the report is to be used with
+// Name for logging, CustomReport.json, and DLL GetType(); Name of this file
+SETUP_LOGGING( "StiRelationshipQueueReporter" )
 
-instantiator_function_t rif = []()
+// You can put 0 or more valid Sim types into _sim_types but has to end with nullptr. "*" can be used if it applies to all simulation types.
+static const char* _sim_types[] = { "STI_SIM", "HIV_SIM", nullptr }; // <<< Types of simulation the report is to be used with
+
+Kernel::instantiator_function_t rif = []()
 {
-    return (Kernel::IReport*)(new StiRelationshipQueueReporter()); // <<< Report to create
+    return (Kernel::IReport*)(new Kernel::StiRelationshipQueueReporter()); // <<< Report to create
 };
 
-DllInterfaceHelper DLL_HELPER( _module, _sim_types, rif );
+Kernel::DllInterfaceHelper DLL_HELPER( _module, _sim_types, rif );
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -49,7 +46,7 @@ extern "C" {          // we need to export the C interface
 #endif
 
 DTK_DLLEXPORT char*
-GetEModuleVersion(char* sVer, const Environment * pEnv)
+GetEModuleVersion(char* sVer, const Environment* pEnv)
 {
     return DLL_HELPER.GetEModuleVersion( sVer, pEnv );
 }
@@ -60,7 +57,7 @@ GetSupportedSimTypes(char* simTypes[])
     DLL_HELPER.GetSupportedSimTypes( simTypes );
 }
 
-DTK_DLLEXPORT const char *
+DTK_DLLEXPORT const char*
 GetType()
 {
     return DLL_HELPER.GetType();
@@ -80,6 +77,8 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
 // --- StiRelationshipQueueReporter Methods
 // ----------------------------------------
 
+namespace Kernel
+{
     BEGIN_QUERY_INTERFACE_DERIVED( StiRelationshipQueueReporter, BaseTextReport )
         HANDLE_INTERFACE( IReport )
         HANDLE_INTERFACE( IConfigurable )
@@ -175,13 +174,13 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
         // --------------------------------
         // --- Get access to the queue data
         // --------------------------------
-        INodeSTI * p_node_sti = nullptr;
+
+        INodeSTI* p_node_sti = nullptr;
         if (s_OK != pNC->QueryInterface(GET_IID(INodeSTI), (void**)&p_node_sti) )
         {
             throw QueryInterfaceException(__FILE__, __LINE__, __FUNCTION__, "pNC", "INodeSTI", "INodeContext");
         }
         ISociety* p_society = p_node_sti->GetSociety();
-
 
         for( int irel = 0 ; irel < RelationshipType::COUNT ; irel++ )
         {

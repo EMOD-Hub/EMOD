@@ -80,9 +80,8 @@ class Monitor(threading.Thread):
                 cmd.extend( [ "--python-script-path", self.config_json["PSP"] ] )
             #print( "Calling '" + str(cmd) + "' from " + self.sim_dir + "\n" )
             print( "Running '" + str(self.config_json["parameters"]["Config_Name"]) + "' in " + self.sim_dir + "\n" )
-            shell_val = False
 
-            proc = subprocess.Popen( cmd, stdout=stdout, stderr=stderr, cwd=self.sim_dir, shell=shell_val )
+            proc = subprocess.Popen( cmd, stdout=stdout, stderr=stderr, cwd=self.sim_dir )
             proc.wait()
 
             if proc.returncode != 0:
