@@ -67,4 +67,4 @@ Run on |Ubuntu| using run_test.sh
 
         ../../run_test.sh 
   
-.. _EMOD: https://github.com/EMOD-Hub/EMOD/tree/master/Regression
+.. _EMOD: https://github.com/EMOD-Hub/EMOD/tree/main/Regression

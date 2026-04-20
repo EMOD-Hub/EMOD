@@ -36,5 +36,4 @@ functionality. See :doc:`dev-regression` for more information.
    dev-install-build-emod
    dev-install-ubuntu-docker
 
-.. _Regression: https://github.com/EMOD-Hub/EMOD/tree/master/Regression
-
+.. _Regression: https://github.com/EMOD-Hub/EMOD/tree/main/Regression

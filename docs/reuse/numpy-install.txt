@@ -1,9 +1,0 @@
-The NumPy package adds support for large, multi-dimensional arrays and matrices to Python.
-
-#.  Go to |numpy_supp_path| and select the WHL file for |numpy_supp| that is compatible with
-    |Python_supp|. 
-#.  Save the file to your Python installation directory.
-#.  Open a Command Prompt window and navigate to the Python installation directory, then enter the
-    following, substituting the name of the specific NumPy WHL file you downloaded::
-
-        pip install numpy-2.x.x+mkl-cp313-cp313m-win_amd64.whl

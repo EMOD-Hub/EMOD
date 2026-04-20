@@ -1,4 +1,0 @@
-We recommended that you download some of the NumPy Python package from
-http://www.lfd.uci.edu/~gohlke/pythonlibs, a page compiled by Christoph Gohlke, University of
-California, Irvine. The libraries there include linear algebra packages that are not included by default with the standard Windows packages. They are compiled Windows binaries, including the 64-bit versions
-required by |EMOD_s|. The naming convention used lists the Python version after "cp", for example "cp39-cp39m", and the Windows bit version after "win", for example "win_amd64".

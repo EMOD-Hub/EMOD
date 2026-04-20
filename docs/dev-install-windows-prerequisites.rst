@@ -89,23 +89,7 @@ that includes all simulation types.
 Install prerequisites for running regression tests
 ==================================================
 
-The following plotting software is required for running regression tests, where graphs of model
+Plotting software is required for running regression tests, where graphs of model
 output are created both before and after source code changes are made to see if those changes
 created a discrepancy in the regression test output. For more information, see
 :doc:`dev-regression`.
-
-NumPy
------
-
-.. include:: reuse/gohlke.txt
-
-.. include:: reuse/numpy-install.txt
-
-
-Python packages
----------------
-
-.. include:: reuse/python-utility-install.txt
-
-
-

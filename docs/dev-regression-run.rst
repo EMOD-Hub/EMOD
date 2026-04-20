@@ -88,6 +88,6 @@ produce output that should not be considered scientifically accurate.
 If any of the regression tests fail and you have *not* made any changes to the |EMOD_s| source code,
 email idmsupport@gatesfoundation.org.
 
-.. _Regression: https://github.com/EMOD-Hub/EMOD/tree/master/Regression
+.. _Regression: https://github.com/EMOD-Hub/EMOD/tree/main/Regression
 
 .. _JUnit: http://junit.org

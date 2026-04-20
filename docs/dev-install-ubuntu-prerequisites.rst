@@ -39,7 +39,4 @@ Install prerequisites for running regression tests
 The setup script includes most plotting software required for running regression tests, where graphs
 of model output are created both before and after source code changes are made to see if those
 changes created a discrepancy in the regression test output. For more information, see
-:doc:`dev-regression`. You may want to install R or MATLAB, but both are optional.
-
-.. include:: reuse/gohlke.txt
-
+:doc:`dev-regression`.
