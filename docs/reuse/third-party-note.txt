@@ -1,5 +1,0 @@
-.. note::
-
-    |IDM_s| does not provide support or guarantees for any third-party software, even software
-    that we recommend you install. Send feedback if you encounter any issues, but any support must come
-    from the makers of those software packages and their user communities.

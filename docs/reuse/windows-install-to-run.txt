@@ -1,3 +1,0 @@
-#.  Install the |HPC_client_supp|. See |HPC_client_supp_path| for instructions.
-#.  Install the |MSMPI_supp|. See |MSMPI_supp_path| for instructions, being sure to run the MSMpiSetup.exe file.
-#. Install the |VC++_supp|. See |VC++_supp_path| for instructions.

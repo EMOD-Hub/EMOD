@@ -1,5 +1,0 @@
-.. warning::
-
-    If you modify the source code to add or remove configuration or campaign parameters, you may
-    need to update the code used to produce the schema. You must also verify that your simulations
-    are still scientifically valid.

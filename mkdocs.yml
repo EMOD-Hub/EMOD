@@ -1,0 +1,136 @@
+site_name: EMOD
+site_url: https://emod.idmod.org/EMOD/
+repo_name: EMOD-Hub/EMOD
+repo_url: https://github.com/EMOD-Hub/EMOD/
+
+theme:
+  name: material
+  custom_dir: docs/customization/overrides
+  font: 
+    text: Roboto
+    code: Roboto Mono
+  logo: images/EMOD_logo.png
+  favicon: images/favicon.ico
+  features:
+    # - navigation.footer
+    - content.code.copy
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Light mode
+      primary: white
+      accent: light blue
+    - scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Dark mode
+      primary: black
+      accent: light blue
+
+nav:
+  - Home: index.md
+  - Architecture: 
+    - dev-architecture-overview.md
+    - dev-architecture-environment.md
+    - dev-architecture-sim-controller.md
+    - dev-architecture-core.md
+    - dev-architecture-campaigns.md
+    - dev-architecture-reporter.md
+  - Installation:
+    - dev-install-overview.md
+    - dev-install-windows-prerequisites.md
+    - dev-install-ubuntu-prerequisites.md
+    - dev-install-download-emod.md
+    - dev-install-build-emod.md
+    - dev-install-ubuntu-docker.md
+    - dev-install-ubuntu-docker-linux.md
+    - dev-install-ubuntu-docker-win.md
+  - Debugging and Testing:
+    - dev-debugging-overview.md
+    - dev-logging.md
+    - dev-simulations.md
+    - dev-trouble-build.md
+    - dev-regression.md
+    - dev-regression-run.md
+    - dev-regression-new.md
+    - dev-sft.md
+  - Glossary: glossary.md
+  - Related projects: https://emod.idmod.org/
+
+plugins:
+  - search:
+  - autorefs:
+  - include-markdown:
+  - glightbox:
+  - table-reader:
+  - mkdocstrings:
+
+markdown_extensions:
+  - admonition:
+  - attr_list:  # enables HTMl and CSS classes to inline elements
+  - def_list:
+  - md_in_html:  # enables grids
+  - pymdownx.arithmatex:  # Latex processing for math equations
+      generic: true
+  - pymdownx.blocks.caption:  # captions for images, tables, etc.
+  - pymdownx.blocks.details:  # allows nesting of collapsible code
+  - pymdownx.caret:  # superscripts
+  - pymdownx.details:  # collapsible elements
+  - pymdownx.emoji:  # emojis and icons
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:  # syntax highlighting for code blocks
+      linenums: true  # adds line numbers to code blocks automatically
+      anchor_linenums: true  # adds HTML anchors (#L1, #L2, etc.) to each line so you can link to specific ones.
+      default_lang: 'python'
+  - pymdownx.mark:  # text highlighting
+  - pymdownx.snippets:  # snippet reuse functionality
+      auto_append:
+        - docs/bib.md
+  - pymdownx.tilde:  # subscripts
+
+copyright: Copyright &copy; 2025 Gates Foundation. All rights reserved.
+
+extra_javascript:
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+extra_css:
+  - customization/css/extra.css
+
+extra:
+  generator: false  # Removes acknowledgement of mkdocs-material
+  footer_links:
+    - text: "Privacy and Cookies Notice"
+      href: "https://www.gatesfoundation.org/Privacy-and-Cookies-Notice"
+    - text: "Terms of Use"
+      href: "https://www.gatesfoundation.org/Terms-of-Use"
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/EMOD-Hub/
+    - icon: fontawesome/regular/envelope
+      link: mailto:idm@gatesfoundation.org
+    - icon: octicons/globe-24
+      link: https://idmod.org
+    - icon: simple/youtube
+      link: http://www.youtube.com/@institutefordiseasemodelin1987
+    - icon: fontawesome/brands/linkedin
+      link: https://linkedin.com/company/institute-disease-modeling
+  analytics:
+    provider: custom
+    property: GTM-NK4K647
+    feedback:
+      title: Was this page helpful?
+      ratings:
+        - icon: material/emoticon-happy-outline
+          name: This page was helpful
+          data: 1
+          note: >-
+            Thanks for your feedback! If you like, provide additional information by
+            using our <a href="https://app.smartsheet.com/b/form/ec8dbb77809949ecab7286a5ca74a206" target="_blank" rel="noopener">feedback form</a>.
+        - icon: material/emoticon-sad-outline
+          name: This page could be improved
+          data: 0
+          note: >- 
+            Thanks for your feedback! Help us improve this page by
+            using our <a href="https://app.smartsheet.com/b/form/ec8dbb77809949ecab7286a5ca74a206" target="_blank" rel="noopener">feedback form</a>.

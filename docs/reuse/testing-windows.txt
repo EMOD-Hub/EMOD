@@ -1,4 +1,0 @@
-The |exe_l| is tested using |Windows_supp|. Windows HPC Server is used for testing remote
-simulations on a :term:`high-performance computing (HPC)` cluster and the other Windows
-operating systems are used to test local simulations.
-

@@ -1,0 +1,6 @@
+div.md-copyright__highlight
+{
+    display: flex;
+    flex-direction: row;
+    gap: 2em;
+}

@@ -1,3 +1,0 @@
-The |linux_binary| is tested and supported on a |Ubuntu_supp| virtual machine on Azure.
-It has also been successfully built and run on Ubuntu, SUSE, and Arch, but has not been tested
-and is not supported on those Linux distributions.
