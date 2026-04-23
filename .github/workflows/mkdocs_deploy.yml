@@ -25,7 +25,7 @@ jobs:
           python3 -m pip install ./pypi[docs]
       - name: Build static files
         run: |
-          python -m sphinx -T --keep-going -b html ./docs ./site
+          mkdocs build -d site
       - name: Upload static files as artifact
         id: deployment
         uses: actions/upload-pages-artifact@v4
