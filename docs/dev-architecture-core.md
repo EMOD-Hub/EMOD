@@ -1,4 +1,4 @@
-# Simulation core components
+# Core components
 
 The simulation component contains core functionality that models the behavior of a disease without any
 interventions and extended functionality to include migration, climate, or other input data to
@@ -16,7 +16,7 @@ Each of the simulation types listed below contains the following core base class
 
 The relationship between these classes is captured in the following figure.
 
-![Simulation components](images/dev/ArchSimulation.png)
+![Figure 1: Simulation components](figures/ArchSimulation.png)
 
 After the simulation is initialized, all objects in the simulation are updated at each time step,
 typically a single day. Each object implements a method **Update** that advances the state of the
@@ -53,7 +53,7 @@ Each generic EMOD simulation contains the following core base classes:
 For generic simulations, each node has a homogeneous contagion pool. Every individual in the
 node sheds disease into the pool and acquires disease from the pool. You can add heterogeneous
 disease transmission within a node by enabling and configuring the Heterogeneous Intra-Node
-Transmission (HINT) feature. For more information, see emod-generic:model-hint.
+Transmission (HINT) feature. For more information, see [EMOD-Generic][emod-generic].
 
 ### Vector or malaria
 
@@ -135,14 +135,14 @@ The **Simulation** class contains the following methods:
 | Populate() | Initializes the simulation. The **Populate** method initializes the simulation using both the configuration file and the demographic files. **Populate** calls through to **populateFromDemographics** to enable the **Simulation** object to create one or many **Node** objects populated with **IndividualHumans** as dictated by the demographics file, in conjunction with the sampling mode and value dictated by the configuration file. If the configuration file indicates that a migration and a climate model are to be used, those input file are also read. **Populate** also initializes all **Reporters**. |
 | Update() | Advances the state of nodes. |
 
-![Simulation object hierarchy](images/dev/ArchSimulationTree.png)
+![Figure 2: Simulation object hierarchy](figures/ArchSimulationTree.png)
 
 For multi-core parallelization, the demographics file is read in order on each process and identity
 of each node and is compared with a policy assigning nodes to processes embodied in objects
 implementing **InitialLoadBalancingScheme**. If the initial load balancing scheme allows a node for
 the current rank, the node is created via **addNewNodeFromDemographics**. After all nodes have been
 created and propagated, the **NodeRankMaps** are merged across all processes. For more information, see
-emod-generic:software-load-balancing for generic, emodpy-hiv:emod/software-load-balancing for HIV, or emodpy-malaria:emod/software-load-balancing for malaria.
+[EMOD-Generic][emod-generic] for generic, [emodpy-HIV][emodpy-hiv] for HIV, or [emodpy-malaria][emodpy-malaria] for malaria.
 
 ## Node
 
@@ -168,7 +168,7 @@ By default, an **IndividualHuman** object is created, tracked, and updated for e
 node. To reduce memory usage and processing time, you may want to sample such that each
 **IndividualHuman** object represents multiple people. There are several different sampling strategies
 implemented, with different strategies better suited for different simulations. For more information, see
-emod-generic:parameter-configuration-sampling for generic, emodpy-hiv:emod/parameter-configuration-sampling for HIV, or emodpy-malaria:emod/parameter-configuration-sampling for malaria.
+[EMOD-Generic][emod-generic] for generic, [emodpy-HIV][emodpy-hiv] for HIV, or [emodpy-malaria][emodpy-malaria] for malaria.
 
 If migration is enabled, at the end of the **Node** update, the **Node** moves all migrating
 individuals to a separate migration queue for processing. Once the full simulation time step is

@@ -1,10 +1,10 @@
 # Regression testing
 
-After building the EMOD executable (Eradication.exe), it's important to verify that Eradication.exe is performing properly. Regression
+After building the EMOD executable, it's important to verify that Eradication.exe is performing properly. Regression
 testing is a method by which the built code is tested to see if it has "regressed" or moved
 backwards in any way, such as previously reported (and fixed) issues reappearing.
 
-Within the EMOD [Regression](https://github.com/EMOD-Hub/EMOD/tree/main/Regression) directory there are many subdirectories that correspond to different
+Within the EMOD [Regression][regression_example] directory there are many subdirectories that correspond to different
 disease scenarios in a variety of locations. Each of these contains the configuration and campaign
 files needed to run the simulation and the reference output, which represents the expected results.
 These reference outputs have been calculated by the scientific researchers modeling each scenario.
@@ -19,9 +19,7 @@ fails, EMOD will produce a matplotlib chart of the first 16 channels in the Inse
 output report. You can then review the charts to identify the problem. Base and overlay configuration files will be flattened
 
 If you want to quickly compare a simulation output to the reference output, you can also run any of
-the regression scenarios as a typical simulation, as described in
-emod-generic:software-run-simulation for generic, emodpy-hiv:emod/software-run-simulation
-for HIV, or emodpy-malaria:emod/software-run-simulation for malaria. However,
+the regression scenarios as a typical simulation. However,
 this will not include the comparison and pass/fail evaluation that regression_test.py conducts. In
 addition, if you choose to do this, be sure to specify a different output directory, such as
 "testing", so as not to overwrite the reference output.

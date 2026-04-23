@@ -2,7 +2,7 @@
 
 After running simulations, EMOD creates output reports that contain the model results. Two
 methods of coordinated reporting are implemented: simulation-wide aggregated reporting and spatial
-reporting. For more information about the different output reports available, see emod-generic:software-outputs for generic, emodpy-hiv:emod/software-outputs for HIV, or emodpy-malaria:emod/software-outputs for malaria.
+reporting.
 
 ## Simulation-wide aggregate
 
@@ -36,6 +36,3 @@ struct ReportDataFormat
 The report data files are written after every time step at the request of the **Controller** by
 calling **WriteTimestep()**. Under MPI, the default implementation reduces all the data to rank 0
 and writes the combined data out to file on rank 0.
-
-For information about how to use a custom reporter, see emod-generic:software-custom-reporter
-for generic, emodpy-hiv:emod/software-custom-reporter for HIV, or emodpy-malaria:emod/software-custom-reporter for malaria.

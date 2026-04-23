@@ -33,28 +33,20 @@ nav:
   - Architecture: 
     - dev-architecture-overview.md
     - dev-architecture-environment.md
-    - dev-architecture-sim-controller.md
-    - dev-architecture-core.md
-    - dev-architecture-campaigns.md
-    - dev-architecture-reporter.md
+    - Sim Controller:
+      - dev-architecture-sim-controller.md
+      - dev-architecture-core.md
+      - dev-architecture-campaigns.md
+      - dev-architecture-reporter.md
   - Installation:
     - dev-install-overview.md
-    - dev-install-windows-prerequisites.md
-    - dev-install-ubuntu-prerequisites.md
-    - dev-install-download-emod.md
-    - dev-install-build-emod.md
+    - dev-install-windows.md
     - dev-install-ubuntu-docker.md
-    - dev-install-ubuntu-docker-linux.md
-    - dev-install-ubuntu-docker-win.md
   - Debugging and Testing:
-    - dev-debugging-overview.md
-    - dev-logging.md
-    - dev-simulations.md
-    - dev-trouble-build.md
-    - dev-regression.md
-    - dev-regression-run.md
-    - dev-regression-new.md
-    - dev-sft.md
+    - dev-debug-overview.md
+    - dev-debug-logging.md
+    - dev-debug-vs.md
+    - dev-debug-regression.md
   - Glossary: glossary.md
   - Related projects: https://emod.idmod.org/
 

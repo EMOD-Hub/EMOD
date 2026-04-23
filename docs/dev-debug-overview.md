@@ -1,4 +1,4 @@
-# Debugging and testing
+# Overview
 
 When you build Eradication.exe or Eradication binary for Linux from the EMOD source code, it's important to debug the
 code and run regression tests to be sure your changes didn't inadvertently change EMOD functionality.

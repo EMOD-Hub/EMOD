@@ -15,3 +15,4 @@
 [idmtools_container]: https://institutefordiseasemodeling.github.io/idmtools/platforms/container/
 [idmtools_calibra]: https://institutefordiseasemodeling.github.io/idmtools-calibra/
 [pypi]: https://pypi.org/
+[regression_example]: https://github.com/EMOD-Hub/EMOD/tree/main/Regression

@@ -1,8 +1,8 @@
-# Run debug simulations in Visual Studio
+# Debug sims in Visual Studio
 
 If you have modified the EMOD source code, you can run simulations directly from Visual Studio
 as part of debugging your changes by using the built-in debugger. For example, you may want to run
-one or more of the simulations in the [Regression](https://github.com/EMOD-Hub/EMOD/tree/main/Regression) directory to verify that the results match those
+one or more of the simulations in the [Regression][regression_example] directory to verify that the results match those
 obtained prior to your changes.
 
 1.  Open the EradicationKernel solution in Visual Studio.

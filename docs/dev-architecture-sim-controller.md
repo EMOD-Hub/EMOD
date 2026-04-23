@@ -1,4 +1,4 @@
-# Sim controller
+# Overview
 
 The simulation controller is the top-level structure for the epidemiological model. The controller's
 capabilities are simple, running a single simulation in a single time direction at a constant
@@ -18,7 +18,7 @@ the disease being modeled.
 The simulation component also includes a campaign manager sub-component for including disease
 interventions in a simulation.
 
-## Reporter
+## Reporters
 
-The reporter component creates output reports for both simulation-wide aggregate reporting and
+The reporters component creates output reports for both simulation-wide aggregate reporting and
 spatial reporting.
