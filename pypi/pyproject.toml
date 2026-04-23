@@ -21,13 +21,12 @@ classifiers = [
 
 [project.optional-dependencies]
 docs = [
-    "sphinxext.remoteliteralinclude~=0.4",
-    "sphinx~=6.2",
-    "pydata-sphinx-theme",
-    "plantweb~=1.2",
-    "sphinxcontrib-programoutput~=0.17",
-    "myst-parser~=2.0",
-    "pygithub~=1.57",
+    "mkdocs-material",
+    "mkdocs-include-markdown-plugin",
+    "mkdocstrings-python",
+    "mkdocs-autoapi",
+    "mkdocs-glightbox",
+    "mkdocs-table-reader-plugin",
 ]
 tests = [
 ]
