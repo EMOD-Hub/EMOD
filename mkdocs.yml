@@ -100,8 +100,8 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/EMOD-Hub/
-    - icon: fontawesome/regular/envelope
-      link: mailto:idm@gatesfoundation.org
+    - icon: fontawesome/regular/comments
+      link: https://github.com/orgs/EMOD-Hub/discussions
     - icon: octicons/globe-24
       link: https://idmod.org
     - icon: simple/youtube

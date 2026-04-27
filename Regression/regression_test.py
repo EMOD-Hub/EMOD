@@ -356,7 +356,7 @@ class SimulationIDGen(object):
 def get_serialization_test_type( configjson ):
     serialization_test_type = None
 
-    # The serialization tests for exactness work on windows and WSL but do not on CentOs.
+    # The serialization tests for exactness work on windows and WSL but do not on Linux.
     # I'm out of time so we will run the full sim test and not the BEFORE and AFTER on Linux.
     if (os.name == "nt") and ("Serialization_Test" in configjson["parameters"]):
         if configjson["parameters"]["Serialization_Test"] == 1:
