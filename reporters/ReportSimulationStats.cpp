@@ -68,7 +68,7 @@ namespace Kernel
             << "," << "NumInterventionsPersisted"
             << "," << "NumInterventionsAdded"
             << "," << "NumInfections"
-            << "," << "NumIndividualEventsTrggered"
+            << "," << "NumIndividualEventsTriggered"
             << "," << "NumIndividualEventsObserved"
             ;
         return header.str();
