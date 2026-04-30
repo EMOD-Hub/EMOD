@@ -181,7 +181,7 @@ namespace Kernel
                                             "individual", "IMalariaHumanContext", "IIndividualHuman" );
         }
 
-        uint32_t node_id = individual->GetParentSuid().data;
+        uint32_t node_id = individual->GetParent()->GetExternalID();
         uint32_t ind_id  = individual->GetSuid().data;
         float age_days   = individual->GetAge();
         bool has_fever   = p_ind_malaria->HasClinicalSymptomContinuing( ClinicalSymptomsEnum::CLINICAL_DISEASE );
