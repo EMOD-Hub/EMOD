@@ -79,9 +79,9 @@ namespace Kernel
         normalizeChannel( infs_hrp_deleted_id.GetName(),    num_total_infections_id.GetName() );
         normalizeChannel( infs_drug_resistant_id.GetName(), num_total_infections_id.GetName() );
 
-        ReportMalaria::postProcessAccumulatedData();
+        normalizeChannel( complexity_of_infection_id.GetName(), ReportMalaria::num_people_infected_id.GetName() );
 
-        normalizeChannel( complexity_of_infection_id.GetName(), stat_pop_id.GetName() );
+        ReportMalaria::postProcessAccumulatedData();
     }
 
     bool IsDrugResistant( IIndividualHuman* individual, const ParasiteGenome& rGenome )
