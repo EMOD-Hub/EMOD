@@ -24,6 +24,10 @@
             "Enable_Initial_Prevalence": 1
         },
         "PRIMARY": {
+        	"Egg_Arrhenius1": 2000,
+            "Egg_Arrhenius2": 50000,
+            "Enable_Temperature_Dependent_Microsporidia_Infectivity": 0,
+            "Enable_Temperature_Dependent_Egg_Hatching": 1,
             "Config_Name": "51_Vector_Bednet_Usage",
             "Geography": "Namawala",
             "Run_Number": 1,

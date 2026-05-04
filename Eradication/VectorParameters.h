@@ -36,6 +36,9 @@ namespace Kernel
         float human_feeding_mortality;
         float eggarrhenius1;
         float eggarrhenius2;
+        bool  temperature_dependent_microsporidia_infectivity;
+        float microsporidia_arrhenius1;
+        float microsporidia_arrhenius2;
 
         // allows configuration of larval habitat decay time constants
         float tempHabitatDecayScalar;
@@ -72,8 +75,11 @@ namespace Kernel
         , HEGhomingRate(0.0f)
         , HEGfecundityLimiting(0.0f)
         , human_feeding_mortality(DEFAULT_HUMAN_FEEDING_MORTALITY)
-        , eggarrhenius1( 0.0f) 
-        , eggarrhenius2( 0.0f) 
+        , eggarrhenius1( 0.0f)
+        , eggarrhenius2( 0.0f)
+        , temperature_dependent_microsporidia_infectivity(false)
+        , microsporidia_arrhenius1(0.0f)
+        , microsporidia_arrhenius2(0.0f) 
         , tempHabitatDecayScalar(0.0f)
         , semipermanentHabitatDecayRate(0.0f)
         , mmRainfallToFillSwamp(1.0f)
