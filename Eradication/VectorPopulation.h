@@ -201,6 +201,7 @@ namespace Kernel
                                           GenomeCountPairVector_t& rFertilizedEggList );
 
         // Helpers to access information from VectorHabitat to return information about larva
+        float GetMicrosporidiaArrheniusModifier() const;
         float GetLarvalDevelopmentProgress (float dt, IVectorCohort* larva) const;
         GeneticProbability GetLarvalMortalityProbability(float dt, IVectorCohort* larva) const;
         float GetRelativeSurvivalWeight(VectorHabitat* habitat) const;

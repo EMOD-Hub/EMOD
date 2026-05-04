@@ -613,10 +613,16 @@ namespace Kernel
             bool female_has_microsporidia = pFemaleCohort->HasMicrosporidia();
             bool   male_has_microsporidia = p_male_cohort->HasMicrosporidia();
 
+            float ms_arrhenius = 1.0f;
+            if( params()->temperature_dependent_microsporidia_infectivity )
+            {
+                ms_arrhenius = GetMicrosporidiaArrheniusModifier();
+            }
+
             if( male_has_microsporidia && !female_has_microsporidia )
             {
                 // Male infecting Female
-                float prob_transmission = m_species_params->microsporidia_strains[ male_ms_strain_index ]->male_to_female_transmission_probability;
+                float prob_transmission = (std::min)( 1.0f, m_species_params->microsporidia_strains[ male_ms_strain_index ]->male_to_female_transmission_probability * ms_arrhenius );
                 if( m_context->GetRng()->SmartDraw( prob_transmission ) )
                 {
                     pFemaleCohort->InfectWithMicrosporidia( male_ms_strain_index );
@@ -625,7 +631,7 @@ namespace Kernel
             else if( !male_has_microsporidia && female_has_microsporidia )
             {
                 // Female infecting Male
-                float prob_transmission = m_species_params->microsporidia_strains[ female_ms_strain_index ]->female_to_male_transmission_probability;
+                float prob_transmission = (std::min)( 1.0f, m_species_params->microsporidia_strains[ female_ms_strain_index ]->female_to_male_transmission_probability * ms_arrhenius );
                 if( m_context->GetRng()->SmartDraw( prob_transmission ) )
                 {
                     uint32_t orig_unmated = p_male_cohort->GetUnmatedCount();

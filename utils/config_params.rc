@@ -570,6 +570,10 @@
 #define Microsporidia_Disease_Acq_DESC_TEXT "A modifier is selected based on the duration of the age of the microsporidia infection.  The modifier is used to modify the probability the vector acquires the disease (i.e. malaria)."
 #define Microsporidia_Disease_Tran_DESC_TEXT "A modifier is selected based on the duration of the age of the microsporidia infection.  The modifier is used to modify the probability the vector transmit the disease (i.e. malaria)."
 
+#define Enable_Temperature_Dependent_Microsporidia_Infectivity_DESC_TEXT "Controls whether or not temperature affects microsporidia infectivity, defined by Microsporidia_Arrhenius1 and Microsporidia_Arrhenius2."
+#define Microsporidia_Arrhenius1_DESC_TEXT "The temperature-independent scale factor in the Arrhenius equation for microsporidia infectivity."
+#define Microsporidia_Arrhenius2_DESC_TEXT "The temperature-dependent scale factor in the Arrhenius equation for microsporidia infectivity."
+
 #define Report_STI_Include_Coital_Acts_DESC_TEXT "If true, include channles about the number of coital acts per relationship type per dt and those using condoms."
 
 #define TM_Sporozoite_Barcode_String_DESC_TEXT "If the trait modifier is 'SPOROZOITE_MORTALITY', then you must define this parameter with a valid parasite barcode.  If the mosquito satisfies the vector genetics and has at least one sporozoite with this barcode, the modifier will be applied to the mortality of the mosquito's sporozoites with that barcode."
