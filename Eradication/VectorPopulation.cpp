@@ -69,6 +69,7 @@ namespace Kernel
         , dryheatmortality(0.0f)
         , infectiouscorrection(0.0f)
         , infected_progress_this_timestep(0.0f)
+        , microsporidia_modifier_this_timestep(1.0f)
         , indoorinfectiousbites(0.0f)
         , outdoorinfectiousbites(0.0f)
         , indoorbites(0.0f)
@@ -652,6 +653,11 @@ namespace Kernel
 
         float temperature = m_context->GetLocalWeather()->airtemperature();
         infected_progress_this_timestep = (species()->infectedarrhenius1 * exp( -species()->infectedarrhenius2 / (temperature + float( CELSIUS_TO_KELVIN )) )) * dt;
+
+        if( params()->temperature_dependent_microsporidia_infectivity )
+        {
+            microsporidia_modifier_this_timestep = species()->microsporidia_strains.GetTemperatureDependentModifier(temperature);
+        }
 
         // Over-ride some lifecycle probabilities with species-specific values
         Update_Lifecycle_Probabilities(dt);
@@ -1817,12 +1823,6 @@ namespace Kernel
         uint32_t pop = pFemaleCohort->GetPopulation();
         std::vector<uint32_t> num_females_newly_infected_with_microsporidia( MAX_MICROSPORIDIA_STRAINS, 0 );
 
-        float ms_arrhenius = 1.0f;
-        if( params()->temperature_dependent_microsporidia_infectivity )
-        {
-            ms_arrhenius = GetMicrosporidiaArrheniusModifier();
-        }
-
         for( uint32_t i = 0 ; (i < pop) && (m_UnmatedMaleTotal > 0); ++i )
         {
             auto it = SelectMaleMatingCohort(); // returns VectorCohortMale iterator
@@ -1840,7 +1840,7 @@ namespace Kernel
             if( male_has_microsporidia && !female_has_microsporidia )
             {
                 // Male infecting Female
-                float prob_transmission = (std::min)( 1.0f, m_species_params->microsporidia_strains[ male_ms_strain_index ]->male_to_female_transmission_probability * ms_arrhenius );
+                float prob_transmission = (std::min)( 1.0f, m_species_params->microsporidia_strains[ male_ms_strain_index ]->male_to_female_transmission_probability * microsporidia_modifier_this_timestep);
                 if( m_context->GetRng()->SmartDraw( prob_transmission ) )
                 {
                     female_has_microsporidia = true;
@@ -1851,7 +1851,7 @@ namespace Kernel
             else if( !male_has_microsporidia && female_has_microsporidia )
             {
                 // Female infecting Male
-                float prob_transmission = (std::min)( 1.0f, m_species_params->microsporidia_strains[ female_ms_strain_index ]->female_to_male_transmission_probability * ms_arrhenius );
+                float prob_transmission = (std::min)( 1.0f, m_species_params->microsporidia_strains[ female_ms_strain_index ]->female_to_male_transmission_probability * microsporidia_modifier_this_timestep);
                 if( m_context->GetRng()->SmartDraw( prob_transmission ) )
                 {
                     if( microsporidia_infected_males[ female_ms_strain_index ].count( p_male_cohort->GetID() ) == 0 )
@@ -2219,14 +2219,6 @@ namespace Kernel
                     cohort->GetID(), cohort->GetAge(), cohort->HasMicrosporidia());
     }
 
-    float VectorPopulation::GetMicrosporidiaArrheniusModifier() const
-    {
-        float temperature = m_context->GetLocalWeather()->airtemperature();
-        float modifier = params()->microsporidia_arrhenius1
-                       * exp( -params()->microsporidia_arrhenius2 / (temperature + float(CELSIUS_TO_KELVIN)) );
-        return modifier;
-    }
-
     float VectorPopulation::GetLarvalDevelopmentProgress(float dt, IVectorCohort* larva) const
     {
         // Get local larval growth modifier, which depends on larval crowding
@@ -2412,9 +2404,8 @@ namespace Kernel
 
         if( params()->temperature_dependent_microsporidia_infectivity )
         {
-            float ms_arrhenius = GetMicrosporidiaArrheniusModifier();
-            female_to_egg_tran = (std::min)( 1.0f, female_to_egg_tran * ms_arrhenius );
-            male_to_egg_tran   = (std::min)( 1.0f, male_to_egg_tran   * ms_arrhenius );
+            female_to_egg_tran = (std::min)( 1.0f, female_to_egg_tran * microsporidia_modifier_this_timestep );
+            male_to_egg_tran   = (std::min)( 1.0f, male_to_egg_tran   * microsporidia_modifier_this_timestep );
         }
 
         float prob_transmission = 1.0 - (1.0 - female_to_egg_tran) * (1.0 - male_to_egg_tran);

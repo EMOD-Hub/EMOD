@@ -82,8 +82,15 @@ namespace Kernel
         , m_StrainNames()
         , m_MortalityModifierMale()
         , m_MortalityModifierFemale()
+        , m_TemperatureDependentModifierModel()
     {
         m_Collection.push_back( MicrosporidiaParameters::CreateNoMicrosporidiaVersion() );
+        
+        // makes pairs "time, value" for this it's "temperature C, modifier" 
+        m_TemperatureDependentModifierModel.add(10.0f, 0.1f);
+        m_TemperatureDependentModifierModel.add(24.0f, 1.0f);
+        m_TemperatureDependentModifierModel.add(30.0f, 2.0f);
+        m_TemperatureDependentModifierModel.add(47.0f, 0.1f);
     }
 
     MicrosporidiaCollection::~MicrosporidiaCollection()
@@ -164,6 +171,12 @@ namespace Kernel
     const std::vector<float>& MicrosporidiaCollection::GetMortalityModifierListFemale() const
     {
         return m_MortalityModifierFemale;
+    }
+
+    float MicrosporidiaCollection::GetTemperatureDependentModifier( float temperature ) const
+    {
+        // using minimum value as default value, so if temperature below defined, we use the lowest-temp modifier
+        return m_TemperatureDependentModifierModel.getValueLinearInterpolation( temperature, 0.1f);
     }
 
     MicrosporidiaParameters* MicrosporidiaCollection::CreateObject()

@@ -131,6 +131,7 @@
         { "path": "Vector/141_Vector_OutdoorNodeEmanator" },
         { "path": "Vector/142_Vector_IndoorIndividualEmanator" },
         { "path": "Vector/143_Vector_LarvalMicrosporidiaIntervention" },
+        { "path": "Vector/144_Vector_Microsporidia_Transmission_Temperature_Dependent" },
         { "path": "Scenarios/VectorAndMalaria/01_A_Namawala3Vectors_lowEIR" },
         { "path": "Scenarios/VectorAndMalaria/01_B_Namawala3Vectors_highEIR" },
         { "path": "Scenarios/VectorAndMalaria/03_A_Namawala_Vector" },

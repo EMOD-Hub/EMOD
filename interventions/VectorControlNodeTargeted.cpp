@@ -428,9 +428,9 @@ namespace Kernel
         if( p_vp->temperature_dependent_microsporidia_infectivity )
         {
             float temperature = parent->GetNodeContext()->GetLocalWeather()->airtemperature();
-            float ms_arrhenius = p_vp->microsporidia_arrhenius1
-                               * exp( -p_vp->microsporidia_arrhenius2 / (temperature + float(CELSIUS_TO_KELVIN)) );
-            effect *= ms_arrhenius;
+            // currently temperature dependent modifier is same across all strains, so using first species and first strain to get modifier
+            float ms_modifier = p_vp->vector_species[0]->microsporidia_strains.GetTemperatureDependentModifier(temperature); 
+            effect *= ms_modifier;
         }
 
         m_pINVIC->UpdateLarvalMicrosporidiaInterventions(GetHabitatTarget(), m_SpeciesName, m_StrainIndex, m_Coverage, effect);
