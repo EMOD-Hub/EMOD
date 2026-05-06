@@ -654,7 +654,7 @@ namespace Kernel
         float temperature = m_context->GetLocalWeather()->airtemperature();
         infected_progress_this_timestep = (species()->infectedarrhenius1 * exp( -species()->infectedarrhenius2 / (temperature + float( CELSIUS_TO_KELVIN )) )) * dt;
 
-        if( params()->temperature_dependent_microsporidia_infectivity )
+        if( params()->temperature_dependent_microsporidia )
         {
             microsporidia_modifier_this_timestep = species()->microsporidia_strains.GetTemperatureDependentModifier(temperature);
         }
@@ -2402,7 +2402,7 @@ namespace Kernel
         int male_strain_index = rMaleGenome.GetMicrosporidiaStrainIndex();
         float male_to_egg_tran = m_species_params->microsporidia_strains[ male_strain_index ]->male_to_egg_transmission_probability;
 
-        if( params()->temperature_dependent_microsporidia_infectivity )
+        if( params()->temperature_dependent_microsporidia )
         {
             female_to_egg_tran = (std::min)( 1.0f, female_to_egg_tran * microsporidia_modifier_this_timestep );
             male_to_egg_tran   = (std::min)( 1.0f, male_to_egg_tran   * microsporidia_modifier_this_timestep );

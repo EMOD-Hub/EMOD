@@ -425,7 +425,7 @@ namespace Kernel
         float effect = waning_effect->Current();
 
         VectorParameters* p_vp = GET_CONFIGURABLE(SimulationConfig)->vector_params;
-        if( p_vp->temperature_dependent_microsporidia_infectivity )
+        if( p_vp->temperature_dependent_microsporidia )
         {
             float temperature = parent->GetNodeContext()->GetLocalWeather()->airtemperature();
             // currently temperature dependent modifier is same across all strains, so using first species and first strain to get modifier

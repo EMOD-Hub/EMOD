@@ -65,7 +65,7 @@ namespace Kernel
         bool ret = JsonConfigurable::Configure( inputJson );
         if( ret && !JsonConfigurable::_dryrun )
         {
-            m_IncludeMicrosporidiaModifier = GET_CONFIGURABLE( SimulationConfig )->vector_params->temperature_dependent_microsporidia_infectivity;
+            m_IncludeMicrosporidiaModifier = GET_CONFIGURABLE( SimulationConfig )->vector_params->temperature_dependent_microsporidia;
         }
         return ret;
     }

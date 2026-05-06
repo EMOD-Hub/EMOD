@@ -570,7 +570,7 @@
 #define Microsporidia_Disease_Acq_DESC_TEXT "A modifier is selected based on the duration of the age of the microsporidia infection.  The modifier is used to modify the probability the vector acquires the disease (i.e. malaria)."
 #define Microsporidia_Disease_Tran_DESC_TEXT "A modifier is selected based on the duration of the age of the microsporidia infection.  The modifier is used to modify the probability the vector transmit the disease (i.e. malaria)."
 
-#define Enable_Temperature_Dependent_Microsporidia_Infectivity_DESC_TEXT "When set to true (1), the microsporidia infectivity is affected by temperature via a multiplier calculated using an internal model. This multiplier affects all microsprodia infectivity parameters, including infectivity in LarvalMicrosprodiaIntervention."
+#define Enable_Temperature_Dependent_Microsporidia_DESC_TEXT "When set to true (1), the microsporidia infectivity is affected by temperature via a multiplier calculated using an internal model. This multiplier affects all microsprodia infectivity parameters, including infectivity in LarvalMicrosprodiaIntervention."
 
 #define Report_STI_Include_Coital_Acts_DESC_TEXT "If true, include channles about the number of coital acts per relationship type per dt and those using condoms."
 
