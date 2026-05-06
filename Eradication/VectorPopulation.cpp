@@ -3306,6 +3306,11 @@ namespace Kernel
         return strain_name_list;
     }
 
+    float VectorPopulation::getMicrosporidiaModifier() const
+    {
+        return microsporidia_modifier_this_timestep;
+    }
+
     uint32_t VectorPopulation::getProgressFromLarvaeToImmatureNum() const
     {
         return m_ProgressedLarvaeToImmatureCount;

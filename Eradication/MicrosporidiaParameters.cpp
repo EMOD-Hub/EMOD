@@ -95,7 +95,7 @@ namespace Kernel
 
     MicrosporidiaCollection::~MicrosporidiaCollection()
     {
-    }  
+    }
 
     void MicrosporidiaCollection::CheckConfiguration()
     {
