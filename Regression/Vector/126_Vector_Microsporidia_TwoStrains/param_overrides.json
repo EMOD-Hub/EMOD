@@ -16,7 +16,7 @@
             "Base_Population_Scale_Factor": 1
         },
         "PRIMARY": {
-            "Enable_Temperature_Dependent_Microsporidia": 1,
+            "Enable_Temperature_Dependent_Microsporidia": 0,
             "Config_Name": "126_Vector_Microsporidia_TwoStrains",
             "Custom_Reports_Filename": "custom_reports.json",
             "Enable_Demographics_Reporting": 0,
