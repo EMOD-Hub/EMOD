@@ -58,8 +58,8 @@ namespace Kernel
         // Symptomatic
         initConfigTypeMap( "Symptomatic_Infectious_Offset", &symptomatic_infectious_offset, Symptomatic_Infectious_Offset_DESC_TEXT, -FLT_MAX, FLT_MAX, FLT_MAX, "Simulation_Type", "GENERIC_SIM" ); //FLT_MAX Individual never becomes symptomatic
 
-        initConfigTypeMap( "Number_Basestrains", &number_basestrains, Number_Basestrains_DESC_TEXT, 1,       10,   1 );
-        initConfigTypeMap( "Number_Substrains", &number_substrains, Number_Substrains_DESC_TEXT, 1, 16777216, 1, "Simulation_Type", "GENERIC_SIM" );
+        initConfigTypeMap( "Number_Basestrains", &number_basestrains, Number_Basestrains_DESC_TEXT, 1,       10, 1, "Simulation_Type", "GENERIC_SIM,VECTOR_SIM,MALARIA_SIM" );
+        initConfigTypeMap( "Number_Substrains",  &number_substrains,  Number_Substrains_DESC_TEXT,  1, 16777216, 1, "Simulation_Type", "GENERIC_SIM" );
 
         return JsonConfigurable::Configure( config );
     }

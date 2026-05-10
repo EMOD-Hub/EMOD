@@ -82,8 +82,6 @@
             "Migration_Model": "NO_MIGRATION",
             "Node_Grid_Size": 0.042,
             "Num_Cores": 1,
-            "Number_Basestrains": 1,
-            "Number_Substrains": 1,
             "Population_Density_Infectivity_Correction": "CONSTANT_INFECTIVITY",
             "Population_Scale_Type": "FIXED_SCALING",
             "Post_Infection_Acquisition_Multiplier": 0,

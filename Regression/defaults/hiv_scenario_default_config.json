@@ -98,8 +98,6 @@
             "Mortality_Time_Course": "DAILY_MORTALITY",
             "Node_Grid_Size": 0.009,
             "Num_Cores": 1,
-            "Number_Basestrains": 1,
-            "Number_Substrains": 1,
             "Population_Density_Infectivity_Correction": "CONSTANT_INFECTIVITY",
             "Population_Scale_Type": "FIXED_SCALING",
             "Serialized_Population_Writing_Type": "NONE",
