@@ -380,7 +380,7 @@ namespace Kernel
 
         initConfig( "Age_Initialization_Distribution_Type", age_initialization_distribution_type, config, MetadataDescriptor::Enum(Age_Initialization_Distribution_Type_DESC_TEXT, Age_Initialization_Distribution_Type_DESC_TEXT, MDD_ENUM_ARGS(DistributionType)) );
 
-        initConfig( "Infectivity_Scale_Type", infectivity_scaling, config, MetadataDescriptor::Enum("infectivity_scaling", Infectivity_Scale_Type_DESC_TEXT, MDD_ENUM_ARGS(InfectivityScaling)) );
+        initConfig( "Infectivity_Scale_Type", infectivity_scaling, config, MetadataDescriptor::Enum("infectivity_scaling", Infectivity_Scale_Type_DESC_TEXT, MDD_ENUM_ARGS(InfectivityScaling)), "Simulation_Type", "GENERIC_SIM,VECTOR_SIM,MALARIA_SIM" );
         initConfigTypeMap( "Infectivity_Sinusoidal_Forcing_Amplitude", &infectivity_sinusoidal_forcing_amplitude, Infectivity_Sinusoidal_Forcing_Amplitude_DESC_TEXT, 0.0f, 1.0f,    0.0f, "Infectivity_Scale_Type", "SINUSOIDAL_FUNCTION_OF_TIME" );
         initConfigTypeMap( "Infectivity_Sinusoidal_Forcing_Phase",     &infectivity_sinusoidal_forcing_phase,     Infectivity_Sinusoidal_Forcing_Phase_DESC_TEXT,     0.0f, 365.0f,  0.0f, "Infectivity_Scale_Type", "SINUSOIDAL_FUNCTION_OF_TIME" );
         initConfigTypeMap( "Infectivity_Exponential_Baseline",         &infectivity_exponential_baseline,         Infectivity_Exponential_Baseline_DESC_TEXT,         0.0f, 1.0f,    0.0f, "Infectivity_Scale_Type", "EXPONENTIAL_FUNCTION_OF_TIME" );

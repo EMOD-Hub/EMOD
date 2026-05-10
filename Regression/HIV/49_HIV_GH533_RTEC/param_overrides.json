@@ -68,7 +68,6 @@
         "Incubation_Period_Constant": 0,
         "Individual_Sampling_Type": "FIXED_SAMPLING", 
         "Infection_Updates_Per_Timestep": 1, 
-        "Infectivity_Scale_Type": "CONSTANT_INFECTIVITY", 
         "Load_Balance_Filename": "", 
         "Local_Simulation": 0, 
         "Male_To_Female_Relative_Infectivity_Ages": [

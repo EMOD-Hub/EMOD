@@ -68,7 +68,6 @@
         "Incubation_Period_Distribution": "CONSTANT_DISTRIBUTION",
         "Individual_Sampling_Type": "FIXED_SAMPLING",
         "Infection_Updates_Per_Timestep": 1,
-        "Infectivity_Scale_Type": "CONSTANT_INFECTIVITY",
         "Inset_Chart_Has_IP": [],
         "Inset_Chart_Has_Interventions": [],
         "Inset_Chart_Include_Coital_Acts": 0,

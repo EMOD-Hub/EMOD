@@ -33,7 +33,6 @@
             "Infectious_Period_Exponential": 4,
             "Infectious_Period_Mean": 12,
             "Infectious_Period_Std_Dev": 10,
-            "Infectivity_Scale_Type": "CONSTANT_INFECTIVITY",
             "Male_To_Female_Relative_Infectivity_Ages": [
                 15,
                 25,

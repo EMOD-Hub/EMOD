@@ -87,7 +87,6 @@
             "Infectious_Period_Distribution": "GAUSSIAN_DISTRIBUTION",
             "Infectious_Period_Gaussian_Mean": 12,
             "Infectious_Period_Gaussian_Std_Dev": 10,
-            "Infectivity_Scale_Type": "CONSTANT_INFECTIVITY",
             "Load_Balance_Filename": "",
             "Local_Simulation": 0,
             "Max_Individual_Infections": 1,
