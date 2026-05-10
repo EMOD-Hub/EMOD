@@ -28,7 +28,6 @@
             "Enable_Maternal_Infection_Transmission": 0,
             "Enable_Maternal_Protection": 0,
             "Enable_Skipping": 0,
-            "Enable_Susceptibility_Scaling": 0,
             "Enable_Vital_Dynamics": 1,
             "IMMUNITY": {
                 "Acquisition_Blocking_Immunity_Decay_Rate": 0.1,
@@ -47,7 +46,6 @@
                 "Enable_Disease_Mortality": 0,
                 "Enable_Maternal_Protection": 0,
                 "Enable_Natural_Mortality": 1,
-                "Enable_Susceptibility_Scaling": 0,
                 "Mortality_Blocking_Immunity_Decay_Rate": 0.001,
                 "Mortality_Blocking_Immunity_Duration_Before_Decay": 60,
                 "Mortality_Time_Course": "DAILY_MORTALITY",

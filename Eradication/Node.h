@@ -113,7 +113,6 @@ namespace Kernel
         virtual float GetBirths()                const override;
         virtual float GetCampaignCost()          const override;
         virtual float GetInfectivity()           const override;
-        virtual float GetSusceptDynamicScaling() const override;
         virtual const Climate* GetLocalWeather() const override;
         virtual long int GetPossibleMothers()    const override;
 
@@ -197,12 +196,6 @@ namespace Kernel
         PopulationDensityInfectivityCorrection::Enum population_density_infectivity_correction; // Population_Density_Infectivity_Correction
         DistributionType::Enum                       age_initialization_distribution_type;      // Age_Initialization_Distribution_Type
         PopulationScaling::Enum                      population_scaling;                        // POPULATION_SCALING
-        SusceptibilityScalingType::Enum              susceptibility_scaling_type;               // Susceptibility_Scaling_Type
-
-        // Susceptibility modifiers
-        bool  susceptibility_scaling;
-        float susceptibility_scaling_rate;
-        float susceptibility_dynamic_scaling;
 
         // Node properties
         suids::suid suid;

@@ -97,7 +97,6 @@ namespace Kernel
         virtual float       GetBirths()        const = 0;
         virtual float       GetCampaignCost()  const = 0;
         virtual float       GetInfectivity()   const = 0;
-        virtual float       GetSusceptDynamicScaling() const = 0;
         virtual const Climate* GetLocalWeather() const = 0;
         virtual long int GetPossibleMothers()  const = 0;
         virtual float GetMeanAgeInfection()    const = 0;

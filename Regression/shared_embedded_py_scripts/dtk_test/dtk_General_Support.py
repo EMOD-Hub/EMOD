@@ -165,7 +165,6 @@ class ConfigKeys:
     Enable_Skipping = 'Enable_Skipping'
     Enable_Spatial_Output = 'Enable_Spatial_Output'
     Enable_Superinfection = 'Enable_Superinfection'
-    Enable_Susceptibility_Scaling = 'Enable_Susceptibility_Scaling'
     Enable_Timestep_Channel_In_Report = 'Enable_Timestep_Channel_In_Report'
     Enable_Vital_Dynamics = 'Enable_Vital_Dynamics'
     Environmental_Cutoff_Days = "Environmental_Cutoff_Days"

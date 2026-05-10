@@ -70,10 +70,6 @@ namespace Kernel
         , population_density_infectivity_correction( PopulationDensityInfectivityCorrection::CONSTANT_INFECTIVITY )
         , age_initialization_distribution_type(DistributionType::DISTRIBUTION_OFF)
         , population_scaling(PopulationScaling::USE_INPUT_FILE)
-        , susceptibility_scaling_type( SusceptibilityScalingType::CONSTANT_SUSCEPTIBILITY )
-        , susceptibility_scaling( false )
-        , susceptibility_scaling_rate( 1.0f )
-        , susceptibility_dynamic_scaling( 1.0f )
         , suid(_suid)
         , birthrate(DEFAULT_BIRTHRATE)
         , individualHumans()
@@ -187,10 +183,6 @@ namespace Kernel
         , population_density_infectivity_correction( PopulationDensityInfectivityCorrection::CONSTANT_INFECTIVITY )
         , age_initialization_distribution_type(DistributionType::DISTRIBUTION_OFF)
         , population_scaling(PopulationScaling::USE_INPUT_FILE)
-        , susceptibility_scaling_type( SusceptibilityScalingType::CONSTANT_SUSCEPTIBILITY )
-        , susceptibility_scaling( false )
-        , susceptibility_scaling_rate( 1.0f )
-        , susceptibility_dynamic_scaling( 1.0f )
         , suid(suids::nil_suid())
         , birthrate(DEFAULT_BIRTHRATE)
         , individualHumans()
@@ -373,11 +365,6 @@ namespace Kernel
         initConfig( "Death_Rate_Dependence", vital_death_dependence, config, MetadataDescriptor::Enum(Death_Rate_Dependence_DESC_TEXT, Death_Rate_Dependence_DESC_TEXT, MDD_ENUM_ARGS(VitalDeathDependence)), "Enable_Natural_Mortality" ); // node only (move) 
         LOG_DEBUG_F( "Death_Rate_Dependence configured as %s\n", VitalDeathDependence::pairs::lookup_key( vital_death_dependence ) );
 
-        // Susceptibility scaling options
-        initConfigTypeMap("Enable_Susceptibility_Scaling", &susceptibility_scaling, Enable_Susceptibility_Scaling_DESC_TEXT, false);
-        initConfig("Susceptibility_Scaling_Type", susceptibility_scaling_type, config, MetadataDescriptor::Enum("Susceptibility_Scaling_Type", Susceptibility_Scaling_Type_DESC_TEXT, MDD_ENUM_ARGS(SusceptibilityScalingType)),"Enable_Susceptibility_Scaling");
-        initConfigTypeMap("Susceptibility_Scaling_Rate", &susceptibility_scaling_rate, Susceptibility_Scaling_Rate_DESC_TEXT, 0.0f, FLT_MAX, 0.0f, "Susceptibility_Scaling_Type", "LOG_LINEAR_FUNCTION_OF_TIME");
-
         initConfig( "Age_Initialization_Distribution_Type", age_initialization_distribution_type, config, MetadataDescriptor::Enum(Age_Initialization_Distribution_Type_DESC_TEXT, Age_Initialization_Distribution_Type_DESC_TEXT, MDD_ENUM_ARGS(DistributionType)) );
 
         initConfig( "Infectivity_Scale_Type", infectivity_scaling, config, MetadataDescriptor::Enum("infectivity_scaling", Infectivity_Scale_Type_DESC_TEXT, MDD_ENUM_ARGS(InfectivityScaling)), "Simulation_Type", "GENERIC_SIM,VECTOR_SIM,MALARIA_SIM" );
@@ -449,11 +436,6 @@ namespace Kernel
         SetupEventContextHost();
 
         Configure( EnvPtr->Config );
-
-        if(susceptibility_scaling_type == SusceptibilityScalingType::LOG_LINEAR_FUNCTION_OF_TIME)
-        {
-            susceptibility_dynamic_scaling = 0.0f; // set susceptibility to zero so it may ramp up over time according to the scaling function
-        }
     }
 
     void Node::SetupEventContextHost()
@@ -956,16 +938,6 @@ namespace Kernel
             else
             {
                 ++iHuman;
-            }
-        }
-
-        if(susceptibility_scaling_type == SusceptibilityScalingType::LOG_LINEAR_FUNCTION_OF_TIME)
-        {
-            susceptibility_dynamic_scaling += dt*susceptibility_scaling_rate;
-
-            if(susceptibility_dynamic_scaling > 1.0f)
-            {
-                susceptibility_dynamic_scaling = 1.0f;
             }
         }
 
@@ -2564,9 +2536,6 @@ namespace Kernel
     float
     Node::GetInfectivity()   const { return mInfectivity; }
 
-    float
-    Node::GetSusceptDynamicScaling() const { return susceptibility_dynamic_scaling; }
-
     ExternalNodeId_t
     Node::GetExternalID()    const { return externalId; }
 
@@ -2711,10 +2680,6 @@ namespace Kernel
             ar.labelElement("population_density_infectivity_correction")    & (uint32_t&)node.population_density_infectivity_correction;
             ar.labelElement("age_initialization_distribution_type")         & (uint32_t&)node.age_initialization_distribution_type;
 
-            ar.labelElement("susceptibility_scaling_type")  & (uint32_t&)node.susceptibility_scaling_type;
-            ar.labelElement("susceptibility_scaling")       & node.susceptibility_scaling;
-            ar.labelElement("susceptibility_scaling_rate")  & node.susceptibility_scaling_rate;
-
             ar.labelElement("base_sample_rate") & node.base_sample_rate;
 
             ar.labelElement("enable_demographics_risk")             & node.enable_demographics_risk;
@@ -2780,7 +2745,6 @@ namespace Kernel
             ar.labelElement("family_time_at_destination") & node.family_time_at_destination;
             ar.labelElement("family_is_destination_new_home") & node.family_is_destination_new_home;
             ar.labelElement("base_sample_rate") & node.base_sample_rate;
-            ar.labelElement("susceptibility_dynamic_scaling") & node.susceptibility_dynamic_scaling;
             ar.labelElement("node_properties") & node.node_properties;
             ar.labelElement("statPop") & node.statPop;
             ar.labelElement("Infected") & node.Infected;

@@ -189,7 +189,6 @@
         "Enable_Sexual_Combination": 0,
         "Enable_Spatial_Output": 0,
         "Enable_Superinfection": 1,
-        "Enable_Susceptibility_Scaling": 0,
         "Enable_Temperature_Dependent_Egg_Hatching": 0,
         "Enable_Termination_On_Zero_Total_Infectivity": 0,
         "Enable_Vector_Aging": 0,

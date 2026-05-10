@@ -234,11 +234,6 @@ public:
         throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented.");
     }
 
-    virtual float GetSusceptDynamicScaling() const override
-    {
-        throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented.");
-    }
-
     virtual const Climate* GetLocalWeather() const override
     {
         throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented.");

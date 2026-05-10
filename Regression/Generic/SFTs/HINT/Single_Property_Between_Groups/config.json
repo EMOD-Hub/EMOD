@@ -76,7 +76,6 @@
         "Enable_Skipping": 0,
         "Enable_Spatial_Output": 0,
         "Enable_Superinfection": 0,
-        "Enable_Susceptibility_Scaling": 0,
         "Enable_Timestep_Channel_In_Report": 0,
         "Enable_Vital_Dynamics": 0,
         "Geography": "SamplesInput",

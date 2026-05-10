@@ -48,7 +48,6 @@
         "Enable_Skipping": 0,
         "Enable_Spatial_Output": 0,
         "Enable_Superinfection": 0,
-        "Enable_Susceptibility_Scaling": 0,
         "Enable_Vital_Dynamics": 0,
         "Geography": "",
         "Incubation_Period_Distribution": "CONSTANT_DISTRIBUTION",

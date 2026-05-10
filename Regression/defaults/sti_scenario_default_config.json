@@ -19,7 +19,6 @@
             "Enable_Initial_Susceptibility_Distribution": 0,
             "Enable_Maternal_Protection": 0,
             "Enable_Natural_Mortality": 1,
-            "Enable_Susceptibility_Scaling": 0,
             "Enable_Vital_Dynamics": 1,
             "Minimum_Adult_Age_Years": 15,
             "Mortality_Time_Course": "DAILY_MORTALITY",

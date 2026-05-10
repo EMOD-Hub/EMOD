@@ -53,7 +53,6 @@
         "Enable_Natural_Mortality": 1,
         "Enable_Property_Output": 0,
         "Enable_Spatial_Output": 0,
-        "Enable_Susceptibility_Scaling": 0,
         "Enable_Termination_On_Zero_Total_Infectivity": 0,
         "Enable_Timestep_Channel_In_Report": 0,
         "Geography": "",

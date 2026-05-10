@@ -37,7 +37,6 @@
             "Enable_Initial_Prevalence": 0,
             "Enable_Initial_Susceptibility_Distribution": 0,
             "Enable_Maternal_Protection": 0,
-            "Enable_Susceptibility_Scaling": 0,
             "Enable_Vital_Dynamics": 0,
             "IMMUNITY": {
                 "Acquisition_Blocking_Immunity_Decay_Rate": 0.01,
