@@ -33,7 +33,6 @@
 #define Aquatic_Arrhenius_1_DESC_TEXT "The temperature-independent scale factor in the Arrhenius equation for development rate as vectors progress from egg-hatching to emergence."
 #define Aquatic_Arrhenius_2_DESC_TEXT "The temperature-dependent scale factor in the Arrhenius equation for development rate as vectors progress from egg-hatching to emergence."
 #define Aquatic_Mortality_Rate_DESC_TEXT "The base aquatic mortality per day for the species before adjusting for effects of overpopulation and drying out of aquatic habitat."
-#define ART_CD4_at_Initiation_Saturating_Reduction_in_Mortality_DESC_TEXT "The duration from ART enrollment to on-ART HIV-cause death increases with CD4 at ART initiation up to a threshold determined by this parameter value. This is the maximum value that CD4 is allowed to have in the hazard ratio calculation for CD4."
 #define Base_Air_Temperature_DESC_TEXT "The air temperature, in degrees Celsius, where Climate_Model is set to CLIMATE_CONSTANT."
 #define Base_Gametocyte_Fraction_Male_DESC_TEXT "Fraction of gametocytes that are male."
 #define Base_Gametocyte_Mosquito_Survival_Rate_DESC_TEXT "Average fraction of gametocytes in a blood meal that are successful in infecting the mosquito in the absence of other modulating effects, such as fever."
