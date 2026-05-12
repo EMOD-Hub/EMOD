@@ -214,31 +214,27 @@ else:
     env['CC'] = "mpicc"
     env['CXX'] = "mpicxx"
     env.Append( CCFLAGS=["-fpermissive"] )
-    env.Append( CCFLAGS=["--std=c++0x"] )
     env.Append( CCFLAGS=["-w"] )
     env.Append( CCFLAGS=["-ffloat-store"] )
     env.Append( CCFLAGS=["-Wno-unknown-pragmas"] )
     env.Append( CCFLAGS=["-mavx2"] )
 
     # Python
-    if(sys.version_info.minor == 9):
-        env.Append( LIBS=["python3.9"] )
-        env.Append( EXTRACPPPATH=["/usr/include/python3.9"] )
-    elif(sys.version_info.minor == 10):
-        env.Append( LIBS=["python3.10"] )
-        env.Append( EXTRACPPPATH=["/usr/include/python3.10"] )
-    elif(sys.version_info.minor == 11):
-        env.Append( LIBS=["python3.11"] )
-        env.Append( EXTRACPPPATH=["/usr/include/python3.11"] )
-    elif(sys.version_info.minor == 12):
-        env.Append( LIBS=["python3.12"] )
-        env.Append( EXTRACPPPATH=["/usr/include/python3.12"] )
+    if(sys.version_info.minor == 14):
+        env.Append( LIBS=["python3.14"] )
+        env.Append( EXTRACPPPATH=["/usr/include/python3.14"] )
     elif(sys.version_info.minor == 13):
         env.Append( LIBS=["python3.13"] )
         env.Append( EXTRACPPPATH=["/usr/include/python3.13"] )
-    elif(sys.version_info.minor == 14):
-        env.Append( LIBS=["python3.14"] )
-        env.Append( EXTRACPPPATH=["/usr/include/python3.14"] )
+    elif(sys.version_info.minor == 12):
+        env.Append( LIBS=["python3.12"] )
+        env.Append( EXTRACPPPATH=["/usr/include/python3.12"] )
+    elif(sys.version_info.minor == 11):
+        env.Append( LIBS=["python3.11"] )
+        env.Append( EXTRACPPPATH=["/usr/include/python3.11"] )
+    elif(sys.version_info.minor == 10):
+        env.Append( LIBS=["python3.10"] )
+        env.Append( EXTRACPPPATH=["/usr/include/python3.10"] )
     else:
         raise RuntimeError("Unsupported python version")
 

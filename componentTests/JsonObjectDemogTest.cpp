@@ -6,6 +6,7 @@
 #include "JsonObjectDemog.h"
 
 #include <limits>
+#include <functional>
 
 using namespace std; 
 using namespace Kernel; 

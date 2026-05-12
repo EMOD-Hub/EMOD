@@ -4,6 +4,7 @@
 #include <assert.h>
 
 #include <sstream>
+#include <functional>
 
 #include "Log.h"
 #include "Exceptions.h"
