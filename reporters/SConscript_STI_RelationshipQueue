@@ -8,6 +8,8 @@ lib_report_dllSrcFiles = [ "$REPORT_DIR/StiRelationshipQueueReporter.cpp" ]
 if os.name != "posix":
     lib_report_dllSrcFiles.extend( [ "$REPORT_DIR/stdafx.cpp" ] )
 
+    report_env.Prepend( LIBS=["baseReportLib", "cajun", "utils" ])
+
 report_dir = report_env[ "BUILD_DIR" ] + 'reporter_plugins/' + report_env[ "REPORT_DIR" ]
 
 lib_report_Dll = report_env.SharedLibrary( report_dir, lib_report_dllSrcFiles )

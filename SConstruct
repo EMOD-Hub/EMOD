@@ -368,8 +368,6 @@ elif "win32" == os.sys.platform:
 else:
     print( "No special config for [" + os.sys.platform + "] which probably means it won't work" )
 
-env['STATIC_AND_SHARED_OBJECTS_ARE_THE_SAME'] = 1
-
 env.Append( CPPPATH=['$EXTRACPPPATH'] )
 env.Append( LIBPATH=['$EXTRALIBPATH'] )
 

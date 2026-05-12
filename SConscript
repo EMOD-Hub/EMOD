@@ -100,16 +100,8 @@ SConscript( [ 'baseReportLib/SConscript',
               'lz4/SConscript',
               'utils/SConscript' ])
 
-
 # Finally executable
 SConscript('Eradication/SConscript')
-
-
-
-
-
-
-
 
 if( disease == "ALL"):
     OptionalScript('UnitTest++/SConscript')
