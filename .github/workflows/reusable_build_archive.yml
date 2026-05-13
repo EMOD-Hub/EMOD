@@ -26,6 +26,10 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
+      - name: Add safety exceptions to git commands
+        uses: docker://ghcr.io/emod-hub/emod-ubuntu-buildenv:sha-d330a86
+        with:
+          args: "git config --global --add safe.directory *"
       - name: Build executable
         uses: docker://ghcr.io/emod-hub/emod-ubuntu-buildenv:sha-d330a86
         with:
