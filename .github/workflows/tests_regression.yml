@@ -120,7 +120,7 @@ jobs:
           docker run --rm \
             --user $(id -u):$(id -g) \
             -v "${{ github.workspace }}:/EMOD" \
-            ghcr.io/emod-hub/emod-ubuntu-runtime:sha-37107f3 \
+            ghcr.io/emod-hub/emod-ubuntu-runtime:sha-4c666ac \
             bash -c "\
               cd /EMOD && \
               mkdir -p /EMOD/regression_test_output && \
