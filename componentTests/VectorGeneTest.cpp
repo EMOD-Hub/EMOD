@@ -770,4 +770,10 @@ SUITE( VectorGeneTest )
         TestHelper_ConfigureException( __LINE__, "testdata/VectorGeneTest/TestTooManyGenderAllelesB.json",
                                        "Invalid number of alleles for one gender.\n7 male alleles were defined.  There can only be at most 4 of each gender." );
     }
+
+    TEST_FIXTURE( VectorGeneFixture, TestGenderGeneMaleFrequencyTooHigh )
+    {
+        TestHelper_ConfigureException( __LINE__, "testdata/VectorGeneTest/TestGenderGeneMaleFrequencyTooHigh.json",
+                                       "Initial allele frequencies for male (Y-chromosome) alleles sum to" );
+    }
 }
