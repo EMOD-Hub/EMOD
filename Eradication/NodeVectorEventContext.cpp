@@ -82,6 +82,7 @@ namespace Kernel
         oviposition_killing_list = std::vector<float>( VectorHabitatType::pairs::count(), 0.0f); 
         pVillageSpatialRepellent = GeneticProbability( 0.0f );
         pVillageNotRepelledOrKilledOrAffected = GeneticProbability( 1.0f );
+        pOutdoorNodeEmanatorKilling = GeneticProbability(0.0f);
         pADIVAttraction = 0.0;
         pADOVAttraction = 0.0;
         pOutdoorKilling = GeneticProbability( 0.0f );
