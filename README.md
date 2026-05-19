@@ -33,6 +33,62 @@ Community contributions are welcome, and trusted collaborators may review and
 merge pull requests, but no guarantees are made regarding support, pull request
 review, security response, maintenance, or release timelines.
 
+## Running EMOD
+
+Most users should interact with EMOD through the disease-specific Python workflow
+packages rather than directly through the C++ model source code.
+
+These packages simplify configuring simulations, running experiments across different
+execution environments, and analyzing results.
+
+* [emodpy-malaria](https://emod.idmod.org/emodpy-malaria/)
+* [emodpy-hiv](https://emod.idmod.org/emodpy-hiv/)
+
+The C++ source code in this repository is primarily intended for users interested in
+understanding the internal implementation of the model or modifying the core simulation
+engine.
+
+## Source Code Installation for Development
+
+The following link provides instructions for installing the prerequisites
+required to build and run EMOD.  This intended for code development and
+not doing research.
+
+https://emod.idmod.org/EMOD/dev-install-overview/
+
+## Developer Documentation
+
+For more information about modifying the disease model of EMOD, please see:
+
+https://emod.idmod.org/EMOD/
+
+## Directory Structure
+
+- `baseReportLib` - A library of commonly used report components and base classes.
+- `cajun` - A C++ API for JSON
+- `campaign` - A library of commonly used intervention components and base classes.
+- `componentTests` - A collection of unit tests that verify that the EMOD pieces do the right thing.
+- `Dependencies` - Microsoft Cluster Pack
+- `docs` - Source files for documentation about how to modify the EMOD source code.
+- `Eradication` - The core components of EMOD including human intra-host, relationship, and vector models.
+- `interventions` - A collection of interventions that can be used with EMOD.
+- `libsqlite` - The SQLite source code for reading and creating SQLite databases.
+- `lz4` - A fast compression engine used to read and write serialized populations.
+- `rapidjson` - A fast JSON parser/generator for C++ with box SAX/DOM style API
+- `Regression` - A collection of scripts, input data, and output data used to verify that EMOD models things correctly.
+- `reporters` - A collection of data extraction, or report, classes used to collect data during a simulation.
+- `Scripts` - A collection of support scripts
+- `snappy` - A fast compression engine used to read and write serialized populations. 
+- `UnitTest++` - A C++ unit test framework used by the componentTests
+- `untils` - A collection of utility classes to do things like help with configuring and generating pseudo random numbers.
+
+If wanting to navigate through the code, the place to start is Eradication\Eradication.cpp.
+
+More information on the EMOD Architecture can be found at:
+
+https://emod.idmod.org/EMOD/dev-architecture-overview/
+
+
 ## History & Publication Samples
 
 EMOD development was started by Philip Welkoff in 2010 to model malaria.
@@ -69,57 +125,6 @@ Below is short sample of papers about EMOD and that used EMOD:
 - The Lancet HIV, 2020
 - https://www.thelancet.com/action/showPdf?pii=S2352-3018%2819%2930436-9
 
-
-## Running EMOD
-
-Since EMOD is a stochastic model, you must run numerous realizations of each
-scenario in order to collect proper statistics.  You will likely need a high
-performance computing (HPC) platform to run these simulations.
-
-To make running EMOD easier, we have created some python packages that simplify
-configuring, running, and plotting the results.
-
-## Directory Structure
-
-- `baseReportLib` - A library of commonly used report components and base classes.
-- `cajun` - A C++ API for JSON
-- `campaign` - A library of commonly used intervention components and base classes.
-- `componentTests` - A collection of unit tests that verify that the EMOD pieces do the right thing.
-- `Dependencies` - Microsoft Cluster Pack
-- `docs` - Source files for documentation about how to modify the EMOD source code.
-- `Eradication` - The core components of EMOD including human intra-host, relationship, and vector models.
-- `interventions` - A collection of interventions that can be used with EMOD.
-- `libsqlite` - The SQLite source code for reading and creating SQLite databases.
-- `lz4` - A fast compression engine used to read and write serialized populations.
-- `rapidjson` - A fast JSON parser/generator for C++ with box SAX/DOM style API
-- `Regression` - A collection of scripts, input data, and output data used to verify that EMOD models things correctly.
-- `reporters` - A collection of data extraction, or report, classes used to collect data during a simulation.
-- `Scripts` - A collection of support scripts
-- `snappy` - A fast compression engine used to read and write serialized populations. 
-- `UnitTest++` - A C++ unit test framework used by the componentTests
-- `untils` - A collection of utility classes to do things like help with configuring and generating pseudo random numbers.
-
-If wanting to navigate through the code, the place to start is Eradication\Eradication.cpp.
-
-More information on the EMOD Architecture can be found at:
-
-https://emod.idmod.org/EMOD/dev-architecture-overview/
-
-
-## Developer Documentation
-
-For more information about modifying the disease model of EMOD, please see:
-
-https://emod.idmod.org/EMOD/
-
-## Source Code Installation for Development
-
-The following link provides instructions for installing the prerequisites
-required to build and run EMOD.  This intended for code development and
-not doing research.
-
-https://emod.idmod.org/EMOD/dev-install-overview/
-
 ## Community
 
 Have a question or a comment? Check out our
@@ -128,7 +133,7 @@ Have a question or a comment? Check out our
 ## Contributing
 
 If you have feature requests, issues, or new code, please see our
-[CONTRIBUTING][CONTRIBUTING](https://github.com/EMOD-Hub/.github/blob/main/CONTRIBUTING.md)
+[CONTRIBUTING](https://github.com/EMOD-Hub/.github/blob/main/CONTRIBUTING.md)
 page for how to provide your feedback.
 
 ## Disclaimer
