@@ -1,15 +1,43 @@
-EMOD
-============
-Epidemiological MODeling software (EMOD), is an agent-based model (ABM) that simulates the simultaneous interactions of agents in an effort to recreate complex phenomena. Each agent (such as a human or vector) can be assigned a variety of “properties” (for example, age, gender, etc.), and their behavior and interactions with one another are determined by using decision rules. These models have strong predictive power and are able to leverage spatial and temporal dynamics.
+# EMOD
 
-EMOD is also stochastic, meaning that there is randomness built into the model. Infection and recovery processes are represented as probabilistic Bernoulli random draws. In other words, when a susceptible person comes into contact with a pathogen, they are not guaranteed to become infected. Instead, you can imagine flipping a coin that has a λ chance of coming up tails S(t) times, and for every person who gets a “head” you say they are infected. This randomness better approximates what happens in reality. It also means that you must run many simulations to determine the probability of particular outcomes.
+Epidemiological MODeling software (EMOD), is an agent-based model (ABM)
+that simulates the simultaneous interactions of agents in an effort to
+recreate complex phenomena. Each agent (such as a human or vector) can
+be assigned a variety of “properties” (for example, age, gender, etc.),
+and their behavior and interactions with one another are determined by
+using decision rules. These models have strong predictive power and are
+able to leverage spatial and temporal dynamics.
 
-As of V2.22, EMOD will only support malaria and HIV and will no longer support diseases such as TB and Typhoid.
+EMOD is also stochastic, meaning that there is randomness built into the
+model. Infection and recovery processes are represented as probabilistic
+Bernoulli random draws. In other words, when a susceptible person comes
+into contact with a pathogen, they are not guaranteed to become infected.
+Instead, you can imagine flipping a coin that has a λ chance of coming up
+tails S(t) times, and for every person who gets a “head” you say they are
+infected. This randomness better approximates what happens in reality.
+It also means that you must run many simulations to determine the
+probability of particular outcomes.
 
+As of V2.22, EMOD will only support malaria and HIV and will no longer
+support diseases such as TB and Typhoid.
 
-History & Publication Samples
------------------------------
-EMOD development was started by Philip Welkoff in 2010 to model malaria.  Since that time, EMOD has been used in numerous studies and policy decisions.  Below is short sample of papers about EMOD and that used EMOD:
+## Project status
+
+EMOD-Hub projects are provided as open source software under the MIT License for
+community use, research, and development.
+
+**Unless otherwise noted, these projects are no longer actively maintained or supported
+by IDM or the Gates Foundation.**
+
+Community contributions are welcome, and trusted collaborators may review and
+merge pull requests, but no guarantees are made regarding support, pull request
+review, security response, maintenance, or release timelines.
+
+## History & Publication Samples
+
+EMOD development was started by Philip Welkoff in 2010 to model malaria.
+Since that time, EMOD has been used in numerous studies and policy decisions.
+Below is short sample of papers about EMOD and that used EMOD:
 
 **A malaria transmission-directed model of mosquito life cycle and ecology**
 - Philip A Eckhoff
@@ -42,15 +70,16 @@ EMOD development was started by Philip Welkoff in 2010 to model malaria.  Since 
 - https://www.thelancet.com/action/showPdf?pii=S2352-3018%2819%2930436-9
 
 
-Running EMOD
-------------
-Since EMOD is a stochastic model, you must run numerous realizations of each scenario in order to collect proper statistics.  You will likely need a high performance computing (HPC) platform to run these simulations.  As of July 2024, we only support a SLURM-based HPC.
+## Running EMOD
 
-To make running EMOD easier, we have created some python packages that simplify configuring, running, and plotting the results.  As of July 2024, we are working to make these packages more user friendly and will have updates coming in Q4 of 2024.
+Since EMOD is a stochastic model, you must run numerous realizations of each
+scenario in order to collect proper statistics.  You will likely need a high
+performance computing (HPC) platform to run these simulations.
 
+To make running EMOD easier, we have created some python packages that simplify
+configuring, running, and plotting the results.
 
-Directory Structure
--------------------
+## Directory Structure
 
 - `baseReportLib` - A library of commonly used report components and base classes.
 - `cajun` - A C++ API for JSON
@@ -74,26 +103,40 @@ If wanting to navigate through the code, the place to start is Eradication\Eradi
 
 More information on the EMOD Architecture can be found at:
 
-https://docs.idmod.org/projects/emod-malaria/en/latest/dev-architecture-overview.html
+https://emod.idmod.org/EMOD/dev-architecture-overview/
 
 
-Source Code Installation for Development
-----------------------------------------
-The following link provides instructions for installing the prerequisites required to build and run EMOD.  This intended for code development and not doing research.
+## Developer Documentation
 
-https://docs.idmod.org/projects/emod-malaria/en/latest/dev-install-overview.html
+For more information about modifying the disease model of EMOD, please see:
 
+https://emod.idmod.org/EMOD/
 
-Contributing and Community
---------------------------
-- [Full Documentation](<https://docs.idmod.org/models.html#emod>)
-- [Discussions](<https://github.com/orgs/EMOD-Hub/discussions>)
-- [Have an issue?](<https://github.com/EMOD-Hub/issues-and-discussions/issues>)
+## Source Code Installation for Development
 
+The following link provides instructions for installing the prerequisites
+required to build and run EMOD.  This intended for code development and
+not doing research.
 
-Disclaimer
-----------
-The code in this repository was developed by IDM and other collaborators to support our joint research on flexible agent-based modeling.
- We've made it publicly available under the MIT License to provide others with a better understanding of our research and an opportunity to build upon it for 
- their own work. We make no representations that the code works as intended or that we will provide support, address issues that are found, or accept pull requests.
- You are welcome to create your own fork and modify the code to suit your own modeling needs as permitted under the MIT License.
+https://emod.idmod.org/EMOD/dev-install-overview/
+
+## Community
+
+Have a question or a comment? Check out our
+[Discussions](https://github.com/EMOD-Hub/issues-and-discussions) space.
+
+## Contributing
+
+If you have feature requests, issues, or new code, please see our
+[CONTRIBUTING][CONTRIBUTING](https://github.com/EMOD-Hub/.github/blob/main/CONTRIBUTING.md)
+page for how to provide your feedback.
+
+## Disclaimer
+
+The code in this repository was developed by IDM and other collaborators to support our
+joint research on flexible agent-based modeling. We've made it publicly available under
+the MIT License to provide others with a better understanding of our research and an
+opportunity to build upon it for their own work. We make no representations that the code
+works as intended or that we will provide support, address issues that are found, or accept
+pull requests. You are welcome to create your own fork and modify the code to suit your own
+modeling needs as permitted under the MIT License.
