@@ -123,7 +123,7 @@ https://emod.idmod.org/EMOD/dev-install-overview/
 ## Community
 
 Have a question or a comment? Check out our
-[Discussions](https://github.com/EMOD-Hub/issues-and-discussions) space.
+[Discussions](https://github.com/orgs/EMOD-Hub/discussions) space.
 
 ## Contributing
 
