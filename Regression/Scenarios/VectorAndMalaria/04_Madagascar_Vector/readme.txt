@@ -6,4 +6,4 @@ This directory intentionally left blank.
 Extensive multi-node simulations with location-specific climate, intervention
 deployments, larval habitat, and migration may be configured within the EMOD
 framework.  For information on configuring and running large, multi-node
-simulations, please contact IDMSupport@idmod.org.)
+simulations, please visit https://github.com/orgs/EMOD-Hub/discussions)
