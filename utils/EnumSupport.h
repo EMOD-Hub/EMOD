@@ -1,7 +1,8 @@
 
 #pragma once
 
-#include <boost/preprocessor.hpp>
+#include "BoostLibWrapper.h"
+
 #include <string.h>
 
 // (the ee_ prefix stands for "evil enum")

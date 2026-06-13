@@ -76,6 +76,9 @@ bool Environment::Initialize(
         inputPaths.push_back( path );
     }
 
+    // Always check current working directory, but do it last
+    inputPaths.push_back(".");
+
     outputPath = FileSystem::RemoveTrailingChars( outputPath );
 
     if( !get_schema )
@@ -111,7 +114,7 @@ bool Environment::Initialize(
             if( !FileSystem::DirectoryExists(outputPath) )
             {
                 LOG_ERR_F( "Rank=%d: Failed to create new output directory '%s' with error %s\n", localEnv->MPI.Rank, outputPath.c_str(), strerror(errno) );
-                throw Kernel::FileNotFoundException( __FILE__, __LINE__, __FUNCTION__, true, outputPath.c_str() );
+                throw Kernel::FileNotFoundException( __FILE__, __LINE__, __FUNCTION__, outputPath.c_str() );
             }
         }
     }
@@ -180,14 +183,6 @@ std::string Environment::FindFileOnPath( const std::string& rFilename )
         throw Kernel::IllegalOperationException( __FILE__, __LINE__, __FUNCTION__, "Environment has not been created." );
     }
 
-    if( localEnv->InputPaths.size() == 0 )
-    {
-        throw Kernel::IllegalOperationException( __FILE__, __LINE__, __FUNCTION__, "No 'input paths' set." );
-    }
-
-    std::stringstream ss;
-    ss << "Received the following system error messages while checking for the existence\n";
-    ss << "of the file at the following locations:\n";
     for( auto path : localEnv->InputPaths )
     {
         std::string filepath = FileSystem::Concat( path, rFilename );
@@ -195,13 +190,9 @@ std::string Environment::FindFileOnPath( const std::string& rFilename )
         {
             return filepath;
         }
-        else
-        {
-            ss << filepath << " - '" << FileSystem::GetSystemErrorMessage() << "'\n";
-        }
     }
-        
-    throw Kernel::FileNotFoundException( __FILE__, __LINE__, __FUNCTION__, rFilename.c_str(), ss.str().c_str() );
+
+    throw Kernel::FileNotFoundException( __FILE__, __LINE__, __FUNCTION__, rFilename.c_str() );
 }
 
 const Configuration* Environment::getConfiguration()

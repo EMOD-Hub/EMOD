@@ -555,7 +555,7 @@ namespace Kernel
             LOG_INFO_F( "Looking for custom reports file = %s\n", custom_reports_filename.c_str() );
             if( !FileSystem::FileExists( custom_reports_filename ) )
             {
-                throw FileNotFoundException( __FILE__, __LINE__, __FUNCTION__, true, custom_reports_filename .c_str() );
+                throw FileNotFoundException( __FILE__, __LINE__, __FUNCTION__, custom_reports_filename .c_str() );
             }
 
             // -----------------------------------------------------------
@@ -905,7 +905,7 @@ namespace Kernel
 
             if ( !FileSystem::FileExists( campaignfilename ) )
             {
-                throw FileNotFoundException( __FILE__, __LINE__, __FUNCTION__, true, campaignfilename );
+                throw FileNotFoundException( __FILE__, __LINE__, __FUNCTION__, campaignfilename );
             }
             else 
             {
@@ -940,7 +940,7 @@ namespace Kernel
 
                 if ( !FileSystem::FileExists( transitions_file_path ) )
                 {
-                    throw FileNotFoundException( __FILE__, __LINE__, __FUNCTION__, true, transitions_file_path.c_str() );
+                    throw FileNotFoundException( __FILE__, __LINE__, __FUNCTION__, transitions_file_path.c_str() );
                 }
 
                 // Load the Individual Property Transitions

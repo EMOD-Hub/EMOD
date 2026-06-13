@@ -122,8 +122,7 @@ namespace Kernel {
     class IDMAPI FileNotFoundException : public DetailedException
     {
     public:
-        FileNotFoundException( const char * src_file_name, int line_num, const char* func_name, const char * missing_file_name, const char* note = "" );
-        FileNotFoundException( const char * src_file_name, int line_num, const char* func_name, bool includeSystemErrorMessage, const char * missing_file_name );
+        FileNotFoundException( const char * src_file_name, int line_num, const char* func_name, const char * missing_file_name );
     };
 
     // We have some specific ConfigurationExceptions below but this is for when there has been a configuration

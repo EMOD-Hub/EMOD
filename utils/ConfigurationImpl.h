@@ -7,7 +7,6 @@
 #include <functional>
 #include "ISupports.h"
 #include "EnumSupport.h"
-#include <boost/type_traits/is_base_of.hpp>
 
 namespace Kernel
 {
