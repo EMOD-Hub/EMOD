@@ -3,7 +3,6 @@
 #include "NodeInfo.h"
 #include "JsonObject.h"
 #include "Serializer.h"
-#include "Profile.h"
 #include "INodeContext.h"
 
 namespace Kernel

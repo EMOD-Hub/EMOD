@@ -3,7 +3,6 @@
 #include "NodeInfoVector.h"
 #include "JsonObject.h"
 #include "Serializer.h"
-#include "Profile.h"
 #include "Debug.h"
 #include "VectorContexts.h"
 #include "VectorHabitat.h"

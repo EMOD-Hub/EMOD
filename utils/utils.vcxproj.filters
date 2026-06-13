@@ -48,9 +48,6 @@
     <ClInclude Include="BoostLibWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Profile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ProgVersion.h">
       <Filter>Header Files</Filter>
     </ClInclude>

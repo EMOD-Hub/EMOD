@@ -242,7 +242,6 @@
     <ClInclude Include="numpy-files.h" />
     <ClInclude Include="ObjectFactory.h" />
     <ClInclude Include="ObjectFactoryTemplates.h" />
-    <ClInclude Include="Profile.h" />
     <ClInclude Include="ProgramOptions.h" />
     <ClInclude Include="ProgVersion.h" />
     <ClInclude Include="Properties.h" />

@@ -1,6 +1,25 @@
 #pragma once
 
-#include "Profile.h"
+#ifndef USE_BOOST_GENERAL
+#define USE_BOOST_GENERAL 1
+#endif
+
+#ifndef USE_BOOST_ALGORITHM
+#define USE_BOOST_ALGORITHM 1
+#endif
+
+#ifndef USE_BOOST_MATH
+#define USE_BOOST_MATH 1
+#endif
+
+#ifndef USE_BOOST_ASSIGN
+#define USE_BOOST_ASSIGN 1
+#endif
+
+#ifndef USE_BOOST_UUID
+#define USE_BOOST_UUID 1
+#endif
+
 
 #pragma warning (disable: 4267)
 #pragma warning (disable: 4244)
@@ -18,10 +37,6 @@
 #include <boost/algorithm/string.hpp>
 #endif
 
-#if USE_BOOST_MATH
-#include <boost/math/special_functions/fpclassify.hpp>
-#endif
-
 #if USE_BOOST_ASSIGN
 #include <boost/assign/list_of.hpp>
 #endif
@@ -32,13 +47,3 @@
 #include <boost/uuid/string_generator.hpp>
 #include <boost/uuid/uuid.hpp>
 #endif
-
-// Note: It would be nice to have a symmetric usage of disable/default of warning level and it is possible
-//       for header file inclusion, but the trouble is sometimes the reference of boost library class instance 
-//       in the CPP file directly such as: nodeid_suid_map->right.count (in Climate.cpp, 344 lines)
-//       which could trigger a lot of 4503 warnings (not exactly sure why), hence this forbids or destroy
-//       general usage of #pragma warning(default: 4503) pair or #pragma push/pop pair
-
-//#pragma warning (default: 4267)
-//#pragma warning (default: 4244)
-//#pragma warning (default: 4503)

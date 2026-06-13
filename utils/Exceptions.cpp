@@ -185,16 +185,6 @@ static const char* nullptr_str = "nullptr";
 #define GET_STR(s)      ( (s) ? (s) : nullptr_str )
 
 namespace Kernel {
-#if 0
-    DetailedException::DetailedException( const char * msg, const char * file_name, int line_num )
-    : std::runtime_error( msg )
-    , _fileName( file_name )
-    , _lineNum( line_num )
-    , _msg( msg )
-    {
-        //std::cout << "DetailedException ctor: msg = " << msg << ", file = " << file_name << ", line_num = " << line_num << std::endl;
-    }
-#endif
 
     DetailedException::DetailedException( const char * file_name, int line_num, const char * func_name )
     : std::runtime_error( std::string( "\nException in " ) + GET_STR(file_name) + " at " + boost::lexical_cast<std::string>(line_num) + " in " + GET_STR(func_name) + ".\n" )
@@ -638,15 +628,6 @@ namespace Kernel {
         const char * caught_msg )
     : DetailedException( filename, line_num, function_name )
     {
-#if 0
-                 << what()
-                 << "Parameter '"
-                 << param_name
-                 << "' not found in input file '"
-                 << config_file_name
-                 << "'."
-                 << std::endl;
-#endif
         std::stringstream blob_msg;
         json::Writer::Write( json_blob, blob_msg );
 

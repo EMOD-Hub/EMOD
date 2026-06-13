@@ -4,7 +4,6 @@
 #include <stdexcept>
 #include <iostream>
 #include <sstream>
-#include <boost/lexical_cast.hpp> // no!!!
 #include "IdmApi.h"
 #include "CajunIncludes.h"
 #include <vector>

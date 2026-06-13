@@ -46,15 +46,6 @@ namespace Kernel
             value->Configure((const Configuration*)&((*config)[name]));
         }
 
-        // cache the configuration substructure with a named key
-        /* static void get_config_value(const Configuration* config, std::string name, Configuration const** pp_cached_config)
-        {
-            // TODO: error handling here?...could also pass back return codes
-            // need to catch json lookup exceptions here and report errors
-            *pp_cached_config = (const Configuration*)(&(*config)[name]);
-        }
-        */
-
         static void get_config_value(const Configuration* config, std::string name, Configuration ** pp_cached_config)
         {
             // TODO: error handling here?...could also pass back return codes
@@ -62,48 +53,6 @@ namespace Kernel
 
             *pp_cached_config = Configuration::CopyFromElement( (*config)[name], config->GetDataLocation() );
         }
-
-        /*
-        static void get_schema_element_for_configuration(QuickBuilder *schema, std::string name, std::string description )
-        {
-            Array& members = (*schema)["members"].As<Array>();
-            Element member = Object();
-            QuickBuilder qb(member);
-            qb["name"] = String(name);
-            qb["type"] = String("configuration"); // TODO: may want this to work differently later, maybe rename this field to 'class' 
-            qb["description"] = String(description);
-
-            members.Insert( qb, members.End());
-        }
-
-        static void get_schema_element_for_configurable(QuickBuilder *schema, IConfigurable* configurable_member, std::string name, std::string description )
-        {
-            Array& members = (*schema)["members"].As<Array>();
-            Element member = Object();
-            QuickBuilder qb(member);
-            qb["name"] = String(name);
-            qb["type"] = String("object"); // TODO: may want this to work differently later, maybe rename this field to 'class' 
-            qb["description"] = String(description);
-            qb["schema"] = (configurable_member->GetSchema()); // todo: this is probably a bit sloppy; figure out whether in fact all elements constructed by the QB are deep copied...maybe GetSchema could just return QB (-*)
-
-            members.Insert( qb, members.End());
-        }
-
-        static void get_schema_element_for_param(QuickBuilder *schema, std::string name, std::string type_name, float min, float max, std::string description )
-        {
-            // Use QB to construct a json element...maybe return that then instead of strings? anyway doesn't have to happen now
-            //return std::string("{") + "\"name\" :\""+ name + "\", \"type\": \""+ type_name +"\" }"; // TODO: put other stuff in too
-            Array& members = (*schema)["members"].As<Array>();
-            Element member = Object();
-            QuickBuilder qb(member);
-            qb["name"] = String(name);
-            qb["type"] = String(type_name);
-            qb["min"] = Number(min);
-            qb["max"] = Number(max);
-            qb["description"] = String(description);
-            members.Insert( qb, members.End() );
-        }
-        */
     };
 
     class ModeConfigure { };
