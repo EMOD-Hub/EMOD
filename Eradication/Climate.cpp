@@ -102,11 +102,6 @@ namespace Kernel {
 
     void Climate::UpdateWeather( float time, float dt, RANDOMBASE* pRNG, bool initialization )
     {
-        // -----------------------------------------------------------------------------------
-        // --- We don't want to add stochasticity during initialization because it can change
-        // --- the random number stream compared when running from a serialized file comapred
-        // --- to running the full sim
-        // -----------------------------------------------------------------------------------
         if( enable_climate_stochasticity && !initialization )
             AddStochasticity( pRNG, airtemperature_variance, landtemperature_variance, rainfall_variance_enabled, humidity_variance );
 
@@ -140,8 +135,7 @@ namespace Kernel {
             m_humidity += float( pRNG->eGauss() * humidity_variance ); // varies as a Gaussian with stdev as specified in %
     }
 
-    ClimateFactory *
-    ClimateFactory::CreateClimateFactory(boost::bimap<ExternalNodeId_t, suids::suid> * nodeid_suid_map, const ::Configuration *config, const string idreference)
+    ClimateFactory* ClimateFactory::CreateClimateFactory(boost::bimap<ExternalNodeId_t, suids::suid> * nodeid_suid_map, const ::Configuration *config, const string idreference)
     {
         ClimateFactory* factory = _new_ ClimateFactory(nodeid_suid_map);
         if(!factory->Initialize(config, idreference))
@@ -520,7 +514,6 @@ namespace Kernel {
         release_assert(nodeid_suid_map);
         if(nodeid_suid_map->right.count(node_suid) == 0)
         {
-            // ERROR: "Error: Couldn't find matching NodeID for suid " << node_suid.data << endl;
             throw IncoherentConfigurationException( __FILE__, __LINE__, __FUNCTION__, "(nodeid_suid_map->right.count(node_suid)", 0, "node_suid", node_suid.data );
         }
 
@@ -537,7 +530,6 @@ namespace Kernel {
             {
                 if(koppentype_offsets.count(nodeid) == 0)
                 {
-                    //std::cerr << "Error: Couldn't find offset for NodeID " << nodeid << " in ClimateKoppen file" << endl;
                     throw IncoherentConfigurationException( __FILE__, __LINE__, __FUNCTION__, "(koppentype_offsets.count(node_suid)", 0, "node_suid", node_suid.data );
                 }
 
@@ -602,9 +594,6 @@ namespace Kernel {
 
             default:
             {
-                // climate_structure not one of the recognized (non-off) types... why is this being called??
-                //std::cerr << "Error: CreateClimate() was called for an invalid climate-structure: " << climate_structure << std::endl;
-                //throw BadEnumInSwitchStatementException( __FILE__, __LINE__, __FUNCTION__, "Climate_Model", climate_structure, ClimateStructure::pairs::lookup_key(climate_structure) );
             }
         }
 
@@ -637,17 +626,3 @@ namespace Kernel {
     void
     Climate::SetContextTo(INodeContext* _parent) { parent = _parent; }
 }
-
-#if 0
-namespace Kernel {
-    template<class Archive>
-    void serialize(Archive & ar, Climate& climate, const unsigned int file_version)
-    {
-        ar & climate.m_airtemperature;
-        ar & climate.m_landtemperature;
-        ar & climate.m_accumulated_rainfall;
-        ar & climate.m_humidity; 
-        ar & climate.resolution_correction;
-    }
-}
-#endif

@@ -73,7 +73,7 @@ namespace Kernel
         static const float max_landtemp;
         static const float max_rainfall;
 
-        INodeContext * parent;
+        INodeContext* parent;
 
     public:
         virtual ~Climate();
@@ -155,5 +155,3 @@ namespace Kernel
         float start_time;
     };
 }
-
-
