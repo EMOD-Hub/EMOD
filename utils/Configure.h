@@ -157,6 +157,7 @@ namespace Kernel
         typedef std::map< std::string, bool * > tBoolConfigTypeMapType;
         typedef std::map< std::string, int * > tIntConfigTypeMapType;
         typedef std::map< std::string, uint32_t * > tUint32ConfigTypeMapType;
+        typedef std::map< std::string, uint64_t * > tUint64ConfigTypeMapType;
         typedef std::map< std::string, float * > tFloatConfigTypeMapType;
         typedef std::map< std::string, double * > tDoubleConfigTypeMapType;
         typedef std::map< std::string, std::string * > tStringConfigTypeMapType;
@@ -224,6 +225,7 @@ namespace Kernel
             tBoolConfigTypeMapType boolConfigTypeMap;
             tIntConfigTypeMapType intConfigTypeMap;
             tUint32ConfigTypeMapType uint32ConfigTypeMap;
+            tUint64ConfigTypeMapType uint64ConfigTypeMap;
             tFloatConfigTypeMapType floatConfigTypeMap;
             tDoubleConfigTypeMapType doubleConfigTypeMap;
             tEnumConfigTypeMapType enumConfigTypeMap;
@@ -313,6 +315,14 @@ namespace Kernel
             uint32_t * pVariable,
             const char* description = default_description,
             uint32_t min = 0, uint32_t max = UINT_MAX, uint32_t defaultvalue = 0,
+            const char* condition_key = nullptr, const char* condition_value = nullptr
+        );
+
+        void initConfigTypeMap(
+            const char* paramName,
+            uint64_t * pVariable,
+            const char* description = default_description,
+            uint64_t min = 0, uint64_t max = UINT_MAX, uint64_t defaultvalue = 0,
             const char* condition_key = nullptr, const char* condition_value = nullptr
         );
 

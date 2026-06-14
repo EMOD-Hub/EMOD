@@ -533,6 +533,35 @@ namespace Kernel
     void
     JsonConfigurable::initConfigTypeMap(
         const char* paramName,
+        uint64_t * pVariable,
+        const char * description,
+        uint64_t min, uint64_t max, uint64_t defaultvalue,
+        const char* condition_key, const char* condition_value
+    )
+    {
+        LOG_DEBUG_F( "initConfigTypeMap<int>: %s\n", paramName );
+        json::Object newParamSchema;
+        newParamSchema[ "min" ] = json::Number( min );
+        newParamSchema[ "max" ] = json::Number( max );
+        newParamSchema[ "default" ] = json::Number( defaultvalue );
+        if( _dryrun )
+        {
+            newParamSchema[ "description" ] = json::String( description );
+            newParamSchema[ "type" ] = json::String( "integer" );
+        }
+        else
+        {
+            GetConfigData()->uint64ConfigTypeMap[ paramName ] = pVariable;
+        }
+
+        updateSchemaWithCondition(newParamSchema, condition_key, condition_value);
+
+        jsonSchemaBase[ paramName ] = newParamSchema;
+    }
+
+    void
+    JsonConfigurable::initConfigTypeMap(
+        const char* paramName,
         float * pVariable,
         const char * description,
         float min, float max, float defaultvalue,
