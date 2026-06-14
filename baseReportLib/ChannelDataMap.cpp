@@ -1,6 +1,7 @@
 
 #include "stdafx.h"
 
+#include <cfloat>
 #include <numeric>
 
 #include "ChannelDataMap.h"

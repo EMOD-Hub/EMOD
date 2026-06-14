@@ -4,6 +4,7 @@
 #include <sys/stat.h> // stat()
 #include <algorithm> //std::replace()
 #include <fstream>
+#include <cstring>
 
 #include "Exceptions.h"
 #include "FileSystem.h"

@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <cfloat>
 #include <sstream>
 #include <stdexcept>
 #include <assert.h>

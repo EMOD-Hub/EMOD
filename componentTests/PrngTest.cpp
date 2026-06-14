@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include <iostream>
 #include <iomanip>
+#include <cfloat>
 #include "UnitTest++.h"
 #include "ChiSquare.h"
 
