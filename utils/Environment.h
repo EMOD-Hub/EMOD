@@ -52,7 +52,6 @@ public:
         std::string configFileName,
         std::string inputPath,
         std::string outputPath,
-// 2.5        std::string statePath,
         std::string dllPath,
         bool get_schema
         );
@@ -82,10 +81,7 @@ public:
     static const void* getRandomNumberGeneratorFactory();
     static void setRandomNumberGeneratorFactory( void* pFactory );
 
-    // Return path to specified file according to the following order of preference:
-    // (1) in current working directory, (2) in specified InputPath
     static std::string FindFileOnPath( const std::string& rFilename );
-
 
     virtual ~Environment();
 
