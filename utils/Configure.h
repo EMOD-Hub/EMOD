@@ -865,13 +865,18 @@ namespace Kernel
     {
         public:
             IndividualInterventionConfig();
-            virtual json::QuickBuilder GetSchema();
+            IndividualInterventionConfig(json::QuickInterpreter* qi);
+
+            virtual json::QuickBuilder GetSchema() override;
     };
 
     class NodeInterventionConfig : public InterventionConfig
     {
         public:
-            virtual json::QuickBuilder GetSchema();
+            NodeInterventionConfig();
+            NodeInterventionConfig(json::QuickInterpreter* qi);
+
+            virtual json::QuickBuilder GetSchema() override;
     };
 
     class NodeSetConfig : public JsonConfigurable, public IComplexJsonConfigurable

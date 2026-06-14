@@ -226,6 +226,10 @@ namespace Kernel
         : InterventionConfig()
     { }
 
+    IndividualInterventionConfig::IndividualInterventionConfig(json::QuickInterpreter* qi)
+        : InterventionConfig(qi)
+    { }
+
     json::QuickBuilder IndividualInterventionConfig::GetSchema()
     {
         json::QuickBuilder schema = InterventionConfig::GetSchema();
@@ -235,14 +239,22 @@ namespace Kernel
         return schema;
     }
 
+    NodeInterventionConfig::NodeInterventionConfig()
+        : InterventionConfig()
+    { }
+
+    NodeInterventionConfig::NodeInterventionConfig(json::QuickInterpreter* qi)
+        : InterventionConfig(qi)
+    { }
+
     json::QuickBuilder NodeInterventionConfig::GetSchema()
     {
         json::QuickBuilder schema = InterventionConfig::GetSchema();
         auto tn = JsonConfigurable::_typename_label();
-        schema[ tn ] = json::String( "idmAbstractType:NodeIntervention" );
+        schema[tn] = json::String( "idmAbstractType:NodeIntervention" );
+
         return schema;
     }
-
     /// END OF InterventionConfig
 
 
