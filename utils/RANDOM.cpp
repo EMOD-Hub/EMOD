@@ -4,6 +4,7 @@
 #include "Debug.h"
 #include <assert.h>
 #include <math.h>
+#include <cfloat>
 #include <numeric> //std::accumulate()
 #include "Log.h"
 #include "IArchive.h"
