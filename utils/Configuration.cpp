@@ -49,6 +49,7 @@ Configuration::Configuration()
     : QuickInterpreter( json::Element() )
     , pElement( nullptr )
     , data_location("serialization")
+    , extendedConfig{}
 {
     // this ctor only for serialization, the base class will be initialized to an invalid state which deserialization must repair
 }

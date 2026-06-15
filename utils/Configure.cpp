@@ -370,16 +370,21 @@ namespace Kernel
         LOG_DEBUG_F( "Setting condition in schema for key %s (value=%s).\n", condition_key, ( condition_value ? condition_value : "1") );
         if( condition_key )
         {
-            json::Object condition;
-            if( condition_value )
+            if(!schema.Exist("depends-on"))
             {
-                condition[ condition_key ] = json::String( condition_value );
+                schema["depends-on"] = json::Object();
+            }
+
+            if( condition_value == nullptr )
+            {
+                // condition_value is null, so condition_key is a bool and condition_value is implicitly true
+                json_cast<json::Object&>(schema["depends-on"])[ condition_key ] = json::Number( 1 );
             }
             else
-            { 
-                condition[ condition_key ] = json::Number( 1 );
+            {
+                // condition_value is not null, so it's a string (enum)
+                json_cast<json::Object&>(schema["depends-on"])[ condition_key ] = json::String( condition_value );
             }
-            schema["depends-on"] = condition;
         }
     }
 
