@@ -168,6 +168,7 @@ namespace Kernel
         typedef std::map< std::string, std::vector< std::vector< std::vector< std::string > > > * > tVector3dStringConfigTypeMapType;
         typedef std::map< std::string, const std::set< std::string > * > tVectorStringConstraintsTypeMapType;
         typedef std::map< std::string, std::vector< float > * > tVectorFloatConfigTypeMapType;
+        typedef std::map< std::string, std::vector< bool > * > tVectorBoolConfigTypeMapType;
         typedef std::map< std::string, std::vector< int > * > tVectorIntConfigTypeMapType;
         typedef std::map< std::string, std::vector< uint32_t > * >tVectorUint32ConfigTypeMapType;
         typedef std::map< std::string, std::vector< std::vector< float > > * > tVector2dFloatConfigTypeMapType;
@@ -176,6 +177,7 @@ namespace Kernel
         typedef std::map< std::string, tFloatFloatMapConfigType * > tFloatFloatMapConfigTypeMapType;
         typedef std::map< std::string, tStringFloatMapConfigType * > tStringFloatMapConfigTypeMapType;
         typedef std::map< std::string, RangedFloat * > tRangedFloatConfigTypeMapType;
+        typedef std::map< std::string, NonNegativeFloat * > tNonNegativeFloatConfigTypeMapType;
         typedef std::map< std::string, NaturalNumber * > tNNConfigTypeMapType;
         typedef std::map< std::string, JsonConfigurable * > tJsonConfigurableMapType;
         typedef std::map< std::string, IComplexJsonConfigurable * > tComplexJsonConfigurableMapType;
@@ -239,6 +241,7 @@ namespace Kernel
             tVectorStringConstraintsTypeMapType vector2dStringConstraintsTypeMap;
             tVectorStringConstraintsTypeMapType vector3dStringConstraintsTypeMap;
             tVectorFloatConfigTypeMapType vectorFloatConfigTypeMap;
+            tVectorBoolConfigTypeMapType vectorBoolConfigTypeMap;
             tVectorIntConfigTypeMapType vectorIntConfigTypeMap;
             tVectorUint32ConfigTypeMapType vectorUint32ConfigTypeMap;
             tVector2dFloatConfigTypeMapType vector2dFloatConfigTypeMap;
@@ -247,6 +250,7 @@ namespace Kernel
             tFloatFloatMapConfigTypeMapType ffMapConfigTypeMap;
             tStringFloatMapConfigTypeMapType sfMapConfigTypeMap;
             tRangedFloatConfigTypeMapType rangedFloatConfigTypeMap;
+            tNonNegativeFloatConfigTypeMapType nonNegativeFloatConfigTypeMap;
             tNNConfigTypeMapType naturalNumberConfigTypeMap;
             tJsonConfigurableMapType jcTypeMap;
             tComplexJsonConfigurableMapType complexTypeMap;
@@ -396,7 +400,14 @@ namespace Kernel
             const char* paramName,
             std::vector< float > * pVariable,
             const char* description = default_description,
-            float min=-FLT_MAX, float max=FLT_MAX, bool ascending=false,
+            float min = -FLT_MAX, float max = FLT_MAX, bool ascending = false,
+            const char* condition_key = nullptr, const char* condition_value = nullptr
+        );
+
+        void initConfigTypeMap(
+            const char* paramName,
+            std::vector< bool > * pVariable,
+            const char* description = default_description,
             const char* condition_key = nullptr, const char* condition_value = nullptr
         );
 
@@ -449,7 +460,7 @@ namespace Kernel
             const char* paramName,
             tFloatFloatMapConfigType * pVariable,
             const char* description,
-            const char* condition_key, const char* condition_value
+            const char* condition_key = nullptr, const char* condition_value = nullptr
         );
 
         void initConfigTypeMap(
@@ -507,8 +518,7 @@ namespace Kernel
             const char* paramName,
             std::vector<IPKeyValueParameter>* pVariable,
             const char* description = default_description,
-            const char* condition_key = nullptr,
-            const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr
         );
 
         void initConfigTypeMap(

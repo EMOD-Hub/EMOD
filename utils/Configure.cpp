@@ -890,6 +890,29 @@ namespace Kernel
     void
     JsonConfigurable::initConfigTypeMap(
         const char* paramName,
+        std::vector< bool > * pVariable,
+        const char* description,
+        const char* condition_key, const char* condition_value
+    )
+    {
+        LOG_DEBUG_F( "initConfigTypeMap<vector<bool>>: %s\n", paramName);
+        GetConfigData()->vectorBoolConfigTypeMap[ paramName ] = pVariable;
+        json::Object newParamSchema;
+        if ( _dryrun )
+        {
+            newParamSchema["description"] = json::String(description);
+            newParamSchema["type"] = json::String("Vector Bool");
+            newParamSchema["default"] = json::Array();
+        }
+
+        updateSchemaWithCondition(newParamSchema, condition_key, condition_value);
+
+        jsonSchemaBase[paramName] = newParamSchema;
+    }
+
+    void
+    JsonConfigurable::initConfigTypeMap(
+        const char* paramName,
         std::vector< int > * pVariable,
         const char* description,
         int min, int max, bool ascending,
@@ -1771,6 +1794,54 @@ namespace Kernel
             LOG_DEBUG_F( "the key %s = uint32_t %u\n", key.c_str(), *(entry.second) );
         }
 
+        // ---------------------------------- uint64_t -------------------------------------
+        for( auto& entry : GetConfigData()->uint64ConfigTypeMap )
+        {
+            const std::string& key = entry.first;
+            json::QuickInterpreter schema = jsonSchemaBase[ key ];
+            uint64_t val = 0;
+
+            if( ignoreParameter( schema, inputJson ) )
+            {
+                continue; // param is missing and that's ok." << std::endl;
+            }
+
+            // check if parameter was specified in input json (TODO: improve performance by getting the iterator here with Find() and reusing instead of GET_CONFIG_INTEGER below)
+            if( inputJson->Exist( key ) )
+            {
+                // get specified configuration parameter
+                double jsonValueAsDouble = GET_CONFIG_DOUBLE( inputJson, key.c_str() );
+                if( jsonValueAsDouble != (uint64_t)jsonValueAsDouble )
+                {
+                    std::ostringstream errMsg; // using a non-parameterized exception.
+                    errMsg << "The value for parameter '"<< key << "' appears to be a decimal ("
+                           << jsonValueAsDouble
+                           << ") but needs to be an integer." << std::endl;
+                    throw Kernel::GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, errMsg.str().c_str() );
+                }
+                val = uint64_t( jsonValueAsDouble );
+                // throw exception if value is outside of range
+                EnforceParameterRange<uint64_t>( key, val, schema );
+                *(entry.second) = val;
+            }
+            else
+            {
+                if( _useDefaults )
+                {
+                    // using the default value
+                    val = (uint64_t)schema[ "default" ].As<json::Number>();
+                    LOG_DEBUG_F( "Using the default value ( \"%s\" : %d ) for unspecified parameter.\n", key.c_str(), val );
+                    *(entry.second) = val;
+                }
+                else // not in config, not using defaults, no depends-on, just plain missing
+                {
+                    handleMissingParam( key, inputJson->GetDataLocation() );
+                }
+            }
+
+            LOG_DEBUG_F( "the key %s = uint64_t %u\n", key.c_str(), *(entry.second) );
+        }
+
         // ---------------------------------- FLOAT ------------------------------------
         for (auto& entry : GetConfigData()->floatConfigTypeMap)
         {
@@ -2145,8 +2216,28 @@ namespace Kernel
             {
                 std::vector<float> configValues = GET_CONFIG_VECTOR_FLOAT( inputJson, (entry.first).c_str() );
                 *(entry.second) = configValues;
-
                 EnforceVectorParameterRanges<float>(key, configValues, schema);
+            }
+            else if( !_useDefaults )
+            {
+                handleMissingParam( key, inputJson->GetDataLocation() );
+            }
+        }
+
+        //----------------------------------- VECTOR of BOOLs ------------------------------
+        for (auto& entry : GetConfigData()->vectorBoolConfigTypeMap)
+        {
+            const std::string& key = entry.first;
+            json::QuickInterpreter schema = jsonSchemaBase[key];
+            if( ignoreParameter( schema, inputJson ) )
+            {
+                continue; // param is missing and that's ok.
+            }
+
+            if( inputJson->Exist(key) )
+            {
+                std::vector<bool> configValues = GET_CONFIG_VECTOR_BOOL( inputJson, (entry.first).c_str() );
+                *(entry.second) = configValues;
             }
             else if( !_useDefaults )
             {

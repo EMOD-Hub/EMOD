@@ -93,7 +93,6 @@ Configuration* Configuration::LoadFromPython(
 #ifdef EMBEDDED_PYTHON_DEMO
     PyObject * pName, *pModule, *pDict, *pFunc, *pValue;
 
-    //std::cout << "Invoking python (hopefully)!" << std::endl;
     Py_Initialize();
     PyErr_Print();
     pName = PyUnicode_FromString( "emod_config" ); // need to have script emod_config.py in site-packages (or other path visible to python)
@@ -111,7 +110,6 @@ Configuration* Configuration::LoadFromPython(
     pValue = PyObject_CallObject( pFunc, vars );
     PyErr_Print();
 
-    //std::cout << PyString_AsString(pValue) << std::endl;
     std::istringstream testJsonFromPy( PyString_AsString(pValue) );
     
     Py_DECREF( pValue );
@@ -198,20 +196,6 @@ Configuration *Configuration_Load( const std::string& rFilename )
     return Configuration::Load( rFilename );
 }
 
-
-/*
-Configuration* Configuration::Load( istream &config_file )
-{    
-    return loadInternal(config_file);
-}
-
-Configuration* Configuration::loadInternalWrapper( std::istream &config_file )
-{
-    return loadInternal(config_file);
-}
-*/
-
-
 Configuration* Configuration::loadInternal( istream &is_config_file, const std::string& rDataLocation )
 {
     using namespace json;
@@ -236,43 +220,51 @@ Configuration* Configuration::CopyFromElement( const json::Element &elem, const 
     return _new_ Configuration( elem_copy, rDataLocation );
 }
 
-#if 0
-template<class Archive>
-void Configuration::serialize( Archive &ar, const unsigned int v )
-{
-    // hacked serialization....converts to string then serializes that, rather than trying to do an efficient serialization of the cajun objects themselves
-
-    if (typename Archive::is_loading())
-    {
-        string data;
-        ar & data;
-
-        istringstream iss(data, istringstream::in);
-
-        Element *elem = _new_ String();
-        Reader::Read(*elem, iss);
-
-        pElement = elem;
-#ifdef WIN32
-        this->QuickInterpreter::QuickInterpreter(*pElement); // reinit base class
-#else
-#warning "code commented out to get linux build to work"
-#endif
-
-    }
-    else
-    {
-        ostringstream oss(ostringstream::out);
-        Writer::Write(*pElement, oss);
-        // Trying 2-step for linux
-        std::string stringToSerialize = oss.str();
-        ar & stringToSerialize;
-    }
-}
-#endif
-
 /////////////////////////////////////////////////////////////////////////////////////////
 // config/json loading wrappers
+
+vector<bool> GET_CONFIG_VECTOR_BOOL(const QuickInterpreter* parameter_source, const char *name)
+{
+    vector<bool> values;
+
+    if(parameter_source == nullptr)
+    {
+        if( Kernel::JsonConfigurable::_dryrun )
+        {
+            return values;
+        }
+        else
+        {
+            throw std::runtime_error("Null pointer!  Invalid config passed for parsing");
+        }
+    }
+    try
+    {
+        json::QuickInterpreter json_array( (*parameter_source)[name].As<json::Array>() );
+        for( unsigned int idx = 0; idx < (*parameter_source)[name].As<json::Array>().Size(); idx++ )
+        {
+            int value = static_cast<int>(json_array[idx].As<json::Number>());
+            if(value != 0 && value != 1)
+            {
+                throw Kernel::JsonTypeConfigurationException( __FILE__, __LINE__, __FUNCTION__, name, (*parameter_source), "Expected only 0 or 1 in BOOL VECTOR/ARRAY" );
+            }
+            values.push_back((value==1?true:false));
+        }
+    }
+    catch( json::Exception )
+    {
+        if( Kernel::JsonConfigurable::_dryrun )
+        {
+            return values;
+        }
+        else
+        {
+            throw Kernel::JsonTypeConfigurationException( __FILE__, __LINE__, __FUNCTION__, name, (*parameter_source), "Expected BOOL VECTOR/ARRAY" );
+        }
+    }
+
+    return values;
+}
 
 vector<int> GET_CONFIG_VECTOR_INT(const QuickInterpreter* parameter_source, const char *name)
 {
@@ -794,14 +786,3 @@ double GET_CONFIG_DOUBLE(
 
     return value;
 }
-
-
-/*bool GET_CONFIG_BOOLEAN(const json::QuickInterpreter* parameter_source, const char *name)
-{
-    double d = GET_CONFIG_DOUBLE(parameter_source, name);
-
-    if(d != 0.0 && d != 1.0)
-        throw std::runtime_error(("Non-boolean value found for config parameter: " + std::string(name)).c_str());
-
-    return (d == 1.0);
-}*/
