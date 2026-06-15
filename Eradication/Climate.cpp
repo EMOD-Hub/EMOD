@@ -102,6 +102,11 @@ namespace Kernel {
 
     void Climate::UpdateWeather( float time, float dt, RANDOMBASE* pRNG, bool initialization )
     {
+        // -----------------------------------------------------------------------------------
+        // --- We don't want to add stochasticity during initialization because it can change
+        // --- the random number stream compared when running from a serialized file comapred
+        // --- to running the full sim
+        // -----------------------------------------------------------------------------------
         if( enable_climate_stochasticity && !initialization )
             AddStochasticity( pRNG, airtemperature_variance, landtemperature_variance, rainfall_variance_enabled, humidity_variance );
 
