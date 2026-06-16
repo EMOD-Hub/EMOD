@@ -138,11 +138,7 @@ inline std::string GET_CONFIG_STRING(const json::QuickInterpreter* parameter_sou
     return GET_CONFIG_STRING(parameter_source, name.c_str());
 }
 
-#ifdef __GNUC__
-double GET_CONFIG_DOUBLE(const json::QuickInterpreter* parameter_source, const char *name, int min = -1*std::numeric_limits<int>::max());
-#else
 double GET_CONFIG_DOUBLE(const json::QuickInterpreter* parameter_source, const char *name, int min = -1*INT_MAX);
-#endif
 inline double GET_CONFIG_DOUBLE(const json::QuickInterpreter* parameter_source, const std::string& name)
 {
     return GET_CONFIG_DOUBLE(parameter_source, name.c_str());

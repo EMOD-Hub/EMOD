@@ -11,6 +11,8 @@
 
 namespace Kernel
 {
+    struct IConfigurable;
+
     /* This file contains the basic definitions needed for a simplified COM-like ISupports/IUnknown model for implementing dynamic interface querying.
         Reference counting is not supported yet and wont be unless our ownership model becomes more complex. 
     */
@@ -52,6 +54,8 @@ namespace Kernel
         // TODO: not implementing these because we have a simple hierarchical ownership structure...for the time being, but should be done soon <ERAD-285>
         virtual int32_t AddRef() = 0; // these return signed values because subtle concurrency issues could result in negative refcounts being returned in theory
         virtual int32_t Release() = 0;
+
+        virtual IConfigurable* GetConfigurable() { return nullptr; }
 
         virtual ~ISupports() {}
     };

@@ -126,6 +126,7 @@ namespace Kernel
         typedef std::map< std::string, ConstrainedString * > tConStringConfigTypeMapType;
     }
 
+    bool ignoreParameter( const json::QuickInterpreter& schema, const json::QuickInterpreter * pJson );
     bool ignoreParameter( const json::QuickInterpreter * pJson, const char * condition_key, const char * condition_value = nullptr );
 
     class JsonConfigurable : public IConfigurable
@@ -152,6 +153,7 @@ namespace Kernel
         static const char * default_string;
 
         static void CheckMissingParameters();
+        virtual IConfigurable* GetConfigurable() override;
 
     private:
         typedef std::map< std::string, bool * > tBoolConfigTypeMapType;
@@ -218,6 +220,11 @@ namespace Kernel
 
         static jsonConfigurable::tStringSet missing_parameters_set;
 
+        bool MatchesDependency(const json::QuickInterpreter*              pJson,
+                               const char*                                condition_key   = nullptr,
+                               const char*                                condition_value = nullptr,
+                               const std::map<std::string, std::string>*  depends_list    = nullptr);
+
         // TEST ONLY - componentTests needs to clear this so that other tests don't fail
         static void ClearMissingParameters() { missing_parameters_set.clear() ; }
 
@@ -265,7 +272,6 @@ namespace Kernel
             tEventTriggerNodeVectorMapType eventTriggerNodeVectorTypeMap;
             tEventTriggerCoordinatorMapType eventTriggerCoordinatorTypeMap;
             tEventTriggerCoordinatorVectorMapType eventTriggerCoordinatorVectorTypeMap;
-
         };
     private:
         // make this private so subclasses have to call GetConfigData()
@@ -581,7 +587,7 @@ namespace Kernel
             const char* condition_value = nullptr
         );
 
-       template< typename T >
+        template< typename T >
         void EnforceParameterRange( const std::string& key, T value, json::QuickInterpreter& jsonObj )
         {
             T min = (T)jsonObj["min"].As<json::Number>();
@@ -604,13 +610,16 @@ namespace Kernel
         void EnforceParameterAscending(const std::string& key, const std::vector<T> & values)
         {
             //Try to find a value to the left of an element with a value that is greater or equal 
-            for( int i = 0; i < int(values.size())-1; ++i )
+            if( values.size() > 1 )
             {
-                if( values[ i ] >= values[ i + 1 ] )
+                for (auto it = values.cbegin(); it != values.cend() - 1; ++it)
                 {
-                    std::stringstream error_string;
-                    error_string << "The values in '" << key << "' must be unique and in ascending order.";
-                    throw InvalidInputDataException(__FILE__, __LINE__, __FUNCTION__, error_string.str().c_str());
+                    if (*it >= *(it + 1))
+                    {
+                        std::stringstream error_string;
+                        error_string << "The values in '" << key << "' must be unique and in ascending order.";
+                        throw InvalidInputDataException(__FILE__, __LINE__, __FUNCTION__, error_string.str().c_str());
+                    }
                 }
             }
         }
