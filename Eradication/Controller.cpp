@@ -26,8 +26,6 @@ using namespace Kernel;
 SETUP_LOGGING( "Controller" )
 
 
-void StepSimulation(ISimulation* sim, float dt);
-
 // Basic simulation main loop with reporting
 void RunSimulation( ISimulation* sim, int steps, float dt )
 {
@@ -42,11 +40,12 @@ void RunSimulation( ISimulation* sim, int steps, float dt )
     {
         if (!serialization_time_steps.empty() && t == serialization_time_steps.front())
         {
-            SerializedState::SaveSerializedSimulation( dynamic_cast<Simulation*>(sim), t, true, use_full_precision );
+            SerializedState::SaveSerializedSimulation(dynamic_cast<Simulation*>(sim), t, true, use_full_precision);
             serialization_time_steps.pop_front();
         }
 
-        StepSimulation(sim, dt);
+        sim->Update(dt);
+        EnvPtr->Log->Flush();
 
         if (EnvPtr->MPI.Rank == 0)
         {
@@ -63,20 +62,12 @@ void RunSimulation( ISimulation* sim, int steps, float dt )
     bool final_in_list = std::find(serialization_time_steps.begin(), serialization_time_steps.end(), steps) != serialization_time_steps.end();
     if (!serialization_time_steps.empty() && final_in_list)
     {
-        SerializedState::SaveSerializedSimulation( dynamic_cast<Simulation*>(sim), steps, true, use_full_precision );
+        SerializedState::SaveSerializedSimulation(dynamic_cast<Simulation*>(sim), steps, true, use_full_precision);
     }
-}
-
-void StepSimulation(ISimulation* sim, float dt)
-{
-    sim->Update(dt);
-
-    EnvPtr->Log->Flush();
 }
 
 bool DefaultController::execute_internal()
 {
-
     using namespace Kernel;
     list<string> serialization_test_state_filenames;
 
@@ -87,9 +78,9 @@ bool DefaultController::execute_internal()
     SerializationParameters::GetInstance()->Configure( EnvPtr->Config );  // Has to be configured before CreateSimulation()
     JsonConfigurable::CheckMissingParameters();
 
-    std::unique_ptr<ISimulation> sim( SimulationFactory::CreateSimulation() ); 
+    std::unique_ptr<ISimulation> sim(SimulationFactory::CreateSimulation());
 
-    if (nullptr == sim.get())
+    if (!sim.get())
     {
         throw InitializationException( __FILE__, __LINE__, __FUNCTION__, "sim.get() returned NULL after call to CreateSimulation.\n" );
     }
@@ -106,7 +97,6 @@ bool DefaultController::execute_internal()
         // "Use_Defaults" in campaign.json.
         JsonConfigurable::_useDefaults = false;
         JsonConfigurable::CheckMissingParameters();
-
 
         // now try to run it
         // divide the simulation into stages according to requesting number of serialization test cycles

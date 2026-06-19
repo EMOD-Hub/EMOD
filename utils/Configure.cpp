@@ -1737,7 +1737,6 @@ namespace Kernel
             {
                 errMsg << "\t \"" << key.c_str() << "\"" << std::endl;
             }
-            //LOG_ERR( errMsg.str().c_str() );
             throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, errMsg.str().c_str() );
         }
     }

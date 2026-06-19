@@ -14,21 +14,6 @@
 ** of implementation of high level simulation plans involving averaging, serialization, etc
 */
 
-template<class ControllerT>
-class ControllerExecuteFunctor
-{
-public:
-    ControllerT* controller;
-
-    ControllerExecuteFunctor(ControllerT *c) : controller(c) { }
-
-    template<class SimulationT>
-    bool call()
-    {
-        return controller->template execute_internal<SimulationT>();
-    }
-};
-
 class DefaultController : public IController
 {
 public:
@@ -36,13 +21,6 @@ public:
     virtual ~DefaultController() {}
 
 protected:
-
-    template <class SimulationT> 
     bool execute_internal();
-
-    // Non-template version
-    bool execute_internal();
-
-    friend class ControllerExecuteFunctor<DefaultController>;
 };
 
