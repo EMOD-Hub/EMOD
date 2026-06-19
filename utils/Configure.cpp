@@ -20,7 +20,11 @@ SETUP_LOGGING( "JsonConfigurable" )
 
 namespace Kernel
 {
-    // two functions. second is wrapper around this. Can consolidate into single.
+    // Two ignoreParameter functions; second one is a wrapper around the first.
+    // Second function calls the first function twice, first time using a variable pJson configuration, and then a second
+    // time using the simulation configuration stored in the EnvPtr. This pattern allows some cross-file dependencies.
+    // Example: a campaign parameter can be contingent on a config parameter. Note that the config in the EnvPtr may
+    // be null; if the config in the EnvPtr is null (e.g., in a DLL), then an ignorable parameter may still be required.
     bool ignoreParameter( const json::QuickInterpreter * pJson, const char * condition_key, const char * condition_value )
     {
         if( condition_key != nullptr ) 
@@ -32,9 +36,8 @@ namespace Kernel
 
                 if( condition_value == nullptr )
                 {
-                    // condition_value is null, so it's a bool and 1 (no other options)
-                    auto c_value2 = (int) c_value.As<json::Number>();
-                    if( c_value2 != 1 )
+                    // condition_value is null, so condition_key is a bool and condition_value is true
+                    if( static_cast<int>(c_value.As<json::Number>()) == 0 )
                     {
                         // Condition for using this param is false (mismatch), so returning
                         LOG_DEBUG_F( "bool condition_value found but is false/0. That makes this check fail.\n" );
@@ -42,14 +45,29 @@ namespace Kernel
                     }
                     else
                     {
-                        LOG_DEBUG_F( "bool condition_value found and is true/1. That makes this check pass.\n" );
                         // Conditions match. Continue and return false at end.
+                        LOG_DEBUG_F( "bool condition_value found and is true/1. That makes this check pass.\n" );
+                    }
+                }
+                else if( (std::string(condition_key)).rfind("Enable_", 0) == 0 )
+                {
+                    // condition_key starts with "Enable_", so condition_key is a bool
+                    if( static_cast<int>(c_value.As<json::Number>()) != std::stoi(std::string(condition_value),nullptr) )
+                    {
+                        // Condition for using this param is false (mismatch), so returning
+                        LOG_DEBUG_F( "bool condition_value found but does not match specified value. That makes this check fail.\n" );
+                        return true;
+                    }
+                    else
+                    {
+                        // Conditions match. Continue and return false at end.
+                        LOG_DEBUG_F( "bool condition_value found and matches specified value. That makes this check pass.\n" );
                     }
                 }
                 else
                 {
                     // condition_value is not null, so it's a string (enum); let's read it.
-                    auto c_value_from_config = (std::string) c_value.As<json::String>();
+                    auto c_value_from_config = GET_CONFIG_STRING(pJson, condition_key);
                     LOG_DEBUG_F( "string/enum condition_value (from config.json) = %s. Will check if matches schema condition_value (raw) = %s\n", c_value_from_config.c_str(), condition_value );
                     // see if schema condition value is multiples...
                     auto c_values = IdmString( condition_value ).split( ',' );
@@ -88,26 +106,44 @@ namespace Kernel
     {
         if( schema.Exist( "depends-on" ) )
         {
-            auto condition = json_cast<const json::Object&>(schema["depends-on"]);
-            std::string condition_key = condition.Begin()->name;
-            std::string condition_value_str = "";
-            const char * condition_value = nullptr;
-            try {
-                condition_value_str = (std::string) (json::QuickInterpreter( condition )[ condition_key ]).As<json::String>();
-                condition_value = condition_value_str.c_str();
-                LOG_DEBUG_F( "schema condition value appears to be string/enum: %s.\n", condition_value );
-            }
-            catch(...)
+            auto condition_list = json_cast<const json::Object&>(schema["depends-on"]);
+            for(auto itr1 = condition_list.Begin(); itr1 != condition_list.End(); itr1++)
             {
-                //condition_value = std::to_string( (int) (json::QuickInterpreter( condition )[ condition_key ]).As<json::Number>() );
-                LOG_DEBUG_F( "schema condition value appears to be bool, not string.\n" );
-            }
+                std::string condition_key = itr1->name;
+                std::string condition_value_str = "";
+                std::string condition_value_int = "";
+                const char* condition_value = nullptr;
 
-            if( ignoreParameter( pJson, condition_key.c_str(), condition_value ) )
-            { 
-                if( ignoreParameter( EnvPtr->Config, condition_key.c_str(), condition_value ) )
+                try
                 {
-                    return true;
+                    condition_value_str = (json::QuickInterpreter(itr1->element)).As<json::String>();
+                    condition_value = condition_value_str.c_str();
+                    LOG_DEBUG_F( "schema condition value appears to be string/enum: %s.\n", condition_value );
+                }
+                catch(...)
+                {
+                    LOG_DEBUG_F( "schema condition value appears to be bool, not string.\n" );
+                    // A bool conditions starting with Enable_ could be null or integer; 
+                    if( (std::string(condition_key)).rfind("Enable_", 0) == 0 )
+                    {
+                        try
+                        {
+                            condition_value_int = std::to_string(static_cast<int>((json::QuickInterpreter(itr1->element)).As<json::Number>()));
+                            condition_value     = condition_value_int.c_str();
+                        }
+                        catch(...)
+                        {
+                            // Pass
+                        }
+                    }
+                }
+
+                if( ignoreParameter( pJson, condition_key.c_str(), condition_value ) )
+                { 
+                    if( ignoreParameter( EnvPtr->Config, condition_key.c_str(), condition_value ) )
+                    {
+                        return true;
+                    }
                 }
             }
         }
