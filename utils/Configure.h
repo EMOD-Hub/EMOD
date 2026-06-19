@@ -129,6 +129,8 @@ namespace Kernel
     bool ignoreParameter( const json::QuickInterpreter& schema, const json::QuickInterpreter * pJson );
     bool ignoreParameter( const json::QuickInterpreter * pJson, const char * condition_key, const char * condition_value = nullptr );
 
+    void updateSchemaWithCondition( json::Object& schema, const char* condition_key, const char* condition_value );
+
     class JsonConfigurable : public IConfigurable
     {
         friend class InterventionFactory;
@@ -661,29 +663,13 @@ namespace Kernel
             const char* condition_key = nullptr, const char * condition_value = nullptr
         )
         {
-            if( JsonConfigurable::_dryrun )
-            {
-                MetadataDescriptor::Enum * pEnumMd = const_cast<MetadataDescriptor::Enum *>(&enum_md);
-                json::Element *elem_copy = _new_ json::Element(pEnumMd->GetSchemaElement());
-                auto enumSchema = json::QuickBuilder( *elem_copy );
+            MetadataDescriptor::Enum * pEnumMd = const_cast<MetadataDescriptor::Enum *>(&enum_md);
+            json::Object newParamSchema = json_cast<const json::Object&>(pEnumMd->GetSchemaElement());
 
-                if( condition_key )
-                {
-                    json::Object condition;
-                    if( condition_value == nullptr )
-                    {
-                        condition[ condition_key ] = json::Number( 1 );
-                    }
-                    else
-                    {
-                        condition[ condition_key ] = json::String( condition_value );
-                    }
-                    enumSchema["depends-on"] = condition;
-                }
-                jsonSchemaBase[key] = enumSchema;
-            }
+            updateSchemaWithCondition(newParamSchema, condition_key, condition_value);
+            jsonSchemaBase[key] = newParamSchema;
 
-            if( ignoreParameter( pJson, condition_key, condition_value ) )
+            if( ignoreParameter( newParamSchema, pJson ) )
             {
                 return true; // param is missing and that's ok.
             }
@@ -692,7 +678,7 @@ namespace Kernel
             {
                 if( _useDefaults )
                 {
-                    if( (EnvPtr != nullptr) && EnvPtr->Log->CheckLogLevel(Logger::INFO, "JsonConfigurable"))
+                    if( (EnvPtr != nullptr) && EnvPtr->Log->CheckLogLevel(Logger::DEBUG, "JsonConfigurable"))
                     {
                         EnvPtr->Log->Log(Logger::DEBUG, "JsonConfigurable", "Using the default value ( \"%s\" : \"%s\" ) for unspecified parameter.\n", key, enum_md.enum_value_specs[0].first.c_str() );
                     }
@@ -737,16 +723,14 @@ namespace Kernel
                                      << " and key "
                                      << "'" << key << "'.\n"
                                      << "Possible values are:\n";
+                    std::vector< std::string > enum_key_list;
 
-                    for( int i = 0; i < enum_md.enum_value_specs.size(); ++i )
+                    for (auto& vs : enum_md.enum_value_specs)
                     {
-                        errorMsgFullList << enum_md.enum_value_specs[ i ].first;
-                        if( (i+1) < enum_md.enum_value_specs.size())
-                        {
-                            errorMsgFullList << "\n";
-                        }
+                        enum_key_list.push_back( vs.first );
                     }
-
+                    std::copy(enum_key_list.begin(), enum_key_list.end() - 1, std::ostream_iterator<std::string>(errorMsgFullList, ", "));
+                    errorMsgFullList << enum_key_list.back();
                     throw Kernel::GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, errorMsgFullList.str().c_str() );
                 }
             }
@@ -759,24 +743,30 @@ namespace Kernel
             const char* key,
             std::vector<myclass> &thevector,
             const json::QuickInterpreter * pJson,
-            const MetadataDescriptor::Enum &enum_md
+            const MetadataDescriptor::Enum &enum_md,
+            const char* condition_key = nullptr, const char * condition_value = nullptr
         )
         {
             MetadataDescriptor::Enum * pEnumMd = const_cast<MetadataDescriptor::Enum *>(&enum_md);
-            if ( _dryrun )
+            json::Object newParamSchema = json_cast<const json::Object&>(pEnumMd->GetSchemaElement());
+
+            updateSchemaWithCondition(newParamSchema, condition_key, condition_value);
+            jsonSchemaBase[key] = newParamSchema;
+
+            if( ignoreParameter( newParamSchema, pJson ) )
             {
-                jsonSchemaBase[key] = pEnumMd->GetSchemaElement();
+                return true; // param is missing and that's ok.
             }
 
-            // parsing: unspecified case
             if (pJson && pJson->Exist(key) == false && _useDefaults )
             {
-                if ((EnvPtr != nullptr) && EnvPtr->Log->CheckLogLevel(Logger::INFO, "JsonConfigurable"))
+                if ((EnvPtr != nullptr) && EnvPtr->Log->CheckLogLevel(Logger::DEBUG, "JsonConfigurable"))
                 {
                     release_assert(thevector.empty()); // the default is empty vector
                     std::string default_in_string= "[]";
                     EnvPtr->Log->Log(Logger::DEBUG, "JsonConfigurable", "Using the default value ( \"%s\" : \"%s\" ) for unspecified parameter.\n", key, default_in_string.c_str());
                 }
+
                 return true;
             }
 
@@ -815,7 +805,15 @@ namespace Kernel
                                          << lower
                                          << " and key "
                                          << key
-                                         << ".";
+                                         << ". Possible values are: ";
+                        std::vector< std::string > enum_key_list;
+
+                        for (auto& vs : enum_md.enum_value_specs)
+                        {
+                            enum_key_list.push_back( vs.first );
+                        }
+                        std::copy(enum_key_list.begin(), enum_key_list.end() - 1, std::ostream_iterator<std::string>(errorMsgFullList, ", "));
+                        errorMsgFullList << enum_key_list.back();
                         throw Kernel::GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, errorMsgFullList.str().c_str() );
                     }
                 }

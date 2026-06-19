@@ -414,6 +414,11 @@ namespace Kernel
                 // condition_value is null, so condition_key is a bool and condition_value is implicitly true
                 json_cast<json::Object&>(schema["depends-on"])[ condition_key ] = json::Number( 1 );
             }
+            else if( (std::string(condition_key)).rfind("Enable_", 0) == 0 )
+            {
+                // condition_key starts with "Enable_", so condition_key is a bool
+                json_cast<json::Object&>(schema["depends-on"])[ condition_key ] = json::Number( std::stoi(std::string(condition_value),nullptr) );
+            }
             else
             {
                 // condition_value is not null, so it's a string (enum)
