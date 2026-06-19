@@ -224,7 +224,7 @@ namespace Kernel
     {
         if( !inputJson->Exist( key ) )
         {
-            throw MissingParameterFromConfigurationException( __FILE__, __LINE__, __FUNCTION__, inputJson->GetDataLocation().c_str(), key.c_str() );
+            throw MissingParameterFromConfigurationException(__FILE__, __LINE__, __FUNCTION__, inputJson->GetDataLocation().c_str(), key.c_str());
         }
         _json = (*inputJson)[key];
     }
@@ -290,7 +290,6 @@ namespace Kernel
         return schema;
     }
     /// END OF InterventionConfig
-
 
     /// WaningConfig
     WaningConfig::WaningConfig()
@@ -1365,7 +1364,22 @@ namespace Kernel
         updateSchemaWithCondition( newParamSchema, condition_key, condition_value );
 
         jsonSchemaBase[ paramName ] = newParamSchema;
+    }
 
+    void
+    JsonConfigurable::handleMissingParam( const std::string& key, const std::string& rDataLocation )
+    {
+        LOG_DEBUG_F( "%s: key = %s, _track_missing = %d.\n", __FUNCTION__, key.c_str(), _track_missing );
+        if( _track_missing )
+        {
+            missing_parameters_set.insert(key);
+        }
+        else
+        {
+            std::stringstream ss;
+            ss << key << " of " << GetTypeName();
+            throw MissingParameterFromConfigurationException( __FILE__, __LINE__, __FUNCTION__, rDataLocation.c_str(), ss.str().c_str() );
+        }
     }
 
     void
@@ -1508,13 +1522,12 @@ namespace Kernel
     }
 
     void
-        JsonConfigurable::initConfigTypeMap(
-            const char* paramName,
-            EventTrigger * pVariable,
-            const char * description,
-            const char* condition_key,
-            const char* condition_value
-        )
+    JsonConfigurable::initConfigTypeMap(
+        const char* paramName,
+        EventTrigger * pVariable,
+        const char * description,
+        const char* condition_key, const char* condition_value
+    )
     {
         LOG_DEBUG_F( "initConfigTypeMap<EventTrigger>: %s\n", paramName );
         json::Object newParamSchema;
@@ -1546,8 +1559,7 @@ namespace Kernel
         const char* paramName,
         std::vector<EventTrigger>* pVariable,
         const char* description,
-        const char* condition_key,
-        const char* condition_value
+        const char* condition_key, const char* condition_value
     )
     {
         LOG_DEBUG_F("initConfigTypeMap<std::vector<EventTrigger>>: %s\n", paramName);
@@ -1580,8 +1592,7 @@ namespace Kernel
         const char* paramName,
         EventTriggerNode * pVariable,
         const char * description,
-        const char* condition_key,
-        const char* condition_value
+        const char* condition_key, const char* condition_value
     )
     {
         LOG_DEBUG_F( "initConfigTypeMap<EventTriggerNode>: %s\n", paramName );
@@ -1614,8 +1625,7 @@ namespace Kernel
         const char* paramName,
         std::vector<EventTriggerNode> * pVariable,
         const char * description,
-        const char* condition_key,
-        const char* condition_value
+        const char* condition_key, const char* condition_value
     )
     {
         LOG_DEBUG_F( "initConfigTypeMap<std::vector<EventTrigger>>: %s\n", paramName );
@@ -1648,8 +1658,7 @@ namespace Kernel
         const char* paramName,
         EventTriggerCoordinator * pVariable,
         const char * description,
-        const char* condition_key,
-        const char* condition_value
+        const char* condition_key, const char* condition_value
     )
     {
         LOG_DEBUG_F( "initConfigTypeMap<EventTriggerCoordinator>: %s\n", paramName );
@@ -1682,8 +1691,7 @@ namespace Kernel
         const char* paramName,
         std::vector<EventTriggerCoordinator> * pVariable,
         const char * description,
-        const char* condition_key,
-        const char* condition_value
+        const char* condition_key, const char* condition_value
     )
     {
         LOG_DEBUG_F( "initConfigTypeMap<std::vector<EventTriggerCoordinator>>: %s\n", paramName );
@@ -1709,22 +1717,6 @@ namespace Kernel
         updateSchemaWithCondition( newParamSchema, condition_key, condition_value );
 
         jsonSchemaBase[ paramName ] = newParamSchema;
-    }
-
-    void
-    JsonConfigurable::handleMissingParam( const std::string& key, const std::string& rDataLocation )
-    {
-        LOG_DEBUG_F( "%s: key = %s, _track_missing = %d.\n", __FUNCTION__, key.c_str(), _track_missing );
-        if( _track_missing )
-        {
-            missing_parameters_set.insert(key);
-        }
-        else
-        {
-            std::stringstream ss;
-            ss << key << " of " << GetTypeName();
-            throw MissingParameterFromConfigurationException( __FILE__, __LINE__, __FUNCTION__, rDataLocation.c_str(), ss.str().c_str() );
-        }
     }
 
     void JsonConfigurable::CheckMissingParameters()
@@ -1961,6 +1953,7 @@ namespace Kernel
                 {
                     // using the default value
                     val = (float)schema["default"].As<json::Number>();
+                    EnforceParameterRange<float>( key, val, schema );
                     LOG_DEBUG_F( "Using the default value ( \"%s\" : %f ) for unspecified parameter.\n", key.c_str(), val );
                     *(entry.second) = val;
                 }
@@ -2038,6 +2031,7 @@ namespace Kernel
                 {
                     // using the default value
                     val = (float)schema["default"].As<json::Number>();
+                    EnforceParameterRange<float>( key, val, schema );
                     LOG_DEBUG_F( "Using the default value ( \"%s\" : %f ) for unspecified parameter.\n", key.c_str(), val );
                     *(entry.second) = val;
                 }
