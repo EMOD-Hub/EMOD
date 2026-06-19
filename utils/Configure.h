@@ -19,6 +19,8 @@
 #include <map>
 #include <set>
 #include <vector>
+#include <iterator>
+#include <climits>
 
 #ifndef WIN32
 #include <limits>
@@ -268,8 +270,8 @@ namespace Kernel
             tIPKeyValueVectorMapType iPKeyValueVectorMapType;
             tNPKeyMapType npKeyTypeMap ;
             tNPKeyValueMapType npKeyValueTypeMap;
-            tEventTriggerMapType eventTriggerTypeMap ;
-            tEventTriggerVectorMapType eventTriggerVectorTypeMap ;
+            tEventTriggerMapType eventTriggerTypeMap;
+            tEventTriggerVectorMapType eventTriggerVectorTypeMap;
             tEventTriggerNodeMapType eventTriggerNodeTypeMap;
             tEventTriggerNodeVectorMapType eventTriggerNodeVectorTypeMap;
             tEventTriggerCoordinatorMapType eventTriggerCoordinatorTypeMap;
@@ -311,7 +313,8 @@ namespace Kernel
             bool * pVariable,
             const char* description = default_description,
             bool defaultvalue = false,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         void initConfigTypeMap(
@@ -319,7 +322,8 @@ namespace Kernel
             int * pVariable,
             const char* description = default_description,
             int min = INT_MIN, int max = INT_MAX, int defaultvalue = 0,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         void initConfigTypeMap(
@@ -327,7 +331,8 @@ namespace Kernel
             uint32_t * pVariable,
             const char* description = default_description,
             uint32_t min = 0, uint32_t max = UINT_MAX, uint32_t defaultvalue = 0,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         void initConfigTypeMap(
@@ -335,7 +340,8 @@ namespace Kernel
             uint64_t * pVariable,
             const char* description = default_description,
             uint64_t min = 0, uint64_t max = UINT_MAX, uint64_t defaultvalue = 0,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         void initConfigTypeMap(
@@ -343,7 +349,8 @@ namespace Kernel
             float * pVariable,
             const char* description = default_description,
             float min = -FLT_MAX, float max = FLT_MAX, float defaultvalue = 1.0,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         void initConfigTypeMap(
@@ -351,7 +358,8 @@ namespace Kernel
             double * pVariable,
             const char* description = default_description,
             double min = -DBL_MAX, double max = DBL_MAX, double defaultvalue = 1.0,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         void initConfigTypeMap(
@@ -359,7 +367,8 @@ namespace Kernel
             std::string * pVariable,
             const char* description = default_description,
             const std::string& default_str = default_string,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         void initConfigTypeMap(
@@ -367,14 +376,16 @@ namespace Kernel
             jsonConfigurable::ConstrainedString * pVariable,
             const char* description = default_description,
             const std::string& default_str = default_string,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         void initConfigTypeMap(
             const char* paramName,
             jsonConfigurable::tStringSetBase * pVariable,
             const char* description = default_description,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         void initConfigTypeMap(
@@ -383,7 +394,8 @@ namespace Kernel
             const char* description = default_description,
             const char* constraint_schema = nullptr,
             const std::set< std::string > &constraint_variable = empty_set,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         void initConfigTypeMap(
@@ -392,7 +404,8 @@ namespace Kernel
             const char* description = default_description,
             const char* constraint_schema = nullptr,
             const std::set< std::string > &constraint_variable = empty_set,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         void initConfigTypeMap(
@@ -401,7 +414,8 @@ namespace Kernel
             const char* description = default_description,
             const char* constraint_schema = nullptr,
             const std::set< std::string > &constraint_variable = empty_set,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         void initConfigTypeMap(
@@ -409,14 +423,16 @@ namespace Kernel
             std::vector< float > * pVariable,
             const char* description = default_description,
             float min = -FLT_MAX, float max = FLT_MAX, bool ascending = false,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         void initConfigTypeMap(
             const char* paramName,
             std::vector< bool > * pVariable,
             const char* description = default_description,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         void initConfigTypeMap(
@@ -424,7 +440,8 @@ namespace Kernel
             std::vector< int > * pVariable,
             const char* description = default_description,
             int min = -INT_MAX, int max = INT_MAX, bool ascending = false,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         void initConfigTypeMap(
@@ -432,7 +449,8 @@ namespace Kernel
             std::vector< uint32_t > * pVariable,
             const char* description = default_description,
             uint32_t min = 0, uint32_t max = UINT32_MAX, bool ascending = false,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         void initConfigTypeMap(
@@ -440,14 +458,16 @@ namespace Kernel
             std::vector< std::vector< float > > * pVariable,
             const char* description = default_description,
             float min = -FLT_MAX, float max = FLT_MAX,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         void initConfigTypeMap( const char* paramName,
             std::vector< std::vector< std::vector<float> > > * pVariable,
             const char* description = default_description,
             float min = -FLT_MAX, float max = FLT_MAX,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         void initConfigTypeMap(
@@ -455,7 +475,8 @@ namespace Kernel
             std::vector< std::vector< int > > * pVariable,
             const char* description = default_description,
             int min = -INT_MAX, int max = INT_MAX,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         void initConfigTypeMap(
@@ -468,7 +489,8 @@ namespace Kernel
             const char* paramName,
             tFloatFloatMapConfigType * pVariable,
             const char* description,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         void initConfigTypeMap(
@@ -482,7 +504,8 @@ namespace Kernel
             RangedFloat * pVariable,
             const char* description = default_description,
             float defaultvalue = 1.0,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         void initConfigTypeMap(
@@ -491,7 +514,8 @@ namespace Kernel
             const char* description = default_description,
             float max = 1.0,
             float defaultvalue = 1.0,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         void initConfigTypeMap(
@@ -500,14 +524,16 @@ namespace Kernel
             const char* description = default_description,
             unsigned int max = INT_MAX,
             NaturalNumber defaultvalue = 1,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         void initConfigTypeMap(
             const char* paramName,
             JsonConfigurable * pVariable,
             const char* defaultDesc,
-            const char* condition_key=nullptr, const char* condition_value=nullptr
+            const char* condition_key=nullptr, const char* condition_value=nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         void initConfigTypeMap(
@@ -526,7 +552,8 @@ namespace Kernel
             const char* paramName,
             std::vector<IPKeyValueParameter>* pVariable,
             const char* description = default_description,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         void initConfigTypeMap(
@@ -660,13 +687,22 @@ namespace Kernel
             myclass &thevar,
             const Configuration * pJson,
             const MetadataDescriptor::Enum &enum_md,
-            const char* condition_key = nullptr, const char * condition_value = nullptr
+            const char* condition_key = nullptr, const char * condition_value = nullptr,
+            const std::map<std::string, std::string> * depends_list = nullptr
         )
         {
             MetadataDescriptor::Enum * pEnumMd = const_cast<MetadataDescriptor::Enum *>(&enum_md);
             json::Object newParamSchema = json_cast<const json::Object&>(pEnumMd->GetSchemaElement());
 
             updateSchemaWithCondition(newParamSchema, condition_key, condition_value);
+            if(depends_list)
+            {
+                for(auto const pair: *depends_list)
+                {
+                    updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+                }
+            }
+
             jsonSchemaBase[key] = newParamSchema;
 
             if( ignoreParameter( newParamSchema, pJson ) )
@@ -744,13 +780,22 @@ namespace Kernel
             std::vector<myclass> &thevector,
             const json::QuickInterpreter * pJson,
             const MetadataDescriptor::Enum &enum_md,
-            const char* condition_key = nullptr, const char * condition_value = nullptr
+            const char* condition_key = nullptr, const char * condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         )
         {
             MetadataDescriptor::Enum * pEnumMd = const_cast<MetadataDescriptor::Enum *>(&enum_md);
             json::Object newParamSchema = json_cast<const json::Object&>(pEnumMd->GetSchemaElement());
 
             updateSchemaWithCondition(newParamSchema, condition_key, condition_value);
+            if(depends_list)
+            {
+                for(auto const pair: *depends_list)
+                {
+                    updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+                }
+            }
+
             jsonSchemaBase[key] = newParamSchema;
 
             if( ignoreParameter( newParamSchema, pJson ) )
@@ -843,7 +888,8 @@ namespace Kernel
             const char* paramName,
             IComplexJsonConfigurable * pVariable,
             const char* description = default_description,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         // This is really for objects that are based on the JsonConfigurableColleciton
@@ -852,7 +898,8 @@ namespace Kernel
             const char* paramName,
             IComplexJsonConfigurable * pVariable,
             const char* description = default_description,
-            const char* condition_key = nullptr, const char* condition_value = nullptr
+            const char* condition_key = nullptr, const char* condition_value = nullptr,
+            const std::map<std::string, std::string>* depends_list = nullptr
         );
 
         virtual bool Configure( const Configuration* inputJson );

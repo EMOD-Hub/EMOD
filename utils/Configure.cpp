@@ -533,7 +533,8 @@ namespace Kernel
         bool * pVariable,
         const char* description,
         bool defaultvalue,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
         LOG_DEBUG_F("initConfigTypeMap<bool>: %s\n", paramName);
@@ -551,6 +552,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition(newParamSchema, condition_key, condition_value);
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         jsonSchemaBase[paramName] = newParamSchema;
     }
@@ -561,7 +569,8 @@ namespace Kernel
         int * pVariable,
         const char * description,
         int min, int max, int defaultvalue,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
         LOG_DEBUG_F( "initConfigTypeMap<int>: %s\n", paramName);
@@ -581,6 +590,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition(newParamSchema, condition_key, condition_value);
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         jsonSchemaBase[paramName] = newParamSchema;
     }
@@ -591,7 +607,8 @@ namespace Kernel
         uint32_t * pVariable,
         const char * description,
         uint32_t min, uint32_t max, uint32_t defaultvalue,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
         LOG_DEBUG_F( "initConfigTypeMap<int>: %s\n", paramName );
@@ -610,6 +627,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition(newParamSchema, condition_key, condition_value);
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         jsonSchemaBase[ paramName ] = newParamSchema;
     }
@@ -620,7 +644,8 @@ namespace Kernel
         uint64_t * pVariable,
         const char * description,
         uint64_t min, uint64_t max, uint64_t defaultvalue,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
         LOG_DEBUG_F( "initConfigTypeMap<int>: %s\n", paramName );
@@ -639,6 +664,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition(newParamSchema, condition_key, condition_value);
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         jsonSchemaBase[ paramName ] = newParamSchema;
     }
@@ -649,7 +681,8 @@ namespace Kernel
         float * pVariable,
         const char * description,
         float min, float max, float defaultvalue,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
         LOG_DEBUG_F( "initConfigTypeMap<float>: %s\n", paramName);
@@ -668,6 +701,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition(newParamSchema, condition_key, condition_value);
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         jsonSchemaBase[paramName] = newParamSchema;
     }
@@ -678,7 +718,8 @@ namespace Kernel
         double * pVariable,
         const char * description,
         double min, double max, double defaultvalue,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
         LOG_DEBUG_F( "initConfigTypeMap<double>: %s\n", paramName);
@@ -698,6 +739,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition(newParamSchema, condition_key, condition_value);
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         jsonSchemaBase[paramName] = newParamSchema;
     }
@@ -708,7 +756,8 @@ namespace Kernel
         std::string * pVariable,
         const char * description,
         const std::string& default_str,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
         LOG_DEBUG_F( "initConfigTypeMap<string>: %s\n", paramName);
@@ -725,6 +774,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition(newParamSchema, condition_key, condition_value);
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         jsonSchemaBase[paramName] = newParamSchema;
     }
@@ -735,7 +791,8 @@ namespace Kernel
         jsonConfigurable::ConstrainedString * pVariable,
         const char * description,
         const std::string& default_str,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
         LOG_DEBUG_F( "initConfigTypeMap<ConstrainedString>: %s\n", paramName);
@@ -753,6 +810,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition(newParamSchema, condition_key, condition_value);
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         jsonSchemaBase[paramName] = newParamSchema;
     }
@@ -763,7 +827,8 @@ namespace Kernel
         const char* paramName,
         jsonConfigurable::tStringSetBase * pVariable,
         const char* description,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
         LOG_DEBUG_F( "initConfigTypeMap<set<string>>: %s\n", paramName);
@@ -798,6 +863,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition(newParamSchema, condition_key, condition_value);
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         jsonSchemaBase[paramName] = newParamSchema;
     }
@@ -809,7 +881,8 @@ namespace Kernel
         const char* description,
         const char* constraint_schema,
         const std::set< std::string > &constraint_variable,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
         LOG_DEBUG_F( "initConfigTypeMap<vector<string>>: %s\n", paramName);
@@ -832,6 +905,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition( newParamSchema, condition_key, condition_value );
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         jsonSchemaBase[paramName] = newParamSchema;
     }
@@ -843,7 +923,8 @@ namespace Kernel
         const char* description,
         const char* constraint_schema,
         const std::set< std::string > &constraint_variable,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
         LOG_DEBUG_F( "initConfigTypeMap<vector<vector<string>>>: %s\n", paramName);
@@ -865,6 +946,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition( newParamSchema, condition_key, condition_value );
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         jsonSchemaBase[paramName] = newParamSchema;
     }
@@ -875,7 +963,8 @@ namespace Kernel
         const char* description,
         const char* constraint_schema,
         const std::set< std::string > &constraint_variable,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
         )
     {
         LOG_DEBUG_F( "initConfigTypeMap<vector<vector<vector<string>>>>: %s\n", paramName);
@@ -898,6 +987,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition( newParamSchema, condition_key, condition_value );
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
         jsonSchemaBase[paramName] = newParamSchema;
     }
 
@@ -907,7 +1003,8 @@ namespace Kernel
         std::vector< std::vector< std::vector<float> > > * pVariable,
         const char* description,
         float min, float max,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
         LOG_DEBUG_F( "initConfigTypeMap<vector<vector<vector<float>>>: %s\n", paramName );
@@ -926,6 +1023,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition(newParamSchema, condition_key, condition_value);
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         jsonSchemaBase[paramName] = newParamSchema;
     }
@@ -936,7 +1040,8 @@ namespace Kernel
         std::vector< float > * pVariable,
         const char* description,
         float min, float max, bool ascending,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
         LOG_DEBUG_F("initConfigTypeMap<vector<float>>: %s\n", paramName);
@@ -956,6 +1061,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition(newParamSchema, condition_key, condition_value);
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         jsonSchemaBase[paramName] = newParamSchema;
     }
@@ -965,7 +1077,8 @@ namespace Kernel
         const char* paramName,
         std::vector< bool > * pVariable,
         const char* description,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
         LOG_DEBUG_F( "initConfigTypeMap<vector<bool>>: %s\n", paramName);
@@ -979,6 +1092,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition(newParamSchema, condition_key, condition_value);
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         jsonSchemaBase[paramName] = newParamSchema;
     }
@@ -989,7 +1109,8 @@ namespace Kernel
         std::vector< int > * pVariable,
         const char* description,
         int min, int max, bool ascending,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
         LOG_DEBUG_F( "initConfigTypeMap<vector<int>>: %s\n", paramName);
@@ -1009,6 +1130,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition(newParamSchema, condition_key, condition_value);
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         jsonSchemaBase[paramName] = newParamSchema;
     }
@@ -1019,7 +1147,8 @@ namespace Kernel
         std::vector< uint32_t > * pVariable,
         const char* description,
         uint32_t min, uint32_t max, bool ascending,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
         LOG_DEBUG_F( "initConfigTypeMap<vector<uint32_t>>: %s\n", paramName );
@@ -1039,6 +1168,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition( newParamSchema, condition_key, condition_value );
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         jsonSchemaBase[paramName] = newParamSchema;
     }
@@ -1049,7 +1185,8 @@ namespace Kernel
         std::vector< std::vector< float > > * pVariable,
         const char* description,
         float min, float max,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
         LOG_DEBUG_F( "initConfigTypeMap<vector,vector<float>>>: %s\n", paramName);
@@ -1068,6 +1205,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition(newParamSchema, condition_key, condition_value);
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         jsonSchemaBase[paramName] = newParamSchema;
     }
@@ -1078,7 +1222,8 @@ namespace Kernel
         std::vector< std::vector< int > > * pVariable,
         const char* description,
         int min, int max,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
         LOG_DEBUG_F( "initConfigTypeMap<vector,vector<int>>>: %s\n", paramName);
@@ -1097,6 +1242,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition(newParamSchema, condition_key, condition_value);
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         jsonSchemaBase[paramName] = newParamSchema;
     }
@@ -1131,7 +1283,8 @@ namespace Kernel
         const char* paramName,
         tFloatFloatMapConfigType * pVariable,
         const char* description,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
         LOG_DEBUG_F( "initConfigTypeMap<pwcMap>: %s\n", paramName);
@@ -1147,6 +1300,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition(newParamSchema, condition_key, condition_value);
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         jsonSchemaBase[paramName] = newParamSchema;
     }
@@ -1179,7 +1339,8 @@ namespace Kernel
         RangedFloat * pVariable,
         const char * description,
         float defaultvalue,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
         LOG_DEBUG_F( "initConfigTypeMap<RangedFloat>: %s\n", paramName);
@@ -1198,6 +1359,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition(newParamSchema, condition_key, condition_value);
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         jsonSchemaBase[paramName] = newParamSchema;
     }
@@ -1209,7 +1377,8 @@ namespace Kernel
         const char * description,
         float max,
         float defaultvalue,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
         LOG_DEBUG_F( "initConfigTypeMap<NonNegativeFloat>: %s\n", paramName);
@@ -1225,6 +1394,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition(newParamSchema, condition_key, condition_value);
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         jsonSchemaBase[paramName] = newParamSchema;
     }
@@ -1237,7 +1413,8 @@ namespace Kernel
         const char * description,
         unsigned int max,
         NaturalNumber defaultvalue,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
         LOG_DEBUG_F( "initConfigTypeMap<NaturalNumber>: %s\n", paramName);
@@ -1256,6 +1433,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition(newParamSchema, condition_key, condition_value);
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         jsonSchemaBase[paramName] = newParamSchema;
     }
@@ -1265,7 +1449,8 @@ namespace Kernel
         const char* paramName,
         JsonConfigurable * pVariable,
         const char* defaultDesc,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
         LOG_DEBUG_F( "initConfigTypeMap<JsonConfigurable>: %s\n", paramName);
@@ -1287,6 +1472,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition( newParamSchema, condition_key, condition_value );
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         jsonSchemaBase[paramName] = newParamSchema;
     }
@@ -1295,13 +1487,21 @@ namespace Kernel
         const char* paramName,
         IComplexJsonConfigurable* pVariable,
         const char* description,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
         GetConfigData()->complexTypeMap[ paramName ] = pVariable;
 
         json::Object newParamSchema;
         updateSchemaWithCondition( newParamSchema, condition_key, condition_value );
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         json::QuickBuilder custom_schema = pVariable->GetSchema();
         if (pVariable->HasValidDefault())
@@ -1332,7 +1532,8 @@ namespace Kernel
         const char* paramName,
         IComplexJsonConfigurable * pVariable,
         const char* description,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
 
@@ -1362,6 +1563,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition( newParamSchema, condition_key, condition_value );
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         jsonSchemaBase[ paramName ] = newParamSchema;
     }
@@ -1443,7 +1651,8 @@ namespace Kernel
         const char* paramName,
         std::vector<IPKeyValueParameter>* pVariable,
         const char* description,
-        const char* condition_key, const char* condition_value
+        const char* condition_key, const char* condition_value,
+        const std::map<std::string, std::string>* depends_list
     )
     {
         LOG_DEBUG_F("initConfigTypeMap<vector<IPKeyValueParameter>>: %s\n", paramName);
@@ -1461,6 +1670,13 @@ namespace Kernel
         }
 
         updateSchemaWithCondition( newParamSchema, condition_key, condition_value );
+        if(depends_list)
+        {
+            for(auto const pair: *depends_list)
+            {
+                updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
+            }
+        }
 
         jsonSchemaBase[paramName] = newParamSchema;
     }

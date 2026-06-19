@@ -5,6 +5,7 @@
 #include <set>
 #include <vector>
 #include <map>
+#include <climits>
 
 #include "Exceptions.h"
 #include "ISupports.h"
