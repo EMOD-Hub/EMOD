@@ -55,7 +55,6 @@ env.Prepend( CPPPATH=[
               "#/libsqlite",
               "#/cajun/include",
               "#/rapidjson/include",
-              "#/rapidjson/modp",
               "#/snappy",
               "#/lz4/lib"])
 
