@@ -13,7 +13,7 @@ generic_cpp = [
     "ReportEventCounter.cpp",
     "ReportNodeDemographics.cpp",
     "ReportSimulationStats.cpp",
-    "SqlReport.cpp"
+    "SqlReport.cpp",
 ]
 
 vector_cpp = [
@@ -21,7 +21,7 @@ vector_cpp = [
     "VectorHabitatReport.cpp",
     "ReportVectorMigration.cpp",
     "ReportVectorStats.cpp",
-    "ReportMicrosporidia.cpp"
+    "ReportMicrosporidia.cpp",
 ]
 
 malaria_cpp = [
@@ -39,17 +39,17 @@ malaria_cpp = [
     "ReportMalariaFilteredIntraHost.cpp",
     "ReportSimpleMalariaTransmission.cpp",
     "ReportInterventionPopAvg.cpp",
-    "SpatialReportMalariaFiltered.cpp",    
+    "SpatialReportMalariaFiltered.cpp",
     "ReportNodeDemographicsMalaria.cpp",
     "ReportNodeDemographicsMalariaGenetics.cpp",
     "ReportVectorStatsMalariaGenetics.cpp",
-    "ReportVectorGeneticsMalariaGenetics.cpp"
+    "ReportVectorGeneticsMalariaGenetics.cpp",
 ]
 
 sti_cpp = [
     "ReportPfaQueues.cpp",
     "ReportRelationshipCensus.cpp",
-    "ReportRelationshipMigrationTracking.cpp"
+    "ReportRelationshipMigrationTracking.cpp",
 ]
 
 hiv_cpp = [
