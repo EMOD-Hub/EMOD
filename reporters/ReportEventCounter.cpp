@@ -1,6 +1,5 @@
 
 #include "stdafx.h"
-
 #include "ReportEventCounter.h"
 #include "Environment.h"
 #include "IndividualEventContext.h"
@@ -9,13 +8,7 @@
 #include "DllInterfaceHelper.h"
 #endif
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!! CREATING NEW REPORTS
-// !!! If you are creating a new report by copying this one, you will need to modify 
-// !!! the values below indicated by "<<<"
-
-// Name for logging, CustomReport.json, and DLL GetType()
-SETUP_LOGGING( "ReportEventCounter" ) // <<< Name of this file
+SETUP_LOGGING( "ReportEventCounter" )
 
 namespace Kernel
 {
@@ -31,14 +24,6 @@ instantiator_function_t rif = []()
 };
 
 DllInterfaceHelper DLL_HELPER( _module, _sim_types, rif );
-
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-// ------------------------------
-// --- DLL Interface Methods
-// ---
-// --- The DTK will use these methods to establish communication with the DLL.
-// ------------------------------
 
 #ifdef __cplusplus    // If used by C++ code, 
 extern "C" {          // we need to export the C interface
@@ -72,10 +57,6 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
 }
 #endif
 #endif //_REPORT_DLL
-
-// ----------------------------------------
-// --- ReportEventCounter Methods
-// ----------------------------------------
 
     BEGIN_QUERY_INTERFACE_DERIVED( ReportEventCounter, BaseEventReport )
         HANDLE_INTERFACE( IReport )

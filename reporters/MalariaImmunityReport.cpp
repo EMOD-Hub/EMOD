@@ -1,7 +1,8 @@
 
+#pragma once
+
 #include "stdafx.h"
 #include "MalariaImmunityReport.h"
-
 #include "report_params.rc"
 #include "FileSystem.h"
 #include "Environment.h"
@@ -85,20 +86,18 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
 // ----------------------------------------
 
     ImmunityData::ImmunityData()
-    : IIntervalData()
-    , sum_population_by_agebin()
-    , sum_MSP_by_agebin()
-    , sum_nonspec_by_agebin()
-    , sum_pfemp1_by_agebin()
-    , sumsqr_MSP_by_agebin()
-    , sumsqr_nonspec_by_agebin()
-    , sumsqr_pfemp1_by_agebin()
-    {
-    }
+        : IIntervalData()
+        , sum_population_by_agebin()
+        , sum_MSP_by_agebin()
+        , sum_nonspec_by_agebin()
+        , sum_pfemp1_by_agebin()
+        , sumsqr_MSP_by_agebin()
+        , sumsqr_nonspec_by_agebin()
+        , sumsqr_pfemp1_by_agebin()
+    { }
 
     ImmunityData::~ImmunityData()
-    {
-    }
+    { }
 
     void ImmunityData::SetVectorSize( int size )
     {
@@ -191,6 +190,9 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
         initSimTypes( 1, "MALARIA_SIM" );
     }
 
+    MalariaImmunityReport::~MalariaImmunityReport()
+    { }
+
     bool MalariaImmunityReport::Configure( const Configuration * inputJson )
     {
         if( inputJson->Exist("Age_Bins") || JsonConfigurable::_dryrun )
@@ -228,10 +230,6 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
     {
         // fix the event to EveryUpdate instead of letting the user specify it.
         eventTriggerList.push_back( EventTrigger::EveryUpdate );
-    }
-
-    MalariaImmunityReport::~MalariaImmunityReport()
-    {
     }
 
     bool MalariaImmunityReport::notifyOnEvent( IIndividualHumanEventContext *context, const EventTrigger& trigger )

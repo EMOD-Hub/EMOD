@@ -1,4 +1,6 @@
 
+#pragma once
+
 #include "stdafx.h"
 
 #include "ReportNodeDemographicsMalaria.h"
@@ -19,13 +21,7 @@
 #include "FactorySupport.h"
 #endif
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!! CREATING NEW REPORTS
-// !!! If you are creating a new report by copying this one, you will need to modify 
-// !!! the values below indicated by "<<<"
-
-// Name for logging, CustomReport.json, and DLL GetType()
-SETUP_LOGGING( "ReportNodeDemographicsMalaria" ) // <<< Name of this file
+SETUP_LOGGING( "ReportNodeDemographicsMalaria" )
 
 namespace Kernel
 {
@@ -41,14 +37,6 @@ instantiator_function_t rif = []()
 };
 
 DllInterfaceHelper DLL_HELPER( _module, _sim_types, rif );
-
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-// ------------------------------
-// --- DLL Interface Methods
-// ---
-// --- The DTK will use these methods to establish communication with the DLL.
-// ------------------------------
 
 #ifdef __cplusplus    // If used by C++ code, 
 extern "C" {          // we need to export the C interface
@@ -83,16 +71,11 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
 #endif
 #endif //_REPORT_DLL
 
-// ----------------------------------------
-// --- ReportNodeDemographicsMalaria Methods
-// ----------------------------------------
-
     BEGIN_QUERY_INTERFACE_DERIVED( ReportNodeDemographicsMalaria, ReportNodeDemographics )
         HANDLE_INTERFACE( IReportMalariaDiagnostics )
         HANDLE_INTERFACE( IReport )
         HANDLE_INTERFACE( IConfigurable )
     END_QUERY_INTERFACE_DERIVED( ReportNodeDemographicsMalaria, ReportNodeDemographics )
-
 #ifndef _REPORT_DLL
     IMPLEMENT_FACTORY_REGISTERED( ReportNodeDemographicsMalaria )
 #endif
@@ -130,9 +113,7 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
         initConfigTypeMap( "Stratify_By_Has_Clinical_Symptoms", &m_StratifyBySymptoms, RNDM_Stratify_By_Has_Clinical_Symptoms_DESC_TEXT, false );
         bool ret = ReportNodeDemographics::Configure( inputJson );
 
-        if( ret )
-        {
-        }
+
         return ret;
     }
 

@@ -183,7 +183,7 @@ else:
                             "../interventions/ScaleLarvalHabitat.cpp",
                             "../interventions/UsageDependentBednet.cpp",
                             "../interventions/InsecticideWaningEffect.cpp",
-                        ]
+    ]
 
     malariaSrcFiles = vectorSrcFiles + [
                             # Malaria
@@ -228,7 +228,7 @@ else:
                             "VectorPopulationIndividualMalariaGenetics.cpp",
                             "../interventions/OutbreakIndividualMalariaVarGenes.cpp",
                             "StrainIdentityMalariaVarGenes.cpp",
-                        ]
+    ]
 
     # STI
     stiSrcFiles = [
@@ -293,7 +293,7 @@ else:
                             "../interventions/StiCoInfectionDiagnostic.cpp",
                             "../interventions/STIBarrier.cpp",
                             "../interventions/STIIsPostDebut.cpp",
-                            "../interventions/SetSexualDebutAge.cpp"
+                            "../interventions/SetSexualDebutAge.cpp",
     ]
 
     # HIV
@@ -335,7 +335,7 @@ else:
                             "../interventions/HIVSigmoidByYearAndSexDiagnostic.cpp",
                             "../interventions/HIVSimpleDiagnostic.cpp",
                             "../interventions/HIVMuxer.cpp",
-                            "../interventions/PMTCT.cpp"
+                            "../interventions/PMTCT.cpp",
     ]
 
     if 'Disease' in env and len(env['Disease']) > 0:

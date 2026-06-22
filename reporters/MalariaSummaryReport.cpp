@@ -1,8 +1,9 @@
 
+#pragma once
+
 #include "stdafx.h"
 
 #include "MalariaSummaryReport.h"
-
 
 #include "report_params.rc"
 #include "FileSystem.h"
@@ -100,48 +101,46 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
 // ----------------------------------------
 
     ReportIntervalData::ReportIntervalData()
-    : IIntervalData()
-    , sum_EIR(0.0)
-    , sum_population_2to10(0.0)
-    , sum_parasite_positive_2to10(0.0)
-    , sum_true_2to10(0.0)
-    , sum_hrp2_2to10(0.0)
-    , sum_population_by_agebin()
-    , sum_new_infection_by_agebin()
-    , sum_parasite_positive_by_agebin()
-    , sum_true_parasite_by_agebin()
-    , sum_hrp2_by_agebin()
-    , sum_gametocyte_positive_by_agebin()
-    , sum_true_gametocyte_by_agebin()
-    , sum_log_parasite_density_by_agebin()
-    , sum_log_true_parasite_density_by_agebin()
-    , sum_clinical_cases_by_agebin()
-    , sum_severe_cases_by_agebin()
-    , sum_severe_anemia_by_agebin()
-    , sum_moderate_anemia_by_agebin()
-    , sum_mild_anemia_by_agebin()
-    , sum_severe_cases_by_anemia_by_agebin()
-    , sum_severe_cases_by_parasites_by_agebin()
-    , sum_severe_cases_by_fever_by_agebin()
-    , sum_binned_PfPR_by_agebin()
-    , sum_binned_PfgamPR_by_agebin()
-    , sum_binned_PfPR_by_agebin_smeared()
-    , sum_binned_PfgamPR_by_agebin_smeared()
-    , sum_binned_PfPR_by_agebin_true_smeared()
-    , sum_binned_PfgamPR_by_agebin_true_smeared()
-    , sum_binned_infection_by_pfprbin_and_agebin()
-    , sum_binned_infection_by_pfprbin_and_agebin_age_scaled()
-    , sum_binned_infection_by_pfprbin_and_agebin_smeared()
-    , sum_binned_infection_by_pfprbin_and_agebin_smeared_inf_and_gam()
-    , sum_binned_infection_by_pfprbin_and_agebin_smeared_inf_and_gam_age_scaled()
-    , num_infected_by_time_step()
-    , total_pop_by_time_step()
-    {
-    }
+        : IIntervalData()
+        , sum_EIR(0.0)
+        , sum_population_2to10(0.0)
+        , sum_parasite_positive_2to10(0.0)
+        , sum_true_2to10(0.0)
+        , sum_hrp2_2to10(0.0)
+        , sum_population_by_agebin()
+        , sum_new_infection_by_agebin()
+        , sum_parasite_positive_by_agebin()
+        , sum_true_parasite_by_agebin()
+        , sum_hrp2_by_agebin()
+        , sum_gametocyte_positive_by_agebin()
+        , sum_true_gametocyte_by_agebin()
+        , sum_log_parasite_density_by_agebin()
+        , sum_log_true_parasite_density_by_agebin()
+        , sum_clinical_cases_by_agebin()
+        , sum_severe_cases_by_agebin()
+        , sum_severe_anemia_by_agebin()
+        , sum_moderate_anemia_by_agebin()
+        , sum_mild_anemia_by_agebin()
+        , sum_severe_cases_by_anemia_by_agebin()
+        , sum_severe_cases_by_parasites_by_agebin()
+        , sum_severe_cases_by_fever_by_agebin()
+        , sum_binned_PfPR_by_agebin()
+        , sum_binned_PfgamPR_by_agebin()
+        , sum_binned_PfPR_by_agebin_smeared()
+        , sum_binned_PfgamPR_by_agebin_smeared()
+        , sum_binned_PfPR_by_agebin_true_smeared()
+        , sum_binned_PfgamPR_by_agebin_true_smeared()
+        , sum_binned_infection_by_pfprbin_and_agebin()
+        , sum_binned_infection_by_pfprbin_and_agebin_age_scaled()
+        , sum_binned_infection_by_pfprbin_and_agebin_smeared()
+        , sum_binned_infection_by_pfprbin_and_agebin_smeared_inf_and_gam()
+        , sum_binned_infection_by_pfprbin_and_agebin_smeared_inf_and_gam_age_scaled()
+        , num_infected_by_time_step()
+        , total_pop_by_time_step()
+    { }
 
     ReportIntervalData::~ReportIntervalData()
-    {
-    }
+    { }
 
     void ReportIntervalData::SetVectorSize( int age_size, int PfPR_size, int Infectiousness_size, int reportingInterval )
     {

@@ -21,7 +21,7 @@ namespace Kernel
 
     struct MalariaPatient
     {
-        MalariaPatient(int id=0, float age_=0.0f, float birthday_=0.0f);
+        MalariaPatient(int id_=0, float age_=0.0f, float birthday_=0.0f);
         ~MalariaPatient();
 
         int id;

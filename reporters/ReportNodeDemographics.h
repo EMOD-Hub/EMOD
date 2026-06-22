@@ -1,9 +1,7 @@
 
-
 #pragma once
 
 #include "BaseTextReport.h"
-
 #ifndef _REPORT_DLL
 #include "ReportFactory.h"
 #endif

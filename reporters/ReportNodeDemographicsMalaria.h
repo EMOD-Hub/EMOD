@@ -1,5 +1,4 @@
 
-
 #pragma once
 
 #include "ReportNodeDemographics.h"
@@ -7,11 +6,9 @@
 #include "EventTrigger.h"
 #include "BroadcasterObserver.h"
 #include "IReportMalariaDiagnostics.h"
-
 #ifndef _REPORT_DLL
 #include "ReportFactory.h"
 #endif
-
 
 namespace Kernel
 {

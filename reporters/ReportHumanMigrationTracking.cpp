@@ -1,4 +1,6 @@
 
+#pragma once
+
 #include "stdafx.h"
 
 #include "ReportHumanMigrationTracking.h"
@@ -14,13 +16,7 @@
 #include "DllInterfaceHelper.h"
 #endif
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!! CREATING NEW REPORTS
-// !!! If you are creating a new report by copying this one, you will need to modify 
-// !!! the values below indicated by "<<<"
-
-// Name for logging, CustomReport.json, and DLL GetType()
-SETUP_LOGGING( "ReportHumanMigrationTracking" ) // <<< Name of this file
+SETUP_LOGGING( "ReportHumanMigrationTracking" )
 
 namespace Kernel
 {
@@ -36,14 +32,6 @@ instantiator_function_t rif = []()
 };
 
 DllInterfaceHelper DLL_HELPER( _module, _sim_types, rif );
-
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-// ------------------------------
-// --- DLL Interface Methods
-// ---
-// --- The DTK will use these methods to establish communication with the DLL.
-// ------------------------------
 
 #ifdef __cplusplus    // If used by C++ code, 
 extern "C" {          // we need to export the C interface
@@ -144,8 +132,7 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
                << "From_NodeID"   << ", "
                << "To_NodeID"     << ", "
                << "MigrationType" << ", "
-               << "Event"
-               ;
+               << "Event";
 
         return header.str();
     }
@@ -162,17 +149,17 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
 
         ISimulationContext* p_sim = context->GetNodeEventContext()->GetNodeContext()->GetParent();
 
-        float time = context->GetNodeEventContext()->GetTime().time ;
-        long individual_id = context->GetSuid().data ;
-        float age_years = p_ih->GetAge() / DAYSPERYEAR ;
-        char is_adult = p_ih->IsAdult() ? 'T' : 'F';
-        char gender = (p_ih->GetGender() == 0) ? 'M' : 'F' ;
-        uint32_t home_node_id = p_sim->GetNodeExternalID( p_ih->GetHomeNodeId() ) ;
-        uint32_t from_node_id = p_sim->GetNodeExternalID( context->GetNodeEventContext()->GetId() ) ;
-        uint32_t to_node_id = from_node_id ;
-        std::string mig_type_str = "local" ;
-        bool is_emigrating  = (trigger == EventTrigger::Emigrating);
-        bool is_immigrating = (trigger == EventTrigger::Immigrating);
+        float        time           = context->GetNodeEventContext()->GetTime().time;
+        long         individual_id  = context->GetSuid().data;
+        float        age_years      = p_ih->GetAge() / DAYSPERYEAR;
+        char         is_adult       = p_ih->IsAdult() ? 'T' : 'F';
+        char         gender         = (p_ih->GetGender() == 0) ? 'M' : 'F';
+        uint32_t     home_node_id   = p_sim->GetNodeExternalID( p_ih->GetHomeNodeId() );
+        uint32_t     from_node_id   = p_sim->GetNodeExternalID( context->GetNodeEventContext()->GetId() );
+        uint32_t     to_node_id     = from_node_id;
+        std::string  mig_type_str   = "local";
+        bool         is_emigrating  = (trigger == EventTrigger::Emigrating);
+        bool         is_immigrating = (trigger == EventTrigger::Immigrating);
 
         if( is_immigrating )
         {

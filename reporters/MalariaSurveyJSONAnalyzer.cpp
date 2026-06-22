@@ -1,8 +1,9 @@
 
+#pragma once
+
 #include "stdafx.h"
 
 #include "MalariaSurveyJSONAnalyzer.h"
-
 #include "report_params.rc"
 #include "FileSystem.h"
 #include "Environment.h"
@@ -11,10 +12,8 @@
 #include "SusceptibilityMalaria.h"
 #include "NodeEventContext.h"
 #include "Serializer.h"
-
 #include "ReportUtilities.h"
 #include "ReportUtilitiesMalaria.h"
-
 #include "math.h"
 
 #ifdef _REPORT_DLL
@@ -27,13 +26,7 @@
 #include "RANDOM.h"
 #endif
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!! CREATING NEW REPORTS
-// !!! If you are creating a new report by copying this one, you will need to modify 
-// !!! the values below indicated by "<<<"
-
-// Name for logging, CustomReport.json, and DLL GetType()
-SETUP_LOGGING( "MalariaSurveyJSONAnalyzer" ) // <<< Name of this file
+SETUP_LOGGING( "MalariaSurveyJSONAnalyzer" )
 
 namespace Kernel
 {
@@ -100,12 +93,10 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
         , node_id(-1)
         , initial_age(age_)
         , local_birthday(local_birthday_)
-    {
-    }
+    { }
 
     Patient::~Patient()
-    {
-    }
+    { }
 
     void Patient::Serialize( IJsonObjectAdapter& root, JSerializer& helper )
     {
@@ -202,12 +193,10 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
 // ----------------------------------------
 
     PatientMap::PatientMap()
-    {
-    }
+    { }
 
     PatientMap::~PatientMap()
-    {
-    }
+    { }
 
     void PatientMap::Clear()
     {
@@ -241,9 +230,6 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
                 existing_patient = new Patient(new_patient->id,-1,-1);
                 Add( existing_patient );
             }
-
-            // set in constructor
-            //existing_patient->id             = new_patient->id;
 
             existing_patient->node_id        = new_patient->node_id;
             existing_patient->initial_age    = new_patient->initial_age;
@@ -399,7 +385,6 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
         int id           = iindividual->GetSuid().data;
         double mc_weight = context->GetMonteCarloWeight();
         double age       = context->GetAge();
-
 
         std::string ip_info;
         IPKeyValueContainer* p_props = iindividual->GetEventContext()->GetProperties();

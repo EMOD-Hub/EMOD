@@ -1,8 +1,9 @@
 
+#pragma once
+
 #include "stdafx.h"
 
 #include "ReportMalariaFiltered.h"
-
 #include "report_params.rc"
 #include "NodeEventContext.h"
 #include "Individual.h"
@@ -18,13 +19,7 @@
 #include "FactorySupport.h"
 #endif
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!! CREATING NEW REPORTS
-// !!! If you are creating a new report by copying this one, you will need to modify 
-// !!! the values below indicated by "<<<"
-
-// Name for logging, CustomReport.json, and DLL GetType()
-SETUP_LOGGING( "ReportMalariaFiltered" ) // <<< Name of this file
+SETUP_LOGGING( "ReportMalariaFiltered" )
 
 namespace Kernel
 {
@@ -112,8 +107,7 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
     }
 
     ReportMalariaFiltered::~ReportMalariaFiltered()
-    {
-    }
+    { }
 
     bool ReportMalariaFiltered::Configure( const Configuration * inputJson )
     {

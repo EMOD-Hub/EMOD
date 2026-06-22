@@ -2,7 +2,6 @@
 #include "stdafx.h"
 
 #include "ReportVectorMigration.h"
-
 #include "report_params.rc"
 #include "VectorCohortIndividual.h"
 #include "IMigrate.h"
@@ -18,13 +17,9 @@
 #include "FactorySupport.h" // for DTK_DLLEXPORT
 #endif
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!! CREATING NEW REPORTS
-// !!! If you are creating a new report by copying this one, you will need to modify 
-// !!! the values below indicated by "<<<"
+#define DEFAULT_NAME ("ReportVectorMigration.csv")
 
-// Name for logging, CustomReport.json, and DLL GetType()
-SETUP_LOGGING( "ReportVectorMigration" ) // <<< Name of this file
+SETUP_LOGGING( "ReportVectorMigration" )
 
 namespace Kernel
 {
@@ -40,14 +35,6 @@ instantiator_function_t rif = []()
 };
 
 DllInterfaceHelper DLL_HELPER( _module, _sim_types, rif );
-
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-// ------------------------------
-// --- DLL Interface Methods
-// ---
-// --- The DTK will use these methods to establish communication with the DLL.
-// ------------------------------
 
 #ifdef __cplusplus    // If used by C++ code, 
 extern "C" {          // we need to export the C interface
@@ -85,7 +72,7 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
 // ----------------------------------------
 // --- ReportVectorMigration Methods
 // ----------------------------------------
-#define DEFAULT_NAME ("ReportVectorMigration.csv")
+
 
     BEGIN_QUERY_INTERFACE_DERIVED( ReportVectorMigration, BaseTextReport )
         HANDLE_INTERFACE( IVectorMigrationReporting )

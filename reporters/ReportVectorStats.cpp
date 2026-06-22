@@ -2,7 +2,6 @@
 #include "stdafx.h"
 
 #include "ReportVectorStats.h"
-
 #include "report_params.rc"
 #include "NodeEventContext.h"
 #include "Individual.h"
@@ -12,17 +11,10 @@
 #include "IVectorCohort.h"
 #include "IdmDateTime.h"
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!! CREATING NEW REPORTS
-// !!! If you are creating a new report by copying this one, you will need to modify 
-// !!! the values below indicated by "<<<"
-
-// Name for logging, CustomReport.json, and DLL GetType()
-SETUP_LOGGING( "ReportVectorStats" ) // <<< Name of this file
+SETUP_LOGGING( "ReportVectorStats" )
 
 namespace Kernel
 {
-
     // ----------------------------------------
     // --- VectorStats Methods
     // ----------------------------------------
@@ -539,7 +531,7 @@ namespace Kernel
     {
         std::stringstream header ;
 
-        header         << "Time"
+        header << "Time"
                << "," << "NodeID";
 
         if( stratify_by_species )

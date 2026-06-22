@@ -1,4 +1,6 @@
 
+#pragma once
+
 #include "stdafx.h"
 
 #include "ReportNodeDemographics.h"
@@ -17,10 +19,6 @@ SETUP_LOGGING( "ReportNodeDemographics" )
 
 namespace Kernel
 {
-// ----------------------------------------
-// --- ReportNodeDemographics Methods
-// ----------------------------------------
-
     BEGIN_QUERY_INTERFACE_DERIVED( ReportNodeDemographics, BaseTextReport )
         HANDLE_INTERFACE( IReport )
         HANDLE_INTERFACE( IConfigurable )
@@ -86,10 +84,7 @@ namespace Kernel
         }
         initConfigTypeMap( "Stratify_By_Gender", &m_StratifyByGender, RND_Stratify_By_Gender_DESC_TEXT, true );
         bool ret = JsonConfigurable::Configure( inputJson );
-        
-        if( ret )
-        {
-        }
+
         return ret;
     }
 

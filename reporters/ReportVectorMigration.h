@@ -6,7 +6,6 @@
 #include "VectorEnums.h"
 #include "VectorGenome.h"
 #include "VectorGene.h"
-
 #ifndef _REPORT_DLL
 #include "ReportFactory.h"
 #endif
@@ -18,6 +17,7 @@ namespace Kernel
 #ifndef _REPORT_DLL
         DECLARE_FACTORY_REGISTERED( ReportFactory, ReportVectorMigration, IReport )
 #endif
+
     public:
         ReportVectorMigration();
         virtual ~ReportVectorMigration();

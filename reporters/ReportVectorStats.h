@@ -7,11 +7,9 @@
 #include "suids.hpp"
 #include "VectorGenome.h"
 #include "SimulationEnums.h"
-
 #ifndef _REPORT_DLL
 #include "ReportFactory.h"
 #endif
-
 #ifndef _REPORT_DLL
 #include "ReportFactory.h"
 #endif
