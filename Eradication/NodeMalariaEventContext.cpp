@@ -1,6 +1,4 @@
 
-#pragma once
-
 #include "stdafx.h"
 #include "NodeMalariaEventContext.h"
 #include "InterventionsContainer.h" //IDrugVaccineInterventionEffects

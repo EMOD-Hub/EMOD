@@ -1,6 +1,4 @@
 
-#pragma once
-
 #include "stdafx.h"
 #include "EventTriggerCoordinator.h"
 #include "BaseEventTriggerTemplates.h"

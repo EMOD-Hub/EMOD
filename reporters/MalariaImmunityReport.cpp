@@ -1,6 +1,4 @@
 
-#pragma once
-
 #include "stdafx.h"
 #include "MalariaImmunityReport.h"
 #include "report_params.rc"
