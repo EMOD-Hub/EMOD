@@ -9,7 +9,8 @@ SETUP_LOGGING( "NodeSetNodeList" )
 namespace Kernel
 {
     IMPLEMENT_FACTORY_REGISTERED(NodeSetNodeList)
-    IMPL_QUERY_INTERFACE2(NodeSetNodeList, INodeSet, IConfigurable)
+    BEGIN_QUERY_INTERFACE_BODY(NodeSetNodeList)
+    END_QUERY_INTERFACE_BODY(NodeSetNodeList)
 
     bool NodeSetNodeList::Configure(const Configuration* inputJson)
     {

@@ -3,7 +3,6 @@
 
 #include "WaningEffect.h"
 #include "CajunIncludes.h"
-#include "ConfigurationImpl.h"
 
 SETUP_LOGGING( "WaningEffectBoxExponential" )
 
@@ -11,7 +10,8 @@ namespace Kernel
 {
     // --------------------------- WaningEffectBoxExponential ---------------------------
     IMPLEMENT_FACTORY_REGISTERED(WaningEffectBoxExponential)
-    IMPL_QUERY_INTERFACE2(WaningEffectBoxExponential, IWaningEffect, IConfigurable)
+    BEGIN_QUERY_INTERFACE_BODY(WaningEffectBoxExponential)
+    END_QUERY_INTERFACE_BODY(WaningEffectBoxExponential)
 
     WaningEffectBoxExponential::WaningEffectBoxExponential()
     : WaningEffectConstant()

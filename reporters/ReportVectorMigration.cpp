@@ -77,7 +77,6 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
     BEGIN_QUERY_INTERFACE_DERIVED( ReportVectorMigration, BaseTextReport )
         HANDLE_INTERFACE( IVectorMigrationReporting )
         HANDLE_INTERFACE( IReport )
-        HANDLE_INTERFACE( IConfigurable )
     END_QUERY_INTERFACE_DERIVED( ReportVectorMigration, BaseTextReport )
 
 #ifndef _REPORT_DLL

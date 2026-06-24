@@ -20,7 +20,6 @@ namespace Kernel
 
     BEGIN_QUERY_INTERFACE_DERIVED( ReportDrugStatus, BaseTextReport )
         HANDLE_INTERFACE( IReport )
-        HANDLE_INTERFACE( IConfigurable )
     END_QUERY_INTERFACE_DERIVED( ReportDrugStatus, BaseTextReport )
 
     IMPLEMENT_FACTORY_REGISTERED( ReportDrugStatus )

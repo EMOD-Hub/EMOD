@@ -39,6 +39,8 @@ namespace Kernel
         virtual bool Contains(INodeEventContext *ndc);
         virtual std::vector<ExternalNodeId_t> IsSubset(const std::vector<ExternalNodeId_t>& demographic_node_ids);
 
+        virtual IConfigurable*  GetConfigurable()  override  { return JsonConfigurable::GetConfigurable(); }
+
     protected:
         DECLARE_SERIALIZABLE(NodeSetAll);
     };
@@ -55,6 +57,8 @@ namespace Kernel
 
         virtual bool Contains(INodeEventContext *ndc);
         virtual std::vector<ExternalNodeId_t> IsSubset(const std::vector<ExternalNodeId_t>& demographic_node_ids);
+
+        virtual IConfigurable*  GetConfigurable()  override  { return JsonConfigurable::GetConfigurable(); }
 
     protected:
         std::vector<ExternalNodeId_t> nodelist;

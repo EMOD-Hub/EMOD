@@ -3,7 +3,6 @@
 
 #include "WaningEffectRandomBox.h"
 #include "CajunIncludes.h"
-#include "ConfigurationImpl.h"
 #include "IArchive.h"
 #include "IIndividualHumanContext.h"
 #include "RANDOM.h"
@@ -16,7 +15,8 @@ namespace Kernel
     // --- WaningEffectRandomBox
     // ------------------------------------------------------------------------
     IMPLEMENT_FACTORY_REGISTERED(WaningEffectRandomBox)
-    IMPL_QUERY_INTERFACE2(WaningEffectRandomBox, IWaningEffect, IConfigurable)
+    BEGIN_QUERY_INTERFACE_BODY(WaningEffectRandomBox)
+    END_QUERY_INTERFACE_BODY(WaningEffectRandomBox)
 
     WaningEffectRandomBox::WaningEffectRandomBox()
     : WaningEffectConstant()

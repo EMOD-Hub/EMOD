@@ -18,7 +18,6 @@ namespace Kernel
 
     BEGIN_QUERY_INTERFACE_DERIVED( ReportInfectionDuration, BaseTextReport )
         HANDLE_INTERFACE( IReport )
-        HANDLE_INTERFACE( IConfigurable )
     END_QUERY_INTERFACE_DERIVED( ReportInfectionDuration, BaseTextReport )
 
     IMPLEMENT_FACTORY_REGISTERED( ReportInfectionDuration )

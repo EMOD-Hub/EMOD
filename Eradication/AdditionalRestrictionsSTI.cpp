@@ -10,7 +10,6 @@
 namespace Kernel
 {
     BEGIN_QUERY_INTERFACE_BODY(IsCircumcised)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IAdditionalRestrictions)
     END_QUERY_INTERFACE_BODY(IsCircumcised)
 
@@ -34,7 +33,6 @@ namespace Kernel
     }
 
     BEGIN_QUERY_INTERFACE_BODY(IsPostDebut)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IAdditionalRestrictions)
     END_QUERY_INTERFACE_BODY(IsPostDebut)
 
@@ -58,7 +56,6 @@ namespace Kernel
     }
 
     BEGIN_QUERY_INTERFACE_BODY(HasMoreOrLessThanNumPartners)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IAdditionalRestrictions)
     END_QUERY_INTERFACE_BODY(HasMoreOrLessThanNumPartners)
 
@@ -125,7 +122,6 @@ namespace Kernel
     }
 
     BEGIN_QUERY_INTERFACE_BODY(HasHadMultiplePartnersInLastNumMonths)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IAdditionalRestrictions)
     END_QUERY_INTERFACE_BODY(HasHadMultiplePartnersInLastNumMonths)
 

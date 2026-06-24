@@ -10,7 +10,6 @@ SETUP_LOGGING( "PMTCT" )
 namespace Kernel
 {
     BEGIN_QUERY_INTERFACE_BODY(PMTCT)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IDistributableIntervention)
         HANDLE_ISUPPORTS_VIA(IDistributableIntervention)
     END_QUERY_INTERFACE_BODY(PMTCT)

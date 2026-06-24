@@ -17,7 +17,6 @@ namespace Kernel
 {
     BEGIN_QUERY_INTERFACE_BODY(SimpleVectorControlNode)
         HANDLE_INTERFACE( IReportInterventionDataAccess )
-        HANDLE_INTERFACE( IConfigurable )
         HANDLE_INTERFACE(INodeDistributableIntervention)
         HANDLE_INTERFACE(IBaseIntervention)
         HANDLE_ISUPPORTS_VIA(INodeDistributableIntervention)

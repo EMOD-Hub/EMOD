@@ -57,8 +57,6 @@ namespace Kernel
     {
         DECLARE_FACTORY_REGISTERED_EXPORT(EventCoordinatorFactory, NChooserEventCoordinatorSTI, IEventCoordinator)    
     public:
-        DECLARE_QUERY_INTERFACE()
-
         NChooserEventCoordinatorSTI();
         NChooserEventCoordinatorSTI( NChooserObjectFactory* pObjectFactory );
         virtual ~NChooserEventCoordinatorSTI();

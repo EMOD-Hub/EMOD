@@ -11,8 +11,8 @@ SETUP_LOGGING( "CalendarEventCoordinator" )
 namespace Kernel
 {
     IMPLEMENT_FACTORY_REGISTERED(CalendarEventCoordinator)
-
-    IMPL_QUERY_INTERFACE2(CalendarEventCoordinator, IEventCoordinator, IConfigurable)
+    BEGIN_QUERY_INTERFACE_BODY(CalendarEventCoordinator)
+    END_QUERY_INTERFACE_BODY(CalendarEventCoordinator)
 
     CalendarEventCoordinator::CalendarEventCoordinator()
     : StandardInterventionDistributionEventCoordinator(false)//false=don't use standard demographic coverage

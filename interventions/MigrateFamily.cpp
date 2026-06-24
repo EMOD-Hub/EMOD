@@ -12,7 +12,6 @@ SETUP_LOGGING( "MigrateFamily" )
 namespace Kernel
 {
     BEGIN_QUERY_INTERFACE_BODY(MigrateFamily)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(INodeDistributableIntervention)
         HANDLE_INTERFACE(IBaseIntervention)
         HANDLE_ISUPPORTS_VIA(INodeDistributableIntervention)

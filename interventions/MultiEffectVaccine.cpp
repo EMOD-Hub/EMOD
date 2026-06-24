@@ -8,7 +8,6 @@ SETUP_LOGGING( "MultiEffectVaccine" )
 namespace Kernel
 {
     BEGIN_QUERY_INTERFACE_BODY(MultiEffectVaccine)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IDistributableIntervention)
         HANDLE_INTERFACE(IVaccine)
         HANDLE_INTERFACE(IBaseIntervention)

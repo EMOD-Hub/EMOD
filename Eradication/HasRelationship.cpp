@@ -17,7 +17,6 @@ static constexpr float DAYSPERMONTH = (DAYSPERYEAR / MONTHSPERYEAR);
 namespace Kernel
 {
     BEGIN_QUERY_INTERFACE_BODY(HasRelationship)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IAdditionalRestrictions)
     END_QUERY_INTERFACE_BODY(HasRelationship)
 

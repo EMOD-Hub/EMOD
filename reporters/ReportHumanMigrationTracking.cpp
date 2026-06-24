@@ -70,7 +70,6 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
 
     BEGIN_QUERY_INTERFACE_DERIVED( ReportHumanMigrationTracking, BaseTextReportEvents )
         HANDLE_INTERFACE( IReport )
-        HANDLE_INTERFACE( IConfigurable )
     END_QUERY_INTERFACE_DERIVED( ReportHumanMigrationTracking, BaseTextReportEvents )
 
 #ifndef _REPORT_DLL

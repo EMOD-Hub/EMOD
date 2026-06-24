@@ -60,7 +60,6 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
 
     BEGIN_QUERY_INTERFACE_DERIVED( ReportEventCounter, BaseEventReport )
         HANDLE_INTERFACE( IReport )
-        HANDLE_INTERFACE( IConfigurable )
     END_QUERY_INTERFACE_DERIVED( ReportEventCounter, BaseEventReport )
 
 #ifndef _REPORT_DLL

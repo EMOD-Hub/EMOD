@@ -74,7 +74,6 @@ support_spec_map_t& SimulationConfigFactory::getRegisteredClasses()
 IMPLEMENT_FACTORY_REGISTERED(SimulationConfig)
 
 BEGIN_QUERY_INTERFACE_BODY(SimulationConfig)
-     HANDLE_INTERFACE(IConfigurable)
 END_QUERY_INTERFACE_BODY(SimulationConfig)
 
 SimulationConfig::~SimulationConfig()

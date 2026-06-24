@@ -96,7 +96,6 @@ namespace Kernel
     IMPLEMENT_FACTORY_REGISTERED( WaningEffectCombo )
 
     BEGIN_QUERY_INTERFACE_BODY( WaningEffectCombo )
-        HANDLE_INTERFACE( IConfigurable )
         HANDLE_INTERFACE( IWaningEffect )
         HANDLE_INTERFACE( IWaningEffectCount )
         HANDLE_ISUPPORTS_VIA( IWaningEffect )

@@ -16,7 +16,6 @@ SETUP_LOGGING( "StartNewRelationship" )
 namespace Kernel
 {
     BEGIN_QUERY_INTERFACE_BODY(StartNewRelationship)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IDistributableIntervention)
         HANDLE_INTERFACE(INonPfaRelationshipStarter)
         HANDLE_ISUPPORTS_VIA(IDistributableIntervention)

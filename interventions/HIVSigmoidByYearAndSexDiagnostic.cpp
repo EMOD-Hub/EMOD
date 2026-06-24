@@ -14,7 +14,6 @@ SETUP_LOGGING( "HIVSigmoidByYearAndSexDiagnostic" )
 namespace Kernel
 {
     BEGIN_QUERY_INTERFACE_BODY(HIVSigmoidByYearAndSexDiagnostic)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IDistributableIntervention)
         //HANDLE_INTERFACE(IHealthSeekingBehavior)
         HANDLE_INTERFACE(IBaseIntervention)

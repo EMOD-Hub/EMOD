@@ -7,7 +7,6 @@
 #include "Environment.h"
 #include "StandardEventCoordinator.h"
 #include "Configuration.h"
-#include "ConfigurationImpl.h"
 #include "FactorySupport.h"
 #include "InterventionFactory.h"
 #include "IIndividualHuman.h"
@@ -30,8 +29,8 @@ namespace Kernel
 {
 
     IMPLEMENT_FACTORY_REGISTERED(StandardInterventionDistributionEventCoordinator)
-
-    IMPL_QUERY_INTERFACE2(StandardInterventionDistributionEventCoordinator, IEventCoordinator, IConfigurable)
+    BEGIN_QUERY_INTERFACE_BODY(StandardInterventionDistributionEventCoordinator)
+    END_QUERY_INTERFACE_BODY(StandardInterventionDistributionEventCoordinator)
 
     // ctor
     StandardInterventionDistributionEventCoordinator::StandardInterventionDistributionEventCoordinator( bool useDemographicCoverage ) 
@@ -40,8 +39,6 @@ namespace Kernel
     , num_repetitions(1)
     , tsteps_between_reps(-1)
     , tsteps_since_last(0)
-    //, include_emigrants(false)
-    //, include_immigrants(false)
     , intervention_activated(false)
     , cached_nodes()
     , node_suids()
@@ -77,9 +74,6 @@ namespace Kernel
         {
             InitializeIndividualSelectionType( inputJson );
         }
-
-        //initConfigTypeMap("Include_Departures", &include_emigrants, Include_Departures_DESC_TEXT, false );
-        //initConfigTypeMap("Include_Arrivals", &include_immigrants, Include_Arrivals_DESC_TEXT, false );
 
         demographic_restrictions.ConfigureRestrictions( this, inputJson );
 
@@ -216,20 +210,6 @@ namespace Kernel
         // Store uids and node (event context) pointers
         node_suids.push_back(node_suid);
         cached_nodes.push_back(parent->GetNodeEventContext(node_suid));
-
-#if 0
-        INodeEventContext * pNec = parent->GetNodeEventContext(node_suid);
-        // Register unconditionally to be notified when individuals arrive at our node so we can zap them!
-        // TODO: Make this param driven
-        if( include_immigrants )
-        {
-            pNec->RegisterTravelDistributionSource( this, INodeEventContext::Arrival );
-        }
-        if( include_emigrants )
-        {
-            pNec->RegisterTravelDistributionSource( this, INodeEventContext::Departure );
-        }
-#endif
     }
 
     void StandardInterventionDistributionEventCoordinator::Update( float dt )

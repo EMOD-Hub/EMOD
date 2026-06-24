@@ -463,7 +463,6 @@ namespace Kernel
     IMPLEMENT_FACTORY_REGISTERED( IncidenceEventCoordinator )
 
     BEGIN_QUERY_INTERFACE_BODY( IncidenceEventCoordinator )
-        HANDLE_INTERFACE( IConfigurable )
         HANDLE_INTERFACE( IEventCoordinator )
         HANDLE_ISUPPORTS_VIA( IEventCoordinator )
     END_QUERY_INTERFACE_BODY( IncidenceEventCoordinator )

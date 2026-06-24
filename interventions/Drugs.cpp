@@ -11,7 +11,6 @@ SETUP_LOGGING( "GenericDrug" )
 namespace Kernel
 {
     BEGIN_QUERY_INTERFACE_BODY(GenericDrug)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IDistributableIntervention)
         HANDLE_INTERFACE(IDrug)
         HANDLE_INTERFACE(IBaseIntervention)

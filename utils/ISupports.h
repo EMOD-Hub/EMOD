@@ -2,6 +2,7 @@
 #pragma once
 
 #include "IdmApi.h"
+#include "Debug.h"
 #include <string>
 #include <list>
 #include <vector>

@@ -22,7 +22,6 @@
 namespace Kernel
 {
     using namespace std;
-    using namespace json;
 
     //////////////////////////////////////////////////////////////////////////
     // CreateInstance/ClassFactory helpers
@@ -64,7 +63,7 @@ namespace Kernel
         {
             obj = it->second(); // create object
             obj->AddRef(); // increment reference counting for 'obj'
-            
+
             /* now return an interface type the user actually wants*/
             if( query_for_return_interface )
             {
@@ -84,22 +83,15 @@ namespace Kernel
                 obj->Release(); // reduce reference count as 'obj' is going out of scope
             }
     
-            IConfigurable *conf_obj = nullptr;
-            if (s_OK == obj->QueryInterface(GET_IID(IConfigurable), (void**)&conf_obj))
+            IConfigurable* conf_obj = obj->GetConfigurable();
+            release_assert(conf_obj);
+
+            if (!conf_obj->Configure(config))
             {
-                if (!conf_obj->Configure(config))
-                {
-                    // release references to the objects
-                    conf_obj->Release();
-                    obj->Release();
-                    return nullptr;
-                }
+                // release references to the objects
+                obj->Release();
+                return nullptr;
             }
-            else
-            {
-                // should we throw an exception?
-            }
-            if( conf_obj ) conf_obj->Release();  // release reference as 'conf_obj' is going out of scope.
         }
 
         // returning a plain object pointer type, force casted

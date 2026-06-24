@@ -15,7 +15,6 @@ SETUP_LOGGING( "BirthTriggeredIV" )
 namespace Kernel
 {
     BEGIN_QUERY_INTERFACE_BODY(BirthTriggeredIV)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(INodeDistributableIntervention)
         HANDLE_INTERFACE(IBaseIntervention)
         HANDLE_INTERFACE(IIndividualEventObserver)

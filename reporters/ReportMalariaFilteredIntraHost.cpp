@@ -15,7 +15,6 @@ namespace Kernel
 
     BEGIN_QUERY_INTERFACE_DERIVED( ReportMalariaFilteredIntraHost, ReportMalariaFiltered )
         HANDLE_INTERFACE( IReport )
-        HANDLE_INTERFACE( IConfigurable )
     END_QUERY_INTERFACE_DERIVED( ReportMalariaFilteredIntraHost, ReportMalariaFiltered )
 
     IMPLEMENT_FACTORY_REGISTERED( ReportMalariaFilteredIntraHost )

@@ -85,8 +85,8 @@ namespace Kernel
     // ------------------------------------------------------------------------
 
     IMPLEMENT_FACTORY_REGISTERED(CoverageByNodeEventCoordinator)
-
-    IMPL_QUERY_INTERFACE2(CoverageByNodeEventCoordinator, IEventCoordinator, IConfigurable)
+    BEGIN_QUERY_INTERFACE_BODY(CoverageByNodeEventCoordinator)
+    END_QUERY_INTERFACE_BODY(CoverageByNodeEventCoordinator)
 
     CoverageByNodeEventCoordinator::CoverageByNodeEventCoordinator()
         : StandardInterventionDistributionEventCoordinator( false )//false=don't use standard demographic coverage

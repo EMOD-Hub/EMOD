@@ -25,7 +25,8 @@ namespace Kernel
     // --- VectorCounter
     // ------------------------------------------------------------------------
 
-    IMPL_QUERY_INTERFACE1( VectorCounter, IConfigurable )
+    BEGIN_QUERY_INTERFACE_BODY(VectorCounter)
+    END_QUERY_INTERFACE_BODY(VectorCounter)
 
     VectorCounter::VectorCounter()
         : JsonConfigurable()
@@ -488,7 +489,8 @@ namespace Kernel
     // --- VectorResponder
     // ------------------------------------------------------------------------
 
-    IMPL_QUERY_INTERFACE1( VectorResponder, IConfigurable )
+    BEGIN_QUERY_INTERFACE_BODY(VectorResponder)
+    END_QUERY_INTERFACE_BODY(VectorResponder)
 
 #define PYTHON_FUNC_NAME_CREATE  "create_responder"
 #define PYTHON_FUNC_NAME_DELETE  "delete_responder"
@@ -671,7 +673,6 @@ namespace Kernel
     BEGIN_QUERY_INTERFACE_BODY( VectorSurveillanceEventCoordinator )
         HANDLE_INTERFACE( IEventCoordinatorEventContext )
         HANDLE_INTERFACE( ICoordinatorEventObserver )
-        HANDLE_INTERFACE( IConfigurable )
         HANDLE_INTERFACE( IEventCoordinator )
         HANDLE_ISUPPORTS_VIA( IEventCoordinator )
     END_QUERY_INTERFACE_BODY( VectorSurveillanceEventCoordinator )

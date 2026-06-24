@@ -3,14 +3,14 @@
 
 #include "WaningEffect.h"
 #include "CajunIncludes.h"
-#include "ConfigurationImpl.h"
 
 SETUP_LOGGING( "WaningEffectConstant" )
 
 namespace Kernel
 {
     IMPLEMENT_FACTORY_REGISTERED(WaningEffectConstant)
-    IMPL_QUERY_INTERFACE2(WaningEffectConstant, IWaningEffect, IConfigurable)
+    BEGIN_QUERY_INTERFACE_BODY(WaningEffectConstant)
+    END_QUERY_INTERFACE_BODY(WaningEffectConstant)
 
     WaningEffectConstant::WaningEffectConstant()
     : IWaningEffect()

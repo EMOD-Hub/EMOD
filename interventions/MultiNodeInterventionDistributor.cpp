@@ -9,7 +9,6 @@ SETUP_LOGGING( "MultiNodeInterventionDistributor" )
 namespace Kernel
 {
     BEGIN_QUERY_INTERFACE_BODY( MultiNodeInterventionDistributor )
-        HANDLE_INTERFACE( IConfigurable )
         HANDLE_INTERFACE( IBaseIntervention )
         HANDLE_INTERFACE( INodeDistributableIntervention )
         HANDLE_ISUPPORTS_VIA( INodeDistributableIntervention )

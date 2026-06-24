@@ -83,7 +83,6 @@ namespace Kernel
 
 
     BEGIN_QUERY_INTERFACE_BODY(IVCalendar)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IDistributableIntervention)
         HANDLE_ISUPPORTS_VIA(IDistributableIntervention)
         HANDLE_ISUPPORTS_VIA(IBaseIntervention)

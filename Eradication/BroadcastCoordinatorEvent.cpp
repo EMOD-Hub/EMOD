@@ -5,9 +5,7 @@
 #endif
 
 #include "BroadcastCoordinatorEvent.h"
-#include "InterventionFactory.h"
 #include "Log.h"
-#include "EventTriggerCoordinator.h"
 #include "NodeEventContext.h"
 #include "SimulationEventContext.h"
 
@@ -16,7 +14,8 @@ SETUP_LOGGING( "BroadcastCoordinatorEvent" )
 namespace Kernel
 {
     IMPLEMENT_FACTORY_REGISTERED( BroadcastCoordinatorEvent )
-    IMPL_QUERY_INTERFACE2( BroadcastCoordinatorEvent, IEventCoordinator, IConfigurable )
+    BEGIN_QUERY_INTERFACE_BODY(BroadcastCoordinatorEvent)
+    END_QUERY_INTERFACE_BODY(BroadcastCoordinatorEvent)
 
     BroadcastCoordinatorEvent::BroadcastCoordinatorEvent()
         : JsonConfigurable()

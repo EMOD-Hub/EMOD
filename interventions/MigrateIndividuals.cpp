@@ -15,7 +15,6 @@ SETUP_LOGGING( "MigrateIndividuals" )
 namespace Kernel
 {
     BEGIN_QUERY_INTERFACE_BODY(MigrateIndividuals)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IDistributableIntervention)
         HANDLE_INTERFACE(IBaseIntervention)
         HANDLE_ISUPPORTS_VIA(IDistributableIntervention)

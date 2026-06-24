@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include "Configure.h"
 #include "ObjectFactory.h"
 #ifndef WIN32
 #include <cxxabi.h>
@@ -58,11 +59,8 @@ namespace Kernel
             // --------------------------------
             // --- Get the schema for the class
             // --------------------------------
-            IConfigurable* p_config = nullptr;
-            if( s_OK != pForSchema->QueryInterface( GET_IID( IConfigurable ), (void**)&p_config ) )
-            {
-                throw QueryInterfaceException( __FILE__, __LINE__, __FUNCTION__, "ret", "IConfigurable", "ISupports" );
-            }
+            IConfigurable* p_config = pForSchema->GetConfigurable();
+            release_assert( p_config );
 
             Configuration* fakeConfig = Configuration::CopyFromElement( fakeJson );
             p_config->Configure( fakeConfig );
@@ -204,11 +202,8 @@ namespace Kernel
 
         std::string sim_type_str = GET_CONFIG_STRING( EnvPtr->Config, "Simulation_Type" );
 
-        IConfigurable* p_config = nullptr;
-        if( s_OK != pObject->QueryInterface( GET_IID( IConfigurable ), (void**)&p_config ) )
-        {
-            throw QueryInterfaceException( __FILE__, __LINE__, __FUNCTION__, "pObject", "IConfigurable", "IObject" );
-        }
+        IConfigurable* p_config = pObject->GetConfigurable();
+        release_assert(p_config);
 
 
         json::Array sim_type_array = p_config->GetSimTypes();

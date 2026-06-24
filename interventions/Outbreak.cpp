@@ -19,7 +19,6 @@ SETUP_LOGGING( "Outbreak" )
 namespace Kernel
 {
     BEGIN_QUERY_INTERFACE_BODY(Outbreak)
-        HANDLE_INTERFACE(IConfigurable)
         //HANDLE_INTERFACE(IDistributableIntervention)
         HANDLE_INTERFACE(IBaseIntervention)
         HANDLE_INTERFACE(INodeDistributableIntervention)

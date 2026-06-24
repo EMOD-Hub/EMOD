@@ -13,7 +13,6 @@ namespace Kernel
     float ACTUALDAYSPERMONTH = float( DAYSPERYEAR ) / MONTHSPERYEAR;  // 30.416666
 
     BEGIN_QUERY_INTERFACE_BODY(InputEIR)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IBaseIntervention)
         HANDLE_INTERFACE(INodeDistributableIntervention)
         HANDLE_ISUPPORTS_VIA(INodeDistributableIntervention)

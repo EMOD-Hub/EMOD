@@ -75,7 +75,6 @@ namespace Kernel
 
 BEGIN_QUERY_INTERFACE_DERIVED( VectorHabitatReport, BinnedReport )
     HANDLE_INTERFACE( IReport )
-    HANDLE_INTERFACE( IConfigurable )
 END_QUERY_INTERFACE_DERIVED( VectorHabitatReport, BinnedReport )
 
 #ifndef _REPORT_DLL

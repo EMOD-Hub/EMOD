@@ -33,7 +33,6 @@ namespace Kernel
 
     BEGIN_QUERY_INTERFACE_DERIVED( ReportPfaQueues, BaseTextReport )
         HANDLE_INTERFACE( IReport )
-        HANDLE_INTERFACE( IConfigurable )
     END_QUERY_INTERFACE_DERIVED( ReportPfaQueues, BaseTextReport )
 
     IMPLEMENT_FACTORY_REGISTERED( ReportPfaQueues )

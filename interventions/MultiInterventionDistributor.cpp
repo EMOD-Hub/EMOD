@@ -10,7 +10,6 @@ SETUP_LOGGING( "MultiInterventionDistributor" )
 namespace Kernel
 {
     BEGIN_QUERY_INTERFACE_BODY(MultiInterventionDistributor)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IBaseIntervention)
         HANDLE_INTERFACE(IDistributableIntervention)
         HANDLE_ISUPPORTS_VIA(IDistributableIntervention)

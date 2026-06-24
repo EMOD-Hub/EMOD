@@ -26,7 +26,6 @@ namespace Kernel
 
     BEGIN_QUERY_INTERFACE_DERIVED( ReportFpgOutputForObservationalModel, BaseTextReport )
         HANDLE_INTERFACE( IReport )
-        HANDLE_INTERFACE( IConfigurable )
     END_QUERY_INTERFACE_DERIVED( ReportFpgOutputForObservationalModel, BaseTextReport )
 
     IMPLEMENT_FACTORY_REGISTERED( ReportFpgOutputForObservationalModel )

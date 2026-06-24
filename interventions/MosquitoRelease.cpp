@@ -14,7 +14,6 @@ SETUP_LOGGING( "MosquitoRelease" )
 namespace Kernel
 {
     BEGIN_QUERY_INTERFACE_BODY(MosquitoRelease)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IBaseIntervention)
         HANDLE_INTERFACE(INodeDistributableIntervention)
         HANDLE_ISUPPORTS_VIA(INodeDistributableIntervention)

@@ -81,7 +81,6 @@ namespace Kernel
 {
     BEGIN_QUERY_INTERFACE_DERIVED( StiRelationshipQueueReporter, BaseTextReport )
         HANDLE_INTERFACE( IReport )
-        HANDLE_INTERFACE( IConfigurable )
     END_QUERY_INTERFACE_DERIVED( StiRelationshipQueueReporter, BaseTextReport )
 
     StiRelationshipQueueReporter::StiRelationshipQueueReporter()

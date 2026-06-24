@@ -304,7 +304,6 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
 
     BEGIN_QUERY_INTERFACE_BODY( MalariaSurveyJSONAnalyzer )
         HANDLE_INTERFACE( IReportMalariaDiagnostics )
-        HANDLE_INTERFACE( IConfigurable )
         HANDLE_INTERFACE( IReport )
         HANDLE_ISUPPORTS_VIA( IReport )
     END_QUERY_INTERFACE_BODY( MalariaSurveyJSONAnalyzer )

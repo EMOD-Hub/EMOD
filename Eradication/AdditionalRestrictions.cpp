@@ -8,7 +8,6 @@
 namespace Kernel
 {
     BEGIN_QUERY_INTERFACE_BODY(HasIntervention)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IAdditionalRestrictions)
     END_QUERY_INTERFACE_BODY(HasIntervention)
 
@@ -54,7 +53,6 @@ namespace Kernel
     }
 
     BEGIN_QUERY_INTERFACE_BODY(HasIP)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IAdditionalRestrictions)
     END_QUERY_INTERFACE_BODY(HasIP)
 
@@ -100,7 +98,6 @@ namespace Kernel
 
 
     BEGIN_QUERY_INTERFACE_BODY(IsPregnant)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IAdditionalRestrictions)
     END_QUERY_INTERFACE_BODY(IsPregnant)
 

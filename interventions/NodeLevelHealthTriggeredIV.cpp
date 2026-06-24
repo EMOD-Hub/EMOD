@@ -17,7 +17,6 @@ SETUP_LOGGING( "NodeLevelHealthTriggeredIV" )
 namespace Kernel
 {
     BEGIN_QUERY_INTERFACE_BODY(NodeLevelHealthTriggeredIV)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IBaseIntervention)
         HANDLE_INTERFACE(INodeDistributableIntervention)
         HANDLE_INTERFACE(IIndividualEventObserver)

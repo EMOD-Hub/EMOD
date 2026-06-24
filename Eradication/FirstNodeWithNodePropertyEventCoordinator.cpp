@@ -121,7 +121,8 @@ namespace Kernel
     // ------------------------------------------------------------------------
 
     IMPLEMENT_FACTORY_REGISTERED( FirstNodeWithNodePropertyEventCoordinator )
-    IMPL_QUERY_INTERFACE2( FirstNodeWithNodePropertyEventCoordinator, IEventCoordinator, IConfigurable )
+    BEGIN_QUERY_INTERFACE_BODY(FirstNodeWithNodePropertyEventCoordinator)
+    END_QUERY_INTERFACE_BODY(FirstNodeWithNodePropertyEventCoordinator)
 
     FirstNodeWithNodePropertyEventCoordinator::FirstNodeWithNodePropertyEventCoordinator()
         : TriggeredEventCoordinator()

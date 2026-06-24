@@ -18,7 +18,6 @@ SETUP_LOGGING( "OutbreakIndividual" )
 namespace Kernel
 {
     BEGIN_QUERY_INTERFACE_BODY(OutbreakIndividual)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IDistributableIntervention)
         HANDLE_INTERFACE(IOutbreakIndividual)
         HANDLE_ISUPPORTS_VIA(IDistributableIntervention)

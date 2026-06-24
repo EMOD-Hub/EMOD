@@ -9,7 +9,6 @@
 namespace Kernel
 {
     BEGIN_QUERY_INTERFACE_BODY(IsHivPositive)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IAdditionalRestrictions)
     END_QUERY_INTERFACE_BODY(IsHivPositive)
 
@@ -75,7 +74,6 @@ namespace Kernel
     }
 
     BEGIN_QUERY_INTERFACE_BODY(IsOnART)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IAdditionalRestrictions)
     END_QUERY_INTERFACE_BODY(IsOnART)
 
@@ -99,7 +97,6 @@ namespace Kernel
     }
 
     BEGIN_QUERY_INTERFACE_BODY(HasBeenOnArtMoreOrLessThanNumMonths)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IAdditionalRestrictions)
     END_QUERY_INTERFACE_BODY(HasBeenOnArtMoreOrLessThanNumMonths)
 
@@ -147,7 +144,6 @@ namespace Kernel
     }
 
     BEGIN_QUERY_INTERFACE_BODY(HasCd4BetweenMinAndMax)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IAdditionalRestrictions)
     END_QUERY_INTERFACE_BODY(HasCd4BetweenMinAndMax)
 

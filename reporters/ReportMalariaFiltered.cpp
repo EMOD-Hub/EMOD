@@ -83,7 +83,6 @@ GetReportInstantiator( Kernel::instantiator_function_t* pif )
 
     BEGIN_QUERY_INTERFACE_DERIVED( ReportMalariaFiltered, ReportMalaria )
         HANDLE_INTERFACE( IReport )
-        HANDLE_INTERFACE( IConfigurable )
     END_QUERY_INTERFACE_DERIVED( ReportMalariaFiltered, ReportMalaria )
 
 #ifndef _REPORT_DLL

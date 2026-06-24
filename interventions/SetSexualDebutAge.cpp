@@ -13,7 +13,6 @@ SETUP_LOGGING( "SetSexualDebugAge" )
 namespace Kernel
 {
     BEGIN_QUERY_INTERFACE_BODY( SetSexualDebutAge )
-        HANDLE_INTERFACE( IConfigurable )
         HANDLE_INTERFACE( IDistributableIntervention )
         HANDLE_ISUPPORTS_VIA( IDistributableIntervention )
     END_QUERY_INTERFACE_BODY( SetSexualDebutAge )

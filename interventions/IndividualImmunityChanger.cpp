@@ -17,7 +17,6 @@ namespace Kernel
     IMPLEMENT_FACTORY_REGISTERED(IndividualImmunityChanger)
 
     BEGIN_QUERY_INTERFACE_BODY(IndividualImmunityChanger)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IBaseIntervention)
         HANDLE_INTERFACE(IIndividualImmunityChanger)
         HANDLE_INTERFACE(IDistributableIntervention)

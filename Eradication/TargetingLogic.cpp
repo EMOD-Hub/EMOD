@@ -118,7 +118,6 @@ namespace Kernel
     // ------------------------------------------------------------------------
 
     BEGIN_QUERY_INTERFACE_BODY(TargetingLogic)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IAdditionalRestrictions)
     END_QUERY_INTERFACE_BODY(TargetingLogic)
 

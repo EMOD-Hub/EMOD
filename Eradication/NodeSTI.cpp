@@ -25,7 +25,6 @@ namespace Kernel
 
     BEGIN_QUERY_INTERFACE_DERIVED(NodeSTI, Node)
         HANDLE_INTERFACE(INodeSTI)
-        HANDLE_INTERFACE(IConfigurable)
     END_QUERY_INTERFACE_DERIVED(NodeSTI, Node)
 
     bool NodeSTI::Configure( const Configuration* config )

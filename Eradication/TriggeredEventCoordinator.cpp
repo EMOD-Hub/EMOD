@@ -1,7 +1,6 @@
 
 #include "stdafx.h"
 #include "TriggeredEventCoordinator.h"
-#include "InterventionFactory.h"
 #include "SimulationEventContext.h"
 
 SETUP_LOGGING( "TriggeredEventCoordinator" )
@@ -9,7 +8,8 @@ SETUP_LOGGING( "TriggeredEventCoordinator" )
 namespace Kernel
 {
     IMPLEMENT_FACTORY_REGISTERED( TriggeredEventCoordinator )
-    IMPL_QUERY_INTERFACE2( TriggeredEventCoordinator, IEventCoordinator, IConfigurable )
+    BEGIN_QUERY_INTERFACE_BODY(TriggeredEventCoordinator)
+    END_QUERY_INTERFACE_BODY(TriggeredEventCoordinator)
 
     TriggeredEventCoordinator::TriggeredEventCoordinator()
         : StandardInterventionDistributionEventCoordinator( true )

@@ -115,6 +115,8 @@ namespace Kernel
         // IReportInterventionData
         virtual ReportInterventionData GetReportInterventionData() const override;
 
+        virtual IConfigurable* GetConfigurable() override { return JsonConfigurable::GetConfigurable(); }
+
     protected:
         BaseIntervention();
         BaseIntervention( const BaseIntervention& );
@@ -148,6 +150,8 @@ namespace Kernel
         virtual bool Expired() override;
         virtual void SetExpired( bool isExpired ) override;
         virtual void SetContextTo( INodeEventContext *context ) override;
+
+        virtual IConfigurable* GetConfigurable() override { return JsonConfigurable::GetConfigurable(); }
 
         // IReportInterventionData
         virtual ReportInterventionData GetReportInterventionData() const override;

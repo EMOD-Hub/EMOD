@@ -14,8 +14,9 @@ namespace Kernel
     //
     // CampaignEventByYear class here.
     //
-    IMPL_QUERY_INTERFACE1(CampaignEventByYear, IConfigurable)
     IMPLEMENT_FACTORY_REGISTERED(CampaignEventByYear)
+    BEGIN_QUERY_INTERFACE_BODY(CampaignEventByYear)
+    END_QUERY_INTERFACE_BODY(CampaignEventByYear)
 
     CampaignEventByYear::CampaignEventByYear()
     {

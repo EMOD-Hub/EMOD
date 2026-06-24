@@ -994,6 +994,7 @@ namespace Kernel
                 updateSchemaWithCondition(newParamSchema, (pair.first).c_str(), (pair.second).c_str());
             }
         }
+
         jsonSchemaBase[paramName] = newParamSchema;
     }
 

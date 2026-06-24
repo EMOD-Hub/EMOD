@@ -181,7 +181,6 @@ namespace Kernel
     // ----------------------------------------
 
     BEGIN_QUERY_INTERFACE_BODY( SqlReport )
-        HANDLE_INTERFACE( IConfigurable )
         HANDLE_INTERFACE( IReport )
         HANDLE_ISUPPORTS_VIA( IReport )
     END_QUERY_INTERFACE_BODY( SqlReport )

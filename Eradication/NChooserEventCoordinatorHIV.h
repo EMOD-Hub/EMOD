@@ -7,7 +7,6 @@
 namespace Kernel
 {
     class TargetedDistributionHIV;
-    //struct IIndividualHumanEventContext;
     struct IIndividualHumanSTI;
     struct IIndividualHumanHIV;
     struct IHIVMedicalHistory;
@@ -47,8 +46,6 @@ namespace Kernel
     class IDMAPI TargetedDistributionHIV : public TargetedDistributionSTI
     {
     public:
-        DECLARE_QUERY_INTERFACE()
-
         TargetedDistributionHIV( NChooserObjectFactory* pObjectFactory );
         virtual ~TargetedDistributionHIV();
 
@@ -96,8 +93,6 @@ namespace Kernel
     {
         DECLARE_FACTORY_REGISTERED_EXPORT(EventCoordinatorFactory, NChooserEventCoordinatorHIV, IEventCoordinator)    
     public:
-        DECLARE_QUERY_INTERFACE()
-
         NChooserEventCoordinatorHIV();
         NChooserEventCoordinatorHIV( NChooserObjectFactory* pObjectFactory );
         virtual ~NChooserEventCoordinatorHIV();

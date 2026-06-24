@@ -17,7 +17,6 @@ namespace Kernel
     BEGIN_QUERY_INTERFACE_DERIVED(TargetedDistributionSTI,TargetedDistribution)
     END_QUERY_INTERFACE_DERIVED(TargetedDistributionSTI,TargetedDistribution)
 
-
     TargetedDistributionSTI::TargetedDistributionSTI( NChooserObjectFactory* pObjectFactory )
     : TargetedDistribution( pObjectFactory )
     , m_StartYear(1900.0)
@@ -118,7 +117,6 @@ namespace Kernel
     // ------------------------------------------------------------------------
 
     IMPLEMENT_FACTORY_REGISTERED(NChooserEventCoordinatorSTI)
-    IMPL_QUERY_INTERFACE2(NChooserEventCoordinatorSTI, IEventCoordinator, IConfigurable)
 
     NChooserEventCoordinatorSTI::NChooserEventCoordinatorSTI()
     : NChooserEventCoordinator( new NChooserObjectFactorySTI() )

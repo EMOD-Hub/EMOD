@@ -19,7 +19,6 @@ namespace Kernel
 
     BEGIN_QUERY_INTERFACE_DERIVED( ReportInfectionStatsMalaria, BaseTextReport )
         HANDLE_INTERFACE( IReport )
-        HANDLE_INTERFACE( IConfigurable )
     END_QUERY_INTERFACE_DERIVED( ReportInfectionStatsMalaria, BaseTextReport )
 
     IMPLEMENT_FACTORY_REGISTERED( ReportInfectionStatsMalaria )

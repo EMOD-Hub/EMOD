@@ -8,7 +8,8 @@ SETUP_LOGGING( "DelayEventCoordinator" )
 namespace Kernel
 {
     IMPLEMENT_FACTORY_REGISTERED( DelayEventCoordinator )
-    IMPL_QUERY_INTERFACE2( DelayEventCoordinator, IEventCoordinator, IConfigurable )
+    BEGIN_QUERY_INTERFACE_BODY(DelayEventCoordinator)
+    END_QUERY_INTERFACE_BODY(DelayEventCoordinator)
 
     DelayEventCoordinator::DelayEventCoordinator()
         : TriggeredEventCoordinator()

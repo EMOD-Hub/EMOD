@@ -51,7 +51,7 @@ namespace Kernel
         ObjectFactory( bool queryForReturnInterface=true );
 
         // Provides a hook for the factory to add other stuff to the schema for an object
-        virtual void ModifySchema( json::QuickBuilder& rSchema, ISupports*pObject ){};
+        virtual void ModifySchema( json::QuickBuilder& rSchema, ISupports* pObject ){};
 
         // Returns the name fo the factory
         std::string GetFactoryName();

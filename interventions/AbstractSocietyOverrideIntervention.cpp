@@ -12,7 +12,6 @@ SETUP_LOGGING( "AbstractSocietyOverrideIntervention" )
 namespace Kernel
 {
     BEGIN_QUERY_INTERFACE_BODY(AbstractSocietyOverrideIntervention)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(ISocietyOverrideIntervention)
         HANDLE_INTERFACE(INodeDistributableIntervention)
         HANDLE_INTERFACE(IBaseIntervention)

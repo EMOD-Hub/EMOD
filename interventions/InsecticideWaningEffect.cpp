@@ -12,7 +12,8 @@ namespace Kernel
     // --- InsecticideWaningEffect
     // ------------------------------------------------------------------------
 
-    IMPL_QUERY_INTERFACE2(InsecticideWaningEffect, IInsecticideWaningEffect, IConfigurable)
+    BEGIN_QUERY_INTERFACE_BODY(InsecticideWaningEffect)
+    END_QUERY_INTERFACE_BODY(InsecticideWaningEffect)
 
     InsecticideWaningEffect::InsecticideWaningEffect()
         : InsecticideWaningEffect( false, false, false, false )
@@ -260,7 +261,8 @@ namespace Kernel
     // --- InsecticideWaningEffectCollection
     // ------------------------------------------------------------------------
 
-    IMPL_QUERY_INTERFACE2( InsecticideWaningEffectCollection, IInsecticideWaningEffect, IConfigurable )
+    BEGIN_QUERY_INTERFACE_BODY(InsecticideWaningEffectCollection)
+    END_QUERY_INTERFACE_BODY(InsecticideWaningEffectCollection)
 
         InsecticideWaningEffectCollection::InsecticideWaningEffectCollection()
         : InsecticideWaningEffectCollection( false, false, false, false )

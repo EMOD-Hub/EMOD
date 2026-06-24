@@ -12,7 +12,8 @@ SETUP_LOGGING( "ReferenceTrackingEventCoordinator" )
 namespace Kernel
 {
     IMPLEMENT_FACTORY_REGISTERED(ReferenceTrackingEventCoordinator)
-    IMPL_QUERY_INTERFACE2(ReferenceTrackingEventCoordinator, IEventCoordinator, IConfigurable)
+    BEGIN_QUERY_INTERFACE_BODY(ReferenceTrackingEventCoordinator)
+    END_QUERY_INTERFACE_BODY(ReferenceTrackingEventCoordinator)
 
     ReferenceTrackingEventCoordinator::ReferenceTrackingEventCoordinator()
         : StandardInterventionDistributionEventCoordinator( false )//false=don't use standard demographic coverage

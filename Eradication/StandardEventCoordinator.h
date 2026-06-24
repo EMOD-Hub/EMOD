@@ -31,6 +31,8 @@ namespace Kernel
         StandardInterventionDistributionEventCoordinator( bool useDemographicCoverage = true );
         virtual ~StandardInterventionDistributionEventCoordinator();
 
+        virtual IConfigurable* GetConfigurable() override { return JsonConfigurable::GetConfigurable(); }
+
         // IEventCoordinator
         virtual void SetContextTo(ISimulationEventContext *isec);
         virtual void CheckStartDay( float campaignStartDay ) const override {};

@@ -729,7 +729,8 @@ namespace Kernel
     // ------------------------------------------------------------------------
 
     IMPLEMENT_FACTORY_REGISTERED(NChooserEventCoordinator)
-    IMPL_QUERY_INTERFACE2(NChooserEventCoordinator, IEventCoordinator, IConfigurable)
+    BEGIN_QUERY_INTERFACE_BODY(NChooserEventCoordinator)
+    END_QUERY_INTERFACE_BODY(NChooserEventCoordinator)
 
     NChooserEventCoordinator::NChooserEventCoordinator()
     : m_Parent( nullptr )

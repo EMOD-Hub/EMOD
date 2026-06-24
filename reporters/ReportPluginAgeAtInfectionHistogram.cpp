@@ -101,7 +101,6 @@ namespace Kernel
 
 BEGIN_QUERY_INTERFACE_DERIVED( ReportPluginAgeAtInfectionHistogram, BaseChannelReport )
     HANDLE_INTERFACE( IReport )
-    HANDLE_INTERFACE( IConfigurable )
 END_QUERY_INTERFACE_DERIVED( ReportPluginAgeAtInfectionHistogram, BaseChannelReport )
 
 #ifndef _REPORT_DLL

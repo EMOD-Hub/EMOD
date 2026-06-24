@@ -16,7 +16,6 @@ namespace Kernel
 {
     BEGIN_QUERY_INTERFACE_BODY(MaleCircumcision)
         HANDLE_INTERFACE( ICircumcision )
-        HANDLE_INTERFACE( IConfigurable )
         HANDLE_INTERFACE(IDistributableIntervention)
         HANDLE_ISUPPORTS_VIA(IDistributableIntervention)
     END_QUERY_INTERFACE_BODY(MaleCircumcision)

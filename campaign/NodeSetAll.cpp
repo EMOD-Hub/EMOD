@@ -8,7 +8,8 @@ namespace Kernel
 {
     // NodeSetAll 
     IMPLEMENT_FACTORY_REGISTERED(NodeSetAll)
-    IMPL_QUERY_INTERFACE2(NodeSetAll, INodeSet, IConfigurable)
+    BEGIN_QUERY_INTERFACE_BODY(NodeSetAll)
+    END_QUERY_INTERFACE_BODY(NodeSetAll)
 
     bool NodeSetAll::Configure(const Configuration * pInputJson)
     {

@@ -18,7 +18,6 @@ namespace Kernel
 {
     BEGIN_QUERY_INTERFACE_DERIVED( ReportVectorStatsMalariaGenetics, ReportVectorStats )
         HANDLE_INTERFACE( IReport )
-        HANDLE_INTERFACE( IConfigurable )
     END_QUERY_INTERFACE_DERIVED( ReportVectorStatsMalariaGenetics, ReportVectorStats )
 
     IMPLEMENT_FACTORY_REGISTERED( ReportVectorStatsMalariaGenetics )

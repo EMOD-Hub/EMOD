@@ -12,7 +12,6 @@ SETUP_LOGGING( "SimpleVaccine" )
 namespace Kernel
 {
     BEGIN_QUERY_INTERFACE_BODY(SimpleVaccine)
-        HANDLE_INTERFACE(IConfigurable)
         HANDLE_INTERFACE(IDistributableIntervention)
         HANDLE_INTERFACE( IReportInterventionDataAccess )
         HANDLE_INTERFACE(IVaccine)

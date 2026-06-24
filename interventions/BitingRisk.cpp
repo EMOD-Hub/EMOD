@@ -13,7 +13,6 @@ namespace Kernel
     IMPLEMENT_FACTORY_REGISTERED( BitingRisk )
 
     BEGIN_QUERY_INTERFACE_BODY( BitingRisk )
-        HANDLE_INTERFACE( IConfigurable )
         HANDLE_INTERFACE( IDistributableIntervention )
         HANDLE_ISUPPORTS_VIA( IDistributableIntervention )
     END_QUERY_INTERFACE_BODY( BitingRisk )

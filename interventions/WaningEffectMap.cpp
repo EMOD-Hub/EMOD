@@ -3,7 +3,6 @@
 
 #include "WaningEffectMap.h"
 #include "CajunIncludes.h"
-#include "ConfigurationImpl.h"
 #include "IArchive.h"
 
 SETUP_LOGGING( "WaningEffectMapAbstract" )
@@ -13,7 +12,9 @@ namespace Kernel
     // ------------------------------------------------------------------------
     // --- WaningEffectMapLinear
     // ------------------------------------------------------------------------
-    IMPL_QUERY_INTERFACE2(WaningEffectMapAbstract, IWaningEffect, IConfigurable)
+
+    BEGIN_QUERY_INTERFACE_BODY(WaningEffectMapAbstract)
+    END_QUERY_INTERFACE_BODY(WaningEffectMapAbstract)
 
     WaningEffectMapAbstract::WaningEffectMapAbstract( float maxTime )
     : WaningEffectConstant()

@@ -170,7 +170,6 @@ namespace Kernel
 
     BEGIN_QUERY_INTERFACE_DERIVED( ReportVectorGenetics, BaseTextReport )
         HANDLE_INTERFACE( IReport )
-        HANDLE_INTERFACE( IConfigurable )
     END_QUERY_INTERFACE_DERIVED( ReportVectorGenetics, BaseTextReport )
 
 #ifndef _REPORT_DLL

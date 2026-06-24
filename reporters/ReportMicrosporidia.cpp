@@ -28,7 +28,6 @@ namespace Kernel
 
     BEGIN_QUERY_INTERFACE_DERIVED( ReportMicrosporidia, BaseTextReport )
         HANDLE_INTERFACE( IReport )
-        HANDLE_INTERFACE( IConfigurable )
     END_QUERY_INTERFACE_DERIVED( ReportMicrosporidia, BaseTextReport )
 
     IMPLEMENT_FACTORY_REGISTERED( ReportMicrosporidia )
