@@ -48,7 +48,7 @@ namespace Kernel
                              bool skip_exceptions=true );
 
     protected:
-        ObjectFactory( bool queryForReturnInterface=true );
+        ObjectFactory();
 
         // Provides a hook for the factory to add other stuff to the schema for an object
         virtual void ModifySchema( json::QuickBuilder& rSchema, ISupports* pObject ){};
@@ -60,7 +60,6 @@ namespace Kernel
 
         support_spec_map_t m_RegisteredClasses;
         json::Object       m_FactorySchema;
-        bool               m_QueryForReturnInterface;
 
         static Factory* _instance;
     };

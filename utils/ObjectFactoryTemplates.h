@@ -16,10 +16,9 @@ namespace Kernel
     }
 
     template<class IObject, class Factory>
-    ObjectFactory<IObject,Factory>::ObjectFactory( bool queryForReturnInterface )
+    ObjectFactory<IObject,Factory>::ObjectFactory()
         : m_RegisteredClasses()
         , m_FactorySchema()
-        , m_QueryForReturnInterface( queryForReturnInterface )
     {
     }
 
@@ -89,7 +88,7 @@ namespace Kernel
         ElementIsValid( rJsonElement, rDataLocation, parameterName, false );
 
         Configuration* pConfig = Configuration::CopyFromElement( rJsonElement, rDataLocation );
-        IObject* obj = CreateInstanceFromSpecs<IObject>( pConfig, m_RegisteredClasses, m_QueryForReturnInterface );
+        IObject* obj = CreateInstanceFromSpecs<IObject>( pConfig, m_RegisteredClasses );
 
         if( !obj )
         {

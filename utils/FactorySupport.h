@@ -30,7 +30,7 @@ namespace Kernel
     typedef map<string, instantiator_function_t> support_spec_map_t;
 
     template <class ReturnTypeT>
-    ReturnTypeT* CreateInstanceFromSpecs(const Configuration* config, support_spec_map_t &specs, bool query_for_return_interface = true)
+    ReturnTypeT* CreateInstanceFromSpecs(const Configuration* config, support_spec_map_t &specs)
     {
         string classname = "PREPARSED_CLASSNAME";
         try {
@@ -64,25 +64,6 @@ namespace Kernel
             obj = it->second(); // create object
             obj->AddRef(); // increment reference counting for 'obj'
 
-            /* now return an interface type the user actually wants*/
-            if( query_for_return_interface )
-            {
-                ReturnTypeT *ri = nullptr;
-
-                // get iid. Interesting issue here where macros and templates args interact unpredictably.
-                string templateClassName = typeid( ReturnTypeT ).name();
-                templateClassName = templateClassName.substr( templateClassName.find_last_of( "::" ) + 1 );
-
-                if( s_OK != obj->QueryInterface( TypeInfo<ReturnTypeT>::GetIID( (char*)templateClassName.c_str() ), (void**)&ri ) )
-                {
-                    /* Didn't even support what we wanted, dispose of it and return null */
-                    obj->Release();
-                    return nullptr;
-                }
-
-                obj->Release(); // reduce reference count as 'obj' is going out of scope
-            }
-    
             IConfigurable* conf_obj = obj->GetConfigurable();
             release_assert(conf_obj);
 
