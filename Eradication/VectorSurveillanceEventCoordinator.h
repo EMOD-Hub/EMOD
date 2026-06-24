@@ -179,6 +179,8 @@ namespace Kernel
         // other
         ISimulationEventContext* GetSimulationContext() { return m_Parent; };
 
+        virtual IConfigurable*  GetConfigurable()  override  { return JsonConfigurable::GetConfigurable(); }
+
     protected:
 
         void Register();

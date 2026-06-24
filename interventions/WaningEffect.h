@@ -26,6 +26,8 @@ namespace Kernel
         WaningEffectConstant( const WaningEffectConstant& rOrig );
         virtual ~WaningEffectConstant() {};
 
+        virtual IConfigurable*  GetConfigurable()  override  { return JsonConfigurable::GetConfigurable(); }
+
         virtual IWaningEffect* Clone() override;
         virtual void  Update(float dt) override;
         virtual void  SetCurrentTime(float dt) override {};
@@ -54,6 +56,8 @@ namespace Kernel
         WaningEffectExponential( const WaningEffectExponential& rOrig );
         virtual ~WaningEffectExponential() {};
 
+        virtual IConfigurable*  GetConfigurable()  override  { return JsonConfigurable::GetConfigurable(); }
+
         virtual bool Configure( const Configuration *config ) override;
         virtual IWaningEffect* Clone() override;
         virtual void  Update(float dt) override;
@@ -76,6 +80,8 @@ namespace Kernel
         WaningEffectBox( const WaningEffectBox& rOrig );
         virtual ~WaningEffectBox() {};
 
+        virtual IConfigurable*  GetConfigurable()  override  { return JsonConfigurable::GetConfigurable(); }
+
         virtual bool Configure( const Configuration *config ) override;
         virtual IWaningEffect* Clone() override;
         virtual void  Update(float dt) override;
@@ -97,6 +103,8 @@ namespace Kernel
         WaningEffectBoxExponential();
         WaningEffectBoxExponential( const WaningEffectBoxExponential& rOrig );
         virtual ~WaningEffectBoxExponential() {};
+
+        virtual IConfigurable*  GetConfigurable()  override  { return JsonConfigurable::GetConfigurable(); }
 
         virtual bool Configure( const Configuration *config ) override;
         virtual IWaningEffect* Clone() override;

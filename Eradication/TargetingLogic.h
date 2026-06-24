@@ -41,6 +41,8 @@ namespace Kernel
         TargetingLogic();
         virtual ~TargetingLogic();
 
+        virtual IConfigurable*  GetConfigurable()  override  { return JsonConfigurable::GetConfigurable(); }
+
         virtual bool Configure(const Configuration* config) override;
         virtual bool IsQualified(IIndividualHumanEventContext* pContext) const override;
 

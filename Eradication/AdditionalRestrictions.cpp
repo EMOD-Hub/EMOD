@@ -95,8 +95,6 @@ namespace Kernel
         release_assert(false);
     }
 
-
-
     BEGIN_QUERY_INTERFACE_BODY(IsPregnant)
         HANDLE_INTERFACE(IAdditionalRestrictions)
     END_QUERY_INTERFACE_BODY(IsPregnant)

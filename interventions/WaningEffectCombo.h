@@ -48,6 +48,8 @@ namespace Kernel
         WaningEffectCombo();
         virtual ~WaningEffectCombo();
 
+        virtual IConfigurable*  GetConfigurable()  override  { return JsonConfigurable::GetConfigurable(); }
+
         virtual bool Configure( const Configuration *config ) override;
 
         // IWaningEffect methods

@@ -17,6 +17,8 @@ namespace Kernel
         AdditionalRestrictionsAbstract();
         virtual bool Configure(const Configuration* config) override;
 
+        virtual IConfigurable*  GetConfigurable()  override  { return JsonConfigurable::GetConfigurable(); }
+
     protected:
         bool m_CompareTo;
     };
