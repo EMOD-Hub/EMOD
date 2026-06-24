@@ -257,6 +257,11 @@ void SimulationConfig::VectorInitConfig( const Configuration* inputJson )
     initConfigTypeMap( "Enable_Temperature_Dependent_Egg_Hatching", &(vector_params->temperature_dependent_egg_hatching), Enable_Temperature_Dependent_Egg_Hatching_DESC_TEXT, false );
     initConfigTypeMap( "Egg_Arrhenius1", &(vector_params->eggarrhenius1), Egg_Arrhenius1_DESC_TEXT, 0.0f, 10000000000.0f, 61599956.864f, "Enable_Temperature_Dependent_Egg_Hatching" );
     initConfigTypeMap( "Egg_Arrhenius2", &(vector_params->eggarrhenius2), Egg_Arrhenius2_DESC_TEXT, 0.0f, 10000000000.0f, 5754.033f, "Enable_Temperature_Dependent_Egg_Hatching" );
+    if( JsonConfigurable::_dryrun || inputJson->Exist( "Enable_Temperature_Dependent_Microsporidia" ) )
+    {
+        // make this optional for backwards compatibility
+        initConfigTypeMap( "Enable_Temperature_Dependent_Microsporidia", &(vector_params->temperature_dependent_microsporidia), Enable_Temperature_Dependent_Microsporidia_DESC_TEXT, false );
+    }
     initConfigTypeMap( "Enable_Egg_Mortality", &(vector_params->egg_mortality), Enable_Egg_Mortality_DESC_TEXT, false ); // not hooked up yet
     initConfigTypeMap( "Enable_Drought_Egg_Hatch_Delay", &(vector_params->delayed_hatching_when_habitat_dries_up), Enable_Drought_Egg_Hatch_Delay_DESC_TEXT, false );
     initConfigTypeMap( "Drought_Egg_Hatch_Delay", &(vector_params->droughtEggHatchDelay), Drought_Egg_Hatch_Delay_DESC_TEXT, 0.0f, 1.0f, 0.33f, "Enable_Drought_Egg_Hatch_Delay" );

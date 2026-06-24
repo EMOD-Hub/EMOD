@@ -11,6 +11,8 @@
 #include "INodeContext.h"
 #include "IVectorCohort.h"
 #include "IdmDateTime.h"
+#include "SimulationConfig.h"
+#include "VectorParameters.h"
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // !!! CREATING NEW REPORTS
@@ -42,6 +44,7 @@ namespace Kernel
         : BaseTextReport( rReportName )
         , m_SpeciesList()
         , m_MsStrainNamesBySpecies()
+        , m_IncludeMicrosporidiaModifier( false )
     {
         initSimTypes( 2, "VECTOR_SIM", "MALARIA_SIM" );
 
@@ -62,6 +65,7 @@ namespace Kernel
         bool ret = JsonConfigurable::Configure( inputJson );
         if( ret && !JsonConfigurable::_dryrun )
         {
+            m_IncludeMicrosporidiaModifier = GET_CONFIGURABLE( SimulationConfig )->vector_params->temperature_dependent_microsporidia;
         }
         return ret;
     }
@@ -79,6 +83,11 @@ namespace Kernel
         for( int i = 0; i < VectorStateEnum::pairs::count(); ++i )
         {
             header << "," << VectorStateEnum::pairs::get_keys()[ i ];
+        }
+
+        if( m_IncludeMicrosporidiaModifier )
+        {
+            header << "," << "MicrosporidiaModifier";
         }
 
         return header.str();
@@ -135,13 +144,19 @@ namespace Kernel
                 GetOutputStream()
                     << "," << vec_pop
                     << "," << infectious
-                    << "," << infected  
-                    << "," << adult     
-                    << "," << male      
-                    << "," << immature  
-                    << "," << larva     
-                    << "," << eggs
-                    << "\n";
+                    << "," << infected
+                    << "," << adult
+                    << "," << male
+                    << "," << immature
+                    << "," << larva
+                    << "," << eggs;
+
+                if( m_IncludeMicrosporidiaModifier )
+                {
+                    GetOutputStream() << "," << vp->getMicrosporidiaModifier();
+                }
+
+                GetOutputStream() << "\n";
                 ++strain_index;
             }
             ++species_index;
