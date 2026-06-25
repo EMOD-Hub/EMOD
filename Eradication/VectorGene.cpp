@@ -408,8 +408,8 @@ namespace Kernel
         if( m_PossibleAllele.Size() <= 1 )
         {
             std::stringstream ss;
-            ss << "'Is_Gender_Gene' is set to true but both 'X' and 'Y' alleles are not defined.\n";
-            ss << "If you are including the gender 'gene', then it must be the first in the list and both 'X' and 'Y' must be defined.";
+            ss << "'Is_Gender_Gene' is set to true but less than 2 alleles are defined.\n";
+            ss << "For gender genes, at least one male ('Is_Y_Chromosome':1) and one female ('Is_Y_Chromosome':0) allele must be defined.";
             throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }
 
@@ -440,12 +440,12 @@ namespace Kernel
         if( female_alleles.size() == 0 )
         {
             throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__,
-                                             "'Is_Gender_Gene' is set to true but zero X-chromosomes have been defined." );
+                                             "'Is_Gender_Gene' is set to true but no female ('Is_Y_Chromosome':0) alleles have been defined." );
         }
         if( male_alleles.size() == 0 )
         {
             throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__,
-                                             "'Is_Gender_Gene' is set to true but zero Y-chromosomes have been defined." );
+                                             "'Is_Gender_Gene' is set to true but no male ('Is_Y_Chromosome':1) alleles have been defined." );
         }
         if( (female_alleles.size() > VectorGamete::GENDER_MAX_ALLELES) ||
             (male_alleles.size()   > VectorGamete::GENDER_MAX_ALLELES) )
@@ -474,13 +474,45 @@ namespace Kernel
         // --- the others are in indexes 1-3.
         // --------------------------------------------------------
         m_PossibleAllele.Clear();
+        float total_female_freq = 0.0f;
         for( auto p_allele : female_alleles )
         {
             m_PossibleAllele.Add( p_allele );
+            total_female_freq += p_allele->GetFrequency();
         }
         for( int i = female_alleles.size(); i < VectorGamete::GENDER_MAX_ALLELES; ++i )
         {
             m_PossibleAllele.Add( nullptr );
+        }
+
+        if (total_female_freq == 0.0f)
+        {
+            std::stringstream ss;
+            ss << "Initial allele frequencies for female alleles sum to zero.\n";
+            ss << "At least one female allele must have a non-zero frequency.";
+            throw InvalidInputDataException(__FILE__, __LINE__, __FUNCTION__, ss.str().c_str());
+        }
+
+        float total_male_freq = 1.0f - total_female_freq;
+        if( total_male_freq > 0.5f )
+        {
+            std::stringstream ss;
+            ss << "Initial allele frequencies for male (Y-chromosome) alleles sum to "
+               << total_male_freq << ", which must be less than or equal to 0.5.\n"
+               << "In a mating there are 3 X-chromosomes and 1 Y-chromosome out of four alleles,\n"
+               << "so Y allele frequency of 0.25 produces a 50/50 male/female ratio.\n"
+               << "Y frequency > 0.5 produces negative female probabilities during\n"
+               << "initial population creation.\n"
+               << "Current allele frequencies:\n";
+            for( auto p_allele : female_alleles )
+            {
+                ss << "  '" << p_allele->GetName() << "' (X) = " << p_allele->GetFrequency() << "\n";
+            }
+            for( auto p_allele : male_alleles )
+            {
+                ss << "  '" << p_allele->GetName() << "' (Y) = " << p_allele->GetFrequency() << "\n";
+            }
+            throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
         }
 
         // --------------------------------------------------------
@@ -600,11 +632,13 @@ namespace Kernel
 
     void VectorGeneCollection::CheckConfiguration()
     {
-        if( this->m_Collection.size() > VectorGamete::MAX_LOCI )
+
+        if (m_Collection.size() > VectorGamete::MAX_LOCI -1 && !m_Collection[0]->IsGenderGene() || m_Collection.size() > VectorGamete::MAX_LOCI && m_Collection[0]->IsGenderGene())
         {
             std::stringstream ss;
-            ss << m_Collection.size() << " vector genes have been defined and the maximum is " << uint32_t(VectorGamete::MAX_LOCI);
-            throw InvalidInputDataException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
+            ss << m_Collection.size() << " vector genes have been defined and the maximum is " << uint32_t(VectorGamete::MAX_LOCI) - 1;
+            ss << " when not defining gender gene and " << uint32_t(VectorGamete::MAX_LOCI)<< " when gender gene is included. The gender gene must be the first gene to be defined.";
+            throw InvalidInputDataException(__FILE__, __LINE__, __FUNCTION__, ss.str().c_str());
         }
 
         // ---------------------------------------------------------------------
