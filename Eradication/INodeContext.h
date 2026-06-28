@@ -89,17 +89,19 @@ namespace Kernel
         virtual NPKeyValueContainer& GetNodeProperties() = 0;
 
         // reporting interfaces
-        virtual const IdmDateTime& GetTime()   const = 0;
-        virtual float       GetInfected()      const = 0;
-        virtual float       GetSymptomatic()   const = 0;
-        virtual float       GetNewlySymptomatic()     const = 0;
-        virtual float       GetStatPop()       const = 0;
-        virtual float       GetBirths()        const = 0;
-        virtual float       GetCampaignCost()  const = 0;
-        virtual float       GetInfectivity()   const = 0;
+        virtual const IdmDateTime& GetTime()     const = 0;
         virtual const Climate* GetLocalWeather() const = 0;
-        virtual long int GetPossibleMothers()  const = 0;
-        virtual float GetMeanAgeInfection()    const = 0;
+
+        virtual float GetInfected()              const = 0;
+        virtual float GetSymptomatic()           const = 0;
+        virtual float GetNewlySymptomatic()      const = 0;
+        virtual float GetStatPop()               const = 0;
+        virtual float GetBirths()                const = 0;
+        virtual float GetCampaignCost()          const = 0;
+        virtual float GetInfectivity()           const = 0;
+
+        virtual long int GetPossibleMothers()    const = 0;
+        virtual float GetMeanAgeInfection()      const = 0;
         virtual float GetNonDiseaseMortalityRateByAgeAndSex( float age, Gender::Enum sex ) const = 0;
 
         // These methods are not const because they will extract the value from the demographics

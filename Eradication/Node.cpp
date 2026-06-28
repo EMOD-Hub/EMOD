@@ -284,28 +284,6 @@ namespace Kernel
     Node::~Node()
     {
         if (suid.data % 10 == 0) LOG_INFO_F("Freeing Node %d \n", suid.data);
-
-        /* Let all of this dangle, we're about to exit the process...
-        for (auto individual : individualHumans)
-        {
-            delete individual;
-        }
-
-        individualHumans.clear();
-        home_individual_ids.clear();
-
-        if (transmissionGroups) delete transmissionGroups;
-        if (migration_info)     delete migration_info;
-
-        delete event_context_host;
-
-        delete SusceptibilityDistribution;
-        delete FertilityDistribution;
-        delete MortalityDistribution;
-        delete MortalityDistributionMale;
-        delete MortalityDistributionFemale;
-        delete AgeDistribution;
-        */
     }
 
     float Node::GetLatitudeDegrees()
@@ -705,7 +683,7 @@ namespace Kernel
         LOG_DEBUG_F("deposit from individual: antigen index =%d, substain index = %d, quantity = %f\n", strain_IDs.GetAntigenID(), strain_IDs.GetGeneticID(), contagion_quantity);
         transmissionGroups->DepositContagion( strain_IDs, contagion_quantity, individual );
     }
-    
+
     //------------------------------------------------------------------
     //   Every timestep Update() methods
     //------------------------------------------------------------------
@@ -770,7 +748,6 @@ namespace Kernel
             if( gap == 1 )
             {
                 bSkipping = false;
-                //ProbabilityNumber max_prob = std::max( maxInfectionProb[ TransmissionRoute::TRANSMISSIONROUTE_CONTACT ], maxInfectionProb[ TransmissionRoute::TRANSMISSIONROUTE_ENVIRONMENTAL ] );
                 gap = calcGap();
                 LOG_DEBUG_F( "The (next) gap to skip for this node is calculated as: %d.\n", gap );
             }
@@ -940,8 +917,6 @@ namespace Kernel
                 ++iHuman;
             }
         }
-
-        // Increment simulation time counter
     }
 
     void Node::clearTransmissionGroups()
@@ -1993,26 +1968,6 @@ namespace Kernel
         IIndividualHuman* new_individual = createHuman( suids::nil_suid(), 0, 0, 0);
         new_individual->SetParameters( this, 1.0, 0, 0, 0);// default values being used except for total number of communities
 
-#if 0
-        new_individual->SetInitialInfections(0);
-
-        // Set up transmission groups
-        if (params()->heterogeneous_intranode_transmission_enabled) 
-        {
-            new_individual->UpdateGroupMembership();
-        }
-#endif
-        //individualHumans.push_back(new_individual);
-#if 0
-        event_context_host->TriggerObservers( new_individual->GetEventContext(), EventTrigger::Births ); // EAW: this is not just births!!  this will also trigger on e.g. AddImportCases
-
-        if( new_individual->GetParent() == nullptr )
-        {
-            LOG_INFO( "In addNewIndividual, indiv had no context, setting (migration hack path)\n" );
-            new_individual->SetContextTo( this );
-        }
-#endif
-        //processImmigratingIndividual( new_individual );
         LOG_DEBUG_F( "addNewIndividualFromSerialization,individualHumans size: %d, ih context=%p\n",individualHumans.size(), new_individual->GetParent() );
 
         return new_individual;
@@ -2055,12 +2010,12 @@ namespace Kernel
     Fraction Node::adjustSamplingRateByAge(Fraction sampling_rate, double age) const
     {
         Fraction tmp = sampling_rate;
-        if (age < (18 * IDEALDAYSPERMONTH)) { sampling_rate *= sample_rate_0_18mo; }
+        if (age < (18 * IDEALDAYSPERMONTH)) { sampling_rate *= sample_rate_0_18mo;   }
         else if (age <  (5 * DAYSPERYEAR))  { sampling_rate *= sample_rate_18mo_4yr; }
-        else if (age < (10 * DAYSPERYEAR))  { sampling_rate *= sample_rate_5_9; }
-        else if (age < (15 * DAYSPERYEAR))  { sampling_rate *= sample_rate_10_14; }
-        else if (age < (20 * DAYSPERYEAR))  { sampling_rate *= sample_rate_15_19; }
-        else { sampling_rate *= sample_rate_20_plus; }
+        else if (age < (10 * DAYSPERYEAR))  { sampling_rate *= sample_rate_5_9;      }
+        else if (age < (15 * DAYSPERYEAR))  { sampling_rate *= sample_rate_10_14;    }
+        else if (age < (20 * DAYSPERYEAR))  { sampling_rate *= sample_rate_15_19;    }
+        else                                { sampling_rate *= sample_rate_20_plus;  }
 
         // Now correct sampling rate, in case it is over 100 percent
         if (sampling_rate > 1.0f) 
@@ -2242,7 +2197,6 @@ namespace Kernel
 
         new_infections += monte_carlo_weight; 
         Cumulative_Infections += monte_carlo_weight; 
-
         newInfectedPeopleAgeProduct += monte_carlo_weight * float(ih->GetAge());
     }
 
@@ -2477,14 +2431,33 @@ namespace Kernel
         release_assert( parent_sim );
     }
 
-    // INodeContext methods
-    ISimulationContext* Node::GetParent() { return parent; }
-    suids::suid Node::GetSuid() const { return suid; }
-    suids::suid Node::GetNextInfectionSuid() { return parent->GetNextInfectionSuid(); }
+    ISimulationContext* Node::GetParent()
+    {
+        return parent;
+    }
+    suids::suid Node::GetSuid() const
+    {
+        return suid;
+    }
+    suids::suid Node::GetNextInfectionSuid()
+    {
+        return parent->GetNextInfectionSuid();
+    }
 
-    IMigrationInfo* Node::GetMigrationInfo() { return migration_info; }
-    const NodeDemographics* Node::GetDemographics() const { return &demographics; }
-    NPKeyValueContainer& Node::GetNodeProperties() { return node_properties; }
+    IMigrationInfo* Node::GetMigrationInfo()
+    {
+        return migration_info;
+    }
+
+    const NodeDemographics* Node::GetDemographics() const
+    {
+        return &demographics;
+    }
+
+    NPKeyValueContainer& Node::GetNodeProperties()
+    {
+        return node_properties;
+    }
 
     // Methods for implementing time dependence in infectivity, birth rate, migration, etc.
     float Node::getSinusoidalCorrection(float sinusoidal_amplitude, float sinusoidal_phase) const
@@ -2511,46 +2484,75 @@ namespace Kernel
         return correction;
     }
 
-    // Reporting methods
-    const IdmDateTime&
-    Node::GetTime()          const { return parent->GetSimulationTime(); }
+    const IdmDateTime& Node::GetTime() const
+    {
+        return parent->GetSimulationTime();
+    }
 
-    float
-    Node::GetInfected()      const { return Infected; }
+    float Node::GetInfected() const
+    {
+        return Infected;
+    }
 
-    float
-    Node::GetSymptomatic() const { return symptomatic; }
+    float Node::GetSymptomatic() const
+    {
+        return symptomatic;
+    }
 
-    float
-    Node::GetNewlySymptomatic() const { return newly_symptomatic; }
+    float Node::GetNewlySymptomatic() const
+    {
+        return newly_symptomatic;
+    }
 
-    float
-    Node::GetStatPop()       const { return statPop; }
+    float Node::GetStatPop() const
+    {
+        return statPop;
+    }
 
-    float
-    Node::GetBirths()        const { return Births; }
+    float Node::GetBirths() const
+    {
+        return Births;
+    }
 
-    float
-    Node::GetCampaignCost()  const { return Campaign_Cost; }
+    float Node::GetCampaignCost() const
+    {
+        return Campaign_Cost;
+    }
 
-    float
-    Node::GetInfectivity()   const { return mInfectivity; }
+    float Node::GetInfectivity() const
+    {
+        return mInfectivity;
+    }
 
-    ExternalNodeId_t
-    Node::GetExternalID()    const { return externalId; }
+    ExternalNodeId_t Node::GetExternalID() const
+    {
+        return externalId;
+    }
 
-    const Climate*
-    Node::GetLocalWeather()    const { return localWeather; }
+    const Climate* Node::GetLocalWeather() const
+    {
+        return localWeather;
+    }
 
-    long int
-    Node::GetPossibleMothers() const { return Possible_Mothers ; }
+    long int Node::GetPossibleMothers() const
+    {
+        return Possible_Mothers;
+    }
 
-    float
-    Node::GetMeanAgeInfection()      const { return mean_age_infection; }
+    float Node::GetMeanAgeInfection() const
+    {
+        return mean_age_infection;
+    }
 
-    INodeEventContext* Node::GetEventContext() { return (INodeEventContext*)event_context_host; }
+    INodeEventContext* Node::GetEventContext()
+    {
+        return static_cast<INodeEventContext*>(event_context_host);
+    }
 
-    INodeContext *Node::getContextPointer()    { return this; }
+    INodeContext* Node::getContextPointer()
+    {
+        return this;
+    }
 
     float Node::GetBasePopulationScaleFactor() const
     {

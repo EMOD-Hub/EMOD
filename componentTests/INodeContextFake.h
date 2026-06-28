@@ -34,17 +34,17 @@ private:
 
 public:
     INodeContextFake( int id = 1, INodeEventContext* pNEC = nullptr )
-    : m_suid()
-    , m_pNEC( pNEC )
-    , m_NodeProperties()
-    , m_pVectorProbabilities( VectorProbabilities::CreateVectorProbabilities() )
-    , m_HabitatList()
-    , m_RNG( 42 )
-    , m_Time()
-    , m_NextVectorID(0)
-    , m_StagedEvents()
-    , m_vectorpopulations()
-    , m_VectorPopulationReportingList()
+        : m_suid()
+        , m_pNEC( pNEC )
+        , m_NodeProperties()
+        , m_pVectorProbabilities( VectorProbabilities::CreateVectorProbabilities() )
+        , m_HabitatList()
+        , m_RNG( 42 )
+        , m_Time()
+        , m_NextVectorID(0)
+        , m_StagedEvents()
+        , m_vectorpopulations()
+        , m_VectorPopulationReportingList()
     {
         m_suid.data = id ;
         json::Object fake_json;
@@ -61,15 +61,15 @@ public:
     }
 
     INodeContextFake( const suids::suid& rSuid, INodeEventContext* pNEC = nullptr )
-    : m_suid(rSuid)
-    , m_pNEC(pNEC)
-    , m_NodeProperties()
-    , m_pVectorProbabilities( nullptr )
-    , m_HabitatList()
-    , m_RNG( 42 )
-    , m_Time()
-    , m_NextVectorID(0)
-    , m_StagedEvents()
+        : m_suid(rSuid)
+        , m_pNEC(pNEC)
+        , m_NodeProperties()
+        , m_pVectorProbabilities( nullptr )
+        , m_HabitatList()
+        , m_RNG( 42 )
+        , m_Time()
+        , m_NextVectorID(0)
+        , m_StagedEvents()
     {
         if( m_pNEC != nullptr )
         {
@@ -307,6 +307,7 @@ public:
     {
         throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented.");
     }
+
     virtual const NodeDemographicsDistribution* GetImmunityDistribution()        const override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
     virtual const NodeDemographicsDistribution* GetFertilityDistribution()       const override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
     virtual const NodeDemographicsDistribution* GetMortalityDistribution()       const override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }

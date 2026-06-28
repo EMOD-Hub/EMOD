@@ -106,6 +106,7 @@ namespace Kernel
         // Reporting to higher levels (intermediate form)
         // Possible TODO: refactor into common interfaces if there is demand
         virtual const IdmDateTime& GetTime()     const override;
+        virtual const Climate* GetLocalWeather() const override;
         virtual float GetInfected()              const override;
         virtual float GetSymptomatic()           const override;
         virtual float GetNewlySymptomatic()      const override;
@@ -113,7 +114,7 @@ namespace Kernel
         virtual float GetBirths()                const override;
         virtual float GetCampaignCost()          const override;
         virtual float GetInfectivity()           const override;
-        virtual const Climate* GetLocalWeather() const override;
+
         virtual long int GetPossibleMothers()    const override;
 
         virtual float GetMeanAgeInfection()      const override;
@@ -219,11 +220,11 @@ namespace Kernel
         bool                family_is_destination_new_home;
 
         // Heterogeneous intra-node transmission
-        ITransmissionGroups *transmissionGroups;
-        
+        ITransmissionGroups* transmissionGroups;
+
         // Climate and demographics
-        Climate *localWeather;
-        IMigrationInfo *migration_info;
+        Climate* localWeather;
+        IMigrationInfo* migration_info;
         NodeDemographics demographics;
         ExternalNodeId_t externalId; // DON'T USE THIS EXCEPT FOR INPUT/OUTPUT PURPOSES!
         NPKeyValueContainer node_properties;
