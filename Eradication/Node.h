@@ -304,7 +304,7 @@ namespace Kernel
 
         virtual void Initialize();
         virtual bool Configure( const Configuration* config ) override;
-        void ExtractDataFromDemographics();
+        void ExtractDataFromDemographics(const NodeDemographics*);
         virtual void LoadImmunityDemographicsDistribution();
         virtual void LoadOtherDiseaseSpecificDistributions() {};
 

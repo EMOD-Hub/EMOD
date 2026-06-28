@@ -1,5 +1,6 @@
 
 #include "stdafx.h"
+#include "ConfigParams.h"
 #include "NodeDemographics.h"
 #include "Node.h"
 #include "ISimulationContext.h"
@@ -277,7 +278,7 @@ namespace Kernel
         , m_pRng( nullptr )
         , m_IndividualHumanSuidGenerator(0,0)
         , symptomatic( 0.0f )
-        ,newly_symptomatic( 0.0f )
+        , newly_symptomatic( 0.0f )
     {
     }
 
@@ -288,22 +289,14 @@ namespace Kernel
 
     float Node::GetLatitudeDegrees()
     {
-        if( _latitude == FLT_MAX )
-        {
-            _latitude  = float(demographics["NodeAttributes"]["Latitude"].AsDouble());
-        }
         return _latitude ;
     }
 
     float Node::GetLongitudeDegrees()
     {
-        if( _longitude == FLT_MAX )
-        {
-            _longitude = float(demographics["NodeAttributes"]["Longitude"].AsDouble());
-        }
         return _longitude ;
     }
-        
+
     QueryResult Node::QueryInterface( iid_t iid, void** ppinstance )
     {
         release_assert(ppinstance); // todo: add a real message: "QueryInterface requires a non-NULL destination!");
@@ -459,12 +452,9 @@ namespace Kernel
     {
         // Parameters set from an input filestream
         // TODO: Jeff, this is a bit hack-y that I had to do this. is there a better way?
-        NodeDemographics *demographics_temp = demographics_factory->CreateNodeDemographics(this);
+        NodeDemographics* demographics_temp = demographics_factory->CreateNodeDemographics(this);
         release_assert( demographics_temp );
         demographics = *(demographics_temp); // use copy constructor
-        delete demographics_temp;
-        uint32_t temp_externalId = demographics["NodeID"].AsUint();
-        release_assert( this->externalId == temp_externalId );
 
         //////////////////////////////////////////////////////////////////////////////////////
         // Hack: commenting out for pymod work. Need real solution once I understand all this.
@@ -542,8 +532,8 @@ namespace Kernel
                 }
             }
         }
-        
-        ExtractDataFromDemographics();
+
+        ExtractDataFromDemographics(demographics_temp);
 
 #ifndef DISABLE_CLIMATE
         if (ClimateFactory::climate_structure != ClimateStructure::CLIMATE_OFF)
@@ -553,6 +543,8 @@ namespace Kernel
             localWeather = climate_factory->CreateClimate( this, altitude, GetLatitudeDegrees(), GetRng() );
         }
 #endif
+
+        delete demographics_temp;
 
         SetupIntranodeTransmission();
     }
@@ -628,9 +620,7 @@ namespace Kernel
         transmissionGroups->GetGroupMembershipForProperties(properties, transmissionGroupMembership );
     }
 
-    std::map< std::string, float >
-    Node::GetContagionByRoute()
-    const
+    std::map< std::string, float > Node::GetContagionByRoute() const
     {
         // Honestly not sure how to implement this in the general case yet.
         std::map<std::string, float> contagionByRoute;
@@ -644,6 +634,7 @@ namespace Kernel
             auto contagion = transmissionGroups->GetTotalContagion();
             contagionByRoute.insert( std::make_pair( route, contagion ) );
         }
+
         return contagionByRoute;
     }
 
@@ -1536,9 +1527,16 @@ namespace Kernel
         }
     }
 
-    void Node::ExtractDataFromDemographics()
+    void Node::ExtractDataFromDemographics(const NodeDemographics* demog_ptr)
     {
+        uint32_t temp_externalId = (*demog_ptr)["NodeID"].AsUint();
+        release_assert( this->externalId == temp_externalId );
+
+        _latitude  = static_cast<float>((*demog_ptr)["NodeAttributes"]["Latitude"].AsDouble());
+        _longitude = static_cast<float>((*demog_ptr)["NodeAttributes"]["Longitude"].AsDouble());
+
         if (SusceptibilityConfig::enable_initial_susceptibility_distribution)
+
         {
             LOG_DEBUG("Parsing SusceptibilityDistribution\n");
 
