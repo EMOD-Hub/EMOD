@@ -340,9 +340,5 @@ namespace Kernel
     {
         Simulation::serialize( ar, obj );
         SimulationVector& sim = *obj;
-
-//        ar.labelElement("migratingVectorQueues") & sim.migratingVectorQueues;         // no reason to keep track of migrating vectors "in-flight" :)
-//        ar.labelElement("vector_migration_reports") & sim.vector_migration_reports;
-//        ar.labelElement("node_populations_map") & sim.node_populations_map;           // should be reconstituted in populateFromDemographics()
     }
 }

@@ -75,6 +75,7 @@ namespace Kernel
         virtual void SetRng( RANDOMBASE* prng ) override;
         virtual void AddEventsFromOtherNodes( const std::vector<EventTrigger>& rTriggerList ) override;
 
+        virtual const NodeParams& GetNodeParams() const;
 
         virtual IMigrationInfo*   GetMigrationInfo() override;
         virtual const NodeDemographics* GetDemographics()  const override;
@@ -95,7 +96,7 @@ namespace Kernel
         virtual void SetupEventContextHost() override;
         virtual void SetContextTo(ISimulationContext* context) override;
         virtual void SetParameters( NodeDemographicsFactory *demographics_factory, ClimateFactory *climate_factory ) override;
-        virtual void PopulateFromDemographics( NodeDemographicsFactory *demographics_factory ) override;
+        virtual void PopulateFromDemographics() override;
         virtual void InitializeTransmissionGroupPopulations() override;
 
         // Campaign event-related
@@ -107,6 +108,7 @@ namespace Kernel
         // Possible TODO: refactor into common interfaces if there is demand
         virtual const IdmDateTime& GetTime()     const override;
         virtual const Climate* GetLocalWeather() const override;
+
         virtual float GetInfected()              const override;
         virtual float GetSymptomatic()           const override;
         virtual float GetNewlySymptomatic()      const override;
@@ -327,7 +329,6 @@ namespace Kernel
     protected:
 
         // Population Initialization
-        virtual void populateNewIndividualsFromDemographics(int count_new_individuals = 100);
         virtual void populateNewIndividualsByBirth(int count_new_individuals = 100) override;
         virtual void populateNewIndividualFromMotherId( unsigned int temp_mother_id );
         virtual void populateNewIndividualFromMotherPointer( IIndividualHuman* mother );

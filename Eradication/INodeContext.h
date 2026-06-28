@@ -20,6 +20,7 @@ namespace Kernel
     struct NodeDemographics;
     class NodeDemographicsFactory;
     struct NodeDemographicsDistribution;
+    struct NodeParams;
     class  Climate;
     class  ClimateFactory;
     struct INodeEventContext;
@@ -48,6 +49,8 @@ namespace Kernel
 
         virtual ISimulationContext* GetParent() = 0;
 
+        virtual const NodeParams& GetNodeParams() const = 0;
+
         //individual can get an id of their parent to compare against, for instance, their home node id
         virtual suids::suid GetSuid() const = 0;
 
@@ -59,7 +62,7 @@ namespace Kernel
         virtual void SetupEventContextHost() = 0;
         virtual void SetContextTo( ISimulationContext* ) = 0;
         virtual void SetParameters( NodeDemographicsFactory *demographics_factory, ClimateFactory *climate_factory ) = 0;
-        virtual void PopulateFromDemographics (NodeDemographicsFactory *demographics_factory ) = 0;
+        virtual void PopulateFromDemographics() = 0;
         virtual void InitializeTransmissionGroupPopulations() = 0;
 
         virtual suids::suid GetNextInfectionSuid() = 0;

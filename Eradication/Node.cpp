@@ -297,6 +297,11 @@ namespace Kernel
         return _longitude ;
     }
 
+    const NodeParams& Node::GetNodeParams() const
+    {
+        return NodeConfig::GetNodeParams();
+    }
+
     QueryResult Node::QueryInterface( iid_t iid, void** ppinstance )
     {
         release_assert(ppinstance); // todo: add a real message: "QueryInterface requires a non-NULL destination!");
@@ -455,6 +460,8 @@ namespace Kernel
         NodeDemographics* demographics_temp = demographics_factory->CreateNodeDemographics(this);
         release_assert( demographics_temp );
         demographics = *(demographics_temp); // use copy constructor
+
+        m_IndividualHumanSuidGenerator = suids::distributed_generator( GetSuid().data, demographics_factory->GetNodeIDs().size() );
 
         //////////////////////////////////////////////////////////////////////////////////////
         // Hack: commenting out for pymod work. Need real solution once I understand all this.
@@ -1330,29 +1337,22 @@ namespace Kernel
     //   Population initialization methods
     //------------------------------------------------------------------
 
-    // This function allows one to scale the initial population by a factor without modifying an input demographics file.
-    void Node::PopulateFromDemographics( NodeDemographicsFactory *demographics_factory )
+    // This function adds the initial population to the node according to behavior determined by the settings of various flags:
+    // (1) ind_sampling_type: TRACK_ALL, FIXED_SAMPLING, ADAPTED_SAMPLING_BY_POPULATION_SIZE, ADAPTED_SAMPLING_BY_AGE_GROUP, ADAPTED_SAMPLING_BY_AGE_GROUP_AND_POP_SIZE
+    // (3) enable_age_initialization, age_initialization_distribution_type
+    // (4) vital_birth_dependence: INDIVIDUAL_PREGNANCIES must have initial pregnancies initialized
+    void Node::PopulateFromDemographics()
     {
-        m_IndividualHumanSuidGenerator = suids::distributed_generator( GetSuid().data, demographics_factory->GetNodeIDs().size() );
+        uint32_t count_new_individuals = uint32_t(demographics["NodeAttributes"]["InitialPopulation"].AsUint64());
 
-        uint32_t InitPop = uint32_t(demographics["NodeAttributes"]["InitialPopulation"].AsUint64());
+        const NodeParams np = GetNodeParams();
 
         // correct initial population if necessary (historical simulation for instance
         if ( population_scaling )
         {
-            InitPop = uint32_t(InitPop * population_scaling_factor);
+            count_new_individuals = uint32_t(count_new_individuals * population_scaling_factor);
         }
 
-        populateNewIndividualsFromDemographics(InitPop);
-    }
-
-    // This function adds the initial population to the node according to behavior determined by the settings of various flags:
-    // (1) ind_sampling_type: TRACK_ALL, FIXED_SAMPLING, ADAPTED_SAMPLING_BY_POPULATION_SIZE, ADAPTED_SAMPLING_BY_AGE_GROUP, ADAPTED_SAMPLING_BY_AGE_GROUP_AND_POP_SIZE
-    // (2) demographics_initial
-    // (3) enable_age_initialization, age_initialization_distribution_type
-    // (4) vital_birth_dependence: INDIVIDUAL_PREGNANCIES must have initial pregnancies initialized
-    void Node::populateNewIndividualsFromDemographics(int count_new_individuals)
-    {
         if ((ind_sampling_type == IndSamplingType::ADAPTED_SAMPLING_BY_IMMUNE_STATE) && (count_new_individuals*rel_sample_rate_immune*base_sample_rate < 1.0)) // At least one individual must be sampled
         {
             throw IncoherentConfigurationException(__FILE__, __LINE__, __FUNCTION__, "Sample Rate Immune", rel_sample_rate_immune*base_sample_rate, "Number of Individuals", float(count_new_individuals), "and Individual_Sampling_Type: ADAPTED_SAMPLING_BY_IMMUNE_STATE");
@@ -1481,8 +1481,8 @@ namespace Kernel
                 parent->CheckMemoryFailure( true );
             }
 
-            IIndividualHuman* tempind = configureAndAddNewIndividual(1.0F / temp_sampling_rate, float(temp_age), float(initial_prevalence), float(female_ratio));
-            
+            IIndividualHuman* tempind = configureAndAddNewIndividual(1.0f/temp_sampling_rate, float(temp_age), float(initial_prevalence), float(female_ratio));
+
             if(tempind && tempind->GetAge() == 0)
             {
                 tempind->setupMaternalAntibodies(nullptr, this);
