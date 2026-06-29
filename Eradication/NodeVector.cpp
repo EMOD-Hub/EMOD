@@ -82,13 +82,8 @@ namespace Kernel
         serializationFlagsDefault.set( SerializationFlags::VectorPopulation );
     }
 
-    bool
-    NodeVector::Configure(
-        const Configuration * config
-    )
+    bool NodeVector::Configure(const Configuration* config)
     {
-        larval_habitat_multiplier.SetExternalNodeId(externalId);
-
         initConfigTypeMap( "Enable_Vector_Mortality", &vector_mortality, Enable_Vector_Mortality_DESC_TEXT, true );
         initConfigTypeMap( "Mosquito_Weight", &mosquito_weight, Mosquito_Weight_DESC_TEXT, 1, 1e4, 1, "Vector_Sampling_Type", "SAMPLE_IND_VECTORS" ); // should this be renamed vector_weight?
 
@@ -101,8 +96,10 @@ namespace Kernel
     {
         Node::Initialize();
 
+        larval_habitat_multiplier.SetExternalNodeId(externalId);
+
         // when creating nodes from scratch (not from serialization)
-        larval_habitat_multiplier.Initialize(); 
+        larval_habitat_multiplier.Initialize();
 
         if (ClimateFactory::climate_structure == ClimateStructure::CLIMATE_OFF)
         {
@@ -114,6 +111,8 @@ namespace Kernel
 
     void NodeVector::SetParameters( NodeDemographicsFactory *demographics_factory, ClimateFactory *climate_factory )
     {
+        m_VectorCohortSuidGenerator = suids::distributed_generator( GetSuid().data, demographics_factory->GetNodeIDs().size() );
+
         Node::SetParameters( demographics_factory, climate_factory );
 
         if (demographics["NodeAttributes"].Contains("LarvalHabitatMultiplier") )
@@ -376,15 +375,13 @@ namespace Kernel
         m_vector_lifecycle_probabilities->SetNodeProbabilities(invie, dt);
     }
 
-    void NodeVector::PopulateFromDemographics( NodeDemographicsFactory *demographics_factory )
+    void NodeVector::PopulateFromDemographics()
     {
-        m_VectorCohortSuidGenerator = suids::distributed_generator( GetSuid().data, demographics_factory->GetNodeIDs().size() );
-
         // Add the vector populations
         SetVectorPopulations();
 
         // Populate the people as in the base class
-        Node::PopulateFromDemographics( demographics_factory );
+        Node::PopulateFromDemographics();
     }
 
     void NodeVector::SetVectorPopulations()
@@ -740,7 +737,8 @@ namespace Kernel
         Node::serialize(ar, obj);
         NodeVector& node = *obj;
 
-        if( node.serializationFlags.test( SerializationFlags::LarvalHabitats ) ) {
+        if( node.serializationFlags.test( SerializationFlags::LarvalHabitats ) )
+        {
             ar.labelElement("m_larval_habitats") & node.m_larval_habitats;
         }
         else{
@@ -753,7 +751,8 @@ namespace Kernel
             }
         }
 
-        if( node.serializationFlags.test( SerializationFlags::VectorPopulation ) ) {
+        if( node.serializationFlags.test( SerializationFlags::VectorPopulation ) )
+        {
             ar.labelElement("m_vectorpopulations") & node.m_vectorpopulations;
             ar.labelElement("m_vector_lifecycle_probabilities"); VectorProbabilities::serialize( ar, node.m_vector_lifecycle_probabilities );
             ar.labelElement("m_VectorCohortSuidGenerator") & node.m_VectorCohortSuidGenerator;
@@ -772,13 +771,13 @@ namespace Kernel
             }
         }
 
-        if( node.serializationFlags.test( SerializationFlags::Parameters ) ) {
-// clorton            ar.labelElement("larval_habitat_multiplier") & node.larval_habitat_multiplier;
+        if( node.serializationFlags.test( SerializationFlags::Parameters ) )
+        {
             ar.labelElement("vector_mortality") & node.vector_mortality;
             ar.labelElement("mosquito_weight") & node.mosquito_weight;
         }
 
-        if( node.serializationFlags.test( SerializationFlags::Properties ) ) {
-        }
+        if( node.serializationFlags.test( SerializationFlags::Properties ) )
+        { }
     }
 } // end namespace Kernel

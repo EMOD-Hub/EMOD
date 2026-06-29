@@ -18,6 +18,18 @@ namespace Kernel
 
     // *****************************************************************************
 
+    struct AgentParams
+    {
+    public:
+        AgentParams();
+    };
+
+    struct ClimateParams
+    {
+    public:
+        ClimateParams();
+    };
+
     struct LoggingParams
     {
     public:
@@ -30,7 +42,55 @@ namespace Kernel
         std::map<std::string, std::string> module_name_to_level_map;
     };
 
+    struct MigrationParams
+    {
+    public:
+        MigrationParams();
+    };
+
+    struct NodeParams
+    {
+    public:
+        NodeParams();
+    };
+
+    struct SimParams
+    {
+    public:
+        SimParams();
+    };
+
     // *****************************************************************************
+
+    class AgentConfig : public JsonConfigurable
+    {
+        DECLARE_QUERY_INTERFACE()
+        IMPLEMENT_NO_REFERENCE_COUNTING()
+        GET_SCHEMA_STATIC_WRAPPER(AgentConfig)
+
+    public:
+        virtual bool Configure(const Configuration* config) override;
+
+        static const AgentParams&     GetAgentParams();
+
+    protected:
+        static       AgentParams      agent_params;
+    };
+
+    class ClimateConfig : public JsonConfigurable
+    {
+        DECLARE_QUERY_INTERFACE()
+        IMPLEMENT_NO_REFERENCE_COUNTING()
+        GET_SCHEMA_STATIC_WRAPPER(ClimateConfig)
+
+    public:
+        virtual bool Configure(const Configuration* config) override;
+
+        static const ClimateParams&     GetClimateParams();
+
+    protected:
+        static       ClimateParams      climate_params;
+    };
 
     class LoggingConfig : public JsonConfigurable
     {
@@ -47,4 +107,48 @@ namespace Kernel
         static       LoggingParams    logging_params;
     };
 
+    class MigrationConfig : public JsonConfigurable
+    {
+        DECLARE_QUERY_INTERFACE()
+        IMPLEMENT_NO_REFERENCE_COUNTING()
+        GET_SCHEMA_STATIC_WRAPPER(MigrationConfig)
+
+    public:
+        virtual bool Configure(const Configuration* config) override;
+
+        static const MigrationParams&   GetMigrationParams();
+
+    protected:
+        static       MigrationParams    migration_params;
+    };
+
+    class NodeConfig : public JsonConfigurable
+    {
+        DECLARE_QUERY_INTERFACE()
+        IMPLEMENT_NO_REFERENCE_COUNTING()
+        GET_SCHEMA_STATIC_WRAPPER(NodeConfig)
+
+    public:
+        virtual bool Configure(const Configuration* config) override;
+
+        static const NodeParams&        GetNodeParams();
+
+    protected:
+        static       NodeParams         node_params;
+    };
+
+    class SimConfig : public JsonConfigurable
+    {
+        DECLARE_QUERY_INTERFACE()
+        IMPLEMENT_NO_REFERENCE_COUNTING()
+        GET_SCHEMA_STATIC_WRAPPER(SimConfig)
+
+    public:
+        virtual bool Configure(const Configuration* config) override;
+
+        static const SimParams&   GetSimParams();
+
+    protected:
+        static       SimParams    sim_params;
+    };
 }

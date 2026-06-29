@@ -8,23 +8,44 @@
 namespace Kernel
 {
     // Static param structures
+    AgentParams      AgentConfig::agent_params;
+    ClimateParams    ClimateConfig::climate_params;
     LoggingParams    LoggingConfig::logging_params;
+    MigrationParams  MigrationConfig::migration_params;
+    NodeParams       NodeConfig::node_params;
+    SimParams        SimConfig::sim_params;
 
     // ConfigParams Methods
     bool ConfigParams::Configure(Configuration* config)
     {
         // Configs with static param structures
+        AgentConfig        agent_config_obj;
+        ClimateConfig      climate_config_obj;
         LoggingConfig      logging_config_obj;
+        MigrationConfig    migration_config_obj;
+        NodeConfig         node_config_obj;
+        SimConfig          sim_config_obj;
 
         // Process configuration
         bool bRet = true;
 
+        bRet &= agent_config_obj.Configure(config);
+        bRet &= climate_config_obj.Configure(config);
         bRet &= logging_config_obj.Configure(config);
+        bRet &= migration_config_obj.Configure(config);
+        bRet &= node_config_obj.Configure(config);
+        bRet &= sim_config_obj.Configure(config);
 
         return bRet;
     }
 
     // *****************************************************************************
+
+    AgentParams::AgentParams()
+    {}
+
+    ClimateParams::ClimateParams()
+    {}
 
     LoggingParams::LoggingParams()
         : enable_continuous_log_flushing(false)
@@ -32,6 +53,55 @@ namespace Kernel
         , enable_warnings_are_fatal(false)
         , module_name_to_level_map()
     {}
+
+    MigrationParams::MigrationParams()
+    {}
+
+    NodeParams::NodeParams()
+    {}
+
+    SimParams::SimParams()
+    {}
+
+    // *****************************************************************************
+
+    // AgentConfig Methods
+    GET_SCHEMA_STATIC_WRAPPER_IMPL(AgentConfig,AgentConfig)
+    BEGIN_QUERY_INTERFACE_BODY(AgentConfig)
+    END_QUERY_INTERFACE_BODY(AgentConfig)
+
+    bool AgentConfig::Configure(const Configuration* config)
+    {
+        // Process configuration
+        bool bRet = JsonConfigurable::Configure(config);
+
+        return bRet;
+    }
+
+    const AgentParams& AgentConfig::GetAgentParams()
+    {
+        return agent_params;
+    }
+
+    // *****************************************************************************
+
+    // ClimateConfig Methods
+    GET_SCHEMA_STATIC_WRAPPER_IMPL(ClimateConfig,ClimateConfig)
+    BEGIN_QUERY_INTERFACE_BODY(ClimateConfig)
+    END_QUERY_INTERFACE_BODY(ClimateConfig)
+
+    bool ClimateConfig::Configure(const Configuration* config)
+    {
+        // Process configuration
+        bool bRet = JsonConfigurable::Configure(config);
+
+        return bRet;
+    }
+
+    const ClimateParams& ClimateConfig::GetClimateParams()
+    {
+        return climate_params;
+    }
 
     // *****************************************************************************
 
@@ -90,4 +160,65 @@ namespace Kernel
         return logging_params;
     }
 
+    // *****************************************************************************
+
+    // MigrationConfig Methods
+    GET_SCHEMA_STATIC_WRAPPER_IMPL(MigrationConfig,MigrationConfig)
+    BEGIN_QUERY_INTERFACE_BODY(MigrationConfig)
+    END_QUERY_INTERFACE_BODY(MigrationConfig)
+
+    bool MigrationConfig::Configure(const Configuration* config)
+    {
+        // Process configuration
+        bool bRet = JsonConfigurable::Configure(config);
+
+        return bRet;
+    }
+
+    const MigrationParams& MigrationConfig::GetMigrationParams()
+    {
+        return migration_params;
+    }
+
+    // *****************************************************************************
+
+    // NodeConfig Methods
+    GET_SCHEMA_STATIC_WRAPPER_IMPL(NodeConfig,NodeConfig)
+    BEGIN_QUERY_INTERFACE_BODY(NodeConfig)
+    END_QUERY_INTERFACE_BODY(NodeConfig)
+
+    bool NodeConfig::Configure(const Configuration* config)
+    {
+        // Process configuration
+        bool bRet = JsonConfigurable::Configure(config);
+
+        return bRet;
+    }
+
+    const NodeParams& NodeConfig::GetNodeParams()
+    {
+        return node_params;
+    }
+
+    // *****************************************************************************
+
+    // SimConfig Methods
+    GET_SCHEMA_STATIC_WRAPPER_IMPL(SimConfig,SimConfig)
+    BEGIN_QUERY_INTERFACE_BODY(SimConfig)
+    END_QUERY_INTERFACE_BODY(SimConfig)
+
+    bool SimConfig::Configure(const Configuration* config)
+    {
+        // Process configuration
+        bool bRet = JsonConfigurable::Configure(config);
+
+        return bRet;
+    }
+
+    const SimParams& SimConfig::GetSimParams()
+    {
+        return sim_params;
+    }
+
+    // *****************************************************************************
 }

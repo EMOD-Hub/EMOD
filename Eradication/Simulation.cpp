@@ -211,6 +211,7 @@ namespace Kernel
         initConfigTypeMap( "Custom_Reports_Filename", &custom_reports_filename, Custom_Reports_Filename_DESC_TEXT, std::string("") );
 
         bool ret = JsonConfigurable::Configure( inputJson );
+
         if( ret || JsonConfigurable::_dryrun )
         {
             m_pRngFactory->CreateFromSerializeData( SerializationParameters::GetInstance()->GetCreateRngFromSerializedData() );
@@ -678,27 +679,6 @@ namespace Kernel
     //   Every timestep Update() method
     //------------------------------------------------------------------
 
-// Use with __try {} __except(filter(GetExceptionCode(), GetExceptionInformation())) { MPI_Abort(EnvPtr->world, -1); }
-//
-//    static char* section;
-//
-//    static int filter(unsigned int code, struct _EXCEPTION_POINTERS* ep)
-//    {
-//        cout << '[' << EnvPtr->MPI.Rank << "] " << "Section: " << section << endl; cout.flush();
-//        cout << '[' << EnvPtr->MPI.Rank << "] " << "Exception code      = " << code << endl; cout.flush();
-//        cout << '[' << EnvPtr->MPI.Rank << "] " << "EP.ExceptionCode    = " << ep->ExceptionRecord->ExceptionCode << endl; cout.flush();
-//        cout << '[' << EnvPtr->MPI.Rank << "] " << "EP.ExceptionAddress = " << ep->ExceptionRecord->ExceptionAddress << endl; cout.flush();
-//
-//        void* callers[32];
-//        auto frames = CaptureStackBackTrace( 0, 32, callers, nullptr);
-//        for (size_t i = 0; i < frames; i++) {
-//            cout << '[' << i << "] " << callers[i] << endl;
-//        }
-//        cout.flush();
-//
-//        return EXCEPTION_EXECUTE_HANDLER;
-//    }
-
     void Simulation::Update(float dt)
     {
         Reports_UpdateEventRegistration( currentTime.time, dt );
@@ -784,7 +764,6 @@ namespace Kernel
         // ----------------
         CheckMemoryFailure( false );
 
-
         return;
     }
 
@@ -799,6 +778,7 @@ namespace Kernel
         LOG_INFO( "Populating simulation from demographics...\n" );
         int node_count = populateFromDemographics(campaignFilename.c_str(), loadBalanceFilename.c_str() );
 
+        EnvPtr->Log->Flush();
         LOG_INFO_F( "Merging node rank maps...\n" );
         nodeRankMap.MergeMaps(); // merge rank maps across all processors
         LOG_INFO_F( "Merged rank %d map now has %d nodes.\n", EnvPtr->MPI.Rank, nodeRankMap.Size() );
@@ -1094,7 +1074,7 @@ namespace Kernel
         node->SetParameters( nodedemographics_factory, climate_factory );
 
         // Populate node
-        node->PopulateFromDemographics( nodedemographics_factory );
+        node->PopulateFromDemographics();
 
         // Add node to the map
         nodes.insert( std::pair<suids::suid, INodeContext*>(node->GetSuid(), node) );
@@ -1116,7 +1096,6 @@ namespace Kernel
 
         node->SetParameters( nodedemographics_factory, climate_factory );
 
-        // node->PopulateFromDemographics();    // Skip this, node already is populated.
         node->InitializeTransmissionGroupPopulations();
 
         node_event_context_list.push_back( node->GetEventContext() );
@@ -1347,10 +1326,10 @@ namespace Kernel
             }
         }
 
-        if (sim.serializationFlags.test(SerializationFlags::Parameters)) {
+        if (sim.serializationFlags.test(SerializationFlags::Parameters))
+        {
             ar.labelElement( "campaignFilename" ) & sim.campaignFilename;
             ar.labelElement( "custom_reports_filename" ) & sim.custom_reports_filename;
-
             ar.labelElement("sim_type") & (uint32_t&)sim.sim_type;
             ar.labelElement("demographic_tracking") & sim.demographic_tracking;
             ar.labelElement("enable_spatial_output") & sim.enable_spatial_output;
@@ -1360,38 +1339,13 @@ namespace Kernel
             ar.labelElement( "enable_node_event_report" ) & sim.enable_event_report;
             ar.labelElement( "enable_coordinator_event_report" ) & sim.enable_coordinator_event_report;
             ar.labelElement( "enable_surveillance_event_report" ) & sim.enable_surveillance_event_report;
-
             ar.labelElement("loadbalance_filename") & sim.loadbalance_filename;
         }
 
-        if (sim.serializationFlags.test(SerializationFlags::Properties)) {
-// clorton          ar.labelElement("nodeRankMap") & sim.nodeRankMap;
-// clorton          ar.labelElement("node_event_context_list") & sim.node_event_context_list;
-// clorton          ar.labelElement("nodeid_suid_map") & sim.nodeid_suid_map;
-// clorton          ar.labelElement("migratingIndividualQueues") & sim.migratingIndividualQueues;
-// clorton          ar.labelElement("m_simConfigObj") & sim.m_simConfigObj;
-// clorton          ar.labelElement("m_interventionFactoryObj") & sim.m_interventionFactoryObj;
-// clorton          ar.labelElement("demographicsContext") & sim.demographicsContext;
-// clorton          ar.labelElement("nodeSuidGenerator") & sim.nodeSuidGenerator;
+        if (sim.serializationFlags.test(SerializationFlags::Properties))
+        {
             ar.labelElement("loadBalanceFilename") & sim.loadBalanceFilename;
-// clorton          ar.labelElement("rng") & sim.rng;
-// clorton          ar.labelElement("reports") & sim.reports;
-// clorton          ar.labelElement("individual_data_reports") & sim.individual_data_reports;
-// clorton          ar.labelElement("reportClassCreator") & sim.reportClassCreator;
-// clorton          ar.labelElement("binnedReportClassCreator") & sim.binnedReportClassCreator;
-// clorton          ar.labelElement("spatialReportClassCreator") & sim.spatialReportClassCreator;
-// clorton          ar.labelElement("propertiesReportClassCreator") & sim.propertiesReportClassCreator;
-// clorton          ar.labelElement("demographicsReportClassCreator") & sim.demographicsReportClassCreator;
-// clorton          ar.labelElement("eventReportClassCreator") & sim.eventReportClassCreator;
-// clorton          ar.labelElement("nodeEventReportClassCreator") & sim.nodeEventReportClassCreator;
-// clorton          ar.labelElement("coordinatorEventReportClassCreator") & sim.coordinatorEventReportClassCreator;
-// clorton          ar.labelElement("event_coordinators") & sim.event_coordinators;
-// clorton          ar.labelElement("campaign_events") & sim.campaign_events;
-// clorton          ar.labelElement("event_context_host") & sim.event_context_host;
-// clorton          ar.labelElement("currentTime") & sim.currentTime;
             ar.labelElement("campaign_filename") & sim.campaign_filename;
-// clorton          ar.labelElement("demographics_factory") & sim.demographics_factory;
-// clorton          ar.labelElement("new_node_observers") & sim.new_node_observers;
         }
     }
 
