@@ -20,11 +20,11 @@ namespace Kernel
         HANDLE_INTERFACE(INodeMalaria)
     END_QUERY_INTERFACE_DERIVED(NodeMalaria, NodeVector)
 
-    NodeMalaria::NodeMalaria() 
+    NodeMalaria::NodeMalaria()
         : NodeVector()
-        , m_New_Clinical_Cases( 0 )
-        , m_New_Severe_Cases( 0 )
-        , m_Maternal_Antibody_Fraction( 0 )
+        , m_New_Clinical_Cases(0)
+        , m_New_Severe_Cases(0)
+        , m_Maternal_Antibody_Fraction(0)
     {
     }
 
@@ -77,7 +77,7 @@ namespace Kernel
         NodeVector::accumulateIndividualPopulationStatistics(dt, basic_individual);
 
         // Cast from IndividualHuman to IndividualHumanMalaria
-        IMalariaHumanContext *individual = nullptr;
+        IMalariaHumanContext* individual = nullptr;
         if( basic_individual->QueryInterface( GET_IID( IMalariaHumanContext ), (void**)&individual ) != s_OK )
         {
             throw QueryInterfaceException( __FILE__, __LINE__, __FUNCTION__, "individual", "IndividualHumanMalaria", "IndividualHuman" );
@@ -102,10 +102,10 @@ namespace Kernel
         }
     }
 
-    void NodeMalaria::updateNodeStateCounters( IIndividualHuman *ih)
+    void NodeMalaria::updateNodeStateCounters( IIndividualHuman* ih )
     {
         float weight = ih->GetMonteCarloWeight();
-        IMalariaHumanContext *malaria_human = nullptr;
+        IMalariaHumanContext* malaria_human = nullptr;
         if( ih->QueryInterface( GET_IID( IMalariaHumanContext ), (void**) &malaria_human ) != s_OK )
         {
             throw QueryInterfaceException( __FILE__, __LINE__, __FUNCTION__, "ih", "IndividualHuman", "IndividualHumanMalaria" );

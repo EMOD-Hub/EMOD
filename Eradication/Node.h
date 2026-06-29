@@ -69,6 +69,7 @@ namespace Kernel
         // INodeContext
         virtual void Update(float dt) override;
         virtual ISimulationContext* GetParent() override;
+
         virtual suids::suid   GetSuid() const override;
         virtual suids::suid   GetNextInfectionSuid() override;
         virtual RANDOMBASE* GetRng() override;

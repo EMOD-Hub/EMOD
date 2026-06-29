@@ -84,7 +84,6 @@ namespace Kernel
     {
         delete society ;
         delete relMan ;
-        // pRelationshipGroups - don't delete because it is beign deleted via transmissionGroups
     }
 
     NodeSTI *NodeSTI::CreateNode(ISimulationContext *_parent_sim, ExternalNodeId_t externalNodeId, suids::suid node_suid)
@@ -127,7 +126,6 @@ namespace Kernel
 
     void NodeSTI::SetupIntranodeTransmission()
     {
-        //RelationshipGroups * relNodePools = dynamic_cast<RelationshipGroups*>(TransmissionGroupsFactory::CreateNodeGroups(TransmissionGroupType::RelationshipGroups));
         pRelationshipGroups = _new_ RelationshipGroups();
         pRelationshipGroups->SetParent( this );
         transmissionGroups = pRelationshipGroups;
@@ -229,8 +227,7 @@ namespace Kernel
         return relMan;
     }
 
-    ISociety*
-    NodeSTI::GetSociety()
+    ISociety* NodeSTI::GetSociety()
     {
         return society;
     }
@@ -250,10 +247,7 @@ namespace Kernel
         staged_events.push_back( std::make_pair( pHuman, rTrigger ) );
     }
 
-    void
-    NodeSTI::processEmigratingIndividual(
-        IIndividualHuman* individual
-    )
+    void NodeSTI::processEmigratingIndividual( IIndividualHuman* individual )
     {
         IIndividualHumanSTI* sti_individual=nullptr;
         if (individual->QueryInterface(GET_IID(IIndividualHumanSTI), (void**)&sti_individual) != s_OK)
@@ -266,10 +260,7 @@ namespace Kernel
         Node::processEmigratingIndividual( individual );
     }
 
-    IIndividualHuman*
-    NodeSTI::processImmigratingIndividual(
-        IIndividualHuman* movedind
-    )
+    IIndividualHuman* NodeSTI::processImmigratingIndividual( IIndividualHuman* movedind )
     {
         // -------------------------------------------------------------------------------
         // --- SetContextTo() is called in Node::processImmigratingIndividual() but
@@ -297,7 +288,5 @@ namespace Kernel
     void NodeSTI::serialize(IArchive& ar, NodeSTI* obj)
     {
         Node::serialize(ar, obj);
-        // NodeSTI& node = *obj;
-        // clorton TODO
     }
 }

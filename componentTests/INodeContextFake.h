@@ -246,7 +246,6 @@ public:
 
     virtual void SetupEventContextHost() override
     {
-        // current code does not expect the test code to call this method
         throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented.");
     }
 

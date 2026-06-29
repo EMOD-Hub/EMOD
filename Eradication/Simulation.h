@@ -109,8 +109,8 @@ namespace Kernel
         typedef NodeMap_t::value_type NodeMapEntry_t;
 
     protected:
-
         Simulation();
+
         virtual void Initialize();  // for serialization
 
         static bool ValidateConfiguration(const ::Configuration *config);

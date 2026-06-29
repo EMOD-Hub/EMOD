@@ -2,7 +2,6 @@
 #pragma once
 
 #include "Common.h"
-
 #include "MalariaContexts.h"
 #include "NodeVector.h"
 
