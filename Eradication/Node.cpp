@@ -453,6 +453,12 @@ namespace Kernel
         }
     }
 
+    void Node::InitSuidGenerator(int node_suid, int num_nodes)
+    {
+        // Called by Simulation only when NOT restarting from serialization
+        m_IndividualHumanSuidGenerator = suids::distributed_generator(node_suid, num_nodes);
+    }
+
     void Node::SetParameters( NodeDemographicsFactory *demographics_factory, ClimateFactory *climate_factory )
     {
         // Parameters set from an input filestream
@@ -460,8 +466,6 @@ namespace Kernel
         NodeDemographics* demographics_temp = demographics_factory->CreateNodeDemographics(this);
         release_assert( demographics_temp );
         demographics = *(demographics_temp); // use copy constructor
-
-        m_IndividualHumanSuidGenerator = suids::distributed_generator( GetSuid().data, demographics_factory->GetNodeIDs().size() );
 
         //////////////////////////////////////////////////////////////////////////////////////
         // Hack: commenting out for pymod work. Need real solution once I understand all this.

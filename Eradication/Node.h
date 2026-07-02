@@ -189,7 +189,6 @@ namespace Kernel
         NodeDemographicsDistribution* AgeDistribution;
 
     private:
-
         // Do not access these directly but use the access methods above.
         float _latitude;
         float _longitude;
@@ -307,6 +306,7 @@ namespace Kernel
 
         virtual void Initialize();
         virtual bool Configure( const Configuration* config ) override;
+        virtual void InitSuidGenerator(int, int);
         void ExtractDataFromDemographics(const NodeDemographics*);
         virtual void LoadImmunityDemographicsDistribution();
         virtual void LoadOtherDiseaseSpecificDistributions() {};

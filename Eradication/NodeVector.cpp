@@ -109,10 +109,15 @@ namespace Kernel
         }
     }
 
+    void NodeVector::InitSuidGenerator(int node_suid, int num_nodes)
+    {
+        Node::InitSuidGenerator(node_suid, num_nodes);
+
+        m_VectorCohortSuidGenerator = suids::distributed_generator(node_suid, num_nodes);
+    }
+
     void NodeVector::SetParameters( NodeDemographicsFactory *demographics_factory, ClimateFactory *climate_factory )
     {
-        m_VectorCohortSuidGenerator = suids::distributed_generator( GetSuid().data, demographics_factory->GetNodeIDs().size() );
-
         Node::SetParameters( demographics_factory, climate_factory );
 
         if (demographics["NodeAttributes"].Contains("LarvalHabitatMultiplier") )

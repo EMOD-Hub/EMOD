@@ -30,7 +30,9 @@ namespace Kernel
     public:
         static NodeVector *CreateNode(ISimulationContext *context, ExternalNodeId_t externalNodeId, suids::suid suid);
         virtual ~NodeVector();
+
         virtual bool Configure( const Configuration* config ) override;
+        virtual void InitSuidGenerator(int, int) override;
 
         virtual IIndividualHuman* processImmigratingIndividual(IIndividualHuman*) override;
         virtual IIndividualHuman* addNewIndividual(float = 1.0f, float = 0.0f, int = 0, int = 0, float = 1.0f, float = 1.0f, float = 1.0f) override;
