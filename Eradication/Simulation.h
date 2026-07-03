@@ -99,7 +99,6 @@ namespace Kernel
         // Reporting
         virtual std::vector<IReport*>& GetReports() override;
         virtual std::vector<IReport*>& GetReportsNeedingIndividualData() override;
-        virtual uint32_t GetNumNodesInSim() const override;
 
         // INodeInfoFactory
         virtual INodeInfo* CreateNodeInfo() override;

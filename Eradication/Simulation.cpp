@@ -1272,11 +1272,6 @@ namespace Kernel
         return individual_data_reports ;
     }
 
-    uint32_t Simulation::GetNumNodesInSim() const
-    {
-        return nodeRankMap.GetRankMap().size();
-    }
-
     int Simulation::getInitialRankFromNodeId( ExternalNodeId_t node_id )
     {
         return nodeRankMap.GetInitialRankFromNodeId(node_id); // R: leave as a wrapper call to nodeRankMap.GetInitialRankFromNodeId()
