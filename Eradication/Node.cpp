@@ -102,8 +102,6 @@ namespace Kernel
         , Possible_Mothers(0)
         , mean_age_infection(0.0f)
         , newInfectedPeopleAgeProduct(0.0f)           // counters starting with this one were only used for old spatial reporting and can probably now be removed
-        , infected_people_prior()
-        , infected_age_people_prior()
         , mInfectivity(0.0f)
         , parent( nullptr )
         , parent_sim( nullptr )
@@ -216,8 +214,6 @@ namespace Kernel
         , Possible_Mothers(0)
         , mean_age_infection(0.0f)
         , newInfectedPeopleAgeProduct(0.0f)           // counters starting with this one were only used for old spatial reporting and can probably now be removed
-        , infected_people_prior()
-        , infected_age_people_prior()
         , mInfectivity(0.0f)
         , parent(nullptr)
         , parent_sim( nullptr )
@@ -2161,7 +2157,6 @@ namespace Kernel
         mInfectivity           = 0;
         new_infections         = 0;
         new_reportedinfections = 0;
-        newInfectedPeopleAgeProduct = 0;
         symptomatic            = 0;
         newly_symptomatic      = 0;
     }
@@ -2196,7 +2191,6 @@ namespace Kernel
 
         new_infections += monte_carlo_weight; 
         Cumulative_Infections += monte_carlo_weight; 
-        newInfectedPeopleAgeProduct += monte_carlo_weight * float(ih->GetAge());
     }
 
     void Node::reportDetectedInfection(IIndividualHuman *ih)
@@ -2209,38 +2203,6 @@ namespace Kernel
 
     void Node::finalizeNodeStateCounters(void)
     {
-        infected_people_prior.push_back( float(new_infections) );
-        if( infected_people_prior.size() > infection_averaging_window )
-        {
-            infected_people_prior.pop_front();
-        }
-        if( newInfectedPeopleAgeProduct < 0 )
-        {
-            throw CalculatedValueOutOfRangeException( __FILE__, __LINE__, __FUNCTION__, "newInfectedPeopleAgeProduct", newInfectedPeopleAgeProduct, 0 );
-        }
-
-        infected_age_people_prior.push_back( float(newInfectedPeopleAgeProduct) );
-        if( infected_age_people_prior.size() > infection_averaging_window )
-        {
-            infected_age_people_prior.pop_front();
-        }
-
-        double numerator = std::accumulate(infected_age_people_prior.begin(), infected_age_people_prior.end(), 0.0);
-        if( numerator < 0.0 )
-        {
-            throw CalculatedValueOutOfRangeException( __FILE__, __LINE__, __FUNCTION__, "numerator", numerator, 0 );
-        }
-
-        float denominator = std::accumulate( infected_people_prior.begin(), infected_people_prior.end(), 0 );
-        if( denominator && numerator )
-        {
-            mean_age_infection = numerator/( denominator * DAYSPERYEAR);
-            LOG_DEBUG_F( "mean_age_infection = %f/%f*365.\n", numerator, denominator );
-        }
-        else
-        {
-            mean_age_infection = 0; // necessary? KM comment - yes, if numerator = 0 then normal calc is OK; if denom is 0 (say, in an eradication context), then above calc will throw Inf/NaN/exception, depending on divide-by-zero handling.
-        }
     }
 
     //------------------------------------------------------------------
@@ -2538,11 +2500,6 @@ namespace Kernel
     long int Node::GetPossibleMothers() const
     {
         return Possible_Mothers;
-    }
-
-    float Node::GetMeanAgeInfection() const
-    {
-        return mean_age_infection;
     }
 
     INodeEventContext* Node::GetEventContext()

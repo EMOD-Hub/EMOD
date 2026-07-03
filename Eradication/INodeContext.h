@@ -107,7 +107,6 @@ namespace Kernel
         virtual float GetLongitudeDegrees()            = 0;
 
         virtual long int GetPossibleMothers()    const = 0;
-        virtual float GetMeanAgeInfection()      const = 0;
 
         virtual float GetNonDiseaseMortalityRateByAgeAndSex( float age, Gender::Enum sex ) const = 0;
 

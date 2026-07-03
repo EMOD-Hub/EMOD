@@ -121,7 +121,6 @@ namespace Kernel
 
         virtual long int GetPossibleMothers()    const override;
 
-        virtual float GetMeanAgeInfection()      const override;
         virtual float GetBasePopulationScaleFactor() const override;
         virtual float GetNonDiseaseMortalityRateByAgeAndSex( float age, Gender::Enum sex ) const override;
 
@@ -256,9 +255,6 @@ namespace Kernel
 
         float mean_age_infection;      // (years)
         float newInfectedPeopleAgeProduct;
-        static const int infection_averaging_window = 1;   // = 30 time steps
-        std::list<float> infected_people_prior; // [infection_averaging_window];
-        std::list<float> infected_age_people_prior; // [infection_averaging_window];
 
         float mInfectivity;
 
