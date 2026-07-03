@@ -64,6 +64,7 @@ namespace Kernel
         virtual void SetParameters( NodeDemographicsFactory *demographics_factory, ClimateFactory *climate_factory ) = 0;
         virtual void PopulateFromDemographics() = 0;
         virtual void InitializeTransmissionGroupPopulations() = 0;
+        virtual void InitSuidGenerator(int, int) = 0;
 
         virtual suids::suid GetNextInfectionSuid() = 0;
         virtual RANDOMBASE* GetRng() = 0; 

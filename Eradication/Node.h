@@ -99,6 +99,7 @@ namespace Kernel
         virtual void SetParameters( NodeDemographicsFactory *demographics_factory, ClimateFactory *climate_factory ) override;
         virtual void PopulateFromDemographics() override;
         virtual void InitializeTransmissionGroupPopulations() override;
+        virtual void InitSuidGenerator(int, int) override;
 
         // Campaign event-related
         bool IsInPolygon(float* vertex_coords, int numcoords); // might want to create a real polygon object at some point
@@ -306,7 +307,6 @@ namespace Kernel
 
         virtual void Initialize();
         virtual bool Configure( const Configuration* config ) override;
-        virtual void InitSuidGenerator(int, int);
         void ExtractDataFromDemographics(const NodeDemographics*);
         virtual void LoadImmunityDemographicsDistribution();
         virtual void LoadOtherDiseaseSpecificDistributions() {};
