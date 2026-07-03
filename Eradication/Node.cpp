@@ -756,6 +756,7 @@ namespace Kernel
             localWeather->UpdateWeather( GetTime().time, dt, GetRng() );
         }
 #endif
+
         // Update node-level interventions
         if (params()->interventions) 
         {
@@ -826,12 +827,12 @@ namespace Kernel
         //----------------------------------------------------------------
 
         // Vital dynamics for this time step at community level (handles mainly births)
-
         if (vital_dynamics)
         {
             updateVitalDynamics(dt);
         }
 
+        // Immunity dependendent down-sampling
         if (ind_sampling_type == IndSamplingType::ADAPTED_SAMPLING_BY_IMMUNE_STATE)
         {
             LOG_DEBUG_F( "Check whether any individuals need to be down-sampled based on immunity.\n" );
@@ -847,10 +848,6 @@ namespace Kernel
                        individual->UpdateMCSamplingRate(desired_mc_weight);
                        LOG_DEBUG_F("MC Weight now %f, state change = %i\n", float(individual->GetMonteCarloWeight()), (int)individual->GetStateChange());
                    }
-                   /*else if (desired_mc_weight < current_mc_weight)
-                   {
-                       //KM: Placeholder to allow a "clone individual and increase sampling rate" functionality if desired
-                   }*/
                 }
             }
         }
@@ -1104,14 +1101,7 @@ namespace Kernel
 
     // This allows subclass to override this function and replace it, specifically PyMod in which node has no individuals and
     // individual parameters are passed
-    void Node::considerPregnancyForIndividual(
-        bool bPossibleMother,
-        bool bIsPregnant,
-        float age,
-        int individual_id,
-        float dt,
-        IIndividualHuman* pIndividual
-    )
+    void Node::considerPregnancyForIndividual( bool bPossibleMother, bool bIsPregnant, float age, int individual_id, float dt, IIndividualHuman* pIndividual )
     {
         if( vital_birth_dependence == VitalBirthDependence::FIXED_BIRTH_RATE ||
             vital_birth_dependence == VitalBirthDependence::POPULATION_DEP_RATE ||
@@ -1141,10 +1131,10 @@ namespace Kernel
         }
         else if( bPossibleMother )
         {
-            ProbabilityNumber step_birthrate = birthrate * dt * x_birth;
+            float step_birthrate;
 
             // If we are using an age-dependent fertility rate, then this needs to be accessed/interpolated based on the current possible-mother's age.
-            if( vital_birth_dependence == VitalBirthDependence::INDIVIDUAL_PREGNANCIES_BY_AGE_AND_YEAR  ) 
+            if( vital_birth_dependence == VitalBirthDependence::INDIVIDUAL_PREGNANCIES_BY_AGE_AND_YEAR )
             {
                 // "FertilityDistribution" is added to map in Node::SetParameters if 'vital_birth_dependence' flag is set to INDIVIDUAL_PREGNANCIES_BY_AGE_AND_YEAR 
                 float temp_birthrate = FertilityDistribution->DrawResultValue(age, float(GetTime().Year()));
@@ -1165,6 +1155,15 @@ namespace Kernel
                 }
 
                 step_birthrate = temp_birthrate * dt * x_birth;
+            }
+            else if ()
+            {
+                step_birthrate =      birthrate * dt * x_birth;
+            }
+            else
+            {
+                // Not currently a valid code path.
+                release_assert(false);
             }
 
             if( pIndividual != nullptr )
@@ -1245,9 +1244,7 @@ namespace Kernel
             { 
                 newborns = long( GetRng()->Poisson(step_birthrate * individualHumans.size()) );
             }
-            LOG_DEBUG_F( "Poisson draw based on birthrate of %f and POPULATION_DEP_RATE mode, with pop = %f says we need %d new babies.\n",
-                         step_birthrate, statPop, newborns
-                       );
+            LOG_DEBUG_F( "Poisson draw based on birthrate of %f and POPULATION_DEP_RATE mode, with pop = %f says we need %d new babies.\n", step_birthrate, statPop, newborns );
             populateNewIndividualsByBirth(newborns);
             break;
 
@@ -1261,9 +1258,7 @@ namespace Kernel
             {
                 newborns = long( GetRng()->Poisson(step_birthrate * Possible_Mothers) );
             }
-            LOG_DEBUG_F( "Poisson draw based on birthrate of %f and DEMOGRPHIC_DEP_RATE mode, with possible moms = %d says we need %d new babies.\n",
-                         step_birthrate, Possible_Mothers, newborns
-                       );
+            LOG_DEBUG_F( "Poisson draw based on birthrate of %f and DEMOGRPHIC_DEP_RATE mode, with possible moms = %d says we need %d new babies.\n", step_birthrate, Possible_Mothers, newborns );
             populateNewIndividualsByBirth(newborns);
             break;
 
@@ -1644,7 +1639,6 @@ namespace Kernel
                 temp_prevalence = (statPop > 0) ? float(Infected) / statPop : 0; break;
             case VitalBirthDependence::DEMOGRAPHIC_DEP_RATE:
                 temp_prevalence = getPrevalenceInPossibleMothers(); break;
-
             case VitalBirthDependence::INDIVIDUAL_PREGNANCIES: break;
             case VitalBirthDependence::INDIVIDUAL_PREGNANCIES_BY_AGE_AND_YEAR: break;
             default: break;
@@ -1685,8 +1679,8 @@ namespace Kernel
                 continue;
             }
 
-            IIndividualHuman* child = nullptr;
-            child = configureAndAddNewIndividual( 1.0F / temp_sampling_rate, 0.0F, (float(temp_prevalence) * prob_maternal_infection_transmission), float( female_ratio ) ); // N.B. temp_prevalence=0 without enable_maternal_infection_transmission flag
+            // Add new individual: initial_age = 0.0f; initial_susceptibility = 1.0f;
+            IIndividualHuman* child = configureAndAddNewIndividual(1.0f/temp_sampling_rate, 0.0f, (float(temp_prevalence) * prob_maternal_infection_transmission), float( female_ratio ) ); // N.B. temp_prevalence=0 without enable_maternal_infection_transmission flag
 
             if( child != nullptr ) // valid in pymod
             {
@@ -1800,11 +1794,10 @@ namespace Kernel
             return;
         }
 
-        float duration;
-        float temp_birthrate = birthrate;
-
         if (individual->IsPossibleMother()) // woman of child-bearing age?
         {
+            float temp_birthrate;
+
             if(vital_birth_dependence == VitalBirthDependence::INDIVIDUAL_PREGNANCIES_BY_AGE_AND_YEAR) 
             { 
                 // "FertilityDistribution" is added to map in Node::SetParameters if 'vital_birth_dependence' flag is set to INDIVIDUAL_PREGNANCIES_BY_AGE_AND_YEAR
@@ -1812,11 +1805,15 @@ namespace Kernel
                 temp_birthrate = FertilityDistribution->DrawResultValue(individual->GetAge(), float(GetTime().Year()));
                 LOG_DEBUG_F("%d-year-old possible mother has annual fertility rate = %f\n", int(individual->GetAge()/DAYSPERYEAR), temp_birthrate * DAYSPERYEAR);
             }
+            else
+            {
+                temp_birthrate = birthrate;
+            }
 
             float prob = x_birth * temp_birthrate * (DAYSPERWEEK * WEEKS_FOR_GESTATION);
             if( GetRng()->SmartDraw( prob ) ) // is the woman within any of the 40 weeks of pregnancy?
             {
-                duration = float( GetRng()->e() ) * (DAYSPERWEEK * WEEKS_FOR_GESTATION); // uniform distribution over 40 weeks
+                float duration = static_cast<float>( GetRng()->e() ) * (DAYSPERWEEK * WEEKS_FOR_GESTATION); // uniform distribution over 40 weeks
                 LOG_DEBUG_F("Initial pregnancy of %f remaining days for %d-year-old\n", duration, (int)(individual->GetAge()/DAYSPERYEAR));
                 individual->InitiatePregnancy(duration);// initialize the pregnancy
             }
@@ -1870,11 +1867,11 @@ namespace Kernel
     IIndividualHuman* Node::configureAndAddNewIndividual(float ind_MCweight, float ind_init_age, float comm_init_prev, float comm_female_ratio)
     {
         //  Holds draws from demographic distribution
-        int   temp_infs      = 0;
-        int   temp_gender    = Gender::MALE;
+        int   temp_infs            = 0;
+        int   temp_gender          = Gender::MALE;
         float temp_susceptibility  = 1.0;
-        float temp_risk      = 1.0;
-        float temp_migration = 1.0;
+        float temp_risk            = 1.0;
+        float temp_migration       = 1.0;
 
         // gender distribution exists regardless of gender demographics, but is ignored unless vital_birth_dependence is 2 or 3
         if( GetRng()->SmartDraw( comm_female_ratio ) )
@@ -1883,7 +1880,7 @@ namespace Kernel
         }
 
         // if individual *could* be infected, do a random draw to determine his/her initial infected state
-        if(GetRng()->SmartDraw( comm_init_prev ) )
+        if( GetRng()->SmartDraw( comm_init_prev ) )
         { 
             temp_infs = 1;
         }
@@ -1936,9 +1933,7 @@ namespace Kernel
         return tempind;
     }
 
-    IIndividualHuman* Node::addNewIndividual(float mc_weight, float initial_age, 
-        int gender, int initial_infections, float susceptibility_parameter, float risk_parameter, 
-        float migration_heterogeneity)
+    IIndividualHuman* Node::addNewIndividual(float mc_weight, float initial_age, int gender, int initial_infections, float susceptibility_parameter, float risk_parameter, float migration_heterogeneity)
     {
         // new creation process
         IIndividualHuman* new_individual = createHuman( m_IndividualHumanSuidGenerator(), mc_weight, initial_age, gender ); // initial_infections isn't needed here if SetInitialInfections function is used
@@ -2439,10 +2434,12 @@ namespace Kernel
     {
         return parent;
     }
+
     suids::suid Node::GetSuid() const
     {
         return suid;
     }
+
     suids::suid Node::GetNextInfectionSuid()
     {
         return parent->GetNextInfectionSuid();
