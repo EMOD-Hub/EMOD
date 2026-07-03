@@ -192,7 +192,22 @@ namespace Kernel
 
         static std::vector<std::string> demographics_filenames_list;
 
-        NodeDemographicsFactory() : nodeid_suid_map(), nodeIDs(), idreference(), full_string_table( nullptr ), demographics_filenames(), layer_defaults(), layer_string_sub_tables(), layer_string_value2key_tables(), nodedata_maps() { };
+        NodeDemographicsFactory()
+            : nodeid_suid_map()
+            , nodeIDs()
+            , idreference()
+            , full_string_table( nullptr )
+            , demographics_filenames()
+            , layer_defaults()
+            , layer_string_sub_tables()
+            , layer_string_value2key_tables()
+            , nodedata_maps()
+            , demographics_builtin(true)
+            , torus_size(10)
+            , default_population(1000)
+            , allow_nodeid_zero(false)
+            { };
+
         NodeDemographicsFactory(boost::bimap<ExternalNodeId_t, suids::suid> * nodeid_suid_map)
             : nodeid_suid_map( nodeid_suid_map )
             , nodeIDs()
@@ -204,11 +219,12 @@ namespace Kernel
             , layer_string_sub_tables()
             , layer_string_value2key_tables()
             , nodedata_maps()
+            , demographics_builtin(true)
             , torus_size(10)
             , default_population(1000)
             , allow_nodeid_zero(false)
-        { 
-        };
+        { };
+
         void Initialize( const ::Configuration *config, bool isDataInFiles, uint32_t torusSize, uint32_t defaultPopulation );
 
         virtual bool Configure( const Configuration* config ) override;

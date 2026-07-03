@@ -67,6 +67,7 @@ namespace Kernel
         , AgeDistribution( nullptr )
         , _latitude(FLT_MAX)
         , _longitude(FLT_MAX)
+        , initial_population(0)
         , ind_sampling_type( IndSamplingType::TRACK_ALL )
         , population_density_infectivity_correction( PopulationDensityInfectivityCorrection::CONSTANT_INFECTIVITY )
         , age_initialization_distribution_type(DistributionType::DISTRIBUTION_OFF)
@@ -180,6 +181,7 @@ namespace Kernel
         , AgeDistribution( nullptr )
         , _latitude(FLT_MAX)
         , _longitude(FLT_MAX)
+        , initial_population(0)
         , ind_sampling_type( IndSamplingType::TRACK_ALL )
         , population_density_infectivity_correction( PopulationDensityInfectivityCorrection::CONSTANT_INFECTIVITY )
         , age_initialization_distribution_type(DistributionType::DISTRIBUTION_OFF)
@@ -485,28 +487,7 @@ namespace Kernel
         
         release_assert(params());
 
-        if (enable_natural_mortality) // this break pymod
-        {
-            if( vital_death_dependence == VitalDeathDependence::NONDISEASE_MORTALITY_BY_AGE_AND_GENDER )
-            {
-                LOG_DEBUG( "Parsing IndividualAttributes->MortalityDistribution tag in node demographics file.\n" );
-                MortalityDistribution = NodeDemographicsDistribution::CreateDistribution(demographics["IndividualAttributes"]["MortalityDistribution"], "gender", "age");
-            }
-            else if( vital_death_dependence == VitalDeathDependence::NONDISEASE_MORTALITY_BY_YEAR_AND_AGE_FOR_EACH_GENDER )
-            {
-                if (vital_death_dependence == VitalDeathDependence::NONDISEASE_MORTALITY_BY_AGE_AND_GENDER)
-                {
-                    LOG_DEBUG("Parsing IndividualAttributes->MortalityDistribution tag in node demographics file.\n");
-                    MortalityDistribution = NodeDemographicsDistribution::CreateDistribution(demographics["IndividualAttributes"]["MortalityDistribution"], "gender", "age");
-                }
-                else if (vital_death_dependence == VitalDeathDependence::NONDISEASE_MORTALITY_BY_YEAR_AND_AGE_FOR_EACH_GENDER)
-                {
-                    LOG_DEBUG("Parsing IndividualAttributes->MortalityDistributionMale and IndividualAttributes->MortalityDistributionFemale tags in node demographics file.\n");
-                    MortalityDistributionMale = NodeDemographicsDistribution::CreateDistribution(demographics["IndividualAttributes"]["MortalityDistributionMale"], "age", "year");
-                    MortalityDistributionFemale = NodeDemographicsDistribution::CreateDistribution(demographics["IndividualAttributes"]["MortalityDistributionFemale"], "age", "year");
-                }
-            }
-        }
+
 
         LoadOtherDiseaseSpecificDistributions();
 
@@ -1347,14 +1328,14 @@ namespace Kernel
     // (4) vital_birth_dependence: INDIVIDUAL_PREGNANCIES must have initial pregnancies initialized
     void Node::PopulateFromDemographics()
     {
-        uint32_t count_new_individuals = uint32_t(demographics["NodeAttributes"]["InitialPopulation"].AsUint64());
+        int count_new_individuals = static_cast<int>(initial_population);
 
         const NodeParams np = GetNodeParams();
 
         // correct initial population if necessary (historical simulation for instance
         if ( population_scaling )
         {
-            count_new_individuals = uint32_t(count_new_individuals * population_scaling_factor);
+            count_new_individuals = count_new_individuals * population_scaling_factor;
         }
 
         if ((ind_sampling_type == IndSamplingType::ADAPTED_SAMPLING_BY_IMMUNE_STATE) && (count_new_individuals*rel_sample_rate_immune*base_sample_rate < 1.0)) // At least one individual must be sampled
@@ -1456,8 +1437,8 @@ namespace Kernel
 
                     float required_percentage_of_adults = 1.0  -required_percentage_of_children ;
                     float percent_children = float(num_children) / float(count_new_individuals) ;
-                    float percent_adults   = float(num_adults)   / float(count_new_individuals) ;
-                    float age_years = temp_age / DAYSPERYEAR ;
+                    float percent_adults   = static_cast<float>(num_adults)  /static_cast<float>(count_new_individuals);
+                    float age_years        = temp_age/DAYSPERYEAR ;
 
                     // if a child and already have enough children, recalculate age until we get an adult
                     while( !IndividualHumanConfig::IsAdultAge( age_years ) && (percent_children >= required_percentage_of_children) )
@@ -1536,32 +1517,53 @@ namespace Kernel
         uint32_t temp_externalId = (*demog_ptr)["NodeID"].AsUint();
         release_assert( this->externalId == temp_externalId );
 
+        initial_population   = static_cast<uint32_t>((*demog_ptr)["NodeAttributes"]["InitialPopulation"].AsUint64());
+
         _latitude  = static_cast<float>((*demog_ptr)["NodeAttributes"]["Latitude"].AsDouble());
         _longitude = static_cast<float>((*demog_ptr)["NodeAttributes"]["Longitude"].AsDouble());
 
-        if (SusceptibilityConfig::enable_initial_susceptibility_distribution)
+        if (enable_natural_mortality)
+        {
+            if(vital_death_dependence == VitalDeathDependence::NONDISEASE_MORTALITY_BY_AGE_AND_GENDER)
+            {
+                LOG_DEBUG( "Parsing IndividualAttributes->MortalityDistribution tag in node demographics file.\n" );
+                MortalityDistribution = NodeDemographicsDistribution::CreateDistribution((*demog_ptr)["IndividualAttributes"]["MortalityDistribution"], "gender", "age");
+            }
+            else if(vital_death_dependence == VitalDeathDependence::NONDISEASE_MORTALITY_BY_YEAR_AND_AGE_FOR_EACH_GENDER)
+            {
+                LOG_DEBUG("Parsing IndividualAttributes->MortalityDistributionMale and IndividualAttributes->MortalityDistributionFemale tags in node demographics file.\n");
+                MortalityDistributionMale   = NodeDemographicsDistribution::CreateDistribution((*demog_ptr)["IndividualAttributes"]["MortalityDistributionMale"],   "age", "year");
+                MortalityDistributionFemale = NodeDemographicsDistribution::CreateDistribution((*demog_ptr)["IndividualAttributes"]["MortalityDistributionFemale"], "age", "year");
+            }
+            else
+            {
+                release_assert(false);
+            }
+        }
 
+
+        if (SusceptibilityConfig::enable_initial_susceptibility_distribution)
         {
             LOG_DEBUG("Parsing SusceptibilityDistribution\n");
 
             if (SusceptibilityConfig::susceptibility_initialization_distribution_type == DistributionType::DISTRIBUTION_SIMPLE)
             {
-                susceptibility_dist_type = DistributionFunction::Enum(demographics["IndividualAttributes"]["SusceptibilityDistributionFlag"].AsInt());
+                susceptibility_dist_type = DistributionFunction::Enum((*demog_ptr)["IndividualAttributes"]["SusceptibilityDistributionFlag"].AsInt());
 
                 // Only allowing FIXED(0), UNIFORM(1), and BIMODAL(6)
                 if(susceptibility_dist_type == 0)
                 {
-                    susceptibility_dist1 = float(demographics["IndividualAttributes"]["SusceptibilityDistribution1"].AsDouble());
+                    susceptibility_dist1 = float((*demog_ptr)["IndividualAttributes"]["SusceptibilityDistribution1"].AsDouble());
                 }
                 else if(susceptibility_dist_type == 1)
                 {
-                    susceptibility_dist1 = float(demographics["IndividualAttributes"]["SusceptibilityDistribution1"].AsDouble());
-                    susceptibility_dist2 = float(demographics["IndividualAttributes"]["SusceptibilityDistribution2"].AsDouble());
+                    susceptibility_dist1 = float((*demog_ptr)["IndividualAttributes"]["SusceptibilityDistribution1"].AsDouble());
+                    susceptibility_dist2 = float((*demog_ptr)["IndividualAttributes"]["SusceptibilityDistribution2"].AsDouble());
                 }
                 else if(susceptibility_dist_type == 6)
                 {
-                    susceptibility_dist1 = float(demographics["IndividualAttributes"]["SusceptibilityDistribution1"].AsDouble());
-                    susceptibility_dist2 = float(demographics["IndividualAttributes"]["SusceptibilityDistribution2"].AsDouble());
+                    susceptibility_dist1 = float((*demog_ptr)["IndividualAttributes"]["SusceptibilityDistribution1"].AsDouble());
+                    susceptibility_dist2 = float((*demog_ptr)["IndividualAttributes"]["SusceptibilityDistribution2"].AsDouble());
                 }
                 else
                 {
@@ -1578,16 +1580,16 @@ namespace Kernel
         {
             LOG_DEBUG( "Parsing RiskDistribution\n" );
 
-            risk_dist_type = DistributionFunction::Enum(demographics["IndividualAttributes"]["RiskDistributionFlag"].AsInt());
-            risk_dist1     =                      float(demographics["IndividualAttributes"]["RiskDistribution1"   ].AsDouble());
-            risk_dist2     =                      float(demographics["IndividualAttributes"]["RiskDistribution2"   ].AsDouble());
+            risk_dist_type                      = DistributionFunction::Enum((*demog_ptr)["IndividualAttributes"]["RiskDistributionFlag"].AsInt());
+            risk_dist1                          = static_cast<float>((*demog_ptr)["IndividualAttributes"]["RiskDistribution1"].AsDouble());
+            risk_dist2                          = static_cast<float>((*demog_ptr)["IndividualAttributes"]["RiskDistribution2"].AsDouble());
         }
 
         if(enable_infectivity_reservoir)
         {
             LOG_DEBUG( "Parsing InfectivityReservoirSize, InfectivityReservoirStartTime, and InfectivityReservoirEndTime\n" );
 
-            infectivity_reservoir_size       = static_cast<float>(demographics["NodeAttributes"]["InfectivityReservoirSize"].AsDouble());
+            infectivity_reservoir_size       = static_cast<float>((*demog_ptr)["NodeAttributes"]["InfectivityReservoirSize"].AsDouble());
             infectivity_reservoir_start_time = 0.0f;
             infectivity_reservoir_end_time   = FLT_MAX;
 
@@ -1595,17 +1597,17 @@ namespace Kernel
             {
                 throw ConfigurationRangeException( __FILE__, __LINE__, __FUNCTION__, "InfectivityReservoirSize", infectivity_reservoir_size, 0.0f);
             }
-            if(demographics["NodeAttributes"].Contains("InfectivityReservoirStartTime"))
+            if((*demog_ptr)["NodeAttributes"].Contains("InfectivityReservoirStartTime"))
             {
-                infectivity_reservoir_start_time = static_cast<float>(demographics["NodeAttributes"]["InfectivityReservoirStartTime"].AsDouble());
+                infectivity_reservoir_start_time = static_cast<float>((*demog_ptr)["NodeAttributes"]["InfectivityReservoirStartTime"].AsDouble());
                 if(infectivity_reservoir_start_time < 0.0f)
                 {
                     throw ConfigurationRangeException( __FILE__, __LINE__, __FUNCTION__, "InfectivityReservoirStartTime", infectivity_reservoir_start_time, 0.0f);
                 }
             }
-            if(demographics["NodeAttributes"].Contains("InfectivityReservoirEndTime" ))
+            if((*demog_ptr)["NodeAttributes"].Contains("InfectivityReservoirEndTime" ))
             {
-                infectivity_reservoir_end_time = static_cast<float>(demographics["NodeAttributes"]["InfectivityReservoirEndTime"].AsDouble());
+                infectivity_reservoir_end_time = static_cast<float>((*demog_ptr)["NodeAttributes"]["InfectivityReservoirEndTime"].AsDouble());
                 if(infectivity_reservoir_end_time < infectivity_reservoir_start_time)
                 {
                     throw ConfigurationRangeException( __FILE__, __LINE__, __FUNCTION__, "InfectivityReservoirEndTime", infectivity_reservoir_end_time, infectivity_reservoir_start_time);
@@ -1976,13 +1978,13 @@ namespace Kernel
     }
 
 
-    double Node::calculateInitialAge(double age)
+    double Node::calculateInitialAge(double default_age)
     {
-        // Set age from distribution, or if no proper distribution set, make all initial individuals 20 years old (7300 days)
+        // Change initial age according to distribution, or return unmodified default age
+        double age = default_age;
 
         if(age_initialization_distribution_type == DistributionType::DISTRIBUTION_COMPLEX)
         {
-            // "AgeDistribution" is added to map in Node::SetParameters if 'enable_age_initialization_distribution' flag is set
             age = AgeDistribution->DrawFromDistribution( GetRng()->e() );
         }
         else if (age_initialization_distribution_type == DistributionType::DISTRIBUTION_SIMPLE)
@@ -2078,7 +2080,7 @@ namespace Kernel
 
         // Do emigration logic here
         // Handle departure-linked interventions for individual
-        if (params()->interventions ) // && departure_linked_dist)
+        if (params()->interventions) // && departure_linked_dist)
         {
             event_context_host->ProcessDepartingIndividual(individual);
         }
@@ -2102,7 +2104,7 @@ namespace Kernel
             movedind->SetContextTo(getContextPointer());
 
             // check for arrival-linked interventions BEFORE!!!! setting the next migration
-            if (params()->interventions )
+            if (params()->interventions)
             {
                 event_context_host->ProcessArrivingIndividual(movedind);
             }
@@ -2663,18 +2665,13 @@ namespace Kernel
             node.serializationFlags = node.serializationFlags & ~SerializationParameters::GetInstance()->GetSerializationReadMask();
         }
 
-        ar.labelElement("suid")       & node.suid;
-        ar.labelElement("externalId") & node.externalId;
-            ar.labelElement( "m_pRng" ) & node.m_pRng;
-            ar.labelElement( "m_IndividualHumanSuidGenerator" ) & node.m_IndividualHumanSuidGenerator;
-            
+        ar.labelElement( "suid" )                            & node.suid;
+        ar.labelElement( "externalId" )                      & node.externalId;
+        ar.labelElement( "m_pRng" )                          & node.m_pRng;
+        ar.labelElement( "m_IndividualHumanSuidGenerator" )  & node.m_IndividualHumanSuidGenerator;
+
         if ( node.serializationFlags.test( SerializationFlags::Population ) )
         {
-            // --------------------------------------------------------
-            // --- handling humans within the SerializedPopulation code
-            // --------------------------------------------------------
-            //ar.labelElement("individualHumans"   ) & node.individualHumans;
-
             ar.labelElement("home_individual_ids") & node.home_individual_ids;
         }
 

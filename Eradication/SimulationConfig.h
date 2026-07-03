@@ -139,10 +139,7 @@ namespace Kernel
 
         void SetFixedParameters(Configuration * inputJson);
 
-    protected:
-
     private: // for serialization to work
-
         const Configuration* m_jsonConfig;
 
         void VectorInitConfig( const Configuration* inputJson );

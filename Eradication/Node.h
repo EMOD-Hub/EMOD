@@ -205,6 +205,8 @@ namespace Kernel
         suids::suid suid;
         float birthrate;
 
+        uint32_t  initial_population;
+
         // ----------------------------------------------------------------------------------------
         // --- DMB 9-16-2014 Through comparison, it was determined that using a vector (and moving
         // --- the last human in the list to the location being removed) was faster and used less
