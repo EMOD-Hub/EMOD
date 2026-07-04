@@ -82,7 +82,7 @@ namespace Kernel
         , family_time_until_trip(0.0f)
         , family_time_at_destination(0.0f)
         , family_is_destination_new_home(false)
-        , transmissionGroups( nullptr )
+        , transmissionGroups(nullptr)
         , localWeather(nullptr)
         , migration_info(nullptr)
         , demographics()
@@ -194,7 +194,7 @@ namespace Kernel
         , family_time_until_trip(0.0f)
         , family_time_at_destination(0.0f)
         , family_is_destination_new_home(false)
-        , transmissionGroups( nullptr )
+        , transmissionGroups(nullptr)
         , localWeather(nullptr)
         , migration_info(nullptr)
         , demographics()
@@ -417,7 +417,7 @@ namespace Kernel
         event_context_host = _new_ NodeEventContextHost(this);
     }
 
-    void Node::SetupMigration( IMigrationInfoFactory * migration_factory, 
+    void Node::SetupMigration( IMigrationInfoFactory* migration_factory, 
                                const std::string& idreference,
                                MigrationStructure::Enum ms,
                                const boost::bimap<ExternalNodeId_t, suids::suid>& rNodeIdSuidMap )
@@ -461,42 +461,38 @@ namespace Kernel
     {
         // Parameters set from an input filestream
         // TODO: Jeff, this is a bit hack-y that I had to do this. is there a better way?
-        NodeDemographics* demographics_temp = demographics_factory->CreateNodeDemographics(this);
-        release_assert( demographics_temp );
-        demographics = *(demographics_temp); // use copy constructor
+        NodeDemographics* demog_ptr = demographics_factory->CreateNodeDemographics(this);
+        release_assert( demog_ptr );
+        demographics = *(demog_ptr); // use copy constructor
 
         //////////////////////////////////////////////////////////////////////////////////////
         // Hack: commenting out for pymod work. Need real solution once I understand all this.
         if( NPFactory::GetInstance() )
         {
-            node_properties = NPFactory::GetInstance()->GetInitialValues( GetRng(), demographics.GetJsonObject() );
+            node_properties = NPFactory::GetInstance()->GetInitialValues( GetRng(), (*demog_ptr).GetJsonObject() );
         }
 
         LOG_DEBUG( "Looking for Individual_Properties in demographics.json file(s)\n" );
         if( IPFactory::GetInstance() )
         {
-            IPFactory::GetInstance()->Initialize( GetExternalID(), demographics.GetJsonObject() );
+            IPFactory::GetInstance()->Initialize( GetExternalID(), (*demog_ptr).GetJsonObject() );
         }
         //////////////////////////////////////////////////////////////////////////////////////
 
-        release_assert(params());
-
-
-
         LoadOtherDiseaseSpecificDistributions();
 
-        ExtractDataFromDemographics(demographics_temp);
+        ExtractDataFromDemographics(demog_ptr);
 
 #ifndef DISABLE_CLIMATE
         if (ClimateFactory::climate_structure != ClimateStructure::CLIMATE_OFF)
         {
             LOG_DEBUG( "Parsing NodeAttributes->Altitude tag in node demographics file.\n" );
-            float altitude = float(demographics["NodeAttributes"]["Altitude"].AsDouble());
+            float altitude = float((*demog_ptr)["NodeAttributes"]["Altitude"].AsDouble());
             localWeather = climate_factory->CreateClimate( this, altitude, GetLatitudeDegrees(), GetRng() );
         }
 #endif
 
-        delete demographics_temp;
+        delete demog_ptr;
 
         SetupIntranodeTransmission();
     }
@@ -1116,7 +1112,7 @@ namespace Kernel
 
                 step_birthrate = temp_birthrate * dt * x_birth;
             }
-            else if ()
+            else if( vital_birth_dependence == VitalBirthDependence::INDIVIDUAL_PREGNANCIES )
             {
                 step_birthrate =      birthrate * dt * x_birth;
             }
@@ -1237,39 +1233,38 @@ namespace Kernel
 
     float Node::GetNonDiseaseMortalityRateByAgeAndSex( float age, Gender::Enum sex ) const
     {
-        if( enable_natural_mortality == false )
-        {
-            return 0.0f;
-        }
+        float rate = 0.0f;
 
-        float rate = 0;
-        if ( vital_death_dependence == VitalDeathDependence::NONDISEASE_MORTALITY_BY_AGE_AND_GENDER ||
-             vital_death_dependence == VitalDeathDependence::NONDISEASE_MORTALITY_BY_YEAR_AND_AGE_FOR_EACH_GENDER )
+        if(enable_natural_mortality)
         {
             // DJK TODO: Compute natural death at initiation and use timer <ERAD-1857>
             // for performance, cache and recalculate mortality rate only every month
             {
                 if( vital_death_dependence == VitalDeathDependence::NONDISEASE_MORTALITY_BY_AGE_AND_GENDER )
                 {
-                    // "MortalityDistribution" is added to map in Node::SetParameters if Death_Rate_Dependence is NONDISEASE_MORTALITY_BY_AGE_AND_GENDER
                     rate = MortalityDistribution->DrawResultValue( sex == Gender::FEMALE, age);
                 }
-                else
+                else if( vital_death_dependence == VitalDeathDependence::NONDISEASE_MORTALITY_BY_YEAR_AND_AGE_FOR_EACH_GENDER )
                 {
-                    float year = GetTime().Year(); 
-                    release_assert( MortalityDistributionMale );
+                    float year_val = GetTime().Year();
                     if( sex == Gender::MALE )
                     {
-                        rate = MortalityDistributionMale->DrawResultValue( age, year);
+                        rate = MortalityDistributionMale->DrawResultValue( age, year_val);
                     }
                     else
                     {
-                        rate = MortalityDistributionFemale->DrawResultValue( age, year);
+                        rate = MortalityDistributionFemale->DrawResultValue( age, year_val);
                     }
                 }
+                else
+                {
+                    release_assert(false);
+                }
             }
+
             rate *= x_othermortality;
         }
+
         return rate;
     }
 
@@ -1484,7 +1479,7 @@ namespace Kernel
                 LOG_DEBUG("Parsing BirthRate\n");
                 birthrate = static_cast<float>((*demog_ptr)["NodeAttributes"]["BirthRate"].AsDouble());
 
-                if( (GetNodeParams().vital_birth_dependence != VitalBirthDependence::FIXED_BIRTH_RATE) && (birthrate > BIRTHRATE_SANITY_VALUE) )
+                if( (vital_birth_dependence != VitalBirthDependence::FIXED_BIRTH_RATE) && (birthrate > BIRTHRATE_SANITY_VALUE) )
                 {
                     throw ConfigurationRangeException( __FILE__, __LINE__, __FUNCTION__, "BirthRate", birthrate, BIRTHRATE_SANITY_VALUE);
                 }
