@@ -58,6 +58,7 @@ namespace Kernel
 
         std::string ToString() const { return jsonValue.ToString(); }
         bool IsObject() const { return jsonValue.IsObject(); }
+        bool IsArray() const { return jsonValue.IsArray(); }
 
     protected:
         friend class NodeDemographicsFactory;
@@ -144,6 +145,9 @@ namespace Kernel
 
         const JsonObjectDemog& GetNodePropertiesJson() { return node_properties; }
 
+        bool     GetEnableDemographicsBuiltin()  const  { return demographics_builtin; }
+        uint32_t GetTorusSize()                  const  { return torus_size; }
+
         JsonObjectDemog GetJsonForNode( ExternalNodeId_t externalNodeId );
 
         // If the user selected to use the default demographics, this routine can be used
@@ -183,6 +187,7 @@ namespace Kernel
         std::vector<std::map<ExternalNodeId_t,JsonObjectDemog>> nodedata_maps ;
 
         // values used when generating the default geography
+        bool     demographics_builtin;
         uint32_t torus_size;
         uint32_t default_population;
 
