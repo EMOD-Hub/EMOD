@@ -1509,7 +1509,7 @@ namespace Kernel
             float age_dist1 = 0.0;
             float age_dist2 = 0.0;
 
-            // Only allowing CONSTANT, UNIFORM, GAUSSIAN, EXPONENTIAL
+            // Only allowing CONSTANT, UNIFORM, GAUSSIAN, EXPONENTIAL, WEIBULL
             if(age_dist_type == DistributionFunction::CONSTANT_DISTRIBUTION)
             {
                 age_dist1 = float((*demog_ptr)["IndividualAttributes"]["AgeDistribution1"].AsDouble());
@@ -1528,9 +1528,14 @@ namespace Kernel
             {
                 age_dist1 = float((*demog_ptr)["IndividualAttributes"]["AgeDistribution1"].AsDouble());
             }
+            else if(age_dist_type == DistributionFunction::WEIBULL_DISTRIBUTION)
+            {
+                age_dist1 = float((*demog_ptr)["IndividualAttributes"]["AgeDistribution1"].AsDouble());
+                age_dist2 = float((*demog_ptr)["IndividualAttributes"]["AgeDistribution2"].AsDouble());
+            }
             else
             {
-                throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, "AgeDistributionFlag must be set to 0, 1, 2, or 3.");
+                throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, "AgeDistributionFlag must be set to 0, 1, 2, 3, or 9.");
             }
 
             distribution_age->SetParameters( age_dist1, age_dist2, 0.0 );
