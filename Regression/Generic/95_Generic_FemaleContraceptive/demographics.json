@@ -20,7 +20,7 @@
                 "Region": 1, 
                 "Seaport": 0, 
                 "InitialPopulation": 10000, 
-                "BirthRate": 0.00548
+                "BirthRate": 3.42465753425e-4
             }, 
             "IndividualAttributes": {
                 "AgeDistributionFlag": 0, 
