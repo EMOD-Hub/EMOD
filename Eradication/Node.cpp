@@ -790,7 +790,7 @@ namespace Kernel
             updateVitalDynamics(dt);
         }
 
-        // Immunity dependendent down-sampling
+        // Immunity dependent down-sampling
         if (ind_sampling_type == IndSamplingType::ADAPTED_SAMPLING_BY_IMMUNE_STATE)
         {
             LOG_DEBUG_F( "Check whether any individuals need to be down-sampled based on immunity.\n" );
