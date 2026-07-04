@@ -10,6 +10,8 @@
 #include "EventTrigger.h"
 #include "ExternalNodeId.h"
 
+#define BIRTHRATE_SANITY_VALUE        (0.005f)
+
 namespace Kernel
 {
     struct IdmDateTime;

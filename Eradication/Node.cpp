@@ -73,7 +73,7 @@ namespace Kernel
         , age_initialization_distribution_type(DistributionType::DISTRIBUTION_OFF)
         , population_scaling(PopulationScaling::USE_INPUT_FILE)
         , suid(_suid)
-        , birthrate(DEFAULT_BIRTHRATE)
+        , birthrate(0.0f)
         , individualHumans()
         , home_individual_ids()
         , family_waiting_to_migrate(false)
@@ -185,7 +185,7 @@ namespace Kernel
         , age_initialization_distribution_type(DistributionType::DISTRIBUTION_OFF)
         , population_scaling(PopulationScaling::USE_INPUT_FILE)
         , suid(suids::nil_suid())
-        , birthrate(DEFAULT_BIRTHRATE)
+        , birthrate(0.0f)
         , individualHumans()
         , home_individual_ids()
         , family_waiting_to_migrate(false)
@@ -479,47 +479,11 @@ namespace Kernel
         }
         //////////////////////////////////////////////////////////////////////////////////////
 
-        birthrate = float(demographics["NodeAttributes"]["BirthRate"].AsDouble());
-        
         release_assert(params());
 
 
 
         LoadOtherDiseaseSpecificDistributions();
-
-        if (vital_birth_dependence != VitalBirthDependence::FIXED_BIRTH_RATE)// births per cell per day is population dependent
-        {
-            // If individual pregnancies will begin based on age-dependent fertility rates, create the relevant distribution here:
-            if (vital_birth_dependence == VitalBirthDependence::INDIVIDUAL_PREGNANCIES_BY_AGE_AND_YEAR)
-            {
-                LOG_DEBUG( "Parsing IndividualAttributes->FertilityDistribution tag in node demographics file.\n" );
-                FertilityDistribution = NodeDemographicsDistribution::CreateDistribution(demographics["IndividualAttributes"]["FertilityDistribution"], "age", "year");
-            }
-
-            if (birthrate > BIRTHRATE_SANITY_VALUE)
-            {
-                // report error message to error file and error iostream
-                // ERROR: ("Check birthrate/vital_birth_dependence mismatch in Node::SetParameters()\n");
-                //throw IncoherentConfigurationException( __FILE__, __LINE__, __FUNCTION__ );
-
-                // Error handling in execution without instant termination
-                // still allow simulation to run, but set birthrate depending on value of vital_birth_dependence
-                if (vital_birth_dependence == VitalBirthDependence::POPULATION_DEP_RATE)
-                {
-                    birthrate = float(TWO_PERCENT_PER_YEAR); // TBD: literal should be defined as float
-                }
-                else if ( vital_birth_dependence == VitalBirthDependence::DEMOGRAPHIC_DEP_RATE   ||
-                    vital_birth_dependence == VitalBirthDependence::INDIVIDUAL_PREGNANCIES ||
-                    vital_birth_dependence == VitalBirthDependence::INDIVIDUAL_PREGNANCIES_BY_AGE_AND_YEAR )
-                {
-                    birthrate = float(INDIVIDUAL_BIRTHRATE); // TBD: literal should be defined as float // DJK: why is this even needed for age-specific fertility?
-                }
-                else
-                {
-                    birthrate = float(FALLBACK_BIRTHRATE);
-                }
-            }
-        }
 
         ExtractDataFromDemographics(demographics_temp);
 
@@ -1512,6 +1476,25 @@ namespace Kernel
 
         _latitude  = static_cast<float>((*demog_ptr)["NodeAttributes"]["Latitude"].AsDouble());
         _longitude = static_cast<float>((*demog_ptr)["NodeAttributes"]["Longitude"].AsDouble());
+
+        if(vital_birth)
+        {
+            if(vital_birth_dependence != VitalBirthDependence::INDIVIDUAL_PREGNANCIES_BY_AGE_AND_YEAR)
+            {
+                LOG_DEBUG("Parsing BirthRate\n");
+                birthrate = static_cast<float>((*demog_ptr)["NodeAttributes"]["BirthRate"].AsDouble());
+
+                if( (GetNodeParams().vital_birth_dependence != VitalBirthDependence::FIXED_BIRTH_RATE) && (birthrate > BIRTHRATE_SANITY_VALUE) )
+                {
+                    throw ConfigurationRangeException( __FILE__, __LINE__, __FUNCTION__, "BirthRate", birthrate, BIRTHRATE_SANITY_VALUE);
+                }
+            }
+            else
+            {
+                LOG_DEBUG( "Parsing IndividualAttributes->FertilityDistribution tag in node demographics file.\n" );
+                FertilityDistribution = NodeDemographicsDistribution::CreateDistribution((*demog_ptr)["IndividualAttributes"]["FertilityDistribution"], "age", "year");
+            }
+        }
 
         if (enable_natural_mortality)
         {

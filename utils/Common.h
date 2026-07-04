@@ -9,10 +9,6 @@
 #define MIN_YEAR            (1900)
 #define MAX_YEAR            (2200)
 
-// Array of cumulative days for each month; assumes DAYSPERYEAR = 365
-const int cumMoDay[MONTHSPERYEAR] = { 31,  59,  90, 120, 151, 181,
-                                     212, 243, 273, 304, 334, 365};
-
 #define ARCMINUTES_PER_DEGREE   (60)
 #define KM_PER_ARCMINUTE        (1.86)
 #define EARTH_RADIUS_KM         (6371.2213)
@@ -59,7 +55,6 @@ struct NewInfectionState {
 
 #define MAX_INTERVENTION_TYPE   (20)
 
-#define DEFAULT_BIRTHRATE           (0.25f)
 #define DEFAULT_POVERTY_THRESHOLD   (0.5f)
 
 #define DEFAULT_VACCINE_COST    (10)
@@ -74,11 +69,6 @@ struct SpatialCoverageType {
 };
 
 #define WEEKS_FOR_GESTATION   (40)
-
-#define BIRTHRATE_SANITY_VALUE  (0.005) // 1 birth per person per 200 days
-#define TWO_PERCENT_PER_YEAR    (0.02 / DAYSPERYEAR)
-#define INDIVIDUAL_BIRTHRATE    (1.0 / 8 / DAYSPERYEAR) // 1 child every 8 years of fertility (about 4 total)
-#define FALLBACK_BIRTHRATE      (0.001)
 
 #define CHECK_INDEX(_i, _min, _count) assert((_i >= _min) && (_i < _count))
 
