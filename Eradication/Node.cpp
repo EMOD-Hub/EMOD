@@ -1932,8 +1932,8 @@ namespace Kernel
         IIndividualHuman* tempind = addNewIndividual(ind_MCweight, ind_init_age, temp_gender, temp_infs, temp_susceptibility, temp_risk, temp_migration);
 
         // Now if tracking individual pregnancies, need to see if this new Individual is pregnant to begin the simulation
-        if ( vital_birth_dependence == VitalBirthDependence::INDIVIDUAL_PREGNANCIES ||
-             vital_birth_dependence == VitalBirthDependence::INDIVIDUAL_PREGNANCIES_BY_AGE_AND_YEAR )
+        if ( vital_birth && (vital_birth_dependence == VitalBirthDependence::INDIVIDUAL_PREGNANCIES || 
+                             vital_birth_dependence == VitalBirthDependence::INDIVIDUAL_PREGNANCIES_BY_AGE_AND_YEAR ) )
         { 
             conditionallyInitializePregnancy(tempind);
         }
