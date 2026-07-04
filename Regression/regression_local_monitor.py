@@ -33,7 +33,6 @@ class Monitor(threading.Thread):
         self.serialization_test_type = serialization_test_type
 
     def get_input_path_from_geog( self, input_root ):
-        #actual_input_dir = "."
         actual_input_dir = None
         if "Geography" in self.config_json["parameters"]:
             if self.config_json["parameters"]["Geography"] == "LOCAL": # not used yet but forward-looking proposal for non-geography scenarios
@@ -56,7 +55,6 @@ class Monitor(threading.Thread):
         self.sim_root = self.params.local_sim_root
         self.sim_dir = os.path.join( self.sim_root, self.sim_timestamp )
         numcores = self.get_num_cores()
-        #os.chdir( self.sim_dir )    # NOT THREAD SAFE!
 
         starttime = datetime.datetime.now()
 
@@ -78,7 +76,6 @@ class Monitor(threading.Thread):
             # python-script-path is optional parameter.
             if "PSP" in self.config_json:
                 cmd.extend( [ "--python-script-path", self.config_json["PSP"] ] )
-            #print( "Calling '" + str(cmd) + "' from " + self.sim_dir + "\n" )
             print( "Running '" + str(self.config_json["parameters"]["Config_Name"]) + "' in " + self.sim_dir + "\n" )
 
             proc = subprocess.Popen( cmd, stdout=stdout, stderr=stderr, cwd=self.sim_dir )
@@ -175,7 +172,6 @@ class Monitor(threading.Thread):
             new_channels = test_channels - ref_channels
 
             if len(missing_channels) > 0:
-                #fail_validation = True
                 print("ERROR: Missing channels - " + ', '.join(missing_channels))
                 failure_txt += "Missing channels:\n" + '\n'.join(missing_channels) + "\n"
                 self.report.addFailingTest( self.scenario_path, failure_txt, os.path.join( sim_dir, ( "output/" + report_name ) ), self.scenario_type, self.serialization_test_type )
@@ -220,49 +216,49 @@ class Monitor(threading.Thread):
         return fail_validation, failure_txt
 
     def compareCsvOutputs( self, ref_path, test_path, failures ):
-        # print( "Comparing CSV files: ref = " + ref_path + ", test = " + test_path )
+
+        fail_validation = False
+        failure_txt = ""
+
         # Do Md5 comp first.
         ref_md5 = ru.md5_hash_of_file( ref_path )
         test_md5 = ru.md5_hash_of_file( test_path )
         if ref_md5 == test_md5:
-            # print( "CSV files passed MD5 comparison test." )
-            return False, ""
+            return fail_validation, failure_txt
 
-        fail_validation = False
-        err_msg = ""
-
-        # print( "CSV files failed MD5 comparison test." )
         # First (md5) test failed. Do line length, then line-by-line
-        ref_length = ru.file_len( ref_path )
-        test_length = ru.file_len( test_path )
-        if ref_length != test_length:
+        with open(ref_path, "r") as ref_file:
+            ref_lines = [val.strip() for val in ref_file.readlines()]
+
+        with open(test_path, "r") as test_file:
+            test_lines = [val.strip() for val in test_file.readlines()]
+
+        if len(ref_lines) != len(test_lines):
             fail_validation = True
-            err_msg = "Reference output {0} has {1} lines but test output {2} has {3} lines".format( ref_path, ref_length, test_path, test_length )
+            failure_txt = "Reference output {0} has {1} lines but test output {2} has {3} lines".format( ref_path, len(ref_lines), test_path, len(test_lines) )
 
-        else:
-            with open(ref_path, "r") as ref_file, open(test_path, "r") as test_file:
-                line_num = 0
-                for ref_line in ref_file:
-                    line_num = line_num + 1
-                    test_line = test_file.readline().rstrip()
-                    ref_line = ref_line.rstrip()
-                    if ref_line != test_line:
-                        ref_line_tokens = ref_line.split(',')
-                        test_line_tokens = test_line.split(',')
-                        if len(ref_line_tokens) != test_line_tokens:
-                            err_msg = "First mismatch at line {0} of {1}:\nDifferent number of columns: {2} vs {3}:\nreference line...\n{4}\nvs test line...\n{5}".format( line_num, ref_path, len(ref_line_tokens), len(test_line_tokens), ref_line, test_line )
-                            fail_validation = True
-                            break
-                        for col_idx in range( len( ref_line_tokens) ):
-                            if ref_line_tokens[col_idx] != test_line_tokens[col_idx]:
-                                break
-                        err_msg = "First mismatch at line {0} of {1} column {2}: reference line...\n{3}vs test line...\n{4}{5} vs {6}".format( line_num, ref_path, col_idx, ref_line, test_line, ref_line_tokens[col_idx], test_line_tokens[col_idx] )
-                        fail_validation = True
+            print( failure_txt )
+            return fail_validation, failure_txt
+
+        line_num = 0
+        for ref_line in ref_lines:
+            test_line = test_lines[line_num]
+            line_num = line_num + 1
+            if ref_line != test_line:
+                ref_line_tokens = ref_line.split(',')
+                test_line_tokens = test_line.split(',')
+                if len(ref_line_tokens) != len(test_line_tokens):
+                    failure_txt = "First mismatch at line {0} of {1}:\nDifferent number of columns: {2} vs {3}:\nreference line...\n{4}\nvs test line...\n{5}".format( line_num, ref_path, len(ref_line_tokens), len(test_line_tokens), ref_line, test_line )
+                    fail_validation = True
+                    break
+                for col_idx in range( len( ref_line_tokens) ):
+                    if ref_line_tokens[col_idx] != test_line_tokens[col_idx]:
                         break
+                failure_txt = "First mismatch at line {0} of {1} column {2}: reference line...\n{3}vs test line...\n{4}{5} vs {6}".format( line_num, ref_path, col_idx, ref_line, test_line, ref_line_tokens[col_idx], test_line_tokens[col_idx] )
+                fail_validation = True
+                break
 
-        print( err_msg )
-        failure_txt = err_msg
-        #self.report.addFailingTest( self.scenario_path, failure_txt, test_path, self.scenario_type )
+        print( failure_txt )
         return fail_validation, failure_txt
 
     def compareOtherOutputs( self, report_name, ref_path, test_path, failures ):
