@@ -32,6 +32,7 @@ namespace Kernel
     class  NodeEventContextHost;
     struct ISimulation;
     struct IMigrationInfoFactory;
+    struct IDistribution;
     class Node;
     struct IIndividualHuman;
 }
@@ -194,6 +195,9 @@ namespace Kernel
         float _longitude;
 
     protected:
+        // Standard distributions for SIMPLE initialization
+        IDistribution* distribution_age;
+
         // Enum type name                            Enum variable name                         Name in config.json
         IndSamplingType::Enum                        ind_sampling_type;                         // Individual_Sampling_Type
         PopulationDensityInfectivityCorrection::Enum population_density_infectivity_correction; // Population_Density_Infectivity_Correction

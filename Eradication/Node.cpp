@@ -165,6 +165,7 @@ namespace Kernel
         , m_IndividualHumanSuidGenerator(0,0)
         , symptomatic( 0.0f )
         , newly_symptomatic( 0.0f )
+        , distribution_age( nullptr )
     {
         SetContextTo(_parent_sim);  // TODO - this should be a virtual function call, but it isn't because the constructor isn't finished running yet.
     }
@@ -277,6 +278,7 @@ namespace Kernel
         , m_IndividualHumanSuidGenerator(0,0)
         , symptomatic( 0.0f )
         , newly_symptomatic( 0.0f )
+        , distribution_age( nullptr )
     {
     }
 
@@ -1312,18 +1314,6 @@ namespace Kernel
             temp_sampling_rate = base_sample_rate;
         }
 
-        // Cache pointers to the initial age distribution with the node, so it doesn't have to be created for each individual.
-        // After the demographic initialization is complete, it can be removed from the map and deleted
-        if( age_initialization_distribution_type == DistributionType::DISTRIBUTION_COMPLEX )
-        {
-            if( !demographics.Contains( "IndividualAttributes" ) || !demographics["IndividualAttributes"].Contains( "AgeDistribution" ) )
-            {
-                throw IncoherentConfigurationException( __FILE__, __LINE__, __FUNCTION__, "Age_Initialization_Distribution_Type", "DISTRIBUTION_COMPLEX", "['IndividualAttributes']['AgeDistribution']", "<not found>" );
-            }
-            LOG_DEBUG( "Parsing IndividualAttributes->AgeDistribution tag in node demographics file.\n" );
-            AgeDistribution = NodeDemographicsDistribution::CreateDistribution(demographics["IndividualAttributes"]["AgeDistribution"]);
-        }
-
         //set initial prevalence
         if (enable_initial_prevalence)
         {
@@ -1510,6 +1500,50 @@ namespace Kernel
             }
         }
 
+        if (age_initialization_distribution_type == DistributionType::DISTRIBUTION_SIMPLE)
+        {
+            LOG_DEBUG( "Parsing IndividualAttributes->AgeDistributionFlag tag in node demographics file.\n" );
+            DistributionFunction::Enum age_dist_type = DistributionFunction::Enum((*demog_ptr)["IndividualAttributes"]["AgeDistributionFlag"].AsInt());
+            distribution_age = DistributionFactory::CreateDistribution( age_dist_type );
+
+            float age_dist1 = 0.0;
+            float age_dist2 = 0.0;
+
+            // Only allowing CONSTANT, UNIFORM, GAUSSIAN, EXPONENTIAL
+            if(age_dist_type == DistributionFunction::CONSTANT_DISTRIBUTION)
+            {
+                age_dist1 = float((*demog_ptr)["IndividualAttributes"]["AgeDistribution1"].AsDouble());
+            }
+            else if(age_dist_type == DistributionFunction::UNIFORM_DISTRIBUTION)
+            {
+                age_dist1 = float((*demog_ptr)["IndividualAttributes"]["AgeDistribution1"].AsDouble());
+                age_dist2 = float((*demog_ptr)["IndividualAttributes"]["AgeDistribution2"].AsDouble());
+            }
+            else if(age_dist_type == DistributionFunction::GAUSSIAN_DISTRIBUTION)
+            {
+                age_dist1 = float((*demog_ptr)["IndividualAttributes"]["AgeDistribution1"].AsDouble());
+                age_dist2 = float((*demog_ptr)["IndividualAttributes"]["AgeDistribution2"].AsDouble());
+            }
+            else if(age_dist_type == DistributionFunction::EXPONENTIAL_DISTRIBUTION)
+            {
+                age_dist1 = float((*demog_ptr)["IndividualAttributes"]["AgeDistribution1"].AsDouble());
+            }
+            else
+            {
+                throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, "AgeDistributionFlag must be set to 0, 1, 2, or 3.");
+            }
+
+            distribution_age->SetParameters( age_dist1, age_dist2, 0.0 );
+        }
+        else if(age_initialization_distribution_type == DistributionType::DISTRIBUTION_COMPLEX)
+        {
+            if( !(*demog_ptr).Contains( "IndividualAttributes" ) || !(*demog_ptr)["IndividualAttributes"].Contains( "AgeDistribution" ) )
+            {
+                throw IncoherentConfigurationException( __FILE__, __LINE__, __FUNCTION__, "Age_Initialization_Distribution_Type", "DISTRIBUTION_COMPLEX", "['IndividualAttributes']['AgeDistribution']", "<not found>" );
+            }
+            LOG_DEBUG( "Parsing IndividualAttributes->AgeDistribution tag in node demographics file.\n" );
+            AgeDistribution = NodeDemographicsDistribution::CreateDistribution((*demog_ptr)["IndividualAttributes"]["AgeDistribution"]);
+        }
 
         if (SusceptibilityConfig::enable_initial_susceptibility_distribution)
         {
@@ -1946,7 +1980,6 @@ namespace Kernel
         return new_individual;
     }
 
-
     double Node::calculateInitialAge(double default_age)
     {
         // Change initial age according to distribution, or return unmodified default age
@@ -1958,23 +1991,8 @@ namespace Kernel
         }
         else if (age_initialization_distribution_type == DistributionType::DISTRIBUTION_SIMPLE)
         {
-            if( !demographics.Contains( "IndividualAttributes" ) ||
-                !demographics["IndividualAttributes"].Contains( "AgeDistributionFlag" ) ||
-                !demographics["IndividualAttributes"].Contains( "AgeDistribution1" ) ||
-                !demographics["IndividualAttributes"].Contains( "AgeDistribution2" ) )
-            {
-                throw IncoherentConfigurationException( __FILE__, __LINE__, __FUNCTION__, "Age_Initialization_Distribution_Type", "DISTRIBUTION_SIMPLE", "['IndividualAttributes']['AgeDistributionFlag' or 'AgeDistribution1' or 'AgeDistribution2']", "<not found>" );
-            }
-            LOG_DEBUG( "Parsing IndividualAttributes->AgeDistributionFlag tag in node demographics file.\n" );
-            auto age_distribution_type = DistributionFunction::Enum(demographics["IndividualAttributes"]["AgeDistributionFlag"].AsInt());
-            LOG_DEBUG( "Parsing IndividualAttributes->AgeDistribution1 tag in node demographics file.\n" );
-            float agedist1 = float(demographics["IndividualAttributes"]["AgeDistribution1"].AsDouble()); 
-            LOG_DEBUG( "Parsing IndividualAttributes->AgeDistribution2 tag in node demographics file.\n" );
-            float agedist2 = float(demographics["IndividualAttributes"]["AgeDistribution2"].AsDouble());
-
-            std::unique_ptr<IDistribution> distribution( DistributionFactory::CreateDistribution( age_distribution_type ) );
-            distribution->SetParameters( agedist1, agedist2, 0.0 );
-            age = distribution->Calculate( GetRng() );
+            release_assert(distribution_age);
+            age = distribution_age->Calculate( GetRng() );
         }
 
         return age;
