@@ -1304,8 +1304,6 @@ namespace Kernel
     {
         int count_new_individuals = initial_population;
 
-        const NodeParams np = GetNodeParams();
-
         // correct initial population if necessary (historical simulation for instance
         if ( population_scaling )
         {
