@@ -285,6 +285,28 @@ namespace Kernel
     Node::~Node()
     {
         if (suid.data % 10 == 0) LOG_INFO_F("Freeing Node %d \n", suid.data);
+
+        /* Let all of this dangle, we're about to exit the process...
+        for (auto individual : individualHumans)
+        {
+            delete individual;
+        }
+
+        individualHumans.clear();
+        home_individual_ids.clear();
+
+        if (transmissionGroups) delete transmissionGroups;
+        if (migration_info)     delete migration_info;
+
+        delete event_context_host;
+
+        delete SusceptibilityDistribution;
+        delete FertilityDistribution;
+        delete MortalityDistribution;
+        delete MortalityDistributionMale;
+        delete MortalityDistributionFemale;
+        delete AgeDistribution;
+        */
     }
 
     float Node::GetLatitudeDegrees()
@@ -1089,7 +1111,7 @@ namespace Kernel
         }
         else if( bPossibleMother )
         {
-            float step_birthrate;
+            float step_birthrate = 0.0f;
 
             // If we are using an age-dependent fertility rate, then this needs to be accessed/interpolated based on the current possible-mother's age.
             if( vital_birth_dependence == VitalBirthDependence::INDIVIDUAL_PREGNANCIES_BY_AGE_AND_YEAR )
@@ -1809,7 +1831,7 @@ namespace Kernel
 
         if (individual->IsPossibleMother()) // woman of child-bearing age?
         {
-            float temp_birthrate;
+            float temp_birthrate = 0.0f;
 
             if(vital_birth_dependence == VitalBirthDependence::INDIVIDUAL_PREGNANCIES_BY_AGE_AND_YEAR) 
             { 
