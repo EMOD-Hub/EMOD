@@ -1848,7 +1848,7 @@ namespace Kernel
             float prob = x_birth * temp_birthrate * (DAYSPERWEEK * WEEKS_FOR_GESTATION);
             if( GetRng()->SmartDraw( prob ) ) // is the woman within any of the 40 weeks of pregnancy?
             {
-                float duration = static_cast<float>( GetRng()->e() ) * (DAYSPERWEEK * WEEKS_FOR_GESTATION); // uniform distribution over 40 weeks
+                float duration = ( GetRng()->e() ) * (DAYSPERWEEK * WEEKS_FOR_GESTATION); // uniform distribution over 40 weeks
                 LOG_DEBUG_F("Initial pregnancy of %f remaining days for %d-year-old\n", duration, (int)(individual->GetAge()/DAYSPERYEAR));
                 individual->InitiatePregnancy(duration);// initialize the pregnancy
             }
