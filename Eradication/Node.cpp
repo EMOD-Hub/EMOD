@@ -1302,7 +1302,7 @@ namespace Kernel
     // (4) vital_birth_dependence: INDIVIDUAL_PREGNANCIES must have initial pregnancies initialized
     void Node::PopulateFromDemographics()
     {
-        int count_new_individuals = static_cast<int>(initial_population);
+        int count_new_individuals = initial_population;
 
         const NodeParams np = GetNodeParams();
 
@@ -1479,7 +1479,7 @@ namespace Kernel
         uint32_t temp_externalId = (*demog_ptr)["NodeID"].AsUint();
         release_assert( this->externalId == temp_externalId );
 
-        initial_population   = static_cast<uint32_t>((*demog_ptr)["NodeAttributes"]["InitialPopulation"].AsUint64());
+        initial_population = static_cast<int>((*demog_ptr)["NodeAttributes"]["InitialPopulation"].AsUint64());
 
         _latitude  = static_cast<float>((*demog_ptr)["NodeAttributes"]["Latitude"].AsDouble());
         _longitude = static_cast<float>((*demog_ptr)["NodeAttributes"]["Longitude"].AsDouble());

@@ -208,7 +208,7 @@ namespace Kernel
         suids::suid suid;
         float birthrate;
 
-        uint32_t  initial_population;
+        int initial_population;
 
         // ----------------------------------------------------------------------------------------
         // --- DMB 9-16-2014 Through comparison, it was determined that using a vector (and moving
