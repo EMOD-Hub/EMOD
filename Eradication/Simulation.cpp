@@ -1335,13 +1335,39 @@ namespace Kernel
             ar.labelElement( "enable_node_event_report" ) & sim.enable_event_report;
             ar.labelElement( "enable_coordinator_event_report" ) & sim.enable_coordinator_event_report;
             ar.labelElement( "enable_surveillance_event_report" ) & sim.enable_surveillance_event_report;
+
             ar.labelElement("loadbalance_filename") & sim.loadbalance_filename;
         }
 
         if (sim.serializationFlags.test(SerializationFlags::Properties))
         {
+            //ar.labelElement("nodeRankMap") & sim.nodeRankMap;
+            //ar.labelElement("node_event_context_list") & sim.node_event_context_list;
+            //ar.labelElement("nodeid_suid_map") & sim.nodeid_suid_map;
+            //ar.labelElement("migratingIndividualQueues") & sim.migratingIndividualQueues;
+            //ar.labelElement("m_simConfigObj") & sim.m_simConfigObj;
+            //ar.labelElement("m_interventionFactoryObj") & sim.m_interventionFactoryObj;
+            //ar.labelElement("demographicsContext") & sim.demographicsContext;
+            //ar.labelElement("nodeSuidGenerator") & sim.nodeSuidGenerator;
             ar.labelElement("loadBalanceFilename") & sim.loadBalanceFilename;
+            //ar.labelElement("rng") & sim.rng;
+            //ar.labelElement("reports") & sim.reports;
+            //ar.labelElement("individual_data_reports") & sim.individual_data_reports;
+            //ar.labelElement("reportClassCreator") & sim.reportClassCreator;
+            //ar.labelElement("binnedReportClassCreator") & sim.binnedReportClassCreator;
+            //ar.labelElement("spatialReportClassCreator") & sim.spatialReportClassCreator;
+            //ar.labelElement("propertiesReportClassCreator") & sim.propertiesReportClassCreator;
+            //ar.labelElement("demographicsReportClassCreator") & sim.demographicsReportClassCreator;
+            //ar.labelElement("eventReportClassCreator") & sim.eventReportClassCreator;
+            //ar.labelElement("nodeEventReportClassCreator") & sim.nodeEventReportClassCreator;
+            //ar.labelElement("coordinatorEventReportClassCreator") & sim.coordinatorEventReportClassCreator;
+            //ar.labelElement("event_coordinators") & sim.event_coordinators;
+            //ar.labelElement("campaign_events") & sim.campaign_events;
+            //ar.labelElement("event_context_host") & sim.event_context_host;
+            //ar.labelElement("currentTime") & sim.currentTime;
             ar.labelElement("campaign_filename") & sim.campaign_filename;
+            //ar.labelElement("demographics_factory") & sim.demographics_factory;
+            //ar.labelElement("new_node_observers") & sim.new_node_observers;
         }
     }
 
