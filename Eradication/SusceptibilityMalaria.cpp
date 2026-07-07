@@ -88,10 +88,7 @@ namespace Kernel
     BEGIN_QUERY_INTERFACE_BODY(SusceptibilityMalariaConfig)
     END_QUERY_INTERFACE_BODY(SusceptibilityMalariaConfig)
 
-    bool
-    SusceptibilityMalariaConfig::Configure(
-        const Configuration* config
-    )
+    bool SusceptibilityMalariaConfig::Configure( const Configuration* config )
     {
         SusceptibilityConfig::enable_initial_susceptibility_distribution = false;
         SusceptibilityConfig::enable_immune_decay = false;
@@ -253,37 +250,43 @@ namespace Kernel
         m_RBC  = m_RBCcapacity;
         m_variation_modifier = 1.0f; // default to no variation, and then apply variation below if configured
 
-        if(SusceptibilityMalariaConfig::innate_immune_variation_type ==
-            InnateImmuneVariationType::PYROGENIC_THRESHOLD_VS_AGE_INCREASING_AND_CYTOKINE_KILLING_INVERSE)
+        switch(SusceptibilityMalariaConfig::innate_immune_variation_type)
         {
-            // for this variation type, we restrict m_variation_modifier to being uniformly distributed between 0 and 1
-            std::unique_ptr<IDistribution> distribution( DistributionFactory::CreateDistribution( DistributionFunction::UNIFORM_DISTRIBUTION ));
-            distribution->SetParameters( 0.0, 1.0, 0.0 );
+            case InnateImmuneVariationType::NONE:
+                // no additional variation
+                break;
 
-            m_variation_modifier = distribution->Calculate( parent->GetRng() );
-        }
-        else if(SusceptibilityMalariaConfig::innate_immune_variation_type != InnateImmuneVariationType::NONE)
-        {
-            const NodeDemographics& r_demographics = parent->GetEventContext()->GetNodeEventContext()->GetDemographics();
-            if(!r_demographics["IndividualAttributes"].Contains( "InnateImmuneDistributionFlag" ) ||
-               !r_demographics["IndividualAttributes"].Contains( "InnateImmuneDistribution1" ) ||
-               !r_demographics["IndividualAttributes"].Contains( "InnateImmuneDistribution2" ))
+            case InnateImmuneVariationType::PYROGENIC_THRESHOLD_VS_AGE_INCREASING_AND_CYTOKINE_KILLING_INVERSE:
             {
-                std::string msg = "InnateImmuneDistributionFlag, InnateImmuneDistribution1, or InnateImmuneDistribution2 ";
-                msg += "were not found in demographics in IndividualAttributes section.\n";
-                msg += "This is required when Innate_Immune_Variation_Type is set to anything but NONE.\n";
-                msg += "Hint: If you want to use this Innate_Immune_Variation_Type but without variation, set InnateImmuneDistributionFlag to 0 and InnateImmuneDistribution1 to 1.\n";
-                throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, msg.c_str() );
+                // for this variation type, we restrict m_variation_modifier to being uniformly distributed between 0 and 1
+                std::unique_ptr<IDistribution> distribution01( DistributionFactory::CreateDistribution( DistributionFunction::UNIFORM_DISTRIBUTION ));
+                distribution01->SetParameters( 0.0, 1.0, 0.0 );
+                m_variation_modifier = distribution01->Calculate( parent->GetRng() );
+                break;
             }
 
-            DistributionFunction::Enum innate_immune_dist_type = DistributionFunction::Enum( r_demographics[ "IndividualAttributes" ][ "InnateImmuneDistributionFlag" ].AsInt() );
-            float innate_immune_dist1 = float( r_demographics[ "IndividualAttributes" ][ "InnateImmuneDistribution1" ].AsDouble() );
-            float innate_immune_dist2 = float( r_demographics[ "IndividualAttributes" ][ "InnateImmuneDistribution2" ].AsDouble() );
+            default:
+            {
+                const NodeDemographics& r_demographics = parent->GetEventContext()->GetNodeEventContext()->GetDemographics();
+                if(!r_demographics["IndividualAttributes"].Contains( "InnateImmuneDistributionFlag" ) ||
+                   !r_demographics["IndividualAttributes"].Contains( "InnateImmuneDistribution1" ) ||
+                   !r_demographics["IndividualAttributes"].Contains( "InnateImmuneDistribution2" ))
+                {
+                    std::string msg = "InnateImmuneDistributionFlag, InnateImmuneDistribution1, or InnateImmuneDistribution2 ";
+                    msg += "were not found in demographics in IndividualAttributes section.\n";
+                    msg += "This is required when Innate_Immune_Variation_Type is set to anything but NONE.\n";
+                    msg += "Hint: If you want to use this Innate_Immune_Variation_Type but without variation, set InnateImmuneDistributionFlag to 0 and InnateImmuneDistribution1 to 1.\n";
+                    throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, msg.c_str() );
+                }
 
-            std::unique_ptr<IDistribution> distribution( DistributionFactory::CreateDistribution( innate_immune_dist_type ) );
-            distribution->SetParameters( innate_immune_dist1, innate_immune_dist2, 0.0 );
+                DistributionFunction::Enum innate_immune_dist_type = DistributionFunction::Enum( r_demographics[ "IndividualAttributes" ][ "InnateImmuneDistributionFlag" ].AsInt() );
+                float innate_immune_dist1 = float( r_demographics[ "IndividualAttributes" ][ "InnateImmuneDistribution1" ].AsDouble() );
+                float innate_immune_dist2 = float( r_demographics[ "IndividualAttributes" ][ "InnateImmuneDistribution2" ].AsDouble() );
 
-            m_variation_modifier = distribution->Calculate( parent->GetRng() );
+                std::unique_ptr<IDistribution> distribution02( DistributionFactory::CreateDistribution( innate_immune_dist_type ) );
+                distribution02->SetParameters( innate_immune_dist1, innate_immune_dist2, 0.0 );
+                m_variation_modifier = distribution02->Calculate( parent->GetRng() );
+            }
         }
 
         m_ind_pyrogenic_threshold = SusceptibilityMalariaConfig::pyrogenic_threshold; // set base values
@@ -1009,7 +1012,6 @@ namespace Kernel
 
     float SusceptibilityMalaria::get_maternal_antibodies()     const
     {
-        //if (m_maternal_antibody_strength > 0 ) LOG_DEBUG_F("Individual with age = %f days has m_maternal_antibody_strength = %f\n", age, m_maternal_antibody_strength);
         return m_maternal_antibody_strength;
     }
 
