@@ -10,6 +10,8 @@
 #include "EventTrigger.h"
 #include "ExternalNodeId.h"
 
+#define BIRTHRATE_SANITY_VALUE        (0.005f)
+
 namespace Kernel
 {
     struct IdmDateTime;
@@ -20,6 +22,7 @@ namespace Kernel
     struct NodeDemographics;
     class NodeDemographicsFactory;
     struct NodeDemographicsDistribution;
+    struct NodeParams;
     class  Climate;
     class  ClimateFactory;
     struct INodeEventContext;
@@ -48,6 +51,8 @@ namespace Kernel
 
         virtual ISimulationContext* GetParent() = 0;
 
+        virtual const NodeParams& GetNodeParams() const = 0;
+
         //individual can get an id of their parent to compare against, for instance, their home node id
         virtual suids::suid GetSuid() const = 0;
 
@@ -59,8 +64,9 @@ namespace Kernel
         virtual void SetupEventContextHost() = 0;
         virtual void SetContextTo( ISimulationContext* ) = 0;
         virtual void SetParameters( NodeDemographicsFactory *demographics_factory, ClimateFactory *climate_factory ) = 0;
-        virtual void PopulateFromDemographics (NodeDemographicsFactory *demographics_factory ) = 0;
+        virtual void PopulateFromDemographics() = 0;
         virtual void InitializeTransmissionGroupPopulations() = 0;
+        virtual void InitSuidGenerator(int, int) = 0;
 
         virtual suids::suid GetNextInfectionSuid() = 0;
         virtual RANDOMBASE* GetRng() = 0; 
@@ -77,7 +83,7 @@ namespace Kernel
         virtual void UpdateTransmissionGroupPopulation(const IPKeyValueContainer& properties, float size_changes,float mc_weight) = 0;
         virtual std::map< std::string, float > GetContagionByRoute() const = 0; // developed for Typhoid/Environmental
         virtual float GetTotalContagion( void ) = 0;
-        virtual const RouteList_t& GetTransmissionRoutes( ) const = 0;
+        virtual const RouteList_t& GetTransmissionRoutes() const = 0;
         virtual float GetContagionByRouteAndProperty( const std::string& route, const IPKeyValue& property_value ) = 0;
 
         virtual float getSinusoidalCorrection(float sinusoidal_amplitude, float sinusoidal_phase) const = 0;
@@ -89,23 +95,22 @@ namespace Kernel
         virtual NPKeyValueContainer& GetNodeProperties() = 0;
 
         // reporting interfaces
-        virtual const IdmDateTime& GetTime()   const = 0;
-        virtual float       GetInfected()      const = 0;
-        virtual float       GetSymptomatic()   const = 0;
-        virtual float       GetNewlySymptomatic()     const = 0;
-        virtual float       GetStatPop()       const = 0;
-        virtual float       GetBirths()        const = 0;
-        virtual float       GetCampaignCost()  const = 0;
-        virtual float       GetInfectivity()   const = 0;
+        virtual const IdmDateTime& GetTime()     const = 0;
         virtual const Climate* GetLocalWeather() const = 0;
-        virtual long int GetPossibleMothers()  const = 0;
-        virtual float GetMeanAgeInfection()    const = 0;
-        virtual float GetNonDiseaseMortalityRateByAgeAndSex( float age, Gender::Enum sex ) const = 0;
 
-        // These methods are not const because they will extract the value from the demographics
-        // if it has not been done yet.
-        virtual float GetLatitudeDegrees() = 0;
-        virtual float GetLongitudeDegrees() = 0;
+        virtual float GetInfected()              const = 0;
+        virtual float GetSymptomatic()           const = 0;
+        virtual float GetNewlySymptomatic()      const = 0;
+        virtual float GetStatPop()               const = 0;
+        virtual float GetBirths()                const = 0;
+        virtual float GetCampaignCost()          const = 0;
+        virtual float GetInfectivity()           const = 0;
+        virtual float GetLatitudeDegrees()             = 0;
+        virtual float GetLongitudeDegrees()            = 0;
+
+        virtual long int GetPossibleMothers()    const = 0;
+
+        virtual float GetNonDiseaseMortalityRateByAgeAndSex( float age, Gender::Enum sex ) const = 0;
 
         // This method will ONLY be used for reporting by input node ID, don't use it elsewhere!
         virtual ExternalNodeId_t GetExternalID() const = 0;

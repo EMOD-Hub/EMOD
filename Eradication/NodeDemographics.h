@@ -58,6 +58,7 @@ namespace Kernel
 
         std::string ToString() const { return jsonValue.ToString(); }
         bool IsObject() const { return jsonValue.IsObject(); }
+        bool IsArray() const { return jsonValue.IsArray(); }
 
     protected:
         friend class NodeDemographicsFactory;
@@ -144,6 +145,9 @@ namespace Kernel
 
         const JsonObjectDemog& GetNodePropertiesJson() { return node_properties; }
 
+        bool     GetEnableDemographicsBuiltin()  const  { return demographics_builtin; }
+        uint32_t GetTorusSize()                  const  { return torus_size; }
+
         JsonObjectDemog GetJsonForNode( ExternalNodeId_t externalNodeId );
 
         // If the user selected to use the default demographics, this routine can be used
@@ -183,6 +187,7 @@ namespace Kernel
         std::vector<std::map<ExternalNodeId_t,JsonObjectDemog>> nodedata_maps ;
 
         // values used when generating the default geography
+        bool     demographics_builtin;
         uint32_t torus_size;
         uint32_t default_population;
 
@@ -192,7 +197,22 @@ namespace Kernel
 
         static std::vector<std::string> demographics_filenames_list;
 
-        NodeDemographicsFactory() : nodeid_suid_map(), nodeIDs(), idreference(), full_string_table( nullptr ), demographics_filenames(), layer_defaults(), layer_string_sub_tables(), layer_string_value2key_tables(), nodedata_maps() { };
+        NodeDemographicsFactory()
+            : nodeid_suid_map()
+            , nodeIDs()
+            , idreference()
+            , full_string_table( nullptr )
+            , demographics_filenames()
+            , layer_defaults()
+            , layer_string_sub_tables()
+            , layer_string_value2key_tables()
+            , nodedata_maps()
+            , demographics_builtin(true)
+            , torus_size(10)
+            , default_population(1000)
+            , allow_nodeid_zero(false)
+            { };
+
         NodeDemographicsFactory(boost::bimap<ExternalNodeId_t, suids::suid> * nodeid_suid_map)
             : nodeid_suid_map( nodeid_suid_map )
             , nodeIDs()
@@ -204,11 +224,12 @@ namespace Kernel
             , layer_string_sub_tables()
             , layer_string_value2key_tables()
             , nodedata_maps()
+            , demographics_builtin(true)
             , torus_size(10)
             , default_population(1000)
             , allow_nodeid_zero(false)
-        { 
-        };
+        { };
+
         void Initialize( const ::Configuration *config, bool isDataInFiles, uint32_t torusSize, uint32_t defaultPopulation );
 
         virtual bool Configure( const Configuration* config ) override;

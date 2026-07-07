@@ -99,7 +99,6 @@ namespace Kernel
         // Reporting
         virtual std::vector<IReport*>& GetReports() override;
         virtual std::vector<IReport*>& GetReportsNeedingIndividualData() override;
-        virtual uint32_t GetNumNodesInSim() const override;
 
         // INodeInfoFactory
         virtual INodeInfo* CreateNodeInfo() override;
@@ -109,8 +108,8 @@ namespace Kernel
         typedef NodeMap_t::value_type NodeMapEntry_t;
 
     protected:
-
         Simulation();
+
         virtual void Initialize();  // for serialization
 
         static bool ValidateConfiguration(const ::Configuration *config);

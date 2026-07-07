@@ -67,8 +67,7 @@ namespace Kernel
         return newsimulation;
     }
 
-    void
-    SimulationHIV::Initialize()
+    void SimulationHIV::Initialize()
     {
         return SimulationSTI::Initialize();
     }
@@ -79,12 +78,10 @@ namespace Kernel
         IndividualHumanHIV::InitializeStaticsHIV(config);
     }
 
-    bool
-    SimulationHIV::Configure(
-        const Configuration * inputJson
-    )
+    bool SimulationHIV::Configure(const Configuration* inputJson)
     {
         bool ret = SimulationSTI::Configure( inputJson );
+
         return ret;
     }
 

@@ -20,14 +20,6 @@ namespace Kernel
     struct ProcessMemoryInfo;
     struct SystemMemoryInfo;
 
-    ////////////////////////////////////////////////////////////////////////
-    /* Design pattern for allowing access of child objects to methods of Simulation
-    ISimulationContext:
-    interface to common simulation-context services
-    provides ability for child objects to access common resources
-    such as distributed uuids and shared class configurations (flags)
-    */
-
     struct IDMAPI ISimulationContext : public ISupports
     {
         // demographics
@@ -59,7 +51,5 @@ namespace Kernel
         // reporting
         virtual std::vector<IReport*>& GetReports() = 0;
         virtual std::vector<IReport*>& GetReportsNeedingIndividualData() = 0;
-
-        virtual uint32_t GetNumNodesInSim() const = 0;
     };
 }

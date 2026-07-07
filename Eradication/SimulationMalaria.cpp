@@ -283,6 +283,7 @@ namespace Kernel
         {
             node = NodeMalaria::CreateNode( GetContextPointer(), externalNodeId, node_suid );
         }
+        node->InitSuidGenerator(node_suid.data, nodedemographics_factory->GetNodeIDs().size());
         addNode_internal( node, nodedemographics_factory, climate_factory );
     }
 

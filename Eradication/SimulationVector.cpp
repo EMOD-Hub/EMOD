@@ -126,7 +126,6 @@ namespace Kernel
             if(!ValidateConfiguration(config))
             {
                 delete newsimulation;
-                /* newsimulation = nullptr; */
                 throw GeneralConfigurationException( __FILE__, __LINE__, __FUNCTION__, "VECTOR_SIM requested with invalid configuration." );
             }
         }
@@ -185,7 +184,7 @@ namespace Kernel
                                                        NodeDemographicsFactory *nodedemographics_factory,
                                                        ClimateFactory *climate_factory )
     {
-        NodeVector *node = NodeVector::CreateNode(this, externalNodeId, node_suid);
+        NodeVector* node = NodeVector::CreateNode(this, externalNodeId, node_suid);
         addNode_internal( node, nodedemographics_factory, climate_factory );
         node_populations_map.insert( std::make_pair( node_suid, node->GetStatPop() ) );
     }
@@ -199,18 +198,18 @@ namespace Kernel
 #ifdef _DEBUG
             // Test serialization even on single core.
             auto writer = new BinaryArchiveWriter();
-            (*static_cast<IArchive*>(writer)) & migratingVectorQueues[ myRank ];
-            for( auto& individual : migratingVectorQueues[ myRank ] )
+            (*static_cast<IArchive*>(writer)) & migratingVectorQueues[myRank];
+            for(auto& individual : migratingVectorQueues[myRank])
                 individual->Recycle();
-            migratingVectorQueues[ myRank ].clear();
+            migratingVectorQueues[myRank].clear();
 
             //if ( EnvPtr->Log->CheckLogLevel(Logger::VALIDATION, _module) ) {
             //    _write_json( int(currentTime.time), EnvPtr->MPI.Rank, myRank, "vect", static_cast<IArchive*>(writer)->GetBuffer(), static_cast<IArchive*>(writer)->GetBufferSize() );
             //}
 
             const char* buffer = static_cast<IArchive*>(writer)->GetBuffer();
-            auto reader = new BinaryArchiveReader( buffer, static_cast<IArchive*>(writer)->GetBufferSize() );
-            (*static_cast<IArchive*>(reader)) & migratingVectorQueues[ myRank ];
+            auto reader = new BinaryArchiveReader(buffer, static_cast<IArchive*>(writer)->GetBufferSize());
+            (*static_cast<IArchive*>(reader)) & migratingVectorQueues[myRank];
             delete reader;
             delete writer;
 #endif
@@ -340,9 +339,5 @@ namespace Kernel
     {
         Simulation::serialize( ar, obj );
         SimulationVector& sim = *obj;
-
-//        ar.labelElement("migratingVectorQueues") & sim.migratingVectorQueues;         // no reason to keep track of migrating vectors "in-flight" :)
-//        ar.labelElement("vector_migration_reports") & sim.vector_migration_reports;
-//        ar.labelElement("node_populations_map") & sim.node_populations_map;           // should be reconstituted in populateFromDemographics()
     }
 }

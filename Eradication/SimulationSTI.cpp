@@ -80,25 +80,18 @@ namespace Kernel
         return newsimulation;
     }
 
-    void
-    SimulationSTI::Initialize()
+    void SimulationSTI::Initialize()
     {
         Simulation::Initialize();
     }
 
-    void
-    SimulationSTI::Initialize(
-        const ::Configuration *config
-    )
+    void SimulationSTI::Initialize( const ::Configuration *config )
     {
         Simulation::Initialize(config);
         IndividualHumanSTI::InitializeStaticsSTI( config );
     }
 
-    bool
-    SimulationSTI::Configure(
-        const Configuration * inputJson
-    )
+    bool SimulationSTI::Configure(const Configuration* inputJson)
     {
         initConfigTypeMap( "Base_Year",  &base_year, Base_Year_DESC_TEXT, MIN_YEAR, MAX_YEAR, DEFAULT_BASE_YEAR );
 

@@ -30,12 +30,14 @@ namespace Kernel
     public:
         static NodeVector *CreateNode(ISimulationContext *context, ExternalNodeId_t externalNodeId, suids::suid suid);
         virtual ~NodeVector();
+
         virtual bool Configure( const Configuration* config ) override;
+        virtual void InitSuidGenerator(int, int) override;
 
         virtual IIndividualHuman* processImmigratingIndividual(IIndividualHuman*) override;
         virtual IIndividualHuman* addNewIndividual(float = 1.0f, float = 0.0f, int = 0, int = 0, float = 1.0f, float = 1.0f, float = 1.0f) override;
 
-        virtual void PopulateFromDemographics( NodeDemographicsFactory *demographics_factory ) override;
+        virtual void PopulateFromDemographics() override;
         virtual void SetupIntranodeTransmission() override;
         virtual void BuildTransmissionRoutes( float ) override;
         virtual void SetParameters( NodeDemographicsFactory *demographics_factory, ClimateFactory *climate_factory ) override;
