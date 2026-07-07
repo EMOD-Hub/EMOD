@@ -66,7 +66,7 @@ void SimpleLogger::AddModuleName( std::string module_name )
 
 void SimpleLogger::Init()
 {
-    const Kernel::LoggingParams lp = Kernel::LoggingConfig::GetLoggingParams();
+    const Kernel::LoggingParams& lp = Kernel::LoggingConfig::GetLoggingParams();
 
     _rank                    = EnvPtr->MPI.Rank;
     _throttle                = lp.enable_log_throttling;
