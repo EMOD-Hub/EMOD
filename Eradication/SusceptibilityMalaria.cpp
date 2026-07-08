@@ -1,5 +1,6 @@
 
 #include "stdafx.h"
+#include "ConfigParams.h"
 
 #include "SusceptibilityMalaria.h"
 #include "Exceptions.h"
@@ -13,6 +14,7 @@
 #include "NodeDemographics.h"
 #include "MalariaContexts.h"
 #include "NodeEventContext.h"
+#include "SimulationConfig.h"
 #include "Infection.h" // for InfectionConfig::vital_disease_mortality 
 #include "RANDOM.h"
 #include "INodeContext.h"
@@ -242,11 +244,11 @@ namespace Kernel
         m_PfEMP1_major_antibodies.reserve( SusceptibilityMalariaConfig::falciparumPfEMP1Vars );
     }
 
-    void SusceptibilityMalaria::Initialize(float _age, float immmod, float riskmod)
+    void SusceptibilityMalaria::Initialize(float immmod, float riskmod)
     {
-        SusceptibilityVector::Initialize(_age, immmod, riskmod);
+        SusceptibilityVector::Initialize(immmod, riskmod);
 
-        recalculateBloodCapacity( _age );
+        recalculateBloodCapacity();
         m_RBC  = m_RBCcapacity;
         m_variation_modifier = 1.0f; // default to no variation, and then apply variation below if configured
 
@@ -292,16 +294,16 @@ namespace Kernel
         m_ind_pyrogenic_threshold = SusceptibilityMalariaConfig::pyrogenic_threshold; // set base values
         m_ind_fever_kill_rate = SusceptibilityMalariaConfig::fever_IRBC_killrate;     // set base values
 
-        SetPyrogenicThresholdAndFeverKillRate( _age );
+        SetPyrogenicThresholdAndFeverKillRate();
 
         m_CSP_antibody = MalariaAntibody::CreateAntibody( MalariaAntibodyType::CSP, 0 );
     }
 
-    SusceptibilityMalaria *SusceptibilityMalaria::CreateSusceptibility(IIndividualHumanContext *context, float _age, float immmod, float riskmod)
+    SusceptibilityMalaria *SusceptibilityMalaria::CreateSusceptibility(IIndividualHumanContext *context, float immmod, float riskmod)
     {
         SusceptibilityMalaria *newsusceptibility = _new_ SusceptibilityMalaria(context);
         release_assert(newsusceptibility);
-        newsusceptibility->Initialize(_age, immmod, riskmod);
+        newsusceptibility->Initialize(immmod, riskmod);
 
         return newsusceptibility;
     }
@@ -315,12 +317,11 @@ namespace Kernel
         // dt = 0.125 when infected, 1.0 otherwise
         release_assert(params());
 
-        age += dt; // age in days
-        m_age_dependent_biting_risk = BitingRiskAgeFactor(age);
+        m_age_dependent_biting_risk = BitingRiskAgeFactor();
 
-        if(age < ( 20 * DAYSPERYEAR + dt )) // recalculate < 20 every time step and then once when they turn 20
+        if(GetParent()->GetAge() < ( 20 * DAYSPERYEAR + dt )) // recalculate < 20 every time step and then once when they turn 20
         {
-            recalculateBloodCapacity( age );
+            recalculateBloodCapacity();
         }
 
         // approximately every 3 months, within the first timestep once three months have passed
@@ -328,9 +329,9 @@ namespace Kernel
            SusceptibilityMalariaConfig::innate_immune_variation_type == InnateImmuneVariationType::PYROGENIC_THRESHOLD_VS_AGE_INCREASING_AND_CYTOKINE_KILLING_INVERSE)
         {
             float every_3months = 91;
-            if(fmod( age, every_3months ) < dt)
+            if(fmod( GetParent()->GetAge(), every_3months ) < dt)
             {
-                SetPyrogenicThresholdAndFeverKillRate( age );
+                SetPyrogenicThresholdAndFeverKillRate();
             }
         }
 
@@ -564,12 +565,12 @@ namespace Kernel
         m_antigenic_flag = true;
     }
 
-    void SusceptibilityMalaria::recalculateBloodCapacity( float _age )
+    void SusceptibilityMalaria::recalculateBloodCapacity()
     {
         // How many RBCs a person should have determined by age.
         // Sets daily production of red blood cells for people to set their equilibrium RBC concentrations and blood volume given an RBC lifetime
         // Only approximate due to linear increase in blood volume from 0.5 to 5 liters with age, a better growth model would be nonlinear
-        if(_age >= 20 * DAYSPERYEAR) // 20 years = 7300 days
+        if(GetParent()->GetAge() >= 20 * DAYSPERYEAR) // 20 years = 7300 days
         {
             // This initializes the daily production of red blood cells for adults to maintain standard equilibrium RBC concentrations given RBC lifetime
             // N.B. Heavily caveated, because not all adults are same size.  However, this keeps consistent equilibrium RBC densities, allowing study of anemia, etc...
@@ -580,17 +581,17 @@ namespace Kernel
         {
             // linear growth from 0.5L to 5L over 0-20 years, not ideal but works for now
             // 0.000137 = 1/(20*DAYSPERYEAR)
-            m_RBCproduction = int64_t( INFANT_RBC_PRODUCTION + ( _age * 0.000137 ) * ( ADULT_RBC_PRODUCTION - INFANT_RBC_PRODUCTION ) );
+            m_RBCproduction = int64_t( INFANT_RBC_PRODUCTION + ( GetParent()->GetAge() * 0.000137 ) * ( ADULT_RBC_PRODUCTION - INFANT_RBC_PRODUCTION ) );
             if(m_RBCproduction > ADULT_RBC_PRODUCTION)
             {
                 m_RBCproduction = ADULT_RBC_PRODUCTION; // cap at adult production, overrun happens to infected people at age 7299.375-7300 days
             }
-            m_inv_microliters_blood = float( 1 / ( ( 0.225 * ( _age / DAYSPERYEAR ) + 0.5 ) * 1e6 ) );
+            m_inv_microliters_blood = float( 1 / ( ( 0.225 * ( GetParent()->GetAge() / DAYSPERYEAR ) + 0.5 ) * 1e6 ) );
         }
         m_RBCcapacity = m_RBCproduction * AVERAGE_RBC_LIFESPAN; // Health equilibrium of RBC is production*lifetime
     }
 
-    void SusceptibilityMalaria::SetPyrogenicThresholdAndFeverKillRate( float _age )
+    void SusceptibilityMalaria::SetPyrogenicThresholdAndFeverKillRate()
     {
         // for initialization, assumes m_ind_pyrogenic_threshold and m_ind_fever_kill_rate are set outside this function to base values
         switch(SusceptibilityMalariaConfig::innate_immune_variation_type)
@@ -610,13 +611,13 @@ namespace Kernel
             case InnateImmuneVariationType::PYROGENIC_THRESHOLD_VS_AGE_CONCAVE:
                 // Roucher et al., Changing Malaria Epidemiology and Diagnostic Criteria for Plasmodium falciparum Clinical Malaria, PLoS One, 2012; 7(9): e46188
                 m_ind_pyrogenic_threshold = m_variation_modifier * SusceptibilityMalariaConfig::pyrogenic_threshold; // reset to individual base value
-                if(_age < ( 2 * DAYSPERYEAR ))
+                if(GetParent()->GetAge() < ( 2 * DAYSPERYEAR ))
                 {
-                    m_ind_pyrogenic_threshold = m_ind_pyrogenic_threshold + 0.035 * m_ind_pyrogenic_threshold * _age / DAYSPERYEAR;
+                    m_ind_pyrogenic_threshold = m_ind_pyrogenic_threshold + 0.035 * m_ind_pyrogenic_threshold * GetParent()->GetAge() / DAYSPERYEAR;
                 }
                 else
                 {
-                    m_ind_pyrogenic_threshold = m_ind_pyrogenic_threshold * 0.965 * exp( -.09 * ( _age / DAYSPERYEAR - 2 ) ) + ( m_ind_pyrogenic_threshold * 0.1 );
+                    m_ind_pyrogenic_threshold = m_ind_pyrogenic_threshold * 0.965 * exp( -.09 * ( GetParent()->GetAge() / DAYSPERYEAR - 2 ) ) + ( m_ind_pyrogenic_threshold * 0.1 );
                 }
                 break;
 
@@ -632,10 +633,10 @@ namespace Kernel
                 if(m_ind_pyrogenic_threshold < SusceptibilityMalariaConfig::pyrogenic_threshold_max)
                 {
                     m_ind_pyrogenic_threshold = m_variation_modifier * SusceptibilityMalariaConfig::pyrogenic_threshold;
-                    m_ind_pyrogenic_threshold = m_ind_pyrogenic_threshold * powf( 10.0f, ( 0.132f * _age / DAYSPERYEAR ) );
+                    m_ind_pyrogenic_threshold = m_ind_pyrogenic_threshold * powf( 10.0f, ( 0.132f * GetParent()->GetAge() / DAYSPERYEAR ) );
                 }
 
-                // m_variation_modifier acts as an inverse modifier for fever kill rate — higher values mean less effective fever-driven parasite
+                // m_variation_modifier acts as an inverse modifier for fever kill rate higher values mean less effective fever-driven parasite
                 // killing. The (2 - x) construction turns the 0 - to - 1 range of m_variation_modifier into a 2 - to - 1 multiplier for fever_IRBC_killrate.
                 m_ind_fever_kill_rate = ( 2 - m_variation_modifier ) * SusceptibilityMalariaConfig::fever_IRBC_killrate;
                 break;
@@ -737,7 +738,7 @@ namespace Kernel
                     else if ( rand < ( prob_severe * ( anemiaSevereFraction + parasiteSevereFraction + feverSevereFraction ) ) ) { severetype = SevereCaseTypesEnum::FEVER; }
                     else { LOG_WARN("This new severe case cannot be attributed to a cause (e.g. fever) because the sum of the partial fractions by cause exceed unity!\n"); }
 
-                    LOG_DEBUG_F("New SEVERE case in %0.1f-year old: type = %s (Hg=%0.1f, parasites=%3.2e, fever=%0.1f C)\n", age/DAYSPERYEAR, SevereCaseTypesEnum::pairs::lookup_key(severetype), GetHemoglobin(), m_parasite_density, 37+current_fever);
+                    LOG_DEBUG_F("New SEVERE case in %0.1f-year old: type = %s (Hg=%0.1f, parasites=%3.2e, fever=%0.1f C)\n", GetParent()->GetAge()/DAYSPERYEAR, SevereCaseTypesEnum::pairs::lookup_key(severetype), GetHemoglobin(), m_parasite_density, 37+current_fever);
                 }
                 cumulative_days_of_severe_incident += dt;
             }
@@ -800,7 +801,7 @@ namespace Kernel
     void  SusceptibilityMalaria::ReportClinicalCase( ClinicalSymptomsEnum::Enum symptom, bool isNew )
     {
         // for reporting symptoms (clinical, severe, anemia, etc.)
-        IMalariaHumanContext *imhc = nullptr;
+        IMalariaHumanContext* imhc = nullptr;
         if ( s_OK != parent->QueryInterface(GET_IID(IMalariaHumanContext), (void**)&imhc) )
         {
             throw QueryInterfaceException( __FILE__, __LINE__, __FUNCTION__, "parent", "IMalariaHumanContext", "IIndividualHumanContext" );
@@ -998,6 +999,8 @@ namespace Kernel
         return total_prob;
     }
 
+
+    const SimulationConfig * SusceptibilityMalaria::params() const { return GET_CONFIGURABLE(SimulationConfig); }
 
     // Fever tracks the level of cytokines
     // This changes a limited cytokine range to more closely match the range of fevers experienced by patients

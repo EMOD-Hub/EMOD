@@ -19,18 +19,19 @@ namespace Kernel
 
     class IndividualHumanSTIConfig : public IndividualHumanConfig
     {
+        friend class SimulationSTI;
+        friend class IndividualHumanSTI;
+        friend class Relationship;
+
+        IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
         GET_SCHEMA_STATIC_WRAPPER( IndividualHumanSTIConfig )
-        IMPLEMENT_DEFAULT_REFERENCE_COUNTING()  
+
         DECLARE_QUERY_INTERFACE()
 
     public:
         virtual bool Configure( const Configuration* config ) override;
 
     protected:
-        friend class SimulationSTI;
-        friend class IndividualHumanSTI;
-        friend class Relationship;
-
         static SexualDebutAgeSettingType::Enum IndividualHumanSTIConfig::sexual_debut_age_setting_type;
         static float debutAgeYrsMale_inv_kappa;
         static float debutAgeYrsFemale_inv_kappa;
@@ -54,7 +55,6 @@ namespace Kernel
         static float coital_dilution_2_partners;
         static float coital_dilution_3_partners;
         static float coital_dilution_4_plus_partners;
-
     };
 
     class IndividualHumanSTI :  public IndividualHuman, 

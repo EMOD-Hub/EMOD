@@ -29,12 +29,12 @@ namespace Kernel
 
     // Decay of post-infection immunity
     bool SusceptibilityConfig::enable_immune_decay = false;
-    float SusceptibilityConfig::acqdecayrate  = 0.0f;
-    float SusceptibilityConfig::trandecayrate = 0.0f;
-    float SusceptibilityConfig::mortdecayrate = 0.0f;
-    float SusceptibilityConfig::baseacqoffset  = 0.0f;
-    float SusceptibilityConfig::basetranoffset = 0.0f;
-    float SusceptibilityConfig::basemortoffset = 0.0f;
+    float SusceptibilityConfig::acqdecayrate       = 0.0f;
+    float SusceptibilityConfig::trandecayrate      = 0.0f;
+    float SusceptibilityConfig::mortdecayrate      = 0.0f;
+    float SusceptibilityConfig::baseacqoffset      = 0.0f;
+    float SusceptibilityConfig::basetranoffset     = 0.0f;
+    float SusceptibilityConfig::basemortoffset     = 0.0f;
 
     SusceptibilityType::Enum SusceptibilityConfig::susceptibility_type = SusceptibilityType::FRACTIONAL;
 
@@ -51,62 +51,6 @@ namespace Kernel
         HANDLE_INTERFACE(ISusceptibilityContext)
         HANDLE_ISUPPORTS_VIA(ISusceptibilityContext)
     END_QUERY_INTERFACE_BODY(Susceptibility)
-
-
-    Susceptibility::Susceptibility()
-        :  age ( 0.0f )
-        , mod_acquire( 0.0f )
-        , mod_transmit( 0.0f )
-        , mod_mortality( 0.0f )
-        , acqdecayoffset( 0.0f )
-        , trandecayoffset( 0.0f )
-        , mortdecayoffset( 0.0f )
-        , immune_failage( 0.0f )
-        , parent( nullptr )
-    {
-    }
-
-    Susceptibility::Susceptibility(IIndividualHumanContext *context)
-        : age( 0.0f )
-        , mod_acquire( 0.0f )
-        , mod_transmit( 0.0f )
-        , mod_mortality( 0.0f )
-        , acqdecayoffset( 0.0f )
-        , trandecayoffset( 0.0f )
-        , mortdecayoffset( 0.0f )
-        , immune_failage( 0.0f )
-        , parent(context)
-    {
-        //SetFlags(parent != nullptr ? parent->GetSusceptibilityFlags() : nullptr);
-    }
-
-    void SusceptibilityConfig::LogConfigs() const
-    {
-        LOG_DEBUG_F( "maternal_protection = %d.\n",     maternal_protection );
-        LOG_DEBUG_F( "maternal_protection_type = %d\n", maternal_protection_type );
-        LOG_DEBUG_F( "matlin_slope = %d\n",    matlin_slope );
-        LOG_DEBUG_F( "matlin_suszero = %d\n",  matlin_suszero );
-        LOG_DEBUG_F( "matsig_steepfac = %d\n", matsig_steepfac );
-        LOG_DEBUG_F( "matsig_halfmax = %d\n",  matsig_halfmax );
-        LOG_DEBUG_F( "matsig_susinit = %d\n",  matsig_susinit );
-
-        LOG_DEBUG_F( "baseacqoffset = %f\n",  baseacqoffset );
-        LOG_DEBUG_F( "basetranoffset = %f\n", basetranoffset );
-        LOG_DEBUG_F( "basemortoffset = %f\n", basemortoffset );
-
-        LOG_DEBUG_F( "immune_decay = %d\n", enable_immune_decay );
-        LOG_DEBUG_F( "acqdecayrate= %f\n",   acqdecayrate );
-        LOG_DEBUG_F( "trandecayrate = %f\n", trandecayrate );
-        LOG_DEBUG_F( "mortdecayrate = %f\n", mortdecayrate );
-        LOG_DEBUG_F( "baseacqupdate = %f\n",  baseacqupdate );
-        LOG_DEBUG_F( "basetranupdate = %f\n", basetranupdate );
-        LOG_DEBUG_F( "basemortupdate = %f\n", basemortupdate );
-
-        LOG_DEBUG_F( "susceptibility_type = %d\n", susceptibility_type );
-
-        LOG_DEBUG_F( "enable_initial_susceptibility_distribution = %d\n",      enable_initial_susceptibility_distribution );
-        LOG_DEBUG_F( "susceptibility_initialization_distribution_type = %d\n", susceptibility_initialization_distribution_type );
-    }
 
     bool SusceptibilityConfig::Configure(const Configuration* config)
     {
@@ -151,24 +95,52 @@ namespace Kernel
 
         bool bRet = JsonConfigurable::Configure( config );
 
-        LogConfigs();
-
         return bRet;
     }
 
-    void Susceptibility::Initialize(float _age, float immmod, float riskmod)
-    {
-        age = _age;
 
+    Susceptibility::Susceptibility()
+        : mod_acquire( 0.0f )
+        , mod_transmit( 0.0f )
+        , mod_mortality( 0.0f )
+        , age ( 0.0f )   // REMOVE NEXT VERSION
+        , acqdecayoffset( 0.0f )
+        , trandecayoffset( 0.0f )
+        , mortdecayoffset( 0.0f )
+        , immune_failage( 0.0f )
+        , parent(nullptr)
+    { }
+
+    Susceptibility::Susceptibility(IIndividualHumanContext* context)
+        : mod_acquire( 0.0f )
+        , mod_transmit( 0.0f )
+        , mod_mortality( 0.0f )
+        , age( 0.0f )   // REMOVE NEXT VERSION
+        , acqdecayoffset( 0.0f )
+        , trandecayoffset( 0.0f )
+        , mortdecayoffset( 0.0f )
+        , immune_failage( 0.0f )
+        , parent(context)
+    { }
+
+    Susceptibility::~Susceptibility()
+    {
+    }
+
+    Susceptibility* Susceptibility::CreateSusceptibility(IIndividualHumanContext* context, float immmod, float riskmod)
+    {
+        Susceptibility* newsusceptibility = _new_ Susceptibility(context);
+        newsusceptibility->Initialize(immmod, riskmod);
+
+        return newsusceptibility;
+    }
+
+    void Susceptibility::Initialize(float immmod, float riskmod)
+    {
         // immune modifiers
         mod_acquire   = immmod;
         mod_transmit  = 1.0f;
         mod_mortality = 1.0f;
-
-        // decay rates
-        acqdecayoffset  = 0.0f;
-        trandecayoffset = 0.0f;
-        mortdecayoffset = 0.0f;
 
         if(SusceptibilityConfig::maternal_protection && SusceptibilityConfig::susceptibility_type == SusceptibilityType::BINARY)
         {
@@ -205,18 +177,6 @@ namespace Kernel
         }
     }
 
-    Susceptibility *Susceptibility::CreateSusceptibility(IIndividualHumanContext *context, float _age, float immmod, float riskmod)
-    {
-        Susceptibility *newsusceptibility = _new_ Susceptibility(context);
-        newsusceptibility->Initialize(_age, immmod, riskmod);
-
-        return newsusceptibility;
-    }
-    
-    Susceptibility::~Susceptibility()
-    {
-    }
-
     void Susceptibility::SetContextTo(IIndividualHumanContext* context)
     {
         parent = context;
@@ -230,12 +190,6 @@ namespace Kernel
     const SimulationConfig* Susceptibility::params()
     {
         return GET_CONFIGURABLE(SimulationConfig);
-        //return base_flags_ptr;
-    }
-
-    float Susceptibility::getAge() const
-    {
-        return age;
     }
 
     float Susceptibility::getModAcquire() const
@@ -246,7 +200,7 @@ namespace Kernel
         {
             if(SusceptibilityConfig::maternal_protection_type == MaternalProtectionType::LINEAR)
             {
-                susceptibility_correction *= SusceptibilityConfig::matlin_slope*age+
+                susceptibility_correction *= SusceptibilityConfig::matlin_slope*parent->GetAge()+
                                              SusceptibilityConfig::matlin_suszero;
             }
 
@@ -254,20 +208,20 @@ namespace Kernel
             {
                 susceptibility_correction *= SusceptibilityConfig::matsig_susinit +
                                              (1.0f - SusceptibilityConfig::matsig_susinit)/
-                                             (1.0f + exp((SusceptibilityConfig::matsig_halfmax-age)/
+                                             (1.0f + exp((SusceptibilityConfig::matsig_halfmax-parent->GetAge())/
                                                            SusceptibilityConfig::matsig_steepfac));
             }
         }
 
         // Reduces mod_acquire to zero if age is less than calculated immunity failure day.
-        if(age < immune_failage)
+        if(parent->GetAge() < immune_failage)
         {
             susceptibility_correction = 0.0f;
         }
 
         BOUND_RANGE(susceptibility_correction, 0.0f, 1.0f);
 
-        LOG_VALID_F("id = %d, age = %f, mod_acquire = %f, immune_failage = %f\n", parent->GetSuid().data, age, mod_acquire*susceptibility_correction, immune_failage);
+        LOG_VALID_F("id = %d, age = %f, mod_acquire = %f, immune_failage = %f\n", parent->GetSuid().data, parent->GetAge(), mod_acquire*susceptibility_correction, immune_failage);
 
         return mod_acquire * susceptibility_correction;
     }
@@ -289,8 +243,6 @@ namespace Kernel
 
     void Susceptibility::Update( float dt )
     {
-        // Local copy of age
-        age += dt;
 
         // Immunity decay calculations
         // Logic was revised to eliminate oscillations and ensure decay works correctly even if
@@ -365,14 +317,15 @@ namespace Kernel
 
     bool Susceptibility::IsImmune() const
     {
-        LOG_WARN( "Placeholder functionality hard-coded to return false.\n" );
+        // Overriden as needed
+        release_assert(false);
         return false;
     }
 
     void Susceptibility::InitNewInfection()
     {
-        LOG_WARN( "Not implemented (but not throwing exception.\n" );
-        // no-op
+        // Overriden as needed
+        release_assert(false);
     }
 
     REGISTER_SERIALIZABLE(Susceptibility);
@@ -381,16 +334,16 @@ namespace Kernel
     {
         Susceptibility& susceptibility = *obj;
 
-        ar.labelElement("age")               & susceptibility.age;
+        ar.labelElement("age")                        & susceptibility.age;   // REMOVE NEXT VERSION
         
-        ar.labelElement("mod_acquire")       & susceptibility.mod_acquire;
-        ar.labelElement("mod_transmit")      & susceptibility.mod_transmit;
-        ar.labelElement("mod_mortality")     & susceptibility.mod_mortality;
-        
-        ar.labelElement("acqdecayoffset")    & susceptibility.acqdecayoffset;
-        ar.labelElement("trandecayoffset")   & susceptibility.trandecayoffset;
-        ar.labelElement("mortdecayoffset")   & susceptibility.mortdecayoffset;
-        
-        ar.labelElement("immune_failage")    & susceptibility.immune_failage;
+        ar.labelElement("mod_acquire")                & susceptibility.mod_acquire;
+        ar.labelElement("mod_transmit")               & susceptibility.mod_transmit;
+        ar.labelElement("mod_mortality")              & susceptibility.mod_mortality;
+
+        ar.labelElement("acqdecayoffset")             & susceptibility.acqdecayoffset;
+        ar.labelElement("trandecayoffset")            & susceptibility.trandecayoffset;
+        ar.labelElement("mortdecayoffset")            & susceptibility.mortdecayoffset;
+
+        ar.labelElement("immune_failage")             & susceptibility.immune_failage;
     }
-} // namespace Kernel
+}

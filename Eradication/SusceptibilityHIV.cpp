@@ -111,10 +111,10 @@ namespace Kernel
         HANDLE_INTERFACE(ISusceptibilityHIV)
     END_QUERY_INTERFACE_BODY(SusceptibilityHIV)
 
-    Susceptibility *SusceptibilityHIV::CreateSusceptibility(IIndividualHumanContext *context, float age, float immmod, float riskmod)
+    Susceptibility *SusceptibilityHIV::CreateSusceptibility(IIndividualHumanContext *context, float immmod, float riskmod)
     {
         SusceptibilityHIV *newsusceptibility = _new_ SusceptibilityHIV(context);
-        newsusceptibility->Initialize(age, immmod, riskmod);
+        newsusceptibility->Initialize(immmod, riskmod);
 
         return newsusceptibility;
     }
@@ -146,11 +146,7 @@ namespace Kernel
     // The purpose of this function is to reduce the individual's CD4 count all at once
     // as dictated by the value of dt passed in. This does not represent a real-world 
     // behaviour. Rather it is for Outbreaks where we are pretending time has elapsed.
-    void
-    SusceptibilityHIV::FastForward(
-        const IInfectionHIV * const pInf,
-        float dt
-    )
+    void SusceptibilityHIV::FastForward( const IInfectionHIV* const pInf, float dt )
     {
         if( sqrtCD4_Rate == UNINITIALIZED_RATE )
         {
@@ -168,7 +164,6 @@ namespace Kernel
     // suppression intervention (e.g., ART) -- increases. 
     void SusceptibilityHIV::Update(float dt)
     {
-        age += dt; // tracks age for immune purposes
         Susceptibility::Update(dt);
 
         release_assert( hiv_parent );
@@ -238,8 +233,7 @@ namespace Kernel
         LOG_DEBUG_F( "Individual %d has CD4 count of %f\n", parent->GetSuid().data, GetCD4count() );
     }
 
-    void
-    SusceptibilityHIV::ApplyARTOnset()
+    void SusceptibilityHIV::ApplyARTOnset()
     {
         CD4count_at_ART_start = GetCD4count();
         LOG_DEBUG_F( "CD4count_at_ART_start = %f for individual %d\n", CD4count_at_ART_start, parent->GetSuid().data );
@@ -250,9 +244,9 @@ namespace Kernel
         //placeholder, in TB it counts the number of simultaneous infections you have
     }
 
-    void SusceptibilityHIV::Initialize(float _age, float _immmod, float _riskmod)
+    void SusceptibilityHIV::Initialize(float _immmod, float _riskmod)
     {
-        Susceptibility::Initialize(_age, _immmod, _riskmod);
+        Susceptibility::Initialize(_immmod, _riskmod);
 
         if( s_OK != parent->QueryInterface(GET_IID(IIndividualHumanHIV), (void**)&hiv_parent) )
         {

@@ -6,7 +6,6 @@ namespace Kernel
 {
     struct ISusceptibilityContext : ISerializable
     {
-        virtual float getAge() const = 0;
         virtual float getModAcquire() const = 0;
         virtual float getModTransmit() const = 0;
         virtual float getModMortality() const = 0;
