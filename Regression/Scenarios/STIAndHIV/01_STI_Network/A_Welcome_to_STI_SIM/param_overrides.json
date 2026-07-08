@@ -4,7 +4,10 @@
         "Config_Name": "01A_Welcome_to_STI_SIM",
         "Simulation_Duration": 100,
 
-        "Enable_Vital_Dynamics": 0,
+        "Enable_Vital_Dynamics": 1,
+        "Enable_Aging": 1,
+        "Enable_Birth": 0,
+        "Enable_Natural_Mortality": 0,
 
         "Enable_Demographics_Reporting": 1,
         "Report_Relationship_Start": 1,

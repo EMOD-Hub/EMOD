@@ -13,7 +13,9 @@
             "Enable_Demographics_Reporting": 0,
             "Enable_Immune_Decay": 0,
             "Enable_Natural_Mortality": 0,
-            "Enable_Vital_Dynamics": 0,
+            "Enable_Vital_Dynamics": 1,
+            "Enable_Aging": 1,
+            "Enable_Birth": 0,
             "Sample_Rate_Birth": 1
         },
         "MIGRATION": {

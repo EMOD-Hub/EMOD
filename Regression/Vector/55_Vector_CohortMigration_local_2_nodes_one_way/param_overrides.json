@@ -19,7 +19,11 @@
             "Enable_Demographics_Initial": 1,
             "Demographics_Filenames": [
                 "demographics_2_nodes.json"
-            ]
+            ],
+            "Enable_Vital_Dynamics": 1,
+            "Enable_Aging": 1,
+            "Enable_Birth": 0,
+            "Enable_Natural_Mortality": 0
         },
         "HUMAN_MIGRATION": {
             "Migration_Model": "NO_MIGRATION"

@@ -14,7 +14,10 @@
             "PFA_Concurrency.json"
         ],
         "Enable_Disease_Mortality": 0,
-        "Enable_Vital_Dynamics": 0,
+        "Enable_Vital_Dynamics": 1,
+        "Enable_Aging": 1,
+        "Enable_Birth": 0,
+        "Enable_Natural_Mortality": 0,
         "Immunity_Mortality_Factor": 0.5,
         "Infectious_Period_Gaussian_Mean": 120,
         "Min_Days_Between_Adding_Relationships": 1,

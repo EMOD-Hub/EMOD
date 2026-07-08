@@ -7,7 +7,10 @@
         "Demographics_Filenames": [
             "demographics.json"
         ],
-        "Enable_Vital_Dynamics": 0,
+        "Enable_Vital_Dynamics": 1,
+        "Enable_Aging": 1,
+        "Enable_Birth": 0,
+        "Enable_Natural_Mortality": 0,
         "Enable_Initial_Prevalence": 0
     },
     "Default_Config_Path": "../../defaults/malaria_default_config.json",

@@ -8,7 +8,9 @@
         "x_Base_Population": 0.1, 
         "Population_Scale_Type": "FIXED_SCALING",
         "Enable_Birth": 0, 
-        "Enable_Vital_Dynamics": 0, 
+        "Enable_Vital_Dynamics": 1, 
+        "Enable_Aging": 1,
+        "Enable_Natural_Mortality": 0,
         "Demographics_Filenames": [ "generic_scenarios_demographics.json" ],
         "Custom_Individual_Events": [
             "VaccinatedA",

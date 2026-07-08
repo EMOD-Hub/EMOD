@@ -9,7 +9,10 @@
                 "../../HIV/input/PFA_overlay_commercial_only.json",
                 "PFA_Concurrency.json"
             ],
-            "Enable_Vital_Dynamics": 0,
+            "Enable_Vital_Dynamics": 1,
+            "Enable_Aging": 1,
+            "Enable_Birth": 0,
+            "Enable_Natural_Mortality": 0,
             "MORTALITY": {
                 "Base_Mortality": 0.01,
                 "Post_Infection_Mortality_Multiplier": 0.5

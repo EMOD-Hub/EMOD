@@ -8,7 +8,9 @@
         },
         "DEMOGRAPHICS": {
             "Enable_Birth": 0,
-            "Enable_Vital_Dynamics": 0,
+            "Enable_Vital_Dynamics": 1,
+            "Enable_Aging": 1,
+            "Enable_Natural_Mortality": 0,
             "Demographics_Filenames": [
                 "Namawala_single_node_demographics.json"
             ],

@@ -8,6 +8,9 @@
         "x_Base_Population": 0.2,
 
         "Report_Relationship_End": 1,
-        "Enable_Vital_Dynamics": 0
+        "Enable_Vital_Dynamics": 1,
+        "Enable_Aging": 1,
+        "Enable_Birth": 0,
+        "Enable_Natural_Mortality": 0
     }
 }
