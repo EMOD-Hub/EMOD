@@ -10,6 +10,8 @@
 #include "JsonConfigurableCollection.h"
 #include "DistributionFactory.h"
 #include "Insecticides.h"
+#include "Climate.h"
+#include "INodeContext.h"
 
 SETUP_LOGGING( "VectorControlNodeTargeted" )
 
@@ -418,7 +420,19 @@ namespace Kernel
             SetExpired(true);
             return;
 		}
-        m_pINVIC->UpdateLarvalMicrosporidiaInterventions(GetHabitatTarget(), m_SpeciesName,  m_StrainIndex, m_Coverage, waning_effect->Current());
+
+        float effect = waning_effect->Current();
+
+        VectorParameters* p_vp = GET_CONFIGURABLE(SimulationConfig)->vector_params;
+        if( p_vp->temperature_dependent_microsporidia )
+        {
+            float temperature = parent->GetNodeContext()->GetLocalWeather()->airtemperature();
+            // currently temperature dependent modifier is same across all strains, so using first species and first strain to get modifier
+            float ms_modifier = p_vp->vector_species[0]->microsporidia_strains.GetTemperatureDependentModifier(temperature); 
+            effect *= ms_modifier;
+        }
+
+        m_pINVIC->UpdateLarvalMicrosporidiaInterventions(GetHabitatTarget(), m_SpeciesName, m_StrainIndex, m_Coverage, effect);
     }
 
     ReportInterventionData LarvalMicrosporidiaIntervention::GetReportInterventionData() const
