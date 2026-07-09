@@ -5,7 +5,7 @@
         ".logLevel_SocietyImpl" : "INFO",
         
         "x_Base_Population": 0.0001, 
-        "Enable_Vital_Dynamics": 0,
+        "Enable_Vital_Dynamics": 1,
         "Demographics_Filenames": [
             "../../../../HIV/input/SA_UN_demographics.json",
             "../../../../HIV/input/PFA_overlay.json",
@@ -14,7 +14,9 @@
         "Custom_Individual_Events" : [
              "This_Is_What_The_Partners_Should_Broadcast"        
              ],
+        "Enable_Birth": 0,
         "Enable_Disease_Mortality": 0,
+        "Enable_Natural_Mortality": 0,
         "Base_Mortality": 0.01, 
         "Base_Infectivity": 10.0, 
         "Infectious_Period_Gaussian_Mean": 120,

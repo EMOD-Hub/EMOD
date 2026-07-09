@@ -13,9 +13,10 @@
             "../../../../HIV/input/PFA_overlay.json",
             "../../Inputs/PFA_Concurrency.json"
         ],
+        "Enable_Birth": 0,
         "Enable_Disease_Mortality": 0,
         "Enable_Natural_Mortality": 0,
-        "Enable_Vital_Dynamics": 0,
+        "Enable_Vital_Dynamics": 1,
         "Incubation_Period_Constant": 1,
         "Infectious_Period_Gaussian_Mean": 120,
         "Min_Days_Between_Adding_Relationships": 1,

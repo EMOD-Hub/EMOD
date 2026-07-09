@@ -9,7 +9,8 @@
             "Enable_Birth": 0,
             "Enable_Demographics_Reporting": 1,
             "Enable_Initial_Prevalence": 1,
-            "Enable_Vital_Dynamics": 0,
+            "Enable_Natural_Mortality": 0,
+            "Enable_Vital_Dynamics": 1,
             "IMMUNITY": {
                 "Enable_Immune_Decay": 0,
                 "Post_Infection_Acquisition_Multiplier": 1,
