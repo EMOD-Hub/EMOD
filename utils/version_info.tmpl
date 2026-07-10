@@ -141,9 +141,14 @@
 //                        - Number_Basestrains depends on Simulation_Type != HIV_SIM
 //                        - Removed Susceptibility Scaling - did nothing
 //                        - Change serialization version from 10.0.0 to 10.1.0
+// 2.36 - 7/10/2026  -  Fixed gender-gene bug where male-allele frequency > 0.5 produced incorrect male/female ratio.
+//                       Fixed outdoor killing emanator effect compounding over time instead of resetting.
+//                       Removed some Boost dependencies, aligned Configuration methods with EMOD-Generic.
+//                       QueryInterface removal trial, Node alignment with Generic.
+//                       Updated legal statements, copyright year, README, and license files.
 
 #define    MAJOR_VERSION    2
-#define    MINOR_VERSION    35
+#define    MINOR_VERSION    36
 
 #ifndef REVISION_NUMBER
 #define    REVISION_NUMBER  $REVISION$
