@@ -1,5 +1,6 @@
 
 #include "stdafx.h"
+#include <cfloat>
 #include "VectorGene.h"
 #include "Exceptions.h"
 #include "Log.h"
@@ -485,7 +486,7 @@ namespace Kernel
             m_PossibleAllele.Add( nullptr );
         }
 
-        if (total_female_freq == 0.0f)
+        if (total_female_freq < FLT_EPSILON)
         {
             std::stringstream ss;
             ss << "Initial allele frequencies for female alleles sum to zero.\n";
