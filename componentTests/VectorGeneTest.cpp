@@ -744,19 +744,19 @@ SUITE( VectorGeneTest )
     TEST_FIXTURE( VectorGeneFixture, TestGenderGeneMissingX )
     {
         TestHelper_ConfigureException( __LINE__, "testdata/VectorGeneTest/TestGenderGeneMissingX.json",
-            "'Is_Gender_Gene' is set to true but both 'X' and 'Y' alleles are not defined.\nIf you are including the gender 'gene', then it must be the first in the list and both 'X' and 'Y' must be defined." );
+            "'Is_Gender_Gene' is set to true but less than 2 alleles are defined.\nFor gender genes, at least one male ('Is_Y_Chromosome':1) and one female ('Is_Y_Chromosome':0) allele must be defined." );
     }
 
     TEST_FIXTURE( VectorGeneFixture, TestGenderGeneMissingY )
     {
         TestHelper_ConfigureException( __LINE__, "testdata/VectorGeneTest/TestGenderGeneMissingY.json",
-            "'Is_Gender_Gene' is set to true but both 'X' and 'Y' alleles are not defined.\nIf you are including the gender 'gene', then it must be the first in the list and both 'X' and 'Y' must be defined." );
+            "'Is_Gender_Gene' is set to true but less than 2 alleles are defined.\nFor gender genes, at least one male ('Is_Y_Chromosome':1) and one female ('Is_Y_Chromosome':0) allele must be defined." );
     }
 
     TEST_FIXTURE( VectorGeneFixture, TestTooManyGenes )
     {
         TestHelper_ConfigureException( __LINE__, "testdata/VectorGeneTest/TestTooManyGenes.json",
-                                       "11 vector genes have been defined and the maximum is 9" );
+                                       "11 vector genes have been defined and the maximum is 8 when not defining gender gene and 9 when gender gene is included." );
     }
 
     TEST_FIXTURE( VectorGeneFixture, TestTooManyGenderAllelesA )
@@ -769,5 +769,11 @@ SUITE( VectorGeneTest )
     {
         TestHelper_ConfigureException( __LINE__, "testdata/VectorGeneTest/TestTooManyGenderAllelesB.json",
                                        "Invalid number of alleles for one gender.\n7 male alleles were defined.  There can only be at most 4 of each gender." );
+    }
+
+    TEST_FIXTURE( VectorGeneFixture, TestGenderGeneMaleFrequencyTooHigh )
+    {
+        TestHelper_ConfigureException( __LINE__, "testdata/VectorGeneTest/TestGenderGeneMaleFrequencyTooHigh.json",
+                                       "Initial allele frequencies for male (Y-chromosome) alleles sum to" );
     }
 }
