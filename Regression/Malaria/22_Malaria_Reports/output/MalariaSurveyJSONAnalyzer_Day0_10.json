@@ -162,8 +162,8 @@
         {
             "id": 13,
             "node_id": 340461476,
-            "initial_age": 12221.80957031,
-            "local_birthday": -12192.80957031,
+            "initial_age": 12220.93457031,
+            "local_birthday": -12191.93457031,
             "strain_ids": [
                 [
                     0,
@@ -246,8 +246,8 @@
         {
             "id": 14,
             "node_id": 340461476,
-            "initial_age": 6889.127441406,
-            "local_birthday": -6853.127441406,
+            "initial_age": 6888.252441406,
+            "local_birthday": -6852.252441406,
             "strain_ids": [
                 [
                     0,
@@ -297,7 +297,7 @@
                 0
             ],
             "infectiousness_age_scaled": [
-                0.0004334113036748
+                0.0004333646502346
             ],
             "pos_asexual_fields": [
                 168
@@ -550,8 +550,8 @@
         {
             "id": 50,
             "node_id": 340461476,
-            "initial_age": 1111.387939453,
-            "local_birthday": -1076.387939453,
+            "initial_age": 1110.637939453,
+            "local_birthday": -1075.637939453,
             "strain_ids": [
                 [
                     0,
@@ -616,8 +616,8 @@
         {
             "id": 58,
             "node_id": 340461476,
-            "initial_age": 7600.087402344,
-            "local_birthday": -7567.087402344,
+            "initial_age": 7599.212402344,
+            "local_birthday": -7566.212402344,
             "strain_ids": [
                 [
                     0,
@@ -784,8 +784,8 @@
             ],
             "infectiousness_age_scaled": [
                 0,
-                0.214746311307,
-                0.2585691809654
+                0.2146853804588,
+                0.2585067451
             ],
             "pos_asexual_fields": [
                 198,
@@ -872,7 +872,7 @@
             ],
             "infectiousness_age_scaled": [
                 0,
-                0.2730533182621
+                0.2729654312134
             ],
             "pos_asexual_fields": [
                 200,
@@ -890,8 +890,8 @@
         {
             "id": 69,
             "node_id": 340461476,
-            "initial_age": 13928.03125,
-            "local_birthday": -13866.03125,
+            "initial_age": 13927.15625,
+            "local_birthday": -13865.15625,
             "strain_ids": [
                 [
                     0,
@@ -1092,7 +1092,7 @@
             ],
             "infectiousness_age_scaled": [
                 0,
-                0.8898972272873
+                0.8897951841354
             ],
             "pos_asexual_fields": [
                 195,
@@ -1184,7 +1184,7 @@
             ],
             "infectiousness_age_scaled": [
                 0.0172510035336,
-                0.3190920948982
+                0.3190252184868
             ],
             "pos_asexual_fields": [
                 200,
@@ -1272,8 +1272,8 @@
         {
             "id": 93,
             "node_id": 340461476,
-            "initial_age": 931.6004638672,
-            "local_birthday": -899.6004638672,
+            "initial_age": 930.7254638672,
+            "local_birthday": -898.7254638672,
             "strain_ids": [
                 [
                     0,
@@ -1474,8 +1474,8 @@
         {
             "id": 108,
             "node_id": 340461476,
-            "initial_age": 2278.703125,
-            "local_birthday": -2238.703125,
+            "initial_age": 2278.078125,
+            "local_birthday": -2238.078125,
             "strain_ids": [
                 [
                     0,
@@ -1525,7 +1525,7 @@
                 0
             ],
             "infectiousness_age_scaled": [
-                5.588729982264e-05
+                5.587735358858e-05
             ],
             "pos_asexual_fields": [
                 148
@@ -1540,8 +1540,8 @@
         {
             "id": 109,
             "node_id": 340461476,
-            "initial_age": 5759.416503906,
-            "local_birthday": -5725.416503906,
+            "initial_age": 5758.791503906,
+            "local_birthday": -5724.791503906,
             "strain_ids": [
                 [
                     0,
@@ -1606,8 +1606,8 @@
         {
             "id": 112,
             "node_id": 340461476,
-            "initial_age": 2071.797363281,
-            "local_birthday": -2007.797363281,
+            "initial_age": 2070.922363281,
+            "local_birthday": -2006.922363281,
             "strain_ids": [
                 [
                     0,
@@ -1661,7 +1661,7 @@
                 0.1000000014901
             ],
             "infectiousness_age_scaled": [
-                0.08362653106451
+                0.08360438793898
             ],
             "pos_asexual_fields": [
                 187
@@ -1676,8 +1676,8 @@
         {
             "id": 117,
             "node_id": 340461476,
-            "initial_age": 10503.06542969,
-            "local_birthday": -10455.06542969,
+            "initial_age": 10502.56542969,
+            "local_birthday": -10454.56542969,
             "strain_ids": [
                 [
                     0,
@@ -1808,7 +1808,7 @@
             ],
             "infectiousness_age_scaled": [
                 0.1280925422907,
-                0.5431632399559
+                0.5431014299393
             ],
             "pos_asexual_fields": [
                 197,
@@ -1980,8 +1980,8 @@
         {
             "id": 137,
             "node_id": 340461476,
-            "initial_age": 2229.1171875,
-            "local_birthday": -2194.1171875,
+            "initial_age": 2228.3671875,
+            "local_birthday": -2193.3671875,
             "strain_ids": [
                 [
                     0,
@@ -2035,7 +2035,7 @@
                 0.4000000059605
             ],
             "infectiousness_age_scaled": [
-                0.121364556253
+                0.1213382557034
             ],
             "pos_asexual_fields": [
                 160
@@ -2050,8 +2050,8 @@
         {
             "id": 138,
             "node_id": 340461476,
-            "initial_age": 20003.99609375,
-            "local_birthday": -20000.99609375,
+            "initial_age": 20003.24609375,
+            "local_birthday": -20000.24609375,
             "strain_ids": [
                 [
                     0,
@@ -2372,8 +2372,8 @@
         {
             "id": 164,
             "node_id": 340461476,
-            "initial_age": 6791.523925781,
-            "local_birthday": -6719.523925781,
+            "initial_age": 6790.648925781,
+            "local_birthday": -6718.648925781,
             "strain_ids": [
                 [
                     0,
@@ -2431,7 +2431,7 @@
                 0.05000000074506
             ],
             "infectiousness_age_scaled": [
-                0.02216881327331
+                0.02216639369726
             ],
             "pos_asexual_fields": [
                 170
@@ -2530,8 +2530,8 @@
         {
             "id": 181,
             "node_id": 340461476,
-            "initial_age": 1714.524902344,
-            "local_birthday": -1695.524902344,
+            "initial_age": 1714.024902344,
+            "local_birthday": -1695.024902344,
             "strain_ids": [
                 [
                     0,
@@ -2596,7 +2596,7 @@
             ],
             "infectiousness_age_scaled": [
                 0,
-                0.3312645852566
+                0.33118095994
             ],
             "pos_asexual_fields": [
                 128,
@@ -2614,8 +2614,8 @@
         {
             "id": 183,
             "node_id": 340461476,
-            "initial_age": 4891.219726562,
-            "local_birthday": -4891.219726562,
+            "initial_age": 4890.469726562,
+            "local_birthday": -4890.469726562,
             "strain_ids": [
                 [
                     0,
@@ -2679,7 +2679,7 @@
                 0.9750000238419
             ],
             "infectiousness_age_scaled": [
-                0.3571321964264,
+                0.3570884466171,
                 0.7095285654068
             ],
             "pos_asexual_fields": [
@@ -2764,7 +2764,7 @@
             ],
             "infectiousness_age_scaled": [
                 0.1264677792788,
-                0.2850756943226
+                0.2850157916546
             ],
             "pos_asexual_fields": [
                 185,
@@ -2782,8 +2782,8 @@
         {
             "id": 188,
             "node_id": 340461476,
-            "initial_age": 2144.450683594,
-            "local_birthday": -2121.450683594,
+            "initial_age": 2144.075683594,
+            "local_birthday": -2121.075683594,
             "strain_ids": [
                 [
                     0,
@@ -3016,7 +3016,7 @@
             ],
             "infectiousness_age_scaled": [
                 0,
-                0.3896488845348,
+                0.3895609974861,
                 1.542041218272e-06
             ],
             "pos_asexual_fields": [
@@ -3038,8 +3038,8 @@
         {
             "id": 201,
             "node_id": 340461476,
-            "initial_age": 1904.201538086,
-            "local_birthday": -1903.201538086,
+            "initial_age": 1903.576538086,
+            "local_birthday": -1902.576538086,
             "strain_ids": [
                 [
                     0,
@@ -3122,8 +3122,8 @@
         {
             "id": 219,
             "node_id": 340461476,
-            "initial_age": 2402.553466797,
-            "local_birthday": -2371.553466797,
+            "initial_age": 2401.803466797,
+            "local_birthday": -2370.803466797,
             "strain_ids": [
                 [
                     0,
@@ -3173,7 +3173,7 @@
                 0
             ],
             "infectiousness_age_scaled": [
-                0.000132119981572
+                0.0001320927403867
             ],
             "pos_asexual_fields": [
                 145
@@ -3254,8 +3254,8 @@
         {
             "id": 228,
             "node_id": 340461476,
-            "initial_age": 3402.020019531,
-            "local_birthday": -3379.020019531,
+            "initial_age": 3401.270019531,
+            "local_birthday": -3378.270019531,
             "strain_ids": [
                 [
                     0,
@@ -3305,7 +3305,7 @@
                 0.5749999880791
             ],
             "infectiousness_age_scaled": [
-                0.3089587688446
+                0.3089087605476
             ],
             "pos_asexual_fields": [
                 159
@@ -3320,8 +3320,8 @@
         {
             "id": 232,
             "node_id": 340461476,
-            "initial_age": 3047.559082031,
-            "local_birthday": -3011.559082031,
+            "initial_age": 3046.684082031,
+            "local_birthday": -3010.684082031,
             "strain_ids": [
                 [
                     0,
@@ -3375,7 +3375,7 @@
                 0.1749999970198
             ],
             "infectiousness_age_scaled": [
-                0.08584027737379
+                0.0858227238059
             ],
             "pos_asexual_fields": [
                 167
@@ -3390,8 +3390,8 @@
         {
             "id": 239,
             "node_id": 340461476,
-            "initial_age": 1282.771240234,
-            "local_birthday": -1218.771240234,
+            "initial_age": 1282.521240234,
+            "local_birthday": -1218.521240234,
             "strain_ids": [
                 [
                     0,
@@ -3456,8 +3456,8 @@
         {
             "id": 249,
             "node_id": 340461476,
-            "initial_age": 12875.52050781,
-            "local_birthday": -12832.52050781,
+            "initial_age": 12874.64550781,
+            "local_birthday": -12831.64550781,
             "strain_ids": [
                 [
                     0,
@@ -3654,8 +3654,8 @@
         {
             "id": 254,
             "node_id": 340461476,
-            "initial_age": 5388.06640625,
-            "local_birthday": -5352.06640625,
+            "initial_age": 5387.31640625,
+            "local_birthday": -5351.31640625,
             "strain_ids": [
                 [
                     0,
@@ -3705,7 +3705,7 @@
                 0
             ],
             "infectiousness_age_scaled": [
-                0.0002372850576648
+                0.0002372581948293
             ],
             "pos_asexual_fields": [
                 147
@@ -3720,8 +3720,8 @@
         {
             "id": 255,
             "node_id": 340461476,
-            "initial_age": 7672.912109375,
-            "local_birthday": -7628.912109375,
+            "initial_age": 7672.037109375,
+            "local_birthday": -7628.037109375,
             "strain_ids": [
                 [
                     0,
@@ -3852,8 +3852,8 @@
         {
             "id": 264,
             "node_id": 340461476,
-            "initial_age": 823.9340820312,
-            "local_birthday": -807.9340820312,
+            "initial_age": 823.1840820312,
+            "local_birthday": -807.1840820312,
             "strain_ids": [
                 [
                     0,
@@ -3903,7 +3903,7 @@
                 0.7250000238419
             ],
             "infectiousness_age_scaled": [
-                0.1434031128883
+                0.1433508098125
             ],
             "pos_asexual_fields": [
                 138
@@ -4065,7 +4065,7 @@
             "infectiousness_age_scaled": [
                 3.895912959706e-05,
                 0.1120308786631,
-                0.2980623245239
+                0.2980124950409
             ],
             "pos_asexual_fields": [
                 188,
@@ -4086,8 +4086,8 @@
         {
             "id": 273,
             "node_id": 340461476,
-            "initial_age": 834.0955810547,
-            "local_birthday": -810.0955810547,
+            "initial_age": 833.7205810547,
+            "local_birthday": -809.7205810547,
             "strain_ids": [
                 [
                     0,
@@ -4167,7 +4167,7 @@
             "infectiousness_age_scaled": [
                 0,
                 0.2134089022875,
-                1.536566196592e-05
+                1.535929732199e-05
             ],
             "pos_asexual_fields": [
                 110,
@@ -4188,8 +4188,8 @@
         {
             "id": 275,
             "node_id": 340461476,
-            "initial_age": 18465.44140625,
-            "local_birthday": -18430.44140625,
+            "initial_age": 18465.06640625,
+            "local_birthday": -18430.06640625,
             "strain_ids": [
                 [
                     0,
@@ -4258,8 +4258,8 @@
         {
             "id": 278,
             "node_id": 340461476,
-            "initial_age": 28025.65429688,
-            "local_birthday": -27988.65429688,
+            "initial_age": 28024.77929688,
+            "local_birthday": -27987.77929688,
             "strain_ids": [
                 [
                     0,
@@ -4324,8 +4324,8 @@
         {
             "id": 280,
             "node_id": 340461476,
-            "initial_age": 9579.846679688,
-            "local_birthday": -9534.846679688,
+            "initial_age": 9578.971679688,
+            "local_birthday": -9533.971679688,
             "strain_ids": [
                 [
                     0,
@@ -4544,8 +4544,8 @@
         {
             "id": 290,
             "node_id": 340461476,
-            "initial_age": 2828.553710938,
-            "local_birthday": -2768.553710938,
+            "initial_age": 2827.678710938,
+            "local_birthday": -2767.678710938,
             "strain_ids": [
                 [
                     0,
@@ -4610,8 +4610,8 @@
         {
             "id": 291,
             "node_id": 340461476,
-            "initial_age": 1906.528808594,
-            "local_birthday": -1901.528808594,
+            "initial_age": 1905.778808594,
+            "local_birthday": -1900.778808594,
             "strain_ids": [
                 [
                     0,
@@ -4812,7 +4812,7 @@
             ],
             "infectiousness_age_scaled": [
                 0,
-                0.8566561937332
+                0.8565829396248
             ],
             "pos_asexual_fields": [
                 200,
@@ -4830,8 +4830,8 @@
         {
             "id": 317,
             "node_id": 340461476,
-            "initial_age": 11069.39160156,
-            "local_birthday": -10997.39160156,
+            "initial_age": 11068.51660156,
+            "local_birthday": -10996.51660156,
             "strain_ids": [
                 [
                     0,
@@ -4896,8 +4896,8 @@
         {
             "id": 318,
             "node_id": 340461476,
-            "initial_age": 19058.8515625,
-            "local_birthday": -18995.8515625,
+            "initial_age": 19058.1015625,
+            "local_birthday": -18995.1015625,
             "strain_ids": [
                 [
                     0,
@@ -5094,8 +5094,8 @@
         {
             "id": 327,
             "node_id": 340461476,
-            "initial_age": 4642.956054688,
-            "local_birthday": -4612.956054688,
+            "initial_age": 4642.331054688,
+            "local_birthday": -4612.331054688,
             "strain_ids": [
                 [
                     0,
@@ -5145,7 +5145,7 @@
                 0.05000000074506
             ],
             "infectiousness_age_scaled": [
-                0.05700784921646
+                0.05700178444386
             ],
             "pos_asexual_fields": [
                 145
@@ -5254,9 +5254,9 @@
             ],
             "infectiousness_age_scaled": [
                 0,
-                0.6078281402588,
+                0.6077407002449,
                 0.1725094467402,
-                0.6161285638809
+                0.6160260438919
             ],
             "pos_asexual_fields": [
                 199,
@@ -5478,8 +5478,8 @@
         {
             "id": 345,
             "node_id": 340461476,
-            "initial_age": 44958.47265625,
-            "local_birthday": -44901.47265625,
+            "initial_age": 44957.59765625,
+            "local_birthday": -44900.59765625,
             "strain_ids": [
                 [
                     0,
@@ -5910,8 +5910,8 @@
         {
             "id": 362,
             "node_id": 340461476,
-            "initial_age": 19188.96679688,
-            "local_birthday": -19179.96679688,
+            "initial_age": 19188.09179688,
+            "local_birthday": -19179.09179688,
             "strain_ids": [
                 [
                     0,
@@ -5994,8 +5994,8 @@
         {
             "id": 365,
             "node_id": 340461476,
-            "initial_age": 7641.821289062,
-            "local_birthday": -7591.821289062,
+            "initial_age": 7641.071289062,
+            "local_birthday": -7591.071289062,
             "strain_ids": [
                 [
                     0,
@@ -6126,7 +6126,7 @@
             ],
             "infectiousness_age_scaled": [
                 0.3670021295547,
-                0.09951239079237
+                0.09949469566345
             ],
             "pos_asexual_fields": [
                 192,
@@ -6218,8 +6218,8 @@
         {
             "id": 375,
             "node_id": 340461476,
-            "initial_age": 2308.275390625,
-            "local_birthday": -2256.275390625,
+            "initial_age": 2307.400390625,
+            "local_birthday": -2255.400390625,
             "strain_ids": [
                 [
                     0,
@@ -6288,8 +6288,8 @@
         {
             "id": 376,
             "node_id": 340461476,
-            "initial_age": 1120.874145508,
-            "local_birthday": -1109.874145508,
+            "initial_age": 1119.999145508,
+            "local_birthday": -1108.999145508,
             "strain_ids": [
                 [
                     0,
@@ -6339,7 +6339,7 @@
                 1
             ],
             "infectiousness_age_scaled": [
-                0.2745742499828
+                0.2744721472263
             ],
             "pos_asexual_fields": [
                 172
@@ -6354,8 +6354,8 @@
         {
             "id": 381,
             "node_id": 340461476,
-            "initial_age": 7596.013671875,
-            "local_birthday": -7549.013671875,
+            "initial_age": 7595.513671875,
+            "local_birthday": -7548.513671875,
             "strain_ids": [
                 [
                     0,
@@ -6442,8 +6442,8 @@
         {
             "id": 383,
             "node_id": 340461476,
-            "initial_age": 4166.360351562,
-            "local_birthday": -4122.360351562,
+            "initial_age": 4165.485351562,
+            "local_birthday": -4121.485351562,
             "strain_ids": [
                 [
                     0,
@@ -6497,7 +6497,7 @@
                 0
             ],
             "infectiousness_age_scaled": [
-                0.0003216805052944
+                0.0003216284094378
             ],
             "pos_asexual_fields": [
                 155
@@ -6578,8 +6578,8 @@
         {
             "id": 391,
             "node_id": 340461476,
-            "initial_age": 10547.75390625,
-            "local_birthday": -10514.75390625,
+            "initial_age": 10546.87890625,
+            "local_birthday": -10513.87890625,
             "strain_ids": [
                 [
                     0,
@@ -6644,8 +6644,8 @@
         {
             "id": 400,
             "node_id": 340461476,
-            "initial_age": 987.014465332,
-            "local_birthday": -979.014465332,
+            "initial_age": 986.264465332,
+            "local_birthday": -978.264465332,
             "strain_ids": [
                 [
                     0,
@@ -6695,7 +6695,7 @@
                 0.75
             ],
             "infectiousness_age_scaled": [
-                0.1882140487432
+                0.1881504505873
             ],
             "pos_asexual_fields": [
                 164
@@ -6710,8 +6710,8 @@
         {
             "id": 404,
             "node_id": 340461476,
-            "initial_age": 749.4226074219,
-            "local_birthday": -739.4226074219,
+            "initial_age": 748.6726074219,
+            "local_birthday": -738.6726074219,
             "strain_ids": [
                 [
                     0,
@@ -6779,7 +6779,7 @@
                 0.3499999940395
             ],
             "infectiousness_age_scaled": [
-                0.1915143579245,
+                0.1914418786764,
                 0.1104353144765
             ],
             "pos_asexual_fields": [
@@ -6798,8 +6798,8 @@
         {
             "id": 405,
             "node_id": 340461476,
-            "initial_age": 15997.83105469,
-            "local_birthday": -15926.83105469,
+            "initial_age": 15996.95605469,
+            "local_birthday": -15925.95605469,
             "strain_ids": [
                 [
                     0,
@@ -6948,8 +6948,8 @@
         {
             "id": 417,
             "node_id": 340461476,
-            "initial_age": 2495.045898438,
-            "local_birthday": -2458.045898438,
+            "initial_age": 2494.170898438,
+            "local_birthday": -2457.170898438,
             "strain_ids": [
                 [
                     0,
@@ -6999,7 +6999,7 @@
                 0
             ],
             "infectiousness_age_scaled": [
-                3.181923602824e-05
+                3.181176725775e-05
             ],
             "pos_asexual_fields": [
                 184
@@ -7230,8 +7230,8 @@
         {
             "id": 436,
             "node_id": 340461476,
-            "initial_age": 17401.4765625,
-            "local_birthday": -17350.4765625,
+            "initial_age": 17400.6015625,
+            "local_birthday": -17349.6015625,
             "strain_ids": [
                 [
                     0,
@@ -7370,8 +7370,8 @@
         {
             "id": 457,
             "node_id": 340461476,
-            "initial_age": 11422.55175781,
-            "local_birthday": -11376.55175781,
+            "initial_age": 11421.67675781,
+            "local_birthday": -11375.67675781,
             "strain_ids": [
                 [
                     0,
@@ -7524,8 +7524,8 @@
         {
             "id": 467,
             "node_id": 340461476,
-            "initial_age": 23322.9921875,
-            "local_birthday": -23298.9921875,
+            "initial_age": 23322.1171875,
+            "local_birthday": -23298.1171875,
             "strain_ids": [
                 [
                     0,
@@ -7630,8 +7630,8 @@
         {
             "id": 471,
             "node_id": 340461476,
-            "initial_age": 2803.391113281,
-            "local_birthday": -2732.391113281,
+            "initial_age": 2802.641113281,
+            "local_birthday": -2731.641113281,
             "strain_ids": [
                 [
                     0,
@@ -7681,7 +7681,7 @@
                 0.05000000074506
             ],
             "infectiousness_age_scaled": [
-                0.01956649497151
+                0.01956285722554
             ],
             "pos_asexual_fields": [
                 162
@@ -7696,8 +7696,8 @@
         {
             "id": 472,
             "node_id": 340461476,
-            "initial_age": 1193.875732422,
-            "local_birthday": -1158.875732422,
+            "initial_age": 1193.250732422,
+            "local_birthday": -1158.250732422,
             "strain_ids": [
                 [
                     0,
@@ -7762,7 +7762,7 @@
             ],
             "infectiousness_age_scaled": [
                 0,
-                0.2855348289013
+                0.2854618132114
             ],
             "pos_asexual_fields": [
                 143,
@@ -7780,8 +7780,8 @@
         {
             "id": 477,
             "node_id": 340461476,
-            "initial_age": 1658.317626953,
-            "local_birthday": -1597.317626953,
+            "initial_age": 1657.442626953,
+            "local_birthday": -1596.442626953,
             "strain_ids": [
                 [
                     0,
@@ -7846,8 +7846,8 @@
         {
             "id": 479,
             "node_id": 340461476,
-            "initial_age": 14261.48046875,
-            "local_birthday": -14225.48046875,
+            "initial_age": 14260.60546875,
+            "local_birthday": -14224.60546875,
             "strain_ids": [
                 [
                     0,
@@ -7978,8 +7978,8 @@
         {
             "id": 485,
             "node_id": 340461476,
-            "initial_age": 1345.153564453,
-            "local_birthday": -1290.153564453,
+            "initial_age": 1344.278564453,
+            "local_birthday": -1289.278564453,
             "strain_ids": [
                 [
                     0,
@@ -8062,8 +8062,8 @@
         {
             "id": 487,
             "node_id": 340461476,
-            "initial_age": 14729.89550781,
-            "local_birthday": -14723.89550781,
+            "initial_age": 14729.14550781,
+            "local_birthday": -14723.14550781,
             "strain_ids": [
                 [
                     0,
@@ -8268,7 +8268,7 @@
             ],
             "infectiousness_age_scaled": [
                 1.631562668081e-06,
-                0.2968184053898
+                0.2967272400856
             ],
             "pos_asexual_fields": [
                 158,
@@ -8352,8 +8352,8 @@
         {
             "id": 510,
             "node_id": 340461476,
-            "initial_age": 11602.6953125,
-            "local_birthday": -11554.6953125,
+            "initial_age": 11602.1953125,
+            "local_birthday": -11554.1953125,
             "strain_ids": [
                 [
                     0,
@@ -8418,8 +8418,8 @@
         {
             "id": 512,
             "node_id": 340461476,
-            "initial_age": 7388.033203125,
-            "local_birthday": -7344.033203125,
+            "initial_age": 7387.408203125,
+            "local_birthday": -7343.408203125,
             "strain_ids": [
                 [
                     0,
@@ -8484,8 +8484,8 @@
         {
             "id": 515,
             "node_id": 340461476,
-            "initial_age": 5899.726074219,
-            "local_birthday": -5844.726074219,
+            "initial_age": 5898.976074219,
+            "local_birthday": -5843.976074219,
             "strain_ids": [
                 [
                     0,
@@ -8549,8 +8549,8 @@
                 0.8249999880791
             ],
             "infectiousness_age_scaled": [
-                0.1422039866447,
-                0.7434339523315
+                0.1421890407801,
+                0.743342936039
             ],
             "pos_asexual_fields": [
                 157,
@@ -8788,8 +8788,8 @@
         {
             "id": 528,
             "node_id": 340461476,
-            "initial_age": 6478.844238281,
-            "local_birthday": -6449.844238281,
+            "initial_age": 6477.969238281,
+            "local_birthday": -6448.969238281,
             "strain_ids": [
                 [
                     0,
@@ -8854,7 +8854,7 @@
             ],
             "infectiousness_age_scaled": [
                 0,
-                0.8531017899513
+                0.8530051708221
             ],
             "pos_asexual_fields": [
                 175,
@@ -8872,8 +8872,8 @@
         {
             "id": 531,
             "node_id": 340461476,
-            "initial_age": 19489.83203125,
-            "local_birthday": -19484.83203125,
+            "initial_age": 19488.95703125,
+            "local_birthday": -19483.95703125,
             "strain_ids": [
                 [
                     0,
@@ -8938,8 +8938,8 @@
         {
             "id": 533,
             "node_id": 340461476,
-            "initial_age": 9212.629882812,
-            "local_birthday": -9212.629882812,
+            "initial_age": 9211.754882812,
+            "local_birthday": -9211.754882812,
             "strain_ids": [
                 [
                     0,
@@ -9004,8 +9004,8 @@
         {
             "id": 536,
             "node_id": 340461476,
-            "initial_age": 1935.272094727,
-            "local_birthday": -1899.272094727,
+            "initial_age": 1934.647094727,
+            "local_birthday": -1898.647094727,
             "strain_ids": [
                 [
                     0,
@@ -9073,7 +9073,7 @@
                 0.8500000238419
             ],
             "infectiousness_age_scaled": [
-                0.0001932745071827,
+                0.0001932363811648,
                 0.3061147630215
             ],
             "pos_asexual_fields": [
@@ -9246,8 +9246,8 @@
         {
             "id": 545,
             "node_id": 340461476,
-            "initial_age": 12536.50390625,
-            "local_birthday": -12516.50390625,
+            "initial_age": 12535.62890625,
+            "local_birthday": -12515.62890625,
             "strain_ids": [
                 [
                     0,
@@ -9356,8 +9356,8 @@
         {
             "id": 547,
             "node_id": 340461476,
-            "initial_age": 8225.638671875,
-            "local_birthday": -8203.638671875,
+            "initial_age": 8224.763671875,
+            "local_birthday": -8202.763671875,
             "strain_ids": [
                 [
                     0,
@@ -9492,8 +9492,8 @@
         {
             "id": 551,
             "node_id": 340461476,
-            "initial_age": 5857.214355469,
-            "local_birthday": -5854.214355469,
+            "initial_age": 5856.589355469,
+            "local_birthday": -5853.589355469,
             "strain_ids": [
                 [
                     0,
@@ -9786,8 +9786,8 @@
         {
             "id": 560,
             "node_id": 340461476,
-            "initial_age": 1657.396484375,
-            "local_birthday": -1623.396484375,
+            "initial_age": 1656.646484375,
+            "local_birthday": -1622.646484375,
             "strain_ids": [
                 [
                     0,
@@ -9870,8 +9870,8 @@
         {
             "id": 561,
             "node_id": 340461476,
-            "initial_age": 6817.652832031,
-            "local_birthday": -6776.652832031,
+            "initial_age": 6816.777832031,
+            "local_birthday": -6775.777832031,
             "strain_ids": [
                 [
                     0,
@@ -9921,7 +9921,7 @@
                 0.05000000074506
             ],
             "infectiousness_age_scaled": [
-                0.03553681820631
+                0.03553295508027
             ],
             "pos_asexual_fields": [
                 166
@@ -9936,8 +9936,8 @@
         {
             "id": 567,
             "node_id": 340461476,
-            "initial_age": 3035.833496094,
-            "local_birthday": -3014.833496094,
+            "initial_age": 3035.208496094,
+            "local_birthday": -3014.208496094,
             "strain_ids": [
                 [
                     0,
@@ -10017,7 +10017,7 @@
             "infectiousness_age_scaled": [
                 0,
                 0.4836263358593,
-                0.2484775781631
+                0.248427182436
             ],
             "pos_asexual_fields": [
                 144,
@@ -10104,8 +10104,8 @@
         {
             "id": 576,
             "node_id": 340461476,
-            "initial_age": 3636.427490234,
-            "local_birthday": -3594.427490234,
+            "initial_age": 3635.677490234,
+            "local_birthday": -3593.677490234,
             "strain_ids": [
                 [
                     0,
@@ -10155,7 +10155,7 @@
                 0.125
             ],
             "infectiousness_age_scaled": [
-                0.08492217957973
+                0.08490909636021
             ],
             "pos_asexual_fields": [
                 144
@@ -10368,8 +10368,8 @@
         {
             "id": 595,
             "node_id": 340461476,
-            "initial_age": 3691.806640625,
-            "local_birthday": -3632.806640625,
+            "initial_age": 3691.181640625,
+            "local_birthday": -3632.181640625,
             "strain_ids": [
                 [
                     0,
@@ -10566,8 +10566,8 @@
         {
             "id": 605,
             "node_id": 340461476,
-            "initial_age": 2735.342285156,
-            "local_birthday": -2666.342285156,
+            "initial_age": 2734.592285156,
+            "local_birthday": -2665.592285156,
             "strain_ids": [
                 [
                     0,
@@ -10764,8 +10764,8 @@
         {
             "id": 634,
             "node_id": 340461476,
-            "initial_age": 15735.51757812,
-            "local_birthday": -15697.51757812,
+            "initial_age": 15734.64257812,
+            "local_birthday": -15696.64257812,
             "strain_ids": [
                 [
                     0,
@@ -10830,8 +10830,8 @@
         {
             "id": 639,
             "node_id": 340461476,
-            "initial_age": 11352.64160156,
-            "local_birthday": -11318.64160156,
+            "initial_age": 11351.76660156,
+            "local_birthday": -11317.76660156,
             "strain_ids": [
                 [
                     0,
@@ -11040,8 +11040,8 @@
         {
             "id": 665,
             "node_id": 340461476,
-            "initial_age": 15736.08496094,
-            "local_birthday": -15703.08496094,
+            "initial_age": 15735.33496094,
+            "local_birthday": -15702.33496094,
             "strain_ids": [
                 [
                     0,
@@ -11106,8 +11106,8 @@
         {
             "id": 667,
             "node_id": 340461476,
-            "initial_age": 31152.86914062,
-            "local_birthday": -31114.86914062,
+            "initial_age": 31152.24414062,
+            "local_birthday": -31114.24414062,
             "strain_ids": [
                 [
                     0,
@@ -11172,8 +11172,8 @@
         {
             "id": 670,
             "node_id": 340461476,
-            "initial_age": 9887.165039062,
-            "local_birthday": -9855.165039062,
+            "initial_age": 9886.290039062,
+            "local_birthday": -9854.290039062,
             "strain_ids": [
                 [
                     0,
@@ -11370,7 +11370,7 @@
             ],
             "infectiousness_age_scaled": [
                 0,
-                0.2560036182404
+                0.2559171915054
             ],
             "pos_asexual_fields": [
                 190,
@@ -11538,8 +11538,8 @@
         {
             "id": 679,
             "node_id": 340461476,
-            "initial_age": 5974.384277344,
-            "local_birthday": -5924.384277344,
+            "initial_age": 5973.509277344,
+            "local_birthday": -5923.509277344,
             "strain_ids": [
                 [
                     0,
@@ -11604,7 +11604,7 @@
             ],
             "infectiousness_age_scaled": [
                 0,
-                0.637973845005
+                0.6379076242447
             ],
             "pos_asexual_fields": [
                 162,
@@ -11622,8 +11622,8 @@
         {
             "id": 686,
             "node_id": 340461476,
-            "initial_age": 2746.331054688,
-            "local_birthday": -2717.331054688,
+            "initial_age": 2745.456054688,
+            "local_birthday": -2716.456054688,
             "strain_ids": [
                 [
                     0,
@@ -11890,8 +11890,8 @@
         {
             "id": 703,
             "node_id": 340461476,
-            "initial_age": 14582.65527344,
-            "local_birthday": -14563.65527344,
+            "initial_age": 14581.90527344,
+            "local_birthday": -14562.90527344,
             "strain_ids": [
                 [
                     0,
@@ -12242,8 +12242,8 @@
         {
             "id": 719,
             "node_id": 340461476,
-            "initial_age": 5700.926269531,
-            "local_birthday": -5666.926269531,
+            "initial_age": 5700.051269531,
+            "local_birthday": -5666.051269531,
             "strain_ids": [
                 [
                     0,
@@ -12293,7 +12293,7 @@
                 0
             ],
             "infectiousness_age_scaled": [
-                0.0002629448717926
+                0.0002629116934258
             ],
             "pos_asexual_fields": [
                 179
@@ -12308,8 +12308,8 @@
         {
             "id": 721,
             "node_id": 340461476,
-            "initial_age": 11781.95800781,
-            "local_birthday": -11738.95800781,
+            "initial_age": 11781.45800781,
+            "local_birthday": -11738.45800781,
             "strain_ids": [
                 [
                     0,
@@ -12440,7 +12440,7 @@
             ],
             "infectiousness_age_scaled": [
                 0,
-                0.5851526260376
+                0.5850616693497
             ],
             "pos_asexual_fields": [
                 200,
@@ -12612,8 +12612,8 @@
         {
             "id": 746,
             "node_id": 340461476,
-            "initial_age": 5906.321289062,
-            "local_birthday": -5894.321289062,
+            "initial_age": 5905.446289062,
+            "local_birthday": -5893.446289062,
             "strain_ids": [
                 [
                     0,
@@ -12663,7 +12663,7 @@
                 0.1500000059605
             ],
             "infectiousness_age_scaled": [
-                0.1231287419796
+                0.1231136545539
             ],
             "pos_asexual_fields": [
                 169
@@ -12678,8 +12678,8 @@
         {
             "id": 751,
             "node_id": 340461476,
-            "initial_age": 3535.131103516,
-            "local_birthday": -3529.131103516,
+            "initial_age": 3534.381103516,
+            "local_birthday": -3528.381103516,
             "strain_ids": [
                 [
                     0,
@@ -12743,8 +12743,8 @@
                 0.02500000037253
             ],
             "infectiousness_age_scaled": [
-                0.1944872587919,
-                0.00996710639447
+                0.194456666708,
+                0.009965814650059
             ],
             "pos_asexual_fields": [
                 141,
@@ -12828,8 +12828,8 @@
         {
             "id": 755,
             "node_id": 340461476,
-            "initial_age": 3252.711181641,
-            "local_birthday": -3182.711181641,
+            "initial_age": 3252.336181641,
+            "local_birthday": -3182.336181641,
             "strain_ids": [
                 [
                     0,
@@ -12894,8 +12894,8 @@
         {
             "id": 760,
             "node_id": 340461476,
-            "initial_age": 24864.5234375,
-            "local_birthday": -24831.5234375,
+            "initial_age": 24863.8984375,
+            "local_birthday": -24830.8984375,
             "strain_ids": [
                 [
                     0,
@@ -13030,8 +13030,8 @@
         {
             "id": 766,
             "node_id": 340461476,
-            "initial_age": 11825.41210938,
-            "local_birthday": -11778.41210938,
+            "initial_age": 11824.53710938,
+            "local_birthday": -11777.53710938,
             "strain_ids": [
                 [
                     0,
@@ -13162,8 +13162,8 @@
         {
             "id": 780,
             "node_id": 340461476,
-            "initial_age": 9190.154296875,
-            "local_birthday": -9164.154296875,
+            "initial_age": 9189.404296875,
+            "local_birthday": -9163.404296875,
             "strain_ids": [
                 [
                     0,
@@ -13264,8 +13264,8 @@
         {
             "id": 781,
             "node_id": 340461476,
-            "initial_age": 1754.836914062,
-            "local_birthday": -1706.836914062,
+            "initial_age": 1753.961914062,
+            "local_birthday": -1705.961914062,
             "strain_ids": [
                 [
                     0,
@@ -13315,7 +13315,7 @@
                 0.2000000029802
             ],
             "infectiousness_age_scaled": [
-                0.06138615682721
+                0.06136817485094
             ],
             "pos_asexual_fields": [
                 179
@@ -13400,7 +13400,7 @@
             ],
             "infectiousness_age_scaled": [
                 0.1355324834585,
-                0.3213101923466
+                0.3212670683861
             ],
             "pos_asexual_fields": [
                 181,
@@ -13418,8 +13418,8 @@
         {
             "id": 790,
             "node_id": 340461476,
-            "initial_age": 1811.708374023,
-            "local_birthday": -1764.708374023,
+            "initial_age": 1810.833374023,
+            "local_birthday": -1763.833374023,
             "strain_ids": [
                 [
                     0,
@@ -13568,8 +13568,8 @@
         {
             "id": 796,
             "node_id": 340461476,
-            "initial_age": 7715.859375,
-            "local_birthday": -7673.859375,
+            "initial_age": 7715.359375,
+            "local_birthday": -7673.359375,
             "strain_ids": [
                 [
                     0,
@@ -13704,7 +13704,7 @@
             ],
             "infectiousness_age_scaled": [
                 1.654393781791e-05,
-                0.3679127991199
+                0.3678293228149
             ],
             "pos_asexual_fields": [
                 198,
@@ -13722,8 +13722,8 @@
         {
             "id": 803,
             "node_id": 340461476,
-            "initial_age": 16785.23632812,
-            "local_birthday": -16721.23632812,
+            "initial_age": 16784.48632812,
+            "local_birthday": -16720.48632812,
             "strain_ids": [
                 [
                     0,
@@ -13788,8 +13788,8 @@
         {
             "id": 806,
             "node_id": 340461476,
-            "initial_age": 11789.78027344,
-            "local_birthday": -11729.78027344,
+            "initial_age": 11788.90527344,
+            "local_birthday": -11728.90527344,
             "strain_ids": [
                 [
                     0,
@@ -13994,8 +13994,8 @@
         {
             "id": 832,
             "node_id": 340461476,
-            "initial_age": 5522.505859375,
-            "local_birthday": -5501.505859375,
+            "initial_age": 5521.630859375,
+            "local_birthday": -5500.630859375,
             "strain_ids": [
                 [
                     0,
@@ -14214,8 +14214,8 @@
         {
             "id": 848,
             "node_id": 340461476,
-            "initial_age": 2886.816650391,
-            "local_birthday": -2844.816650391,
+            "initial_age": 2885.941650391,
+            "local_birthday": -2843.941650391,
             "strain_ids": [
                 [
                     0,
@@ -14265,7 +14265,7 @@
                 0.02500000037253
             ],
             "infectiousness_age_scaled": [
-                0.01368195563555
+                0.01367905084044
             ],
             "pos_asexual_fields": [
                 164
@@ -14280,8 +14280,8 @@
         {
             "id": 850,
             "node_id": 340461476,
-            "initial_age": 4391.273925781,
-            "local_birthday": -4359.273925781,
+            "initial_age": 4390.523925781,
+            "local_birthday": -4358.523925781,
             "strain_ids": [
                 [
                     0,
@@ -14359,7 +14359,7 @@
                 0.8999999761581
             ],
             "infectiousness_age_scaled": [
-                0.1210697218776,
+                0.1210535764694,
                 0.5046920180321,
                 0.6438618898392
             ],
@@ -14514,7 +14514,7 @@
             ],
             "infectiousness_age_scaled": [
                 0,
-                0.1068470701575
+                0.106807410717
             ],
             "pos_asexual_fields": [
                 195,
@@ -14532,8 +14532,8 @@
         {
             "id": 864,
             "node_id": 340461476,
-            "initial_age": 1407.566894531,
-            "local_birthday": -1346.566894531,
+            "initial_age": 1407.066894531,
+            "local_birthday": -1346.066894531,
             "strain_ids": [
                 [
                     0,
@@ -14664,8 +14664,8 @@
         {
             "id": 868,
             "node_id": 340461476,
-            "initial_age": 1446.144287109,
-            "local_birthday": -1391.144287109,
+            "initial_age": 1445.394287109,
+            "local_birthday": -1390.394287109,
             "strain_ids": [
                 [
                     0,
@@ -14734,8 +14734,8 @@
         {
             "id": 869,
             "node_id": 340461476,
-            "initial_age": 5152.120117188,
-            "local_birthday": -5120.120117188,
+            "initial_age": 5151.245117188,
+            "local_birthday": -5119.245117188,
             "strain_ids": [
                 [
                     0,
@@ -14785,7 +14785,7 @@
                 0
             ],
             "infectiousness_age_scaled": [
-                0.0005918530514464
+                0.0005917719099671
             ],
             "pos_asexual_fields": [
                 165
@@ -14866,7 +14866,7 @@
             ],
             "infectiousness_age_scaled": [
                 0,
-                0.2435845732689
+                0.2435284405947
             ],
             "pos_asexual_fields": [
                 197,
@@ -14950,8 +14950,8 @@
         {
             "id": 876,
             "node_id": 340461476,
-            "initial_age": 2647.4375,
-            "local_birthday": -2640.4375,
+            "initial_age": 2646.6875,
+            "local_birthday": -2639.6875,
             "strain_ids": [
                 [
                     0,
@@ -15001,7 +15001,7 @@
                 0.6000000238419
             ],
             "infectiousness_age_scaled": [
-                0.2494883984327
+                0.2494401633739
             ],
             "pos_asexual_fields": [
                 158
@@ -15086,8 +15086,8 @@
         {
             "id": 884,
             "node_id": 340461476,
-            "initial_age": 22287.47265625,
-            "local_birthday": -22243.47265625,
+            "initial_age": 22287.09765625,
+            "local_birthday": -22243.09765625,
             "strain_ids": [
                 [
                     0,
@@ -15174,8 +15174,8 @@
         {
             "id": 885,
             "node_id": 340461476,
-            "initial_age": 6607.512207031,
-            "local_birthday": -6576.512207031,
+            "initial_age": 6606.637207031,
+            "local_birthday": -6575.637207031,
             "strain_ids": [
                 [
                     0,
@@ -15225,7 +15225,7 @@
                 0
             ],
             "infectiousness_age_scaled": [
-                0.0002723610377871
+                0.0002723306824919
             ],
             "pos_asexual_fields": [
                 166
@@ -15240,8 +15240,8 @@
         {
             "id": 887,
             "node_id": 340461476,
-            "initial_age": 15842.1171875,
-            "local_birthday": -15780.1171875,
+            "initial_age": 15841.4921875,
+            "local_birthday": -15779.4921875,
             "strain_ids": [
                 [
                     0,
@@ -15310,8 +15310,8 @@
         {
             "id": 893,
             "node_id": 340461476,
-            "initial_age": 7877.296386719,
-            "local_birthday": -7840.296386719,
+            "initial_age": 7876.546386719,
+            "local_birthday": -7839.546386719,
             "strain_ids": [
                 [
                     0,
@@ -15442,8 +15442,8 @@
         {
             "id": 901,
             "node_id": 340461476,
-            "initial_age": 1299.653320312,
-            "local_birthday": -1258.653320312,
+            "initial_age": 1298.778320312,
+            "local_birthday": -1257.778320312,
             "strain_ids": [
                 [
                     0,
@@ -15574,8 +15574,8 @@
         {
             "id": 907,
             "node_id": 340461476,
-            "initial_age": 9714.038085938,
-            "local_birthday": -9699.038085938,
+            "initial_age": 9713.288085938,
+            "local_birthday": -9698.288085938,
             "strain_ids": [
                 [
                     0,
@@ -15710,8 +15710,8 @@
         {
             "id": 912,
             "node_id": 340461476,
-            "initial_age": 11007.06445312,
-            "local_birthday": -10976.06445312,
+            "initial_age": 11006.31445312,
+            "local_birthday": -10975.31445312,
             "strain_ids": [
                 [
                     0,
@@ -15776,8 +15776,8 @@
         {
             "id": 916,
             "node_id": 340461476,
-            "initial_age": 22609.14257812,
-            "local_birthday": -22560.14257812,
+            "initial_age": 22608.64257812,
+            "local_birthday": -22559.64257812,
             "strain_ids": [
                 [
                     0,
@@ -15842,8 +15842,8 @@
         {
             "id": 917,
             "node_id": 340461476,
-            "initial_age": 6887.923339844,
-            "local_birthday": -6840.923339844,
+            "initial_age": 6887.423339844,
+            "local_birthday": -6840.423339844,
             "strain_ids": [
                 [
                     0,
@@ -16058,8 +16058,8 @@
         {
             "id": 928,
             "node_id": 340461476,
-            "initial_age": 4913.086914062,
-            "local_birthday": -4899.086914062,
+            "initial_age": 4912.211914062,
+            "local_birthday": -4898.211914062,
             "strain_ids": [
                 [
                     0,
@@ -16109,7 +16109,7 @@
                 0
             ],
             "infectiousness_age_scaled": [
-                6.572491838597e-05
+                6.571556150448e-05
             ],
             "pos_asexual_fields": [
                 171
@@ -16190,7 +16190,7 @@
             ],
             "infectiousness_age_scaled": [
                 0,
-                0.5780003070831
+                0.5779005289078
             ],
             "pos_asexual_fields": [
                 198,
@@ -16446,7 +16446,7 @@
             ],
             "infectiousness_age_scaled": [
                 0.04591427370906,
-                0.3037689626217,
+                0.3036811053753,
                 0.2990851700306
             ],
             "pos_asexual_fields": [
@@ -16468,8 +16468,8 @@
         {
             "id": 950,
             "node_id": 340461476,
-            "initial_age": 3950.068115234,
-            "local_birthday": -3909.068115234,
+            "initial_age": 3949.443115234,
+            "local_birthday": -3908.443115234,
             "strain_ids": [
                 [
                     0,
@@ -16519,7 +16519,7 @@
                 0
             ],
             "infectiousness_age_scaled": [
-                4.862061177846e-05
+                4.86147509946e-05
             ],
             "pos_asexual_fields": [
                 145
@@ -16534,8 +16534,8 @@
         {
             "id": 955,
             "node_id": 340461476,
-            "initial_age": 17038.38671875,
-            "local_birthday": -16974.38671875,
+            "initial_age": 17037.76171875,
+            "local_birthday": -16973.76171875,
             "strain_ids": [
                 [
                     0,
@@ -16696,8 +16696,8 @@
         {
             "id": 960,
             "node_id": 340461476,
-            "initial_age": 5722.316894531,
-            "local_birthday": -5673.316894531,
+            "initial_age": 5721.441894531,
+            "local_birthday": -5672.441894531,
             "strain_ids": [
                 [
                     0,
@@ -16747,7 +16747,7 @@
                 0
             ],
             "infectiousness_age_scaled": [
-                0.0002881579857785
+                0.0002881217224058
             ],
             "pos_asexual_fields": [
                 163
@@ -16762,8 +16762,8 @@
         {
             "id": 963,
             "node_id": 340461476,
-            "initial_age": 10859.62890625,
-            "local_birthday": -10799.62890625,
+            "initial_age": 10858.75390625,
+            "local_birthday": -10798.75390625,
             "strain_ids": [
                 [
                     0,
@@ -16902,7 +16902,7 @@
             ],
             "infectiousness_age_scaled": [
                 0.03047878108919,
-                0.6929029226303
+                0.6928020119667
             ],
             "pos_asexual_fields": [
                 199,
@@ -16920,8 +16920,8 @@
         {
             "id": 965,
             "node_id": 340461476,
-            "initial_age": 8570.002929688,
-            "local_birthday": -8541.002929688,
+            "initial_age": 8569.252929688,
+            "local_birthday": -8540.252929688,
             "strain_ids": [
                 [
                     0,
@@ -16986,8 +16986,8 @@
         {
             "id": 973,
             "node_id": 340461476,
-            "initial_age": 948.4470214844,
-            "local_birthday": -941.4470214844,
+            "initial_age": 947.8220214844,
+            "local_birthday": -940.8220214844,
             "strain_ids": [
                 [
                     0,
@@ -17056,7 +17056,7 @@
             ],
             "infectiousness_age_scaled": [
                 0,
-                0.239472001791
+                0.2393770962954
             ],
             "pos_asexual_fields": [
                 144,
@@ -17074,8 +17074,8 @@
         {
             "id": 975,
             "node_id": 340461476,
-            "initial_age": 7221.833007812,
-            "local_birthday": -7190.833007812,
+            "initial_age": 7220.958007812,
+            "local_birthday": -7189.958007812,
             "strain_ids": [
                 [
                     0,
@@ -17125,7 +17125,7 @@
                 0
             ],
             "infectiousness_age_scaled": [
-                0.000433550652815
+                0.0004335057747085
             ],
             "pos_asexual_fields": [
                 170
@@ -17140,8 +17140,8 @@
         {
             "id": 976,
             "node_id": 340461476,
-            "initial_age": 9860.174804688,
-            "local_birthday": -9792.174804688,
+            "initial_age": 9859.299804688,
+            "local_birthday": -9791.299804688,
             "strain_ids": [
                 [
                     0,
@@ -17206,8 +17206,8 @@
         {
             "id": 984,
             "node_id": 340461476,
-            "initial_age": 2075.849121094,
-            "local_birthday": -2061.849121094,
+            "initial_age": 2075.099121094,
+            "local_birthday": -2061.099121094,
             "strain_ids": [
                 [
                     0,
@@ -17265,7 +17265,7 @@
                 1
             ],
             "infectiousness_age_scaled": [
-                0.38773265481
+                0.3876447677612
             ],
             "pos_asexual_fields": [
                 157
@@ -17280,8 +17280,8 @@
         {
             "id": 985,
             "node_id": 340461476,
-            "initial_age": 13959.79101562,
-            "local_birthday": -13948.79101562,
+            "initial_age": 13959.04101562,
+            "local_birthday": -13948.04101562,
             "strain_ids": [
                 [
                     0,
@@ -17382,8 +17382,8 @@
         {
             "id": 987,
             "node_id": 340461476,
-            "initial_age": 8322.12109375,
-            "local_birthday": -8277.12109375,
+            "initial_age": 8321.24609375,
+            "local_birthday": -8276.24609375,
             "strain_ids": [
                 [
                     0,
@@ -17452,8 +17452,8 @@
         {
             "id": 990,
             "node_id": 340461476,
-            "initial_age": 4235.646484375,
-            "local_birthday": -4221.646484375,
+            "initial_age": 4234.771484375,
+            "local_birthday": -4220.771484375,
             "strain_ids": [
                 [
                     0,
@@ -17507,7 +17507,7 @@
                 0
             ],
             "infectiousness_age_scaled": [
-                0.0197034701705
+                0.01970031671226
             ],
             "pos_asexual_fields": [
                 181
@@ -17588,8 +17588,8 @@
         {
             "id": 1001,
             "node_id": 340461476,
-            "initial_age": 11197.78320312,
-            "local_birthday": -11176.78320312,
+            "initial_age": 11197.03320312,
+            "local_birthday": -11176.03320312,
             "strain_ids": [
                 [
                     0,
@@ -17852,8 +17852,8 @@
         {
             "id": 1023,
             "node_id": 340461476,
-            "initial_age": 523,
-            "local_birthday": -492,
+            "initial_age": 522.625,
+            "local_birthday": -491.625,
             "strain_ids": [
                 [
                     0,
@@ -18002,7 +18002,7 @@
             ],
             "infectiousness_age_scaled": [
                 0,
-                0.187955930829
+                0.1877643167973
             ],
             "pos_asexual_fields": [
                 190,
@@ -18086,7 +18086,7 @@
             ],
             "infectiousness_age_scaled": [
                 0,
-                0.1732959598303
+                0.173187315464
             ],
             "pos_asexual_fields": [
                 200,
@@ -18170,8 +18170,8 @@
         {
             "id": 1030,
             "node_id": 340461476,
-            "initial_age": 472,
-            "local_birthday": -442,
+            "initial_age": 471.25,
+            "local_birthday": -441.25,
             "strain_ids": [
                 [
                     0,
@@ -18423,7 +18423,7 @@
             "infectiousness_age_scaled": [
                 0.05412036553025,
                 0.1642194092274,
-                0.1643481403589
+                0.1642160117626
             ],
             "pos_asexual_fields": [
                 190,
@@ -18444,8 +18444,8 @@
         {
             "id": 1036,
             "node_id": 340461476,
-            "initial_age": 429,
-            "local_birthday": -392,
+            "initial_age": 428.625,
+            "local_birthday": -391.625,
             "strain_ids": [
                 [
                     0,
@@ -18510,7 +18510,7 @@
             ],
             "infectiousness_age_scaled": [
                 0,
-                0.01057375688106
+                0.01056193001568
             ],
             "pos_asexual_fields": [
                 132,
@@ -18528,8 +18528,8 @@
         {
             "id": 1038,
             "node_id": 340461476,
-            "initial_age": 385,
-            "local_birthday": -383,
+            "initial_age": 384.25,
+            "local_birthday": -382.25,
             "strain_ids": [
                 [
                     0,
@@ -18579,7 +18579,7 @@
                 0
             ],
             "infectiousness_age_scaled": [
-                0.0084477821365
+                0.008438786491752
             ],
             "pos_asexual_fields": [
                 153
@@ -18594,8 +18594,8 @@
         {
             "id": 1040,
             "node_id": 340461476,
-            "initial_age": 423,
-            "local_birthday": -355,
+            "initial_age": 422.125,
+            "local_birthday": -354.125,
             "strain_ids": [
                 [
                     0,
@@ -18645,7 +18645,7 @@
                 0
             ],
             "infectiousness_age_scaled": [
-                3.73674556613e-05
+                3.732341065188e-05
             ],
             "pos_asexual_fields": [
                 171
@@ -18660,8 +18660,8 @@
         {
             "id": 1041,
             "node_id": 340461476,
-            "initial_age": 351,
-            "local_birthday": -351,
+            "initial_age": 350.125,
+            "local_birthday": -350.125,
             "strain_ids": [
                 [
                     0,
@@ -18739,9 +18739,9 @@
                 0.4000000059605
             ],
             "infectiousness_age_scaled": [
-                0.04115597531199,
-                0.07129481434822,
-                0.05491613596678
+                0.04110225662589,
+                0.07121758162975,
+                0.05484905838966
             ],
             "pos_asexual_fields": [
                 176,
@@ -18828,8 +18828,8 @@
         {
             "id": 1045,
             "node_id": 340461476,
-            "initial_age": 371,
-            "local_birthday": -325,
+            "initial_age": 370.625,
+            "local_birthday": -324.625,
             "strain_ids": [
                 [
                     0,
@@ -18894,7 +18894,7 @@
             ],
             "infectiousness_age_scaled": [
                 0,
-                0.01228598412126
+                0.01227080915123
             ],
             "pos_asexual_fields": [
                 135,
@@ -18912,8 +18912,8 @@
         {
             "id": 1046,
             "node_id": 340461476,
-            "initial_age": 383,
-            "local_birthday": -324,
+            "initial_age": 382.625,
+            "local_birthday": -323.625,
             "strain_ids": [
                 [
                     0,
@@ -18978,8 +18978,8 @@
         {
             "id": 1050,
             "node_id": 340461476,
-            "initial_age": 331,
-            "local_birthday": -300,
+            "initial_age": 330.375,
+            "local_birthday": -299.375,
             "strain_ids": [
                 [
                     0,
@@ -19043,8 +19043,8 @@
                 0.8500000238419
             ],
             "infectiousness_age_scaled": [
-                0.0688104480505,
-                0.1168804988265
+                0.0687443241477,
+                0.1167505085468
             ],
             "pos_asexual_fields": [
                 159,
@@ -19062,8 +19062,8 @@
         {
             "id": 1051,
             "node_id": 340461476,
-            "initial_age": 315,
-            "local_birthday": -300,
+            "initial_age": 314.125,
+            "local_birthday": -299.125,
             "strain_ids": [
                 [
                     0,
@@ -19142,7 +19142,7 @@
             ],
             "infectiousness_age_scaled": [
                 0,
-                0.1377791911364,
+                0.1376207917929,
                 0.004421697929502
             ],
             "pos_asexual_fields": [
@@ -19230,8 +19230,8 @@
         {
             "id": 1054,
             "node_id": 340461476,
-            "initial_age": 318,
-            "local_birthday": -269,
+            "initial_age": 317.25,
+            "local_birthday": -268.25,
             "strain_ids": [
                 [
                     0,
@@ -19596,8 +19596,8 @@
         {
             "id": 1061,
             "node_id": 340461476,
-            "initial_age": 245,
-            "local_birthday": -204,
+            "initial_age": 244.125,
+            "local_birthday": -203.125,
             "strain_ids": [
                 [
                     0,
@@ -19661,8 +19661,8 @@
                 0.2750000059605
             ],
             "infectiousness_age_scaled": [
-                0.003240102669224,
-                0.03594407439232
+                0.003235078882426,
+                0.03589794412255
             ],
             "pos_asexual_fields": [
                 186,
@@ -19760,8 +19760,8 @@
             ],
             "infectiousness_age_scaled": [
                 9.979038622987e-06,
-                0.1166849285364,
-                0.1206301376224
+                0.1166027411819,
+                0.1204931512475
             ],
             "pos_asexual_fields": [
                 182,
@@ -19782,8 +19782,8 @@
         {
             "id": 1063,
             "node_id": 340461476,
-            "initial_age": 189,
-            "local_birthday": -185,
+            "initial_age": 188.25,
+            "local_birthday": -184.25,
             "strain_ids": [
                 [
                     0,
