@@ -622,21 +622,19 @@ namespace Kernel
         float infection_timestep =  IndividualHumanConfig::infection_timestep;
         int numsteps =  IndividualHumanConfig::infection_updates_per_tstep;
 
-        // eventually need to correct for time step in case of individuals moving among communities with different adapted time steps
-
         StateChange = HumanStateChange::None;
-
-        //  Aging
-        if (IndividualHumanConfig::aging)
-        {
-            UpdateAge( dt );
-        }
 
         // Process list of infections
         if (infections.size() == 0) // don't need to process infections or go hour by hour
         {
+            if (IndividualHumanConfig::aging)
+            {
+                UpdateAge( dt );
+            }
+
             release_assert( susceptibility );
             susceptibility->Update(dt);
+
             release_assert( interventions );
             interventions->InfectiousLoopUpdate( dt );
             interventions->Update( dt );
@@ -646,6 +644,11 @@ namespace Kernel
             float infection_time = currenttime;
             for (int i = 0; i < numsteps; i++)
             {
+                if (IndividualHumanConfig::aging)
+                {
+                    UpdateAge( infection_timestep );
+                }
+
                 bool prev_symptomatic = IsSymptomatic();
                 for (auto it = infections.begin(); it != infections.end();)
                 {
@@ -714,6 +717,7 @@ namespace Kernel
 
                 infection_time += infection_timestep;
             }
+
             if( StateChange != HumanStateChange::KilledByInfection )
             {
                 interventions->Update( dt );
