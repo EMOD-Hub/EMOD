@@ -49,7 +49,6 @@ static const float PERIODS[] = { THREE_MONTHS, SIX_MONTHS, NINE_MONTHS, TWELVE_M
 static std::vector<float> UNIQUE_PARTNER_TIME_PERIODS( PERIODS, PERIODS + sizeof( PERIODS ) / sizeof( PERIODS[ 0 ] ) );
 // -------------------------------------------------------------------
 
-
 namespace Kernel
 {
     bool IndividualHumanSTI::needs_census_data = false; // see header for details
@@ -290,7 +289,7 @@ namespace Kernel
 
     void IndividualHumanSTI::CreateSusceptibility(float imm_mod, float risk_mod)
     {
-        susceptibility = SusceptibilitySTI::CreateSusceptibility(this, m_age, imm_mod, risk_mod);
+        susceptibility = SusceptibilitySTI::CreateSusceptibility(this, imm_mod, risk_mod);
     }
 
     IIndividualHuman* IndividualHumanSTI::GetIndividualHuman()
@@ -502,10 +501,7 @@ namespace Kernel
         }
     }
 
-    void IndividualHumanSTI::Update(
-        float currenttime,
-        float dt
-        )
+    void IndividualHumanSTI::Update(float currenttime, float dt)
     {
         IndividualHuman::Update( currenttime, dt );
     }
@@ -589,9 +585,7 @@ namespace Kernel
         }
     }
 
-    void IndividualHumanSTI::Die(
-        HumanStateChange newState
-    )
+    void IndividualHumanSTI::Die(HumanStateChange newState)
     {
         release_assert( (newState == HumanStateChange::DiedFromNaturalCauses) || (newState == HumanStateChange::KilledByInfection) );
 
@@ -697,7 +691,7 @@ namespace Kernel
         }
     }
 
-    void IndividualHumanSTI::AcquireNewInfection( const IStrainIdentity *infstrain, int incubation_period_override )
+    void IndividualHumanSTI::AcquireNewInfection( const IStrainIdentity* infstrain, int incubation_period_override )
     {
         int numInfs = int(infections.size());
         if( (numInfs >= IndividualHumanConfig::max_ind_inf) ||
@@ -745,8 +739,7 @@ namespace Kernel
         }
     }
 
-    void
-    IndividualHumanSTI::UpdateEligibility()
+    void IndividualHumanSTI::UpdateEligibility()
     {
         // DJK: Could return if pre-sexual-debut, related to <ERAD-1869>
         release_assert( p_sti_node );
@@ -980,14 +973,12 @@ namespace Kernel
         p_exiting_relationship = nullptr;
     }
 
-    bool
-    IndividualHumanSTI::IsBehavioralSuperSpreader() const
+    bool IndividualHumanSTI::IsBehavioralSuperSpreader() const
     {
         return IS_SUPER_SPREADER();
     }
 
-    unsigned int
-    IndividualHumanSTI::GetExtrarelationalFlags() const
+    unsigned int IndividualHumanSTI::GetExtrarelationalFlags() const
     {
         unsigned int bitmask = 0;
         for( int i = 0 ; i < RelationshipType::COUNT ; ++i )
@@ -998,35 +989,27 @@ namespace Kernel
         return flags;
     }
 
-    void
-    IndividualHumanSTI::SetStiCoInfectionState()
+    void IndividualHumanSTI::SetStiCoInfectionState()
     {
         has_other_sti_co_infection = true;
     }
 
-    void
-    IndividualHumanSTI::ClearStiCoInfectionState()
+    void IndividualHumanSTI::ClearStiCoInfectionState()
     {
         has_other_sti_co_infection = false;
     }
 
-    bool
-    IndividualHumanSTI::HasSTICoInfection()
-    const
+    bool IndividualHumanSTI::HasSTICoInfection() const
     {
         return has_other_sti_co_infection;
     }
 
-    float 
-    IndividualHumanSTI::GetCoInfectiveAcquisitionFactor()
-    const
+    float IndividualHumanSTI::GetCoInfectiveAcquisitionFactor() const
     {
         return has_other_sti_co_infection ? IndividualHumanSTIConfig::sti_coinfection_acq_mult : 1.0f;
     }
 
-    float 
-    IndividualHumanSTI::GetCoInfectiveTransmissionFactor()
-    const
+    float IndividualHumanSTI::GetCoInfectiveTransmissionFactor() const
     {
         if( has_other_sti_co_infection )
         {
@@ -1037,7 +1020,6 @@ namespace Kernel
             return 1.0f;
         }
     }
-
 
     float IndividualHumanSTI::GetCoitalActRiskAcquisitionFactor() const
     {
@@ -1059,16 +1041,14 @@ namespace Kernel
         return GetAge() >= GetDebutAge();
     }
 
-    void
-    IndividualHumanSTI::onEmigrating()
+    void IndividualHumanSTI::onEmigrating()
     {
         disengageFromSociety();
         relationships_terminated.clear();
         migrating_rel = nullptr;
     }
 
-    void
-    IndividualHumanSTI::onImmigrating()
+    void IndividualHumanSTI::onImmigrating()
     {
         LOG_DEBUG_F( "%s()\n", __FUNCTION__ );
         migrating_because_of_partner = false;
@@ -1133,11 +1113,8 @@ namespace Kernel
         return migrating_rel;
     }
 
-
     // This method finds the lowest 0 in the relationshipSlots bitmask
-    unsigned int
-    IndividualHumanSTI::GetOpenRelationshipSlot()
-    const
+    unsigned int IndividualHumanSTI::GetOpenRelationshipSlot() const
     {
         release_assert( relationshipSlots < SLOTS_FILLED );
         uint64_t bit = 1;
@@ -1156,42 +1133,32 @@ namespace Kernel
         throw IllegalOperationException( __FILE__, __LINE__, __FUNCTION__, ss.str().c_str() );
     }
 
-    NaturalNumber
-    IndividualHumanSTI::GetLast6MonthRels()
-    const
+    NaturalNumber IndividualHumanSTI::GetLast6MonthRels() const
     {
         return last_6_month_relationships.size();
     }
 
-    NaturalNumber
-    IndividualHumanSTI::GetLast6MonthRels( RelationshipType::Enum ofType )
-    const
+    NaturalNumber IndividualHumanSTI::GetLast6MonthRels( RelationshipType::Enum ofType ) const
     {
         auto func = [ ofType ]( std::pair<int, float> p ) { return (ofType == p.first); };
         int num = std::count_if( last_6_month_relationships.begin(), last_6_month_relationships.end(), func );
         return num;
     }
 
-    NaturalNumber
-    IndividualHumanSTI::GetLast12MonthRels( RelationshipType::Enum ofType )
-    const
+    NaturalNumber IndividualHumanSTI::GetLast12MonthRels( RelationshipType::Enum ofType ) const
     {
         auto func = [ ofType ]( std::pair<int, float> p ) { return (ofType == p.first); };
         int num = std::count_if( last_12_month_relationships.begin(), last_12_month_relationships.end(), func );
         return num;
     }
 
-    NaturalNumber
-    IndividualHumanSTI::GetNumUniquePartners( int itp, int irel )
-    const
+    NaturalNumber IndividualHumanSTI::GetNumUniquePartners( int itp, int irel ) const
     {
         release_assert( IndividualHumanSTI::needs_census_data && (num_unique_partners.size() > 0) );
         return num_unique_partners[ itp ][ irel ].size();
     }
 
-    NaturalNumber
-    IndividualHumanSTI::GetLifetimeRelationshipCount()
-    const
+    NaturalNumber IndividualHumanSTI::GetLifetimeRelationshipCount() const
     {
         unsigned int sum = 0;
         for( int type = 0; type < RelationshipType::COUNT; type++ )
@@ -1201,9 +1168,7 @@ namespace Kernel
         return sum;
     }
 
-    NaturalNumber
-    IndividualHumanSTI::GetLifetimeRelationshipCount( RelationshipType::Enum ofType )
-    const
+    NaturalNumber IndividualHumanSTI::GetLifetimeRelationshipCount( RelationshipType::Enum ofType ) const
     {
         return num_lifetime_relationships[ ofType ];
     }
@@ -1213,9 +1178,7 @@ namespace Kernel
         return sim_day_born;
     }
 
-    float
-    IndividualHumanSTI::GetDebutAge()
-    const
+    float IndividualHumanSTI::GetDebutAge() const
     {
         return sexual_debut_age;
     }
@@ -1235,9 +1198,7 @@ namespace Kernel
         return m_CurrentCoitalAct;
     }
 
-    std::string
-    IndividualHumanSTI::toString()
-    const
+    std::string IndividualHumanSTI::toString() const
     {
         std::ostringstream me;
         me << "id="
@@ -1293,10 +1254,7 @@ namespace Kernel
         }
     }
 
-    void
-    IndividualHumanSTI::CheckForMigration(
-        float currenttime, float dt
-    )
+    void IndividualHumanSTI::CheckForMigration( float currenttime, float dt )
     {
         if( migrating_because_of_partner )
         {

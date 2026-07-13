@@ -16,21 +16,19 @@
 
 namespace Kernel
 {
+    class  Simulation;
+    struct IBTNTI;      // BasicTestNodeTargetedIntervention
+
     struct INodeContext;
     struct IIndividualEventBroadcaster;
     struct NodeDemographics;
     class  Node;
     struct IStrainIdentity;
-    
-    class IndividualHuman;
-    class RANDOMBASE;
+
+    class  IndividualHuman;
+    class  RANDOMBASE;
     struct IdmDateTime;
 
-    /* possible TODO: could differentiate these in the future to provide extra information related to the travel
-    struct IIndividualHumanTravelLinkedDistributionContext : public IIndividualHumanEventContext
-    {
-
-    };*/
 
     struct IDMAPI IOutbreakConsumer : public ISupports
     {
@@ -45,7 +43,7 @@ namespace Kernel
 
     struct IVisitIndividual
     {
-        virtual bool visitIndividualCallback( IIndividualHumanEventContext *ihec, float & incrementalCostOut, ICampaignCostObserver * pICCO ) = 0;
+        virtual bool visitIndividualCallback(IIndividualHumanEventContext* ihec, float & incrementalCostOut, ICampaignCostObserver* pICCO ) = 0;
         virtual ~IVisitIndividual() {}
     };
 
@@ -86,8 +84,8 @@ namespace Kernel
         virtual IIndividualEventBroadcaster* GetIndividualEventBroadcaster() = 0;
     };
 
-    class Simulation;
-    struct IBTNTI;      // BasicTestNodeTargetedIntervention
+
+
 
     struct IBTNTIConsumer : public ISupports
     {

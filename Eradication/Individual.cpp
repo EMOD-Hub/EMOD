@@ -104,12 +104,10 @@ namespace Kernel
         LOG_DEBUG_F( "min_adult_age_years = %d\n", min_adult_age_years  );
     }
 
-    bool
-    IndividualHumanConfig::Configure(
-        const Configuration* config
-    )
+    bool IndividualHumanConfig::Configure( const Configuration* config )
     {
         LOG_DEBUG( "Configure\n" );
+
         initConfigTypeMap( "Enable_Aging", &aging, Enable_Aging_DESC_TEXT, true, "Enable_Vital_Dynamics" );
         initConfigTypeMap( "Infection_Updates_Per_Timestep", &infection_updates_per_tstep, Infection_Updates_Per_Timestep_DESC_TEXT, 1, 144, 1 );
         initConfigTypeMap( "Enable_Immunity", &enable_immunity, Enable_Immunity_DESC_TEXT, true, "Simulation_Type", "GENERIC_SIM,VECTOR_SIM,STI_SIM");
@@ -520,9 +518,9 @@ namespace Kernel
         interventions = _new_ InterventionsContainer();
     }
 
-    void IndividualHuman::CreateSusceptibility(float susceptibility_modifier, float risk_modifier)
+    void IndividualHuman::CreateSusceptibility(float init_mod_acq, float init_mod_risk)
     {
-        susceptibility = Susceptibility::CreateSusceptibility(this, m_age, susceptibility_modifier, risk_modifier);
+        susceptibility = Susceptibility::CreateSusceptibility(this, init_mod_acq, init_mod_risk);
     }
 
     void IndividualHuman::SetParameters( INodeContext* pParent, float infsample, float susceptibility_modifier, float risk_modifier, float migration_modifier)
@@ -685,7 +683,7 @@ namespace Kernel
 
                         // Set human state change and stop updating infections if the person has died
                         if ( inf_state_change == InfectionStateChange::Fatal )
-                        {                            
+                        {
                             Die( HumanStateChange::KilledByInfection );
                             break;
                         }
@@ -740,6 +738,7 @@ namespace Kernel
         //  Is there an active infection for statistical purposes?
         m_is_infected = (infections.size() > 0);
 
+        // Check if died of natural causes
         if( StateChange == HumanStateChange::None )
         {
             CheckVitalDynamics(currenttime, dt);
@@ -836,7 +835,7 @@ namespace Kernel
 
                 // Broadcast GaveBirth
                 if( broadcaster )
-                {                    
+                {
                     broadcaster->TriggerObservers( GetEventContext(), EventTrigger::GaveBirth );
                 }
             }
@@ -854,7 +853,7 @@ namespace Kernel
 
             // Broadcast Pregnant
             if( broadcaster )
-            {                
+            {
                 broadcaster->TriggerObservers( GetEventContext(), EventTrigger::Pregnant );
             }
         }
@@ -944,7 +943,7 @@ namespace Kernel
 
     void IndividualHuman::SetNextMigration(void)
     {
-        IMigrationInfo *migration_info = parent->GetMigrationInfo();
+        IMigrationInfo* migration_info = parent->GetMigrationInfo();
 
         // ----------------------------------------------------------------------------------------
         // --- We don't want the check for reachable nodes here because one could travel to a node
@@ -985,7 +984,7 @@ namespace Kernel
                 }
                 else
                 {
-                    float return_prob; // = 0.0f;
+                    float return_prob = 0.0f;
                     switch(migration_type)
                     {
                         case MigrationType::LOCAL_MIGRATION:    return_prob = IndividualHumanConfig::local_roundtrip_prob;  break;
@@ -1022,25 +1021,26 @@ namespace Kernel
 
     float IndividualHuman::GetRoundTripDurationRate( MigrationType::Enum trip_type )
     {
-        float return_duration_rate; // = 0.0f;
+        float duration_value = 0.0f;
+
         switch(trip_type)
         {
-            case MigrationType::LOCAL_MIGRATION:    return_duration_rate = IndividualHumanConfig::local_roundtrip_duration_rate;  break;
-            case MigrationType::AIR_MIGRATION:      return_duration_rate = IndividualHumanConfig::air_roundtrip_duration_rate;    break;
-            case MigrationType::REGIONAL_MIGRATION: return_duration_rate = IndividualHumanConfig::region_roundtrip_duration_rate; break;
-            case MigrationType::SEA_MIGRATION:      return_duration_rate = IndividualHumanConfig::sea_roundtrip_duration_rate;    break;
-            case MigrationType::FAMILY_MIGRATION:   return_duration_rate = IndividualHumanConfig::family_roundtrip_duration_rate; break;
+            case MigrationType::LOCAL_MIGRATION:    duration_value = IndividualHumanConfig::local_roundtrip_duration_rate;  break;
+            case MigrationType::AIR_MIGRATION:      duration_value = IndividualHumanConfig::air_roundtrip_duration_rate;    break;
+            case MigrationType::REGIONAL_MIGRATION: duration_value = IndividualHumanConfig::region_roundtrip_duration_rate; break;
+            case MigrationType::SEA_MIGRATION:      duration_value = IndividualHumanConfig::sea_roundtrip_duration_rate;    break;
+            case MigrationType::FAMILY_MIGRATION:   duration_value = IndividualHumanConfig::family_roundtrip_duration_rate; break;
             case MigrationType::INTERVENTION_MIGRATION:
             default:
                 throw BadEnumInSwitchStatementException( __FILE__, __LINE__, __FUNCTION__, "trip_type", trip_type, MigrationType::pairs::lookup_key( migration_type ) );
         }
 
-        float duration = 0.0;
-        if(return_duration_rate > 0.0f)
+        if(duration_value > 0.0f)
         {
-            duration = float( GetRng()->expdist( return_duration_rate ) );
+            duration_value = static_cast<float>( GetRng()->expdist( duration_value ) );
         }
-        return duration;
+
+        return duration_value;
     }
 
     const suids::suid& IndividualHuman::GetMigrationDestination()
@@ -1202,14 +1202,13 @@ namespace Kernel
 
     void IndividualHuman::AcquireNewInfection( const IStrainIdentity *pStrain, int incubation_period_override )
     {
-        //LOG_DEBUG_F( "AcquireNewInfection: id=%lu, group_id=%d\n", GetSuid().data, ( transmissionGroupMembership.size() ? transmissionGroupMembership.at(0) : nullptr ) );
         int numInfs = int(infections.size());
         if ( (IndividualHumanConfig::superinfection && (numInfs < IndividualHumanConfig::max_ind_inf)) || (numInfs == 0) )
         {
             cumulativeInfs++;
             m_is_infected = true;
 
-            IInfection *newinf = createInfection( parent->GetNextInfectionSuid() );
+            IInfection* newinf = createInfection( parent->GetNextInfectionSuid() );
             newinf->SetParameters( pStrain, incubation_period_override );
             newinf->InitInfectionImmunology(susceptibility);
 
@@ -1226,7 +1225,9 @@ namespace Kernel
         infectiousness = 0;
 
         if ( infections.size() == 0 )
+        {
             return;
+        }
 
         for (auto infection : infections)
         {
@@ -1242,8 +1243,8 @@ namespace Kernel
         }
         float raw_inf = infectiousness;
         infectiousness *= susceptibility->getModTransmit() * interventions->GetInterventionReducedTransmit();
-        LOG_VALID_F( "Infectiousness for individual %d = %f (raw=%f, immunity modifier=%f, intervention modifier=%f.\n", 
-                     GetSuid().data, infectiousness, raw_inf, susceptibility->getModTransmit(), interventions->GetInterventionReducedTransmit() );
+        LOG_VALID_F("Infectiousness for individual %d = %f (raw=%f, immunity modifier=%f, intervention modifier=%f.\n",
+            GetSuid().data, infectiousness, raw_inf, susceptibility->getModTransmit(), interventions->GetInterventionReducedTransmit() );
     }
 
     bool IndividualHuman::InfectionExistsForThisStrain(IStrainIdentity* check_strain_id)
@@ -1286,18 +1287,46 @@ namespace Kernel
     //------------------------------------------------------------------
 
     // IIndividualHumanContext methods
-    suids::suid IndividualHuman::GetSuid() const         { return suid; }
-    suids::suid IndividualHuman::GetNextInfectionSuid()  { return parent->GetNextInfectionSuid(); }
-    RANDOMBASE* IndividualHuman::GetRng()              { return parent->GetRng(); }
+    suids::suid IndividualHuman::GetSuid() const
+    {
+        return suid;
+    }
 
-    const NodeDemographics* IndividualHuman::GetDemographics()           const { return parent->GetDemographics(); }
+    suids::suid IndividualHuman::GetNextInfectionSuid()
+    {
+        return parent->GetNextInfectionSuid();
+    }
 
-    IIndividualHumanInterventionsContext* IndividualHuman::GetInterventionsContext()  const { return static_cast<IIndividualHumanInterventionsContext*>(interventions); }
-    IIndividualHumanInterventionsContext* IndividualHuman::GetInterventionsContextbyInfection(IInfection* infection) { 
-        return static_cast<IIndividualHumanInterventionsContext*>(interventions); 
-        }; //Note can also throw exception here since it's not using the infection to find the intervention
-    IIndividualHumanEventContext*         IndividualHuman::GetEventContext()                { return static_cast<IIndividualHumanEventContext*>(this); }
-    ISusceptibilityContext*               IndividualHuman::GetSusceptibilityContext() const { return static_cast<ISusceptibilityContext*>(susceptibility); }
+    RANDOMBASE* IndividualHuman::GetRng()
+    {
+        return parent->GetRng();
+    }
+
+    IIndividualHumanInterventionsContext* IndividualHuman::GetInterventionsContext() const
+    {
+        return static_cast<IIndividualHumanInterventionsContext*>(interventions);
+    }
+
+    const NodeDemographics* IndividualHuman::GetDemographics() const
+    {
+        return parent->GetDemographics();
+    }
+
+
+    IIndividualHumanInterventionsContext* IndividualHuman::GetInterventionsContextbyInfection(IInfection* infection)
+    {
+        return static_cast<IIndividualHumanInterventionsContext*>(interventions);
+    }; //Note can also throw exception here since it's not using the infection to find the intervention
+
+    IIndividualHumanEventContext* IndividualHuman::GetEventContext()
+    {
+        return static_cast<IIndividualHumanEventContext*>(this);
+    }
+
+    ISusceptibilityContext* IndividualHuman::GetSusceptibilityContext() const
+    {
+        return static_cast<ISusceptibilityContext*>(susceptibility);
+    }
 
     bool IndividualHuman::IsPossibleMother() const
     {
@@ -1350,13 +1379,16 @@ namespace Kernel
         return susceptibility->getModAcquire()*interventions->GetInterventionReducedAcquire();
     }
 
-    INodeEventContext * IndividualHuman::GetNodeEventContext()
+    INodeEventContext* IndividualHuman::GetNodeEventContext()
     {
         release_assert( GetParent() );
         return GetParent()->GetEventContext();
     }
 
-    IIndividualHumanContext* IndividualHuman::GetContextPointer() { return this; }
+    IIndividualHumanContext* IndividualHuman::GetContextPointer()
+    {
+        return this;
+    }
 
     INodeContext* IndividualHuman::GetParent() const
     {
@@ -1367,7 +1399,6 @@ namespace Kernel
     {
         return parent->GetSuid();
     }
-
 
     IPKeyValueContainerFull* IndividualHuman::GetProperties()
     {
@@ -1384,7 +1415,7 @@ namespace Kernel
         return m_pNewInfection;
     }
 
-    bool  IndividualHuman::IsSymptomatic() const
+    bool IndividualHuman::IsSymptomatic() const
     {
         for( auto &it : infections )
         {
@@ -1393,20 +1424,17 @@ namespace Kernel
         return false;
     }
 
-    bool  IndividualHuman::IsNewlySymptomatic() const
+    bool IndividualHuman::IsNewlySymptomatic() const
     {
         return m_newly_symptomatic;
     }
-
 
     ProbabilityNumber IndividualHuman::getProbMaternalTransmission() const
     {
         return parent->GetProbMaternalTransmission();
     }
 
-    bool 
-    IndividualHuman::ImmunityEnabled()
-    const
+    bool IndividualHuman::ImmunityEnabled() const
     {
         return IndividualHumanConfig::enable_immunity;
     }

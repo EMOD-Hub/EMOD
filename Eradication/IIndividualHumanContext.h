@@ -1,8 +1,9 @@
 
-// put all contexts in one place to reduce clutter in includes
 #pragma once
+
 #include <list>
 #include <vector>
+
 #include "suids.hpp"
 #include "ISupports.h"
 #include "IdmApi.h"
@@ -19,7 +20,7 @@ namespace Kernel
     struct IIndividualHumanContext : ISupports
     {
         virtual suids::suid GetSuid() const = 0;
-
+        virtual float GetAge() const = 0;
         virtual suids::suid GetNextInfectionSuid() = 0;
         virtual RANDOMBASE* GetRng() = 0;
 

@@ -28,22 +28,22 @@ namespace Kernel
     END_QUERY_INTERFACE_DERIVED(IndividualHumanVector, IndividualHuman)
 
     IndividualHumanVector::IndividualHumanVector(suids::suid _suid, double monte_carlo_weight, double initial_age, int gender)
-    : Kernel::IndividualHuman(_suid, float(monte_carlo_weight), float(initial_age), gender)
-    , m_strain_exposure()
-    , m_total_exposure(0.0f)
-    , m_num_infectious_bites(0)
-    , vector_susceptibility(nullptr)
-    , vector_interventions(nullptr)
+        : Kernel::IndividualHuman(_suid, float(monte_carlo_weight), float(initial_age), gender)
+        , m_strain_exposure()
+        , m_total_exposure(0.0f)
+        , m_num_infectious_bites(0)
+        , vector_susceptibility(nullptr)
+        , vector_interventions(nullptr)
     {
     }
 
     IndividualHumanVector::IndividualHumanVector(INodeContext *context)
-    : Kernel::IndividualHuman(context)
-    , m_strain_exposure()
-    , m_total_exposure(0.0f)
-    , m_num_infectious_bites(0)
-    , vector_susceptibility(nullptr)
-    , vector_interventions(nullptr)
+        : Kernel::IndividualHuman(context)
+        , m_strain_exposure()
+        , m_total_exposure(0.0f)
+        , m_num_infectious_bites(0)
+        , vector_susceptibility(nullptr)
+        , vector_interventions(nullptr)
     {
     }
 
@@ -85,16 +85,15 @@ namespace Kernel
     {
         IndividualHuman::PropagateContextToDependents();
 
-        if( vector_susceptibility == nullptr && susceptibility != nullptr)
+        if(susceptibility && !vector_susceptibility)
         {
             if ( s_OK != susceptibility->QueryInterface(GET_IID(IVectorSusceptibilityContext), (void**)&vector_susceptibility) )
             {
-                throw QueryInterfaceException( __FILE__, __LINE__, __FUNCTION__,
-                                               "susceptibility", "IVectorSusceptibilityContext", "Susceptibility" );
+                throw QueryInterfaceException( __FILE__, __LINE__, __FUNCTION__, "susceptibility", "IVectorSusceptibilityContext", "Susceptibility" );
             }
         }
 
-        if( vector_interventions == nullptr && interventions != nullptr)
+        if(interventions && !vector_interventions)
         {
             vector_interventions = static_cast<VectorInterventionsContainer*>(interventions);
         }
@@ -108,7 +107,7 @@ namespace Kernel
 
     void IndividualHumanVector::CreateSusceptibility(float imm_mod, float risk_mod)
     {
-        SusceptibilityVector *newsusceptibility = SusceptibilityVector::CreateSusceptibility(this, this->m_age, imm_mod, risk_mod);
+        SusceptibilityVector *newsusceptibility = SusceptibilityVector::CreateSusceptibility(this, imm_mod, risk_mod);
         vector_susceptibility = newsusceptibility;
         susceptibility = newsusceptibility; // initialize base class pointer to same object
 
@@ -303,9 +302,8 @@ namespace Kernel
     {
         return InfectionVector::CreateInfection(this, _suid);
     }
-    
-    float 
-    IndividualHumanVector::GetRelativeBitingRate(void) const
+
+    float IndividualHumanVector::GetRelativeBitingRate(void) const
     {
         // I don't think we need this but it was needed by Dengue at one point
         if( vector_susceptibility == nullptr && susceptibility != nullptr)

@@ -310,8 +310,8 @@ namespace Kernel
         virtual void Initialize();
         virtual bool Configure( const Configuration* config ) override;
         void ExtractDataFromDemographics(const NodeDemographics*);
-        virtual void LoadImmunityDemographicsDistribution();
-        virtual void LoadOtherDiseaseSpecificDistributions() {};
+        virtual void LoadImmunityDemographicsDistribution(const NodeDemographics*);
+        virtual void LoadOtherDiseaseSpecificDistributions(const NodeDemographics*);
 
         // Updates
         virtual void updateInfectivity(float dt = 0.0f);

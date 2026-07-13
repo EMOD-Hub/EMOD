@@ -21,28 +21,27 @@ SETUP_LOGGING( "NodeEventContext" )
 namespace Kernel
 {
     NodeEventContextHost::NodeEventContextHost()
-    : node(nullptr)
-    , arrival_distribution_sources()
-    , departure_distribution_sources()
-    , interventions()
-    , node_interventions()
-    , broadcaster_impl()
+        : node(nullptr)
+        , arrival_distribution_sources()
+        , departure_distribution_sources()
+        , interventions()
+        , node_interventions()
+        , broadcaster_impl()
     {
         arrival_distribution_sources.clear();
     }
 
     NodeEventContextHost::NodeEventContextHost(Node* _node)
-    : node(_node)
-    , arrival_distribution_sources()
-    , departure_distribution_sources()
-    , interventions()
-    , node_interventions()
-    , broadcaster_impl()
+        : node(_node)
+        , arrival_distribution_sources()
+        , departure_distribution_sources()
+        , interventions()
+        , node_interventions()
+        , broadcaster_impl()
     {
         arrival_distribution_sources.clear();
     }
 
-    // This was done with macros, but prefer actual code.
     Kernel::QueryResult NodeEventContextHost::QueryInterface( iid_t iid, void** ppinstance )
     {
         release_assert(ppinstance); // todo: add a real message: "QueryInterface requires a non-NULL destination!");
@@ -80,12 +79,8 @@ namespace Kernel
         return status;
     }
 
-    void
-    NodeEventContextHost::SetContextTo(
-        INodeContext* context
-    )
+    void NodeEventContextHost::SetContextTo( INodeContext* context )
     {
-        
         PropagateContextToDependents();
     }
 
@@ -101,10 +96,7 @@ namespace Kernel
     }
 
     // method 2 for VisitIndividuals uses an interface
-    int
-    NodeEventContextHost::VisitIndividuals(
-        IVisitIndividual * pEventCoordinator
-    )
+    int NodeEventContextHost::VisitIndividuals(IVisitIndividual* pEventCoordinator)
     {
         int retTotal = 0;
         float nodeCostThisInterventionThisTimestep = 0.0f;
@@ -123,10 +115,7 @@ namespace Kernel
         return retTotal;
     }
 
-    void NodeEventContextHost::notifyCampaignExpenseIncurred(
-        float expenseIncurred,
-        const IIndividualHumanEventContext * pIndiv
-    )
+    void NodeEventContextHost::notifyCampaignExpenseIncurred(float expenseIncurred, const IIndividualHumanEventContext * pIndiv)
     {
         release_assert( node );
         if( expenseIncurred > 0 )
@@ -168,9 +157,7 @@ namespace Kernel
         return node->demographics;
     }
 
-    const suids::suid &
-    NodeEventContextHost::GetId()
-    const
+    const suids::suid& NodeEventContextHost::GetId() const
     {
         return node->suid;
     }
@@ -466,6 +453,6 @@ namespace Kernel
 
     IIndividualEventBroadcaster* NodeEventContextHost::GetIndividualEventBroadcaster()
     {
-        return this;
+        return static_cast<IIndividualEventBroadcaster*>(this);
     }
 }

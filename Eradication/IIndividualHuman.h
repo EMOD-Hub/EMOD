@@ -37,11 +37,11 @@ namespace Kernel
 
         // Inspection
         virtual suids::suid GetSuid() const = 0;
-        virtual double GetAge() const = 0;
+        virtual float GetAge() const = 0;
         virtual float GetImmuneFailage() const = 0;
         virtual bool IsAdult() const = 0;
         virtual int GetGender() const = 0;
-        virtual double GetMonteCarloWeight() const = 0;
+        virtual float GetMonteCarloWeight() const = 0;
         virtual bool IsInfected() const = 0;
         virtual bool AtHome() const = 0;
         virtual bool IsOnFamilyTrip() const = 0 ;
@@ -53,14 +53,14 @@ namespace Kernel
         virtual NewInfectionState::_enum GetNewInfectionState() const = 0;
         virtual HumanStateChange GetStateChange() const = 0;
 
-        virtual IMigrate* GetIMigrate() = 0;
-        virtual IIndividualHumanInterventionsContext* GetInterventionsContext() const = 0;
+        virtual IMigrate*                               GetIMigrate()                       = 0;
+        virtual IIndividualHumanInterventionsContext*   GetInterventionsContext()     const = 0;
+        virtual IIndividualHumanEventContext*           GetEventContext()                   = 0;
+        virtual ISusceptibilityContext*                 GetSusceptibilityContext()    const = 0;
+        virtual INodeContext*                           GetParent()                   const = 0;
 
         virtual IPKeyValueContainerFull* GetProperties() = 0;
 
-        virtual INodeContext* GetParent() const = 0;
-
-        virtual IIndividualHumanEventContext *GetEventContext() = 0;    // access to specific attributes of the individual useful for events
         virtual float GetAcquisitionImmunity() const = 0;               // KM: For downsampling based on immune status.  For now, just takes perfect immunity; can be updated to include a threshold.  Unclear how to work with multiple strains or waning immunity.
         virtual bool IsPossibleMother() const = 0;
         virtual void UpdateMCSamplingRate(float current_sampling_rate) = 0;
@@ -70,7 +70,6 @@ namespace Kernel
         virtual float GetBirthRateMod() const = 0;
         virtual float GetInfectiousness() const = 0;
         virtual ProbabilityNumber getProbMaternalTransmission() const = 0;
-        virtual ISusceptibilityContext* GetSusceptibilityContext() const = 0;
         virtual inline Kernel::suids::suid GetParentSuid() const = 0;
         virtual bool IsMigrating() = 0;
         virtual void ClearNewInfectionState() = 0;

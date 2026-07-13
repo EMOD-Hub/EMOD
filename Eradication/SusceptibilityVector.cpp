@@ -4,7 +4,6 @@
 
 #include "Common.h"
 #include "SusceptibilityVector.h"
-#include "SimulationConfig.h"
 
 SETUP_LOGGING( "SusceptibilityVector" )
 
@@ -31,22 +30,21 @@ namespace Kernel
     {
     }
 
-    // QI stuff in case we want to use it more extensively
     BEGIN_QUERY_INTERFACE_DERIVED(SusceptibilityVector, Susceptibility)
         HANDLE_INTERFACE(IVectorSusceptibilityContext)
     END_QUERY_INTERFACE_DERIVED(SusceptibilityVector, Susceptibility)
 
-    void SusceptibilityVector::Initialize(float _age, float immmod, float riskmod)
+    void SusceptibilityVector::Initialize(float immmod, float riskmod)
     {
-        Susceptibility::Initialize(_age, immmod, riskmod);
+        Susceptibility::Initialize(immmod, riskmod);
         m_relative_biting_rate = riskmod;
-        m_age_dependent_biting_risk = BitingRiskAgeFactor(_age);
+        m_age_dependent_biting_risk = BitingRiskAgeFactor();
     }
 
-    SusceptibilityVector *SusceptibilityVector::CreateSusceptibility(IIndividualHumanContext *context, float _age, float immmod, float riskmod)
+    SusceptibilityVector *SusceptibilityVector::CreateSusceptibility(IIndividualHumanContext *context, float immmod, float riskmod)
     {
         SusceptibilityVector *newsusceptibility = _new_ SusceptibilityVector(context);
-        newsusceptibility->Initialize(_age, immmod, riskmod);
+        newsusceptibility->Initialize(immmod, riskmod);
 
         return newsusceptibility;
     }
@@ -61,12 +59,7 @@ namespace Kernel
         Susceptibility::Update(dt);
 
         // update age-based biting risk
-        m_age_dependent_biting_risk = BitingRiskAgeFactor(age);
-    }
-
-    const SimulationConfig* SusceptibilityVector::params()
-    {
-        return GET_CONFIGURABLE(SimulationConfig);
+        m_age_dependent_biting_risk = BitingRiskAgeFactor();
     }
 
     void SusceptibilityVector::SetRelativeBitingRate( float rate )
@@ -79,7 +72,7 @@ namespace Kernel
         return m_relative_biting_rate * m_age_dependent_biting_risk;
     }
 
-    float SusceptibilityVector::BitingRiskAgeFactor(float _age)
+    float SusceptibilityVector::BitingRiskAgeFactor()
     {
         float risk = 1.0f;
         switch(SusceptibilityVectorConfig::age_dependent_biting_risk_type)
@@ -89,11 +82,11 @@ namespace Kernel
                 break;
 
             case AgeDependentBitingRisk::LINEAR:
-                risk = LinearBitingFunction(_age);
+                risk = LinearBitingFunction(GetParent()->GetAge());
                 break;
 
             case AgeDependentBitingRisk::SURFACE_AREA_DEPENDENT:
-                risk = SurfaceAreaBitingFunction(_age);
+                risk = SurfaceAreaBitingFunction(GetParent()->GetAge());
                 break;
 
             default:
@@ -102,17 +95,17 @@ namespace Kernel
                     AgeDependentBitingRisk::pairs::lookup_key(SusceptibilityVectorConfig::age_dependent_biting_risk_type) );
         }
 
-        LOG_DEBUG_F("Age-dependent biting-risk = %f for %0.2f-year-old individual.\n", risk, _age/DAYSPERYEAR);
+        LOG_DEBUG_F("Age-dependent biting-risk = %f for %0.2f-year-old individual.\n", risk, GetParent()->GetAge()/DAYSPERYEAR);
         return risk;
     }
 
-    float SusceptibilityVector::LinearBitingFunction(float _age)
+    float SusceptibilityVector::LinearBitingFunction(float input_age)
     {
-        if ( _age < 20 * DAYSPERYEAR )
+        if ( input_age < 20 * DAYSPERYEAR )
         {
             // linear from birth to age 20 years
             float newborn_risk = SusceptibilityVectorConfig::m_newborn_biting_risk;
-            return newborn_risk + _age * (1 - newborn_risk) / (20 * DAYSPERYEAR);
+            return newborn_risk + input_age * (1 - newborn_risk) / (20 * DAYSPERYEAR);
         }
 
         return 1.0f;

@@ -44,7 +44,7 @@ namespace Kernel
         DECLARE_QUERY_INTERFACE()
 
         virtual ~SusceptibilityHIV(void);
-        static Susceptibility *CreateSusceptibility(IIndividualHumanContext *context, float age, float immmod, float riskmod);
+        static Susceptibility *CreateSusceptibility(IIndividualHumanContext *context, float immmod, float riskmod);
 
         void SetContextTo(IIndividualHumanContext* context) override;
         virtual void Update(float dt = 0.0) override;
@@ -67,7 +67,7 @@ namespace Kernel
         void setCD4Rate(const IInfectionHIV * const pInf);
         IIndividualHumanHIV * hiv_parent;
 
-        virtual void Initialize(float age, float immmod, float riskmod) override;
+        virtual void Initialize(float immmod, float riskmod) override;
         void UpdateSymptomaticPresentationTime();
 
         // additional members of SusceptibilityHIV (params)

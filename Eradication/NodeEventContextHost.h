@@ -46,7 +46,7 @@ namespace Kernel
         virtual ExternalNodeId_t GetExternalId() const override;
         virtual IIndividualEventBroadcaster* GetIndividualEventBroadcaster() override;
 
-        virtual void UpdateInterventions(float = 0.0f) override;
+        virtual void  UpdateInterventions(float = 0.0f) override;
 
         // TODO: methods to install hooks for birth and other things...can follow similar pattern presumably
 
@@ -65,7 +65,6 @@ namespace Kernel
 
         // IOutbreakConsumer
         virtual void AddImportCases( IStrainIdentity* outbreak_strainID, float import_age, NaturalNumber num_cases_per_node, ProbabilityNumber prob_infect ) override;
-        //virtual void IncreasePrevalence(StrainIdentity* outbreak_strainID, IEventCoordinator2* pEC) override;
 
         // IIndividualTriggeredInterventionConsumer
         virtual void RegisterObserver( IIndividualEventObserver *pIEO, const EventTrigger& trigger ) override;
@@ -74,8 +73,6 @@ namespace Kernel
         virtual uint64_t GetNumTriggeredEvents() override;
         virtual uint64_t GetNumObservedEvents() override;
 
-        //////////////////////////////////////////////////////////////////////////
-         
         void ProcessArrivingIndividual( IIndividualHuman* );
         void ProcessDepartingIndividual( IIndividualHuman * );
 
@@ -87,6 +84,7 @@ namespace Kernel
         Node* node;
 
         typedef std::map<ITravelLinkedDistributionSource*,int> travel_distribution_source_map_t;
+
         travel_distribution_source_map_t arrival_distribution_sources;
         travel_distribution_source_map_t departure_distribution_sources;
 

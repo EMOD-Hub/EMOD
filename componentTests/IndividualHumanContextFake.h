@@ -113,7 +113,7 @@ public:
         return m_Id ;
     }
 
-    virtual IIndividualHumanInterventionsContext *GetInterventionsContext() const override
+    virtual IIndividualHumanInterventionsContext* GetInterventionsContext() const override
     {
         return m_pInterventionsContext ;
     }
@@ -135,9 +135,9 @@ public:
         }
     }
 
-    virtual suids::suid   GetNextInfectionSuid()                    override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
-    virtual void          UpdateGroupMembership()                   override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
-    virtual void          UpdateGroupPopulation(float size_changes) override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
+    virtual suids::suid   GetNextInfectionSuid()                     override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
+    virtual void          UpdateGroupMembership()                    override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
+    virtual void          UpdateGroupPopulation(float size_changes)  override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
 
     virtual ISusceptibilityContext* GetSusceptibilityContext() const override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
     virtual const NodeDemographics* GetDemographics()          const override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
@@ -147,13 +147,6 @@ public:
     // --------------------------------
     // --- IIndividualHuman Methods
     // --------------------------------
-    //virtual suids::suid GetSuid() const = 0;
-    //virtual double GetAge() const  = 0 ;
-    //virtual int GetGender() const = 0;
-    //virtual double GetMonteCarloWeight() const = 0;
-    //virtual bool IsInfected() const = 0;
-    //virtual HumanStateChange GetStateChange() const = 0;
-    //virtual IIndividualHumanInterventionsContext* GetInterventionsContext() const = 0;
     virtual NewInfectionState::_enum GetNewInfectionState() const override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
     virtual void Update(float current_time, float dt)             override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
     virtual IMigrate* GetIMigrate()                               override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__,  "The method or operation is not implemented." ); }
@@ -171,7 +164,7 @@ public:
     virtual void setupMaternalAntibodies(Kernel::IIndividualHumanContext *,Kernel::INodeContext *) override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
     virtual void AcquireNewInfection(const Kernel::IStrainIdentity *,int)                          override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
     virtual void SetInitialInfections(int)                                                         override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
-    virtual void SetParameters(Kernel::INodeContext *,float,float,float,float)                     override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
+    virtual void SetParameters(Kernel::INodeContext*,float,float,float,float)                      override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
     virtual void InitializeHuman(void)                                                             override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
     virtual void UpdateInfectiousness(float)                                                       override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
     virtual float GetImmuneFailage(void) const                                                     override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
@@ -277,7 +270,7 @@ public:
         return m_IsPregnant ;
     }
 
-    virtual double GetAge() const override
+    virtual float GetAge() const override
     {
         return m_Age ;
     }
@@ -292,7 +285,7 @@ public:
         return m_Gender ;
     }
 
-    virtual double           GetMonteCarloWeight() const override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
+    virtual float            GetMonteCarloWeight() const override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
     virtual bool             IsPossibleMother()    const override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
     virtual float            GetInfectiousness()   const override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }
     virtual HumanStateChange GetStateChange(void)  const override { throw Kernel::NotYetImplementedException( __FILE__, __LINE__, __FUNCTION__, "The method or operation is not implemented."); }

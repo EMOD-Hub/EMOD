@@ -19,7 +19,7 @@ namespace Kernel
         virtual ~VectorToHumanAdapter();
 
         virtual suids::suid GetSuid()   const;
-        virtual double      GetAge()    const;
+        virtual float       GetAge()    const;
         virtual int         GetGender() const;
         virtual void        SetVectorID( uint32_t new_id );
         virtual INodeEventContext* GetNodeEventContext();
@@ -27,7 +27,7 @@ namespace Kernel
         // The following throw an exception if used
         virtual const IIndividualHuman* GetIndividualHumanConst() const override;
         virtual bool   IsPregnant()          const;
-        virtual double GetMonteCarloWeight() const;
+        virtual float  GetMonteCarloWeight() const;
         virtual bool   IsPossibleMother()    const;
         virtual bool   IsInfected()          const;
         virtual bool   IsSymptomatic()       const;
