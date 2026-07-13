@@ -5,10 +5,10 @@
 
 namespace Kernel
 {
-    SusceptibilitySTI *SusceptibilitySTI::CreateSusceptibility(IIndividualHumanContext *context, float age, float immmod, float riskmod)
+    SusceptibilitySTI *SusceptibilitySTI::CreateSusceptibility(IIndividualHumanContext *context, float immmod, float riskmod)
     {
         SusceptibilitySTI *newsusceptibility = _new_ SusceptibilitySTI(context);
-        newsusceptibility->Initialize(age, immmod, riskmod);
+        newsusceptibility->Initialize(immmod, riskmod);
 
         return newsusceptibility;
     }
@@ -17,9 +17,9 @@ namespace Kernel
     SusceptibilitySTI::SusceptibilitySTI() { }
     SusceptibilitySTI::SusceptibilitySTI(IIndividualHumanContext *context) : Susceptibility(context) { }
 
-    void SusceptibilitySTI::Initialize(float _age, float _immmod, float _riskmod)
+    void SusceptibilitySTI::Initialize(float _immmod, float _riskmod)
     {
-        Susceptibility::Initialize(_age, _immmod, _riskmod);
+        Susceptibility::Initialize(_immmod, _riskmod);
     }
 
     REGISTER_SERIALIZABLE(SusceptibilitySTI);

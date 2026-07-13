@@ -91,8 +91,6 @@ namespace Kernel
     , m_female_gametocytes(0)
     , m_female_gametocytes_by_strain()
     , m_gametocytes_detected(0.0)
-    //, m_clinical_symptoms_new()
-    //, m_clinical_symptoms_continuing()
     , m_initial_infected_hepatocytes(0)
     , m_DiagnosticMeasurement()
     , m_CSP_antibody( nullptr )
@@ -109,8 +107,6 @@ namespace Kernel
     , m_female_gametocytes(0)
     , m_female_gametocytes_by_strain()
     , m_gametocytes_detected(0.0)
-    //, m_clinical_symptoms_new()
-    //, m_clinical_symptoms_continuing()
     , m_initial_infected_hepatocytes(0)
     , m_DiagnosticMeasurement()
     , m_CSP_antibody( nullptr )
@@ -157,7 +153,7 @@ namespace Kernel
 
     void IndividualHumanMalaria::CreateSusceptibility(float imm_mod, float risk_mod)
     {
-        SusceptibilityMalaria *newsusceptibility = SusceptibilityMalaria::CreateSusceptibility(dynamic_cast<IIndividualHumanContext*>(this), m_age, imm_mod, risk_mod);
+        SusceptibilityMalaria *newsusceptibility = SusceptibilityMalaria::CreateSusceptibility(dynamic_cast<IIndividualHumanContext*>(this), imm_mod, risk_mod);
         malaria_susceptibility = newsusceptibility;
         vector_susceptibility = newsusceptibility;
         susceptibility = newsusceptibility;

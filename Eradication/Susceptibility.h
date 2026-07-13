@@ -5,12 +5,12 @@
 #include "Configure.h"
 #include "SimulationEnums.h"
 #include "ISusceptibilityContext.h"
+#include "IIndividualHumanContext.h"
 
 class Configuration;
 
 namespace Kernel
 {
-    struct IIndividualHumanContext;
     class SimulationConfig;
 
     class SusceptibilityConfig : public JsonConfigurable 
@@ -38,7 +38,7 @@ namespace Kernel
         static float baseacqupdate;
         static float basetranupdate;
         static float basemortupdate;
-        
+
         static bool  enable_immune_decay;
         static float acqdecayrate;
         static float trandecayrate;
@@ -46,8 +46,6 @@ namespace Kernel
         static float baseacqoffset;
         static float basetranoffset;
         static float basemortoffset;
-
-        void LogConfigs() const;
 
         GET_SCHEMA_STATIC_WRAPPER(SusceptibilityConfig)
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
@@ -59,7 +57,7 @@ namespace Kernel
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
         DECLARE_QUERY_INTERFACE()
     public:
-        static Susceptibility *Susceptibility::CreateSusceptibility(IIndividualHumanContext *context, float _age, float immmod, float riskmod);
+        static Susceptibility* Susceptibility::CreateSusceptibility(IIndividualHumanContext* context, float immmod, float riskmod);
         virtual ~Susceptibility();
         virtual void SetContextTo(IIndividualHumanContext* context);
         IIndividualHumanContext* GetParent();
@@ -68,7 +66,6 @@ namespace Kernel
         virtual void  UpdateInfectionCleared();
 
         // ISusceptibilityContext interfaces
-        virtual float getAge() const override;
         virtual float getModAcquire() const override;
         virtual float getModTransmit() const override;
         virtual float getModMortality() const override;
@@ -81,10 +78,13 @@ namespace Kernel
         virtual bool  IsImmune() const override;
 
     protected:
-        // current status
-        float age;
+        Susceptibility();
+        Susceptibility(IIndividualHumanContext* context);
 
-        // immune modifiers
+        virtual void Initialize(float immmod, float riskmod);
+        float age;   // REMOVE NEXT VERSION
+        IIndividualHumanContext* parent;
+
         float mod_acquire;
         float mod_transmit;
         float mod_mortality;
@@ -94,12 +94,6 @@ namespace Kernel
         float mortdecayoffset;
 
         float immune_failage;
-
-        Susceptibility();
-        Susceptibility(IIndividualHumanContext *context);
-        virtual void Initialize(float _age, float immmod, float riskmod);
-
-        IIndividualHumanContext *parent;
 
         const SimulationConfig* params();
 

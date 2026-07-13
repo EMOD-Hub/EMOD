@@ -51,7 +51,7 @@ namespace Kernel
         throw IllegalOperationException( __FILE__, __LINE__, __FUNCTION__, "Should not be accessing this method in VectorToHumanAdapter" );
     }
 
-    double VectorToHumanAdapter::GetAge() const
+    float VectorToHumanAdapter::GetAge() const
     {
         // vectors don't travel based on age, age doesn't matter, will return 0
         return 0; 
@@ -62,7 +62,7 @@ namespace Kernel
         return (m_VectorGender == VectorGender::VECTOR_FEMALE) ? Gender::FEMALE : Gender::MALE ;
     }
 
-    double VectorToHumanAdapter::GetMonteCarloWeight() const
+    float VectorToHumanAdapter::GetMonteCarloWeight() const
     {
         throw IllegalOperationException( __FILE__, __LINE__, __FUNCTION__, "Should not be accessing this method in VectorToHumanAdapter" );
     }

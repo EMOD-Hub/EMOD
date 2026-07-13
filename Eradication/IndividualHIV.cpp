@@ -19,7 +19,6 @@ namespace Kernel
     #define SIX_WEEKS       (6*7.0f)
     #define EIGHTEEN_MONTHS (18*30.0f)
 
-
     float IndividualHumanHIVConfig::maternal_transmission_ART_multiplier = 1.0f;
 
     GET_SCHEMA_STATIC_WRAPPER_IMPL(IndividualHumanHIV,IndividualHumanHIVConfig)
@@ -54,7 +53,7 @@ namespace Kernel
 
     void IndividualHumanHIV::CreateSusceptibility(float imm_mod, float risk_mod)
     {
-        auto susc = SusceptibilityHIV::CreateSusceptibility(this, m_age, imm_mod, risk_mod);
+        auto susc = SusceptibilityHIV::CreateSusceptibility(this, imm_mod, risk_mod);
         susceptibility = susc; // serialization/migration?
         if ( susc->QueryInterface(GET_IID(ISusceptibilityHIV), (void**)&hiv_susceptibility) != s_OK)
         {
@@ -120,9 +119,7 @@ namespace Kernel
         return (infections.size() > 0);
     }
 
-    IInfectionHIV *
-    IndividualHumanHIV::GetHIVInfection()
-    const
+    IInfectionHIV* IndividualHumanHIV::GetHIVInfection() const
     {
         if( infections.size() == 0 )
         {
@@ -143,23 +140,19 @@ namespace Kernel
         }
     }
 
-    ISusceptibilityHIV*
-    IndividualHumanHIV::GetHIVSusceptibility()
-    const
+    ISusceptibilityHIV* IndividualHumanHIV::GetHIVSusceptibility() const
     {
         return hiv_susceptibility;
     }
 
-    IHIVInterventionsContainer*
-    IndividualHumanHIV::GetHIVInterventionsContainer()
-    const
+    IHIVInterventionsContainer* IndividualHumanHIV::GetHIVInterventionsContainer() const
     {
         return m_pHIVInterventionsContainer;
     }
 
     IIndividualHumanSTI* IndividualHumanHIV::GetIndividualHumanSTI()
     {
-        return this;
+        return static_cast<IIndividualHumanSTI*>(this);
     }
 
     IHIVMedicalHistory* IndividualHumanHIV::GetMedicalHistory() const
@@ -167,8 +160,7 @@ namespace Kernel
         return m_pHIVInterventionsContainer;
     }
 
-    void
-    IndividualHumanHIV::Update( float curtime, float dt )
+    void IndividualHumanHIV::Update( float curtime, float dt )
     {
         IndividualHumanSTI::Update( curtime, dt );
 
@@ -213,9 +205,7 @@ namespace Kernel
         return birth_this_timestep;
     }
 
-    ProbabilityNumber
-    IndividualHumanHIV::getProbMaternalTransmission()
-    const
+    ProbabilityNumber IndividualHumanHIV::getProbMaternalTransmission() const
     {
         ProbabilityNumber retValue = IndividualHuman::getProbMaternalTransmission();
         auto mod = float(GetHIVInterventionsContainer()->GetProbMaternalTransmissionModifier());
@@ -233,39 +223,14 @@ namespace Kernel
         return retValue;
     }
 
-    bool 
-    IndividualHumanHIV::ImmunityEnabled()
-    const
+    bool IndividualHumanHIV::ImmunityEnabled() const
     {
         return true;
     }
 
-    std::string
-    IndividualHumanHIV::toString()
-    const
+    std::string IndividualHumanHIV::toString() const
     {
         return IndividualHumanSTI::toString();
-#if 0
-        std::ostringstream me;
-        me << "id="
-           << GetSuid().data
-           << ",gender="
-           << ( GetGender()==MALE ? "male" : "female" )
-           << ",age="
-           << GetAge()/DAYSPERYEAR
-           << ",num_infections="
-           << infections.size()
-           << ",num_relationships="
-           << relationships.size()
-           << ",num_relationships_lifetime="
-           << num_lifetime_relationships
-           << ",num_relationships_last_6_months="
-           << last_6_month_relationships.size()
-           << ",promiscuity_flags="
-           << std::hex << static_cast<unsigned>(promiscuity_flags)
-           ;
-        return me.str();
-#endif
     }
 
     REGISTER_SERIALIZABLE(IndividualHumanHIV);

@@ -82,7 +82,7 @@ namespace Kernel
 
     public:
 
-        static SusceptibilityMalaria *CreateSusceptibility(IIndividualHumanContext *context, float _age = 20 * DAYSPERYEAR, float immmod = 1.0f, float riskmod = 1.0f);
+        static SusceptibilityMalaria *CreateSusceptibility(IIndividualHumanContext *context, float immmod = 1.0f, float riskmod = 1.0f);
         virtual ~SusceptibilityMalaria();
 
         virtual void Update(float dt) override;
@@ -127,14 +127,15 @@ namespace Kernel
         virtual void GetAntibodiesForReporting( std::vector<MalariaAntibody>& r_antibodies, float currentTime, float dt, MalariaAntibodyType::Enum antibody_type ) override;
 
     protected:
+        const SimulationConfig *params() const;
 
         // Functions to enforce antigen-antibody reactions (e.g. stimulation, decay)
         void  updateImmunityCSP( float dt );
         void  updateImmunityMSP( float dt, float& temp_cytokine_stimulation );
         void  updateImmunityPfEMP1Minor( float dt );
         void  updateImmunityPfEMP1Major( float dt );
-        void  recalculateBloodCapacity( float _age );
-        void  SetPyrogenicThresholdAndFeverKillRate( float _age );
+        void  recalculateBloodCapacity();
+        void  SetPyrogenicThresholdAndFeverKillRate();
         void  countAntibodyVariations();
 
         // Clinical outcome calculations
@@ -202,6 +203,6 @@ namespace Kernel
 
         SusceptibilityMalaria();
         SusceptibilityMalaria(IIndividualHumanContext *context);
-        virtual void Initialize(float _age, float immmod, float riskmod) override;
+        virtual void Initialize(float immmod, float riskmod) override;
     };
 }

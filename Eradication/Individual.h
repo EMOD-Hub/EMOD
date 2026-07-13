@@ -53,7 +53,6 @@ namespace Kernel
         static float infection_timestep;
 
     protected:
-
         static bool aging;
         static float min_adult_age_years ;
 
@@ -101,11 +100,10 @@ namespace Kernel
         DECLARE_QUERY_INTERFACE()
 
     public:
-
         static IndividualHuman *CreateHuman();
         static IndividualHuman *CreateHuman(INodeContext *context, suids::suid id, float MCweight = 1.0f, float init_age = 0.0f, int gender = 0);
-        virtual void InitializeHuman() override;
         virtual ~IndividualHuman();
+        virtual void InitializeHuman() override;
 
         virtual void Update(float currenttime, float dt) override;
 
@@ -116,28 +114,29 @@ namespace Kernel
         virtual suids::suid GetNextInfectionSuid() override;
         virtual RANDOMBASE* GetRng() override;
 
-        virtual IIndividualHumanInterventionsContext* GetInterventionsContext() const override;
-        virtual IIndividualHumanInterventionsContext* GetInterventionsContextbyInfection(IInfection* infection) override;
-        virtual IIndividualHumanEventContext*         GetEventContext() override;
-        virtual ISusceptibilityContext*               GetSusceptibilityContext() const override;
+        virtual IIndividualHumanInterventionsContext* GetInterventionsContext()                                  const   override;
+        virtual IIndividualHumanInterventionsContext* GetInterventionsContextbyInfection(IInfection* infection)          override;
+        virtual const IIndividualHuman*               GetIndividualHumanConst()                                  const   override { return this; };
+        virtual IIndividualHumanEventContext*         GetEventContext()                                                  override;
+        virtual ISusceptibilityContext*               GetSusceptibilityContext()                                 const   override;
 
         virtual const Kernel::NodeDemographics*     GetDemographics() const override;
 
         // IIndividualHumanEventContext methods
-        virtual const IIndividualHuman* GetIndividualHumanConst() const override { return this; };
-        virtual bool   IsPregnant()           const override { return is_pregnant; };
-        virtual double GetAge()               const override { return m_age; }
-        virtual float GetImmuneFailage()      const override;
-        inline float getAgeInYears()          const {return floor(GetAge()/DAYSPERYEAR);}
-        virtual int    GetGender()            const override { return m_gender; }
-        virtual double GetMonteCarloWeight()  const override { return m_mc_weight; }
-        virtual bool   IsPossibleMother()     const override;
-        virtual bool   IsInfected()           const override { return m_is_infected; }
-        virtual float  GetAcquisitionImmunity() const override; // KM: For downsampling based on immune status.  For now, just takes perfect immunity; can be updated to include a threshold.  Unclear how to work with multiple strains or waning immunity.
-        virtual HumanStateChange GetStateChange() const override { return StateChange; }
-        virtual void Die( HumanStateChange ) override;
-        virtual INodeEventContext   * GetNodeEventContext() override; // for campaign cost reporting in e.g. HealthSeekingBehavior
-        virtual IPKeyValueContainerFull* GetProperties() override;
+        virtual bool              IsPregnant()                     const override { return is_pregnant; };
+        virtual float             GetAge()                         const override { return m_age; }
+        virtual float             GetImmuneFailage()               const override;
+        inline  float             getAgeInYears()                  const          { return floor(GetAge()/DAYSPERYEAR);}
+        virtual int               GetGender()                      const override { return m_gender; }
+        virtual float             GetMonteCarloWeight()            const override { return m_mc_weight; }
+        virtual bool              IsPossibleMother()               const override;
+        virtual bool              IsInfected()                     const override { return m_is_infected; }
+        virtual float             GetAcquisitionImmunity()         const override; // KM: For downsampling based on immune status.  For now, just takes perfect immunity; can be updated to include a threshold.  Unclear how to work with multiple strains or waning immunity.
+        virtual HumanStateChange  GetStateChange()                 const override { return StateChange; }
+        virtual void              Die( HumanStateChange )                override;
+
+        virtual INodeEventContext*        GetNodeEventContext()          override; // for campaign cost reporting in e.g. HealthSeekingBehavior
+        virtual IPKeyValueContainerFull*  GetProperties()                override;
         virtual bool AtHome() const override;
         virtual void SetHome( const suids::suid& rHomeNodeID ) override;
 
@@ -175,7 +174,7 @@ namespace Kernel
         // Infections
         virtual void ExposeToInfectivity(float dt, TransmissionGroupMembership_t transmissionGroupMembership);
         virtual void Expose( const IContagionPopulation* cp, float dt, TransmissionRoute::Enum transmission_route = TransmissionRoute::TRANSMISSIONROUTE_CONTACT ) override;
-        virtual void AcquireNewInfection( const IStrainIdentity *infstrain, int incubation_period_override = -1) override;
+        virtual void AcquireNewInfection( const IStrainIdentity* infstrain, int incubation_period_override = -1) override;
 
         virtual const infection_list_t &GetInfections() const override;
         virtual IInfection* GetNewInfection() const override;
@@ -218,7 +217,6 @@ namespace Kernel
         static void InitializeStatics( const Configuration* config );
 
     protected:
-
         // Core properties
         suids::suid suid;
         float m_age;
@@ -232,6 +230,7 @@ namespace Kernel
         Susceptibility*               susceptibility;   // individual susceptibility (i.e. immune system)
         infection_list_t              infections;
         InterventionsContainer*       interventions;
+
         TransmissionGroupMembership_t transmissionGroupMembership;
 
         // Infections
@@ -291,7 +290,7 @@ namespace Kernel
 
     private:
         bool m_newly_symptomatic;
-        
+
         virtual IIndividualHumanContext* GetContextPointer();
 
         DECLARE_SERIALIZABLE(IndividualHuman);

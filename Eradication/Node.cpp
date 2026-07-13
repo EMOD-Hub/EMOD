@@ -503,8 +503,6 @@ namespace Kernel
         }
         //////////////////////////////////////////////////////////////////////////////////////
 
-        LoadOtherDiseaseSpecificDistributions();
-
         ExtractDataFromDemographics(p_demog);
 
 #ifndef DISABLE_CLIMATE
@@ -519,13 +517,6 @@ namespace Kernel
         delete p_demog;
 
         SetupIntranodeTransmission();
-    }
-
-    void Node::LoadImmunityDemographicsDistribution()
-    {
-        // If not overridden, "SusceptibilityDistribution" provides age-specific probabilities of being susceptible (1.0 = not immune; 0.0 = immune)
-        LOG_DEBUG( "Parsing IndividualAttributes->SusceptibilityDistribution tag in node demographics file.\n" );
-        SusceptibilityDistribution = NodeDemographicsDistribution::CreateDistribution(demographics["IndividualAttributes"]["SusceptibilityDistribution"]);
     }
 
     ITransmissionGroups* Node::CreateTransmissionGroups()
@@ -1600,7 +1591,7 @@ namespace Kernel
             }
             else if (SusceptibilityConfig::susceptibility_initialization_distribution_type == DistributionType::DISTRIBUTION_COMPLEX)
             {
-                LoadImmunityDemographicsDistribution();
+                LoadImmunityDemographicsDistribution(p_demog);
             }
         }
 
@@ -1642,6 +1633,20 @@ namespace Kernel
                 }
             }
         }
+
+        LoadOtherDiseaseSpecificDistributions(p_demog);
+    }
+
+    void Node::LoadImmunityDemographicsDistribution(const NodeDemographics* p_demog)
+    {
+        // If not overridden, "SusceptibilityDistribution" provides age-specific probabilities of being susceptible (1.0 = not immune; 0.0 = immune)
+        LOG_DEBUG( "Parsing IndividualAttributes->SusceptibilityDistribution tag in node demographics file.\n" );
+        SusceptibilityDistribution = NodeDemographicsDistribution::CreateDistribution((*p_demog)["IndividualAttributes"]["SusceptibilityDistribution"]);
+    }
+
+    void Node::LoadOtherDiseaseSpecificDistributions(const NodeDemographics* p_demog)
+    {
+        // Overridden in derived classes
     }
 
     // This function adds newborns to the node according to behavior determined by the settings of various flags:
