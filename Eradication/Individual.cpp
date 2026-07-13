@@ -54,7 +54,6 @@ namespace Kernel
 
 
     MigrationStructure::Enum   IndividualHumanConfig::migration_structure = MigrationStructure::NO_MIGRATION;
-    //VitalDeathDependence::Enum IndividualHumanConfig::vital_death_dependence = VitalDeathDependence::NONDISEASE_MORTALITY_OFF;
     bool                       IndividualHumanConfig::enable_skipping = false;
 
     // QI stuff in case we want to use it more extensively outside of campaigns
@@ -255,7 +254,6 @@ namespace Kernel
         initConfigTypeMap( "Air_Migration_Roundtrip_Probability", &air_roundtrip_prob, Air_Migration_Roundtrip_Probability_DESC_TEXT, 0.0f, 1.0f, 0.8f, "Migration_Pattern", "SINGLE_ROUND_TRIPS"  );
         initConfigTypeMap( "Regional_Migration_Roundtrip_Probability", &region_roundtrip_prob, Regional_Migration_Roundtrip_Probability_DESC_TEXT, 0.0f, 1.0f, 0.1f, "Migration_Pattern", "SINGLE_ROUND_TRIPS"  );
         initConfigTypeMap( "Sea_Migration_Roundtrip_Probability", &sea_roundtrip_prob, Sea_Migration_Roundtrip_Probability_DESC_TEXT, 0.0f, 1.0f, 0.25f, "Migration_Pattern", "SINGLE_ROUND_TRIPS"  );
-        //initConfigTypeMap( "Family_Migration_Roundtrip_Probability", &family_roundtrip_prob, Family_Migration_Roundtrip_Probability_DESC_TEXT, 0.0f, 1.0f, 0.25f, "Migration_Pattern", "SINGLE_ROUND_TRIPS"  );
         family_roundtrip_prob = 1.0;
 
         initConfigTypeMap( "Local_Migration_Roundtrip_Duration", &local_roundtrip_duration_rate, Local_Migration_Roundtrip_Duration_DESC_TEXT, 0.0f, 10000.0f, 1.0f, "Migration_Pattern", "SINGLE_ROUND_TRIPS"  );
@@ -442,10 +440,10 @@ namespace Kernel
 
     bool IndividualHuman::IsDead() const
     {
-        auto state_change = GetStateChange();
-        bool is_dead = ( (state_change == HumanStateChange::DiedFromNaturalCauses) || 
-                         (state_change == HumanStateChange::KilledByInfection    ) ) 
-                         || (state_change == HumanStateChange::KilledByMCSampling) ;
+        bool is_dead = (StateChange == HumanStateChange::DiedFromNaturalCauses) ||
+                       (StateChange == HumanStateChange::KilledByInfection)     ||
+                       (StateChange == HumanStateChange::KilledByMCSampling);
+
         return is_dead ;
     }
 
