@@ -32,7 +32,7 @@ SETUP_LOGGING( "Individual" )
 
 namespace Kernel
 {
-    bool IndividualHumanConfig::aging = true;
+    bool IndividualHumanConfig::aging = false;
     float IndividualHumanConfig::local_roundtrip_prob = 0.0f;
     float IndividualHumanConfig::air_roundtrip_prob = 0.0f;
     float IndividualHumanConfig::region_roundtrip_prob = 0.0f;

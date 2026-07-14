@@ -7,7 +7,10 @@
         "Simulation_Duration": 730,
         "Demographics_Filenames": ["uniform_demographics.json","pfa_simple.json","PFA_overlay_rates.json","PFA_Concurrency.json"],
         "x_Base_Population": 0.002, 
-        "Enable_Vital_Dynamics": 0,
+        "Enable_Vital_Dynamics": 1,
+        "Enable_Aging": 1,
+        "Enable_Birth": 0,
+        "Enable_Natural_Mortality": 0,
 
         "Enable_Coital_Dilution": 1, 
         "Coital_Dilution_Factor_2_Partners": 0.5, 

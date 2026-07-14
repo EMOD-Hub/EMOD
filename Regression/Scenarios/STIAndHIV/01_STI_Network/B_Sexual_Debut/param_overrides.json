@@ -8,7 +8,9 @@
             "pfa_simple.json"
         ],
         "Enable_Natural_Mortality": 0,
-        "Enable_Vital_Dynamics": 0,
+        "Enable_Vital_Dynamics": 1,
+        "Enable_Aging": 1,
+        "Enable_Birth": 0,
         "Report_Relationship_Start": 1,
         "Sexual_Debut_Age_Female_Weibull_Heterogeneity": 0.05,
         "Sexual_Debut_Age_Female_Weibull_Scale": 15.4061176831848,

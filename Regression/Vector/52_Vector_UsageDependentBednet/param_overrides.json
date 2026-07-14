@@ -4,7 +4,9 @@
         "Climate_Model": "CLIMATE_CONSTANT",
         "Enable_Birth": 0,
         "Enable_Climate_Stochasticity": 0,
-        "Enable_Vital_Dynamics": 0,
+        "Enable_Vital_Dynamics": 1,
+        "Enable_Aging": 1,
+        "Enable_Natural_Mortality": 0,
         "DEMOGRAPHICS": {
             "Birth_Rate_Dependence": "DEMOGRAPHIC_DEP_RATE",
             "Demographics_Filenames": [

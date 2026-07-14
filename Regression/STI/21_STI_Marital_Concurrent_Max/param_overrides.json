@@ -3,7 +3,10 @@
     "parameters": {
         "DEMOGRAPHICS": {
             "Demographics_Filenames": [ "../../HIV/input/SA_UN_demographics.json", "../../HIV/input/PFA_overlay.json", "../../HIV/input/PFA_overlay_marital_10_only.json","PFA_Concurrency.json" ],
-            "Enable_Vital_Dynamics": 0,
+            "Enable_Vital_Dynamics": 1,
+            "Enable_Aging": 1,
+            "Enable_Birth": 0,
+            "Enable_Natural_Mortality": 0,
             "Individual_Sampling_Type": "FIXED_SAMPLING",
             "MORTALITY": {
                 "Base_Mortality": 0.01, 

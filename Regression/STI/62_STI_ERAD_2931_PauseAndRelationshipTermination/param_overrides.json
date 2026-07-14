@@ -21,8 +21,10 @@
         "____________DEMOGRAPHICS___________": "",
         "x_Base_Population": 5e-5,
         "Demographics_Filenames": [ "../../HIV/input/SA_UN_demographics_extrapolated_WithProperties_Smoothed_4_Nodes.json", "../../HIV/input/PFA_overlay.json", "PFA_overlay_rates.json" ],
-        "Enable_Birth": 1,
-        "Enable_Vital_Dynamics": 0, 
+        "Enable_Birth": 0,
+        "Enable_Vital_Dynamics": 1, 
+        "Enable_Aging": 1,
+        "Enable_Natural_Mortality": 0,
 
         "____________MIGRATION___________": "",
         ".Migration_Model": "NO_MIGRATION", 

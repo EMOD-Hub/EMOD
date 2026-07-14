@@ -5,7 +5,10 @@
             "Birth_Rate_Dependence": "POPULATION_DEP_RATE",
             "Enable_Demographics_Builtin": 0,
             "Enable_Demographics_Reporting": 1,
-            "Enable_Vital_Dynamics": 0,
+            "Enable_Vital_Dynamics": 1,
+            "Enable_Aging": 1,
+            "Enable_Birth": 0,
+            "Enable_Natural_Mortality": 0,
             "Sample_Rate_Birth": 1
         },
         "DISEASE": {

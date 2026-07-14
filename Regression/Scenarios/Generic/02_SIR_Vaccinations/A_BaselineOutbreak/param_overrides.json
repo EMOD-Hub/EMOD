@@ -7,7 +7,9 @@
                 "generic_scenarios_individualproperties_demographics.json"
             ],
             "Enable_Birth": 0,
-            "Enable_Vital_Dynamics": 0,
+            "Enable_Vital_Dynamics": 1,
+            "Enable_Aging": 1,
+            "Enable_Natural_Mortality": 0,
             "IMMUNITY": {
                 "Enable_Immune_Decay": 0
             },

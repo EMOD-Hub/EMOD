@@ -4,7 +4,10 @@
         "Config_Name": "94_STI_RTEC_OnIP",
         "Simulation_Duration": 1000, 
         
-        "Enable_Vital_Dynamics": 0,
+        "Enable_Vital_Dynamics": 1,
+        "Enable_Aging": 1,
+        "Enable_Birth": 0,
+        "Enable_Natural_Mortality": 0,
         "Demographics_Filenames": [
             "../../HIV/input/SA_UN_demographics.json",
             "../../HIV/input/PFA_overlay.json",
