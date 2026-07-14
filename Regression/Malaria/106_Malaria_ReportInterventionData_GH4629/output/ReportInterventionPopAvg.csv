@@ -1,45 +1,45 @@
 Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions,AvgEfficacy-Attracting,AvgEfficacy-Repelling,AvgEfficacy-Blocking,AvgEfficacy-Killing,AvgEfficacy-Usage,AvgEfficacy-AcquisitionBlocking,AvgEfficacy-TransmissionBlocking,AvgEfficacy-MortalityBlocking,DrugConcentration
-100,4,1000,AdherentDrug-Piperaquine,0.513,1,0,0,0,0,0,0,0,0,0.289462
+100,4,1000,AdherentDrug-Piperaquine,0.513,1,0,0,0,0,0,0,0,0,0.289379
 100,3,1000,AdherentDrug-Piperaquine,0.489,1,0,0,0,0,0,0,0,0,0.294182
 100,2,1000,AdherentDrug-Piperaquine,0.491,1,0,0,0,0,0,0,0,0,0.293244
 100,1,1000,AdherentDrug-Piperaquine,0.516,1,0,0,0,0,0,0,0,0,0.286047
-101,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.213395
+101,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.213334
 101,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.212328
 101,2,1000,AdherentDrug-Piperaquine,0.473,1,0,0,0,0,0,0,0,0,0.215661
 101,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.212542
-102,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.421971
+102,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.421827
 102,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.415362
 102,2,1000,AdherentDrug-Piperaquine,0.473,1,0,0,0,0,0,0,0,0,0.439014
 102,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.434109
-103,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.291025
+103,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.29091
 103,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.297686
 103,2,1000,AdherentDrug-Piperaquine,0.473,1,0,0,0,0,0,0,0,0,0.296048
 103,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.294257
-104,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.460502
+104,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.460395
 104,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.446525
 104,2,1000,AdherentDrug-Piperaquine,0.473,1,0,0,0,0,0,0,0,0,0.442648
 104,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.431632
-105,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.314518
+105,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.314418
 105,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.319663
 105,2,1000,AdherentDrug-Piperaquine,0.473,1,0,0,0,0,0,0,0,0,0.315667
 105,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.317447
-106,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.380711
+106,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.380617
 106,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.433281
 106,2,1000,AdherentDrug-Piperaquine,0.473,1,0,0,0,0,0,0,0,0,0.36212
 106,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.357222
-107,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.303511
+107,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.303423
 107,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.314944
 107,2,1000,AdherentDrug-Piperaquine,0.473,1,0,0,0,0,0,0,0,0,0.305048
 107,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.307756
-108,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.283789
+108,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.283707
 108,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.29438
 108,2,1000,AdherentDrug-Piperaquine,0.473,1,0,0,0,0,0,0,0,0,0.28528
 108,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.287833
-109,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.265487
+109,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.26541
 109,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.275393
 109,2,1000,AdherentDrug-Piperaquine,0.473,1,0,0,0,0,0,0,0,0,0.266881
 109,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.26927
-110,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.248365
+110,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.248294
 110,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 110,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.257633
 110,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -47,7 +47,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 110,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 110,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.251905
 110,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-111,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.232347
+111,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.23228
 111,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 111,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.241018
 111,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -55,7 +55,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 111,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 111,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.235658
 111,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-112,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.217362
+112,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.217299
 112,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 112,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.225473
 112,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -63,7 +63,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 112,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 112,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.22046
 112,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-113,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.203344
+113,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.203285
 113,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 113,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.210932
 113,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -71,7 +71,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 113,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 113,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.206241
 113,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-114,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.19023
+114,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.190175
 114,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 114,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.197328
 114,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -79,7 +79,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 114,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 114,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.192941
 114,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-115,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.177961
+115,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.177909
 115,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 115,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.184602
 115,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -87,7 +87,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 115,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 115,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.180497
 115,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-116,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.166484
+116,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.166436
 116,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 116,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.172696
 116,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -95,7 +95,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 116,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 116,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.168856
 116,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-117,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.155747
+117,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.155702
 117,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 117,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.161559
 117,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -103,7 +103,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 117,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 117,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.157966
 117,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-118,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.145702
+118,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.14566
 118,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 118,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.151139
 118,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -111,7 +111,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 118,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 118,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.147779
 118,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-119,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.136306
+119,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.136266
 119,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 119,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.141392
 119,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -119,7 +119,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 119,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 119,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.138248
 119,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-120,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.127515
+120,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.127478
 120,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 120,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.132273
 120,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -127,7 +127,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 120,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 120,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.129332
 120,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-121,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.119291
+121,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.119257
 121,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 121,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.123743
 121,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -135,7 +135,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 121,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 121,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.120991
 121,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-122,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.111598
+122,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.111565
 122,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 122,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.115762
 122,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -143,7 +143,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 122,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 122,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.113188
 122,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-123,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.1044
+123,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.10437
 123,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 123,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.108296
 123,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -151,7 +151,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 123,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 123,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.105888
 123,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-124,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0976671
+124,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0976389
 124,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 124,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.101312
 124,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -159,7 +159,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 124,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 124,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.099059
 124,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-125,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0913686
+125,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0913422
 125,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 125,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0947781
 125,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -167,7 +167,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 125,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 125,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0926706
 125,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-126,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0854756
+126,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0854509
 126,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 126,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0886652
 126,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -175,7 +175,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 126,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 126,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0866937
 126,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-127,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0799631
+127,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.07994
 127,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 127,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.082947
 127,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -183,7 +183,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 127,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 127,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0811027
 127,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-128,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0748063
+128,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0747846
 128,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 128,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0775978
 128,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -191,7 +191,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 128,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 128,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0758723
 128,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-129,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0699819
+129,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0699616
 129,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 129,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0725933
 129,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -199,7 +199,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 129,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 129,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0709791
 129,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-130,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0654682
+130,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0654493
 130,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 130,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0679112
 130,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -207,7 +207,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 130,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 130,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0664011
 130,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-131,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0612462
+131,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0612284
 131,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 131,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0635316
 131,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -215,7 +215,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 131,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 131,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.062119
 131,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-132,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0572962
+132,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0572796
 132,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 132,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0594342
 132,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -223,7 +223,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 132,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 132,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0581127
 132,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-133,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0536009
+133,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0535854
 133,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 133,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0556011
 133,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -231,7 +231,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 133,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 133,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0543648
 133,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-134,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0501441
+134,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0501296
 134,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 134,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0520153
 134,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -239,7 +239,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 134,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 134,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0508587
 134,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-135,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0469101
+135,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0468965
 135,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 135,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0486605
 135,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -247,7 +247,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 135,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 135,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0475786
 135,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-136,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0438847
+136,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.043872
 136,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 136,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0455223
 136,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -255,7 +255,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 136,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 136,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0445101
 136,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-137,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0410544
+137,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0410425
 137,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 137,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0425864
 137,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -263,7 +263,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 137,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 137,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0416394
 137,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-138,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0384068
+138,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0383956
 138,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 138,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0398399
 138,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -271,7 +271,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 138,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 138,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.038954
 138,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-139,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0359298
+139,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0359194
 139,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 139,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0372706
 139,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -279,7 +279,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 139,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 139,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0364418
 139,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-140,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0336126
+140,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0336029
 140,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 140,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0348669
 140,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -287,7 +287,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 140,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 140,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0340916
 140,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-141,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0314447
+141,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0314356
 141,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 141,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0326181
 141,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -295,7 +295,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 141,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 141,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0318929
 141,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-142,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0294168
+142,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0294083
 142,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 142,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0305146
 142,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -303,7 +303,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 142,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 142,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0298361
 142,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-143,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0275197
+143,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0275117
 143,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 143,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0285466
 143,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -311,7 +311,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 143,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 143,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0279118
 143,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-144,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0257449
+144,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0257375
 144,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 144,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0267056
 144,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -319,7 +319,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 144,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 144,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0261118
 144,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-145,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0240845
+145,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0240776
 145,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 145,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0249833
 145,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -327,7 +327,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 145,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 145,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0244278
 145,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-146,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0225312
+146,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0225247
 146,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 146,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.023372
 146,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -335,7 +335,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 146,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 146,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0228523
 146,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-147,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0210781
+147,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.021072
 147,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 147,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0218647
 147,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -343,7 +343,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 147,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 147,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0213785
 147,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-148,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0197188
+148,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0197131
 148,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 148,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0204546
 148,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -351,7 +351,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 148,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 148,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0199998
 148,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-149,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.018447
+149,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0184417
 149,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
 149,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0191354
 149,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,1,0,0,0,0
@@ -359,7 +359,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 149,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
 149,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0187099
 149,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,1,0,0,0,0
-150,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0172573
+150,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0172523
 150,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.799997,0,0,0,0
 150,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0179013
 150,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.799997,0,0,0,0
@@ -367,7 +367,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 150,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.799997,0,0,0,0
 150,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0175032
 150,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.799997,0,0,0,0
-151,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0161444
+151,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0161397
 151,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.799997,0,0,0,0
 151,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0167468
 151,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.799997,0,0,0,0
@@ -375,7 +375,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 151,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.799997,0,0,0,0
 151,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0163744
 151,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.799997,0,0,0,0
-152,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0151031
+152,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0150988
 152,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.799997,0,0,0,0
 152,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0156667
 152,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.799997,0,0,0,0
@@ -383,7 +383,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 152,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.799997,0,0,0,0
 152,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0153183
 152,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.799997,0,0,0,0
-153,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0141291
+153,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.014125
 153,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.799997,0,0,0,0
 153,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0146563
 153,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.799997,0,0,0,0
@@ -391,7 +391,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 153,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.799997,0,0,0,0
 153,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0143304
 153,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.799997,0,0,0,0
-154,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0132178
+154,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.013214
 154,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.799997,0,0,0,0
 154,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0137111
 154,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.799997,0,0,0,0
@@ -399,7 +399,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 154,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.799997,0,0,0,0
 154,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0134062
 154,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.799997,0,0,0,0
-155,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0123654
+155,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0123618
 155,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.799997,0,0,0,0
 155,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0128268
 155,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.799997,0,0,0,0
@@ -407,7 +407,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 155,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.799997,0,0,0,0
 155,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0125416
 155,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.799997,0,0,0,0
-156,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0115679
+156,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0115646
 156,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.799997,0,0,0,0
 156,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0119996
 156,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.799997,0,0,0,0
@@ -415,7 +415,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 156,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.799997,0,0,0,0
 156,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0117328
 156,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.799997,0,0,0,0
-157,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0108219
+157,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0108187
 157,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.799997,0,0,0,0
 157,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0112257
 157,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.799997,0,0,0,0
@@ -423,7 +423,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 157,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.799997,0,0,0,0
 157,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0109761
 157,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.799997,0,0,0,0
-158,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0101239
+158,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.010121
 158,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.799997,0,0,0,0
 158,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0105017
 158,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.799997,0,0,0,0
@@ -431,7 +431,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 158,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.799997,0,0,0,0
 158,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.0102682
 158,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.799997,0,0,0,0
-159,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.009471
+159,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00946826
 159,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.799997,0,0,0,0
 159,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00982442
 159,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.799997,0,0,0,0
@@ -439,7 +439,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 159,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.799997,0,0,0,0
 159,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00960596
 159,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.799997,0,0,0,0
-160,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00886021
+160,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00885764
 160,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.600003,0,0,0,0
 160,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00919083
 160,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.600003,0,0,0,0
@@ -447,7 +447,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 160,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.600003,0,0,0,0
 160,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00898647
 160,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.600003,0,0,0,0
-161,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00828881
+161,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00828641
 161,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.600003,0,0,0,0
 161,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00859811
 161,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.600003,0,0,0,0
@@ -455,7 +455,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 161,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.600003,0,0,0,0
 161,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00840693
 161,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.600003,0,0,0,0
-162,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00775423
+162,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00775199
 162,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.600003,0,0,0,0
 162,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00804359
 162,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.600003,0,0,0,0
@@ -463,7 +463,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 162,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.600003,0,0,0,0
 162,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00786474
 162,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.600003,0,0,0,0
-163,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00725413
+163,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00725203
 163,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.600003,0,0,0,0
 163,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00752482
 163,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.600003,0,0,0,0
@@ -471,7 +471,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 163,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.600003,0,0,0,0
 163,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00735751
 163,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.600003,0,0,0,0
-164,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00678629
+164,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00678432
 164,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.600003,0,0,0,0
 164,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00703953
 164,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.600003,0,0,0,0
@@ -479,7 +479,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 164,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.600003,0,0,0,0
 164,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.006883
 164,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.600003,0,0,0,0
-165,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00634862
+165,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00634678
 165,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.600003,0,0,0,0
 165,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00658552
 165,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.600003,0,0,0,0
@@ -487,7 +487,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 165,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.600003,0,0,0,0
 165,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00643909
 165,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.600003,0,0,0,0
-166,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00593918
+166,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00593746
 166,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.600003,0,0,0,0
 166,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00616081
 166,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.600003,0,0,0,0
@@ -495,7 +495,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 166,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.600003,0,0,0,0
 166,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00602382
 166,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.600003,0,0,0,0
-167,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00555614
+167,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00555453
 167,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.600003,0,0,0,0
 167,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00576347
 167,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.600003,0,0,0,0
@@ -503,7 +503,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 167,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.600003,0,0,0,0
 167,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00563532
 167,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.600003,0,0,0,0
-168,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0051978
+168,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0051963
 168,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.600003,0,0,0,0
 168,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00539176
 168,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.600003,0,0,0,0
@@ -511,7 +511,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 168,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.600003,0,0,0,0
 168,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00527188
 168,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.600003,0,0,0,0
-169,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00486259
+169,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00486119
 169,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.600003,0,0,0,0
 169,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00504405
 169,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.600003,0,0,0,0
@@ -519,7 +519,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 169,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.600003,0,0,0,0
 169,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00493189
 169,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.600003,0,0,0,0
-170,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00454898
+170,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00454766
 170,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.399999,0,0,0,0
 170,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00471873
 170,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.399999,0,0,0,0
@@ -527,7 +527,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 170,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.399998,0,0,0,0
 170,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00461381
 170,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.399999,0,0,0,0
-171,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0042556
+171,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00425437
 171,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.399999,0,0,0,0
 171,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0044144
 171,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.399999,0,0,0,0
@@ -535,7 +535,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 171,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.399998,0,0,0,0
 171,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00431624
 171,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.399999,0,0,0,0
-172,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00398114
+172,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00397999
 172,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.399999,0,0,0,0
 172,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0041297
 172,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.399999,0,0,0,0
@@ -543,7 +543,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 172,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.399998,0,0,0,0
 172,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00403787
 172,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.399999,0,0,0,0
-173,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00372439
+173,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00372331
 173,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.399999,0,0,0,0
 173,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00386337
 173,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.399999,0,0,0,0
@@ -551,7 +551,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 173,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.399998,0,0,0,0
 173,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00377746
 173,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.399999,0,0,0,0
-174,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0034842
+174,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00348319
 174,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.399999,0,0,0,0
 174,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00361421
 174,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.399999,0,0,0,0
@@ -559,7 +559,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 174,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.399998,0,0,0,0
 174,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00353385
 174,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.399999,0,0,0,0
-175,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00325949
+175,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00325855
 175,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.399999,0,0,0,0
 175,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00338113
 175,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.399999,0,0,0,0
@@ -567,7 +567,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 175,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.399998,0,0,0,0
 175,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00330594
 175,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.399999,0,0,0,0
-176,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00304928
+176,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0030484
 176,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.399999,0,0,0,0
 176,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00316307
 176,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.399999,0,0,0,0
@@ -575,7 +575,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 176,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.399998,0,0,0,0
 176,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00309274
 176,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.399999,0,0,0,0
-177,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00285262
+177,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0028518
 177,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.399999,0,0,0,0
 177,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00295907
 177,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.399999,0,0,0,0
@@ -583,7 +583,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 177,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.399998,0,0,0,0
 177,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00289327
 177,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.399999,0,0,0,0
-178,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00266864
+178,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00266787
 178,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.399999,0,0,0,0
 178,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00276823
 178,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.399999,0,0,0,0
@@ -591,7 +591,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 178,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.399998,0,0,0,0
 178,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00270667
 178,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.399999,0,0,0,0
-179,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00249654
+179,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00249581
 179,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.399999,0,0,0,0
 179,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0025897
 179,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.399999,0,0,0,0
@@ -599,7 +599,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 179,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.399998,0,0,0,0
 179,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00253211
 179,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.399999,0,0,0,0
-180,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00233552
+180,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00233485
 180,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.199999,0,0,0,0
 180,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00242268
 180,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.199999,0,0,0,0
@@ -607,7 +607,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 180,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.199999,0,0,0,0
 180,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00236881
 180,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.199999,0,0,0,0
-181,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0021849
+181,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00218426
 181,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.199999,0,0,0,0
 181,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00226643
 181,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.199999,0,0,0,0
@@ -615,7 +615,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 181,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.199999,0,0,0,0
 181,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00221603
 181,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.199999,0,0,0,0
-182,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.002044
+182,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00204341
 182,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.199999,0,0,0,0
 182,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00212027
 182,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.199999,0,0,0,0
@@ -623,7 +623,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 182,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.199999,0,0,0,0
 182,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00207312
 182,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.199999,0,0,0,0
-183,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00191217
+183,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00191162
 183,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.199999,0,0,0,0
 183,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00198352
 183,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.199999,0,0,0,0
@@ -631,7 +631,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 183,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.199999,0,0,0,0
 183,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00193942
 183,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.199999,0,0,0,0
-184,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00178885
+184,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00178833
 184,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.199999,0,0,0,0
 184,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0018556
 184,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.199999,0,0,0,0
@@ -639,7 +639,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 184,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.199999,0,0,0,0
 184,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00181434
 184,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.199999,0,0,0,0
-185,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00167348
+185,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.001673
 185,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.199999,0,0,0,0
 185,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00173593
 185,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.199999,0,0,0,0
@@ -647,7 +647,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 185,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.199999,0,0,0,0
 185,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00169733
 185,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.199999,0,0,0,0
-186,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00156555
+186,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0015651
 186,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.199999,0,0,0,0
 186,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00162397
 186,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.199999,0,0,0,0
@@ -655,7 +655,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 186,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.199999,0,0,0,0
 186,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00158786
 186,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.199999,0,0,0,0
-187,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00146458
+187,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00146416
 187,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.199999,0,0,0,0
 187,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00151924
 187,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.199999,0,0,0,0
@@ -663,7 +663,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 187,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.199999,0,0,0,0
 187,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00148545
 187,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.199999,0,0,0,0
-188,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00137013
+188,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00136973
 188,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.199999,0,0,0,0
 188,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00142126
 188,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.199999,0,0,0,0
@@ -671,7 +671,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 188,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.199999,0,0,0,0
 188,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00138965
 188,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.199999,0,0,0,0
-189,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00128177
+189,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0012814
 189,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0.199999,0,0,0,0
 189,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0013296
 189,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0.199999,0,0,0,0
@@ -679,7 +679,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 189,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0.199999,0,0,0,0
 189,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00130003
 189,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0.199999,0,0,0,0
-190,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.0011991
+190,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00119875
 190,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0,0,0,0,0
 190,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00124384
 190,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0,0,0,0,0
@@ -687,7 +687,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 190,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0,0,0,0,0
 190,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00121619
 190,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0,0,0,0,0
-191,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00112177
+191,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00112144
 191,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0,0,0,0,0
 191,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00116363
 191,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0,0,0,0,0
@@ -695,7 +695,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 191,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0,0,0,0,0
 191,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00113775
 191,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0,0,0,0,0
-192,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00104942
+192,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00104912
 192,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0,0,0,0,0
 192,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00108859
 192,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0,0,0,0,0
@@ -703,7 +703,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 192,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0,0,0,0,0
 192,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00106438
 192,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0,0,0,0,0
-193,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000981743
+193,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000981458
 193,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0,0,0,0,0
 193,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00101838
 193,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0,0,0,0,0
@@ -711,7 +711,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 193,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0,0,0,0,0
 193,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000995733
 193,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0,0,0,0,0
-194,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000918427
+194,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000918161
 194,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0,0,0,0,0
 194,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000952698
 194,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0,0,0,0,0
@@ -719,7 +719,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 194,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0,0,0,0,0
 194,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000931515
 194,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0,0,0,0,0
-195,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000859195
+195,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000858946
 195,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0,0,0,0,0
 195,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000891257
 195,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0,0,0,0,0
@@ -727,7 +727,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 195,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0,0,0,0,0
 195,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000871439
 195,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0,0,0,0,0
-196,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000803781
+196,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000803549
 196,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0,0,0,0,0
 196,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000833775
 196,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0,0,0,0,0
@@ -735,7 +735,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 196,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0,0,0,0,0
 196,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000815235
 196,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0,0,0,0,0
-197,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000751944
+197,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000751726
 197,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0,0,0,0,0
 197,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000780003
 197,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0,0,0,0,0
@@ -743,7 +743,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 197,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0,0,0,0,0
 197,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000762659
 197,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0,0,0,0,0
-198,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00070345
+198,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000703247
 198,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0,0,0,0,0
 198,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.0007297
 198,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0,0,0,0,0
@@ -751,7 +751,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 198,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0,0,0,0,0
 198,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000713474
 198,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0,0,0,0,0
-199,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000658082
+199,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000657892
 199,4,1000,SimpleBednet,0.484,1,0,0.0999997,0.899996,0.700001,0,0,0,0,0
 199,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000682639
 199,3,1000,SimpleBednet,0.482,1,0,0.0999997,0.899996,0.700001,0,0,0,0,0
@@ -759,47 +759,47 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 199,2,1000,SimpleBednet,0.505,1,0,0.0999996,0.899996,0.700002,0,0,0,0,0
 199,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00066746
 199,1,1000,SimpleBednet,0.491,1,0,0.0999996,0.899996,0.700002,0,0,0,0,0
-200,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00061564
+200,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000615462
 200,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000638613
 200,2,1000,AdherentDrug-Piperaquine,0.473,1,0,0,0,0,0,0,0,0,0.000618874
 200,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000624414
-201,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000575935
+201,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000575768
 201,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000597426
 201,2,1000,AdherentDrug-Piperaquine,0.473,1,0,0,0,0,0,0,0,0,0.00057896
 201,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000584142
-202,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000538793
+202,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000538637
 202,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000558898
 202,2,1000,AdherentDrug-Piperaquine,0.473,1,0,0,0,0,0,0,0,0,0.000541623
 202,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00054647
-203,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000504043
+203,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000503897
 203,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000522852
 203,2,1000,AdherentDrug-Piperaquine,0.473,1,0,0,0,0,0,0,0,0,0.000506691
 203,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000511226
-204,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000471535
+204,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000471399
 204,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000489131
 204,2,1000,AdherentDrug-Piperaquine,0.473,1,0,0,0,0,0,0,0,0,0.000474012
 204,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000478255
-205,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000441126
+205,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000440999
 205,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000457587
 205,2,1000,AdherentDrug-Piperaquine,0.473,1,0,0,0,0,0,0,0,0,0.000443444
 205,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000447413
-206,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000412676
+206,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000412557
 206,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000428076
 206,2,1000,AdherentDrug-Piperaquine,0.473,1,0,0,0,0,0,0,0,0,0.000414844
 206,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000418557
-207,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000386061
+207,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00038595
 207,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000400467
 207,2,1000,AdherentDrug-Piperaquine,0.473,1,0,0,0,0,0,0,0,0,0.00038809
 207,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000391563
-208,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000361164
+208,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000361059
 208,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000374641
 208,2,1000,AdherentDrug-Piperaquine,0.473,1,0,0,0,0,0,0,0,0,0.000363061
 208,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00036631
-209,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00033787
+209,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000337772
 209,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000350478
 209,2,1000,AdherentDrug-Piperaquine,0.473,1,0,0,0,0,0,0,0,0,0.000339645
 209,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000342685
-210,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000316081
+210,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00031599
 210,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 210,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000327876
 210,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -807,7 +807,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 210,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 210,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000320585
 210,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-211,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000295696
+211,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00029561
 211,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 211,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00030673
 211,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -815,7 +815,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 211,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 211,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000299909
 211,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-212,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000276626
+212,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000276546
 212,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 212,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000286948
 212,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -823,7 +823,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 212,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 212,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000280568
 212,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-213,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000258784
+213,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000258709
 213,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 213,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000268441
 213,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -831,7 +831,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 213,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 213,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000262472
 213,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-214,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000242096
+214,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000242026
 214,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 214,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00025113
 214,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -839,7 +839,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 214,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 214,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000245546
 214,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-215,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000226482
+215,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000226416
 215,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 215,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000234933
 215,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -847,7 +847,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 215,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 215,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000229709
 215,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-216,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000211876
+216,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000211814
 216,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 216,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000219782
 216,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -855,7 +855,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 216,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 216,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000214895
 216,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-217,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000198211
+217,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000198153
 217,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 217,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000205607
 217,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -863,7 +863,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 217,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 217,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000201035
 217,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-218,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000185428
+218,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000185374
 218,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 218,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000192347
 218,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -871,7 +871,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 218,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 218,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.00018807
 218,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-219,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000173469
+219,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000173419
 219,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 219,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000179942
 219,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -879,7 +879,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 219,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 219,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000175941
 219,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-220,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000162281
+220,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000162234
 220,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 220,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000168337
 220,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -887,7 +887,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 220,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 220,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000164594
 220,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-221,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000151815
+221,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000151772
 221,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 221,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000157481
 221,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -895,7 +895,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 221,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 221,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000153979
 221,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-222,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000142024
+222,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000141983
 222,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 222,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000147324
 222,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -903,7 +903,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 222,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 222,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000144048
 222,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-223,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000132865
+223,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000132826
 223,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 223,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000137823
 223,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -911,7 +911,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 223,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 223,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000134758
 223,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-224,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000124296
+224,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00012426
 224,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 224,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000128934
 224,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -919,7 +919,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 224,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 224,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000126067
 224,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-225,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.00011628
+225,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000116246
 225,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 225,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000120619
 225,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -927,7 +927,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 225,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 225,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000117937
 225,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-226,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000108781
+226,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000108749
 226,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 226,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.00011284
 226,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -935,7 +935,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 226,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 226,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000110331
 226,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-227,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000101765
+227,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,0.000101735
 227,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 227,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,0.000105562
 227,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -943,7 +943,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 227,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 227,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,0.000103215
 227,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-228,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,9.52019e-05
+228,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,9.51743e-05
 228,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 228,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,9.87545e-05
 228,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -951,7 +951,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 228,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 228,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,9.65585e-05
 228,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-229,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,8.90617e-05
+229,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,8.90359e-05
 229,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 229,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,9.23851e-05
 229,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -959,7 +959,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 229,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 229,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,9.03308e-05
 229,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-230,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,8.3318e-05
+230,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,8.32939e-05
 230,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 230,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,8.64271e-05
 230,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -967,7 +967,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 230,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 230,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,8.45053e-05
 230,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-231,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,7.79445e-05
+231,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,7.7922e-05
 231,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 231,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,8.0853e-05
 231,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -975,7 +975,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 231,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 231,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,7.90553e-05
 231,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-232,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,7.29177e-05
+232,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,7.28966e-05
 232,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 232,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,7.56386e-05
 232,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -983,7 +983,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 232,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 232,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,7.39568e-05
 232,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-233,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,6.82149e-05
+233,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,6.81951e-05
 233,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 233,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,7.07604e-05
 233,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -991,7 +991,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 233,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 233,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,6.9187e-05
 233,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-234,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,6.38157e-05
+234,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,6.37973e-05
 234,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 234,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,6.6197e-05
 234,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -999,7 +999,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 234,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 234,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,6.47251e-05
 234,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-235,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,5.96999e-05
+235,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,5.96826e-05
 235,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 235,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,6.19277e-05
 235,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -1007,7 +1007,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 235,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 235,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,6.05507e-05
 235,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-236,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,5.58497e-05
+236,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,5.58336e-05
 236,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 236,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,5.79338e-05
 236,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -1015,7 +1015,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 236,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 236,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,5.66456e-05
 236,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-237,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,5.22478e-05
+237,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,5.22327e-05
 237,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 237,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,5.41974e-05
 237,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -1023,7 +1023,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 237,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 237,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,5.29923e-05
 237,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-238,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,4.88782e-05
+238,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,4.88641e-05
 238,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 238,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,5.07022e-05
 238,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -1031,7 +1031,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 238,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 238,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,4.95748e-05
 238,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-239,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,4.5726e-05
+239,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,4.57128e-05
 239,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 239,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,4.74323e-05
 239,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -1039,7 +1039,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 239,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 239,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,4.63776e-05
 239,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-240,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,4.27771e-05
+240,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,4.27647e-05
 240,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 240,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,4.43733e-05
 240,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -1047,7 +1047,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 240,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 240,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,4.33866e-05
 240,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-241,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,4.00181e-05
+241,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,4.00066e-05
 241,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 241,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,4.15115e-05
 241,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -1055,7 +1055,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 241,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 241,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,4.05884e-05
 241,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-242,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,3.74372e-05
+242,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,3.74264e-05
 242,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 242,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,3.88342e-05
 242,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -1063,7 +1063,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 242,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 242,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,3.79707e-05
 242,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-243,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,3.50228e-05
+243,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,3.50127e-05
 243,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 243,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,3.63298e-05
 243,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -1071,7 +1071,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 243,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 243,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,3.55219e-05
 243,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-244,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,3.27641e-05
+244,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,3.27546e-05
 244,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 244,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,3.39867e-05
 244,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -1079,7 +1079,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 244,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 244,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,3.3231e-05
 244,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-245,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,3.0651e-05
+245,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,3.06422e-05
 245,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 245,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,3.17948e-05
 245,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -1087,7 +1087,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 245,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 245,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,3.10878e-05
 245,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-246,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,2.86743e-05
+246,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,2.8666e-05
 246,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 246,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,2.97443e-05
 246,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -1095,7 +1095,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 246,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 246,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,2.90829e-05
 246,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-247,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,2.68249e-05
+247,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,2.68172e-05
 247,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 247,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,2.78259e-05
 247,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -1103,7 +1103,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 247,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 247,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,2.72072e-05
 247,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-248,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,2.50949e-05
+248,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,2.50877e-05
 248,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 248,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,2.60314e-05
 248,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -1111,7 +1111,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 248,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 248,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,2.54526e-05
 248,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-249,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,2.34765e-05
+249,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,2.34697e-05
 249,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0,0,0,0,0
 249,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,2.43526e-05
 249,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0,0,0,0,0
@@ -1119,7 +1119,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 249,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0,0,0,0,0
 249,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,2.38111e-05
 249,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0,0,0,0,0
-250,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,2.19624e-05
+250,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,2.19561e-05
 250,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
 250,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,2.2782e-05
 250,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
@@ -1127,7 +1127,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 250,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
 250,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,2.22754e-05
 250,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
-251,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,2.0546e-05
+251,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,2.05401e-05
 251,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
 251,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,2.13127e-05
 251,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
@@ -1135,7 +1135,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 251,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
 251,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,2.08388e-05
 251,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
-252,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,1.92209e-05
+252,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,1.92154e-05
 252,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
 252,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,1.99382e-05
 252,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
@@ -1143,7 +1143,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 252,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
 252,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,1.94948e-05
 252,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
-253,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,1.79813e-05
+253,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,1.79761e-05
 253,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
 253,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,1.86523e-05
 253,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
@@ -1151,7 +1151,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 253,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
 253,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,1.82376e-05
 253,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
-254,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,1.68217e-05
+254,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,1.68168e-05
 254,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
 254,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,1.74494e-05
 254,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
@@ -1159,7 +1159,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 254,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
 254,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,1.70614e-05
 254,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
-255,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,1.57368e-05
+255,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,1.57322e-05
 255,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
 255,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,1.6324e-05
 255,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
@@ -1167,7 +1167,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 255,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
 255,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,1.5961e-05
 255,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
-256,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,1.47219e-05
+256,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,1.47176e-05
 256,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
 256,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,1.52712e-05
 256,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
@@ -1175,7 +1175,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 256,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
 256,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,1.49317e-05
 256,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
-257,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,1.37724e-05
+257,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,1.37684e-05
 257,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
 257,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,1.42863e-05
 257,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
@@ -1183,7 +1183,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 257,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
 257,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,1.39687e-05
 257,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
-258,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,1.28842e-05
+258,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,1.28805e-05
 258,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
 258,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,1.3365e-05
 258,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
@@ -1191,7 +1191,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 258,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
 258,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,1.30678e-05
 258,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
-259,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,1.20533e-05
+259,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,1.20498e-05
 259,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
 259,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,1.2503e-05
 259,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
@@ -1199,7 +1199,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 259,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
 259,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,1.2225e-05
 259,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.199999,0,0,0,0
-260,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,1.12759e-05
+260,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,1.12726e-05
 260,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
 260,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,1.16967e-05
 260,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
@@ -1207,7 +1207,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 260,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.399999,0,0,0,0
 260,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,1.14366e-05
 260,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
-261,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,1.05487e-05
+261,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,1.05456e-05
 261,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
 261,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,1.09423e-05
 261,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
@@ -1215,7 +1215,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 261,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.399999,0,0,0,0
 261,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,1.0699e-05
 261,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
-262,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,9.86836e-06
+262,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,9.8655e-06
 262,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
 262,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,1.02366e-05
 262,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
@@ -1223,7 +1223,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 262,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.399999,0,0,0,0
 262,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,1.0009e-05
 262,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
-263,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,9.23195e-06
+263,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,9.22928e-06
 263,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
 263,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,9.57646e-06
 263,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
@@ -1231,7 +1231,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 263,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.399999,0,0,0,0
 263,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,9.36351e-06
 263,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
-264,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,8.63654e-06
+264,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,8.63404e-06
 264,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
 264,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,8.95882e-06
 264,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
@@ -1239,7 +1239,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 264,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.399999,0,0,0,0
 264,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,8.75961e-06
 264,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
-265,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,8.07954e-06
+265,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,8.0772e-06
 265,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
 265,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,8.38103e-06
 265,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
@@ -1247,7 +1247,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 265,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.399999,0,0,0,0
 265,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,8.19468e-06
 265,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
-266,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,7.55849e-06
+266,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,7.5563e-06
 266,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
 266,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,7.84054e-06
 266,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
@@ -1255,7 +1255,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 266,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.399999,0,0,0,0
 266,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,7.6662e-06
 266,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
-267,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,7.07101e-06
+267,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,7.06897e-06
 267,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
 267,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,7.33488e-06
 267,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
@@ -1263,7 +1263,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 267,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.399999,0,0,0,0
 267,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,7.17178e-06
 267,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
-268,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,6.61498e-06
+268,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,6.61307e-06
 268,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
 268,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,6.86183e-06
 268,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
@@ -1271,7 +1271,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 268,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.399999,0,0,0,0
 268,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,6.70925e-06
 268,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
-269,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,6.18836e-06
+269,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,6.18657e-06
 269,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
 269,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,6.41928e-06
 269,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
@@ -1279,7 +1279,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 269,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.399999,0,0,0,0
 269,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,6.27655e-06
 269,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.399998,0,0,0,0
-270,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,5.78925e-06
+270,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,5.78758e-06
 270,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
 270,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,6.00528e-06
 270,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
@@ -1287,7 +1287,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 270,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
 270,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,5.87175e-06
 270,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
-271,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,5.41588e-06
+271,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,5.41432e-06
 271,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
 271,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,5.61798e-06
 271,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
@@ -1295,7 +1295,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 271,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
 271,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,5.49306e-06
 271,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
-272,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,5.06658e-06
+272,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,5.06512e-06
 272,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
 272,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,5.25565e-06
 272,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
@@ -1303,7 +1303,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 272,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
 272,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,5.13879e-06
 272,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
-273,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,4.73984e-06
+273,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,4.73847e-06
 273,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
 273,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,4.91672e-06
 273,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
@@ -1311,7 +1311,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 273,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
 273,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,4.80739e-06
 273,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
-274,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,4.43416e-06
+274,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,4.43287e-06
 274,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
 274,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,4.59962e-06
 274,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
@@ -1319,7 +1319,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 274,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
 274,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,4.49735e-06
 274,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
-275,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,4.14817e-06
+275,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,4.14697e-06
 275,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
 275,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,4.30296e-06
 275,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
@@ -1327,7 +1327,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 275,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
 275,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,4.20728e-06
 275,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
-276,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,3.88065e-06
+276,4,1000,AdherentDrug-Piperaquine,0.493,1,0,0,0,0,0,0,0,0,3.87952e-06
 276,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
 276,3,1000,AdherentDrug-Piperaquine,0.48,1,0,0,0,0,0,0,0,0,4.02546e-06
 276,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
@@ -1335,7 +1335,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 276,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
 276,1,1000,AdherentDrug-Piperaquine,0.492,1,0,0,0,0,0,0,0,0,3.93595e-06
 276,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
-277,4,1000,AdherentDrug-Piperaquine,0.49,1,0,0,0,0,0,0,0,0,3.64817e-06
+277,4,1000,AdherentDrug-Piperaquine,0.49,1,0,0,0,0,0,0,0,0,3.64711e-06
 277,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
 277,3,1000,AdherentDrug-Piperaquine,0.477,1,0,0,0,0,0,0,0,0,3.78498e-06
 277,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
@@ -1343,7 +1343,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 277,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
 277,1,1000,AdherentDrug-Piperaquine,0.49,1,0,0,0,0,0,0,0,0,3.69419e-06
 277,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
-278,4,1000,AdherentDrug-Piperaquine,0.49,1,0,0,0,0,0,0,0,0,3.41289e-06
+278,4,1000,AdherentDrug-Piperaquine,0.49,1,0,0,0,0,0,0,0,0,3.4119e-06
 278,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
 278,3,1000,AdherentDrug-Piperaquine,0.477,1,0,0,0,0,0,0,0,0,3.54087e-06
 278,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
@@ -1351,7 +1351,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 278,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
 278,1,1000,AdherentDrug-Piperaquine,0.49,1,0,0,0,0,0,0,0,0,3.45594e-06
 278,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
-279,4,1000,AdherentDrug-Piperaquine,0.49,1,0,0,0,0,0,0,0,0,3.19278e-06
+279,4,1000,AdherentDrug-Piperaquine,0.49,1,0,0,0,0,0,0,0,0,3.19186e-06
 279,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
 279,3,1000,AdherentDrug-Piperaquine,0.477,1,0,0,0,0,0,0,0,0,3.31251e-06
 279,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
@@ -1359,7 +1359,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 279,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
 279,1,1000,AdherentDrug-Piperaquine,0.49,1,0,0,0,0,0,0,0,0,3.23305e-06
 279,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.600003,0,0,0,0
-280,4,1000,AdherentDrug-Piperaquine,0.49,1,0,0,0,0,0,0,0,0,2.98686e-06
+280,4,1000,AdherentDrug-Piperaquine,0.49,1,0,0,0,0,0,0,0,0,2.986e-06
 280,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
 280,3,1000,AdherentDrug-Piperaquine,0.477,1,0,0,0,0,0,0,0,0,3.09887e-06
 280,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
@@ -1367,7 +1367,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 280,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
 280,1,1000,AdherentDrug-Piperaquine,0.49,1,0,0,0,0,0,0,0,0,3.02453e-06
 280,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
-281,4,1000,AdherentDrug-Piperaquine,0.49,1,0,0,0,0,0,0,0,0,2.79423e-06
+281,4,1000,AdherentDrug-Piperaquine,0.49,1,0,0,0,0,0,0,0,0,2.79342e-06
 281,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
 281,3,1000,AdherentDrug-Piperaquine,0.477,1,0,0,0,0,0,0,0,0,2.89902e-06
 281,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
@@ -1375,7 +1375,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 281,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
 281,1,1000,AdherentDrug-Piperaquine,0.49,1,0,0,0,0,0,0,0,0,2.82947e-06
 281,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
-282,4,1000,AdherentDrug-Piperaquine,0.467,1,0,0,0,0,0,0,0,0,2.70865e-06
+282,4,1000,AdherentDrug-Piperaquine,0.467,1,0,0,0,0,0,0,0,0,2.70786e-06
 282,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
 282,3,1000,AdherentDrug-Piperaquine,0.457,1,0,0,0,0,0,0,0,0,2.80043e-06
 282,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
@@ -1383,7 +1383,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 282,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
 282,1,1000,AdherentDrug-Piperaquine,0.471,1,0,0,0,0,0,0,0,0,2.72583e-06
 282,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
-283,4,1000,AdherentDrug-Piperaquine,0.467,1,0,0,0,0,0,0,0,0,2.53397e-06
+283,4,1000,AdherentDrug-Piperaquine,0.467,1,0,0,0,0,0,0,0,0,2.53322e-06
 283,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
 283,3,1000,AdherentDrug-Piperaquine,0.457,1,0,0,0,0,0,0,0,0,2.61982e-06
 283,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
@@ -1391,7 +1391,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 283,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
 283,1,1000,AdherentDrug-Piperaquine,0.471,1,0,0,0,0,0,0,0,0,2.55004e-06
 283,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
-284,4,1000,AdherentDrug-Piperaquine,0.467,1,0,0,0,0,0,0,0,0,2.37055e-06
+284,4,1000,AdherentDrug-Piperaquine,0.467,1,0,0,0,0,0,0,0,0,2.36985e-06
 284,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
 284,3,1000,AdherentDrug-Piperaquine,0.457,1,0,0,0,0,0,0,0,0,2.45087e-06
 284,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
@@ -1399,7 +1399,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 284,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
 284,1,1000,AdherentDrug-Piperaquine,0.471,1,0,0,0,0,0,0,0,0,2.38558e-06
 284,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
-285,4,1000,AdherentDrug-Piperaquine,0.434,1,0,0,0,0,0,0,0,0,2.33238e-06
+285,4,1000,AdherentDrug-Piperaquine,0.434,1,0,0,0,0,0,0,0,0,2.33168e-06
 285,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
 285,3,1000,AdherentDrug-Piperaquine,0.437,1,0,0,0,0,0,0,0,0,2.36529e-06
 285,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
@@ -1407,7 +1407,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 285,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
 285,1,1000,AdherentDrug-Piperaquine,0.449,1,0,0,0,0,0,0,0,0,2.30634e-06
 285,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
-286,4,1000,AdherentDrug-Piperaquine,0.434,1,0,0,0,0,0,0,0,0,2.18197e-06
+286,4,1000,AdherentDrug-Piperaquine,0.434,1,0,0,0,0,0,0,0,0,2.18131e-06
 286,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
 286,3,1000,AdherentDrug-Piperaquine,0.437,1,0,0,0,0,0,0,0,0,2.21275e-06
 286,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
@@ -1415,7 +1415,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 286,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
 286,1,1000,AdherentDrug-Piperaquine,0.449,1,0,0,0,0,0,0,0,0,2.15761e-06
 286,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
-287,4,1000,AdherentDrug-Piperaquine,0.434,1,0,0,0,0,0,0,0,0,2.04124e-06
+287,4,1000,AdherentDrug-Piperaquine,0.434,1,0,0,0,0,0,0,0,0,2.04063e-06
 287,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
 287,3,1000,AdherentDrug-Piperaquine,0.437,1,0,0,0,0,0,0,0,0,2.07004e-06
 287,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
@@ -1423,7 +1423,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 287,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
 287,1,1000,AdherentDrug-Piperaquine,0.449,1,0,0,0,0,0,0,0,0,2.01845e-06
 287,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
-288,4,1000,AdherentDrug-Piperaquine,0.421,1,0,0,0,0,0,0,0,0,1.94705e-06
+288,4,1000,AdherentDrug-Piperaquine,0.421,1,0,0,0,0,0,0,0,0,1.94646e-06
 288,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
 288,3,1000,AdherentDrug-Piperaquine,0.418,1,0,0,0,0,0,0,0,0,1.9929e-06
 288,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
@@ -1431,7 +1431,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 288,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
 288,1,1000,AdherentDrug-Piperaquine,0.423,1,0,0,0,0,0,0,0,0,1.96153e-06
 288,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
-289,4,1000,AdherentDrug-Piperaquine,0.419,1,0,0,0,0,0,0,0,0,1.82685e-06
+289,4,1000,AdherentDrug-Piperaquine,0.419,1,0,0,0,0,0,0,0,0,1.8263e-06
 289,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
 289,3,1000,AdherentDrug-Piperaquine,0.417,1,0,0,0,0,0,0,0,0,1.86718e-06
 289,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
@@ -1439,7 +1439,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 289,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
 289,1,1000,AdherentDrug-Piperaquine,0.418,1,0,0,0,0,0,0,0,0,1.84863e-06
 289,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,0.799997,0,0,0,0
-290,4,1000,AdherentDrug-Piperaquine,0.405,1,0,0,0,0,0,0,0,0,1.74353e-06
+290,4,1000,AdherentDrug-Piperaquine,0.405,1,0,0,0,0,0,0,0,0,1.74299e-06
 290,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,1,0,0,0,0
 290,3,1000,AdherentDrug-Piperaquine,0.402,1,0,0,0,0,0,0,0,0,1.7854e-06
 290,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,1,0,0,0,0
@@ -1447,7 +1447,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 290,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,1,0,0,0,0
 290,1,1000,AdherentDrug-Piperaquine,0.406,1,0,0,0,0,0,0,0,0,1.7595e-06
 290,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,1,0,0,0,0
-291,4,1000,AdherentDrug-Piperaquine,0.405,1,0,0,0,0,0,0,0,0,1.63109e-06
+291,4,1000,AdherentDrug-Piperaquine,0.405,1,0,0,0,0,0,0,0,0,1.63058e-06
 291,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,1,0,0,0,0
 291,3,1000,AdherentDrug-Piperaquine,0.402,1,0,0,0,0,0,0,0,0,1.67026e-06
 291,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,1,0,0,0,0
@@ -1455,7 +1455,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 291,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,1,0,0,0,0
 291,1,1000,AdherentDrug-Piperaquine,0.406,1,0,0,0,0,0,0,0,0,1.64603e-06
 291,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,1,0,0,0,0
-292,4,1000,AdherentDrug-Piperaquine,0.237,1,0,0,0,0,0,0,0,0,2.10339e-06
+292,4,1000,AdherentDrug-Piperaquine,0.237,1,0,0,0,0,0,0,0,0,2.10258e-06
 292,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,1,0,0,0,0
 292,3,1000,AdherentDrug-Piperaquine,0.253,1,0,0,0,0,0,0,0,0,2.06391e-06
 292,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,1,0,0,0,0
@@ -1463,7 +1463,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 292,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,1,0,0,0,0
 292,1,1000,AdherentDrug-Piperaquine,0.247,1,0,0,0,0,0,0,0,0,2.07331e-06
 292,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,1,0,0,0,0
-293,4,1000,AdherentDrug-Piperaquine,0.225,1,0,0,0,0,0,0,0,0,2.03466e-06
+293,4,1000,AdherentDrug-Piperaquine,0.224,1,0,0,0,0,0,0,0,0,2.03977e-06
 293,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,1,0,0,0,0
 293,3,1000,AdherentDrug-Piperaquine,0.24,1,0,0,0,0,0,0,0,0,1.99678e-06
 293,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,1,0,0,0,0
@@ -1471,7 +1471,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 293,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,1,0,0,0,0
 293,1,1000,AdherentDrug-Piperaquine,0.235,1,0,0,0,0,0,0,0,0,2.00224e-06
 293,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,1,0,0,0,0
-294,4,1000,AdherentDrug-Piperaquine,0.225,1,0,0,0,0,0,0,0,0,1.90344e-06
+294,4,1000,AdherentDrug-Piperaquine,0.224,1,0,0,0,0,0,0,0,0,1.90822e-06
 294,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,1,0,0,0,0
 294,3,1000,AdherentDrug-Piperaquine,0.24,1,0,0,0,0,0,0,0,0,1.868e-06
 294,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,1,0,0,0,0
@@ -1479,7 +1479,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 294,2,1000,UsageDependentBednet,0.495,1,0,0.199999,0.799997,1,1,0,0,0,0
 294,1,1000,AdherentDrug-Piperaquine,0.235,1,0,0,0,0,0,0,0,0,1.87311e-06
 294,1,1000,UsageDependentBednet,0.509,1,0,0.199999,0.799997,1,1,0,0,0,0
-295,4,1000,AdherentDrug-Piperaquine,0.225,1,0,0,0,0,0,0,0,0,1.78068e-06
+295,4,1000,AdherentDrug-Piperaquine,0.224,1,0,0,0,0,0,0,0,0,1.78515e-06
 295,4,1000,UsageDependentBednet,0.516,1,0,0.199999,0.799997,1,1,0,0,0,0
 295,3,1000,AdherentDrug-Piperaquine,0.24,1,0,0,0,0,0,0,0,0,1.74753e-06
 295,3,1000,UsageDependentBednet,0.518,1,0,0.199999,0.799997,1,1,0,0,0,0
@@ -1529,11 +1529,11 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 302,1,1000,AdherentDrug-Piperaquine,0.202,1,0,0,0,0,0,0,0,0,1.18432e-06
 303,4,1000,AdherentDrug-Piperaquine,0.129,1,0,0,0,0,0,0,0,0,1.31597e-06
 303,3,1000,AdherentDrug-Piperaquine,0.126,1,0,0,0,0,0,0,0,0,1.33109e-06
-303,2,1000,AdherentDrug-Piperaquine,0.119,1,0,0,0,0,0,0,0,0,1.31602e-06
+303,2,1000,AdherentDrug-Piperaquine,0.118,1,0,0,0,0,0,0,0,0,1.32097e-06
 303,1,1000,AdherentDrug-Piperaquine,0.129,1,0,0,0,0,0,0,0,0,1.32074e-06
 304,4,1000,AdherentDrug-Piperaquine,0.123,1,0,0,0,0,0,0,0,0,1.25732e-06
 304,3,1000,AdherentDrug-Piperaquine,0.12,1,0,0,0,0,0,0,0,0,1.27307e-06
-304,2,1000,AdherentDrug-Piperaquine,0.114,1,0,0,0,0,0,0,0,0,1.25478e-06
+304,2,1000,AdherentDrug-Piperaquine,0.113,1,0,0,0,0,0,0,0,0,1.25983e-06
 304,1,1000,AdherentDrug-Piperaquine,0.124,1,0,0,0,0,0,0,0,0,1.25746e-06
 305,4,1000,AdherentDrug-Piperaquine,0.123,1,0,0,0,0,0,0,0,0,1.17623e-06
 305,3,1000,AdherentDrug-Piperaquine,0.12,1,0,0,0,0,0,0,0,0,1.19097e-06
@@ -1561,7 +1561,7 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 310,1,1000,AdherentDrug-Piperaquine,0.101,1,0,0,0,0,0,0,0,0,8.95195e-07
 311,4,1000,AdherentDrug-Piperaquine,0.054,1,0,0,0,0,0,0,0,0,9.53638e-07
 311,3,1000,AdherentDrug-Piperaquine,0.064,1,0,0,0,0,0,0,0,0,9.41181e-07
-311,2,1000,AdherentDrug-Piperaquine,0.052,1,0,0,0,0,0,0,0,0,9.57452e-07
+311,2,1000,AdherentDrug-Piperaquine,0.053,1,0,0,0,0,0,0,0,0,9.52425e-07
 311,1,1000,AdherentDrug-Piperaquine,0.056,1,0,0,0,0,0,0,0,0,9.54615e-07
 312,4,1000,AdherentDrug-Piperaquine,0.049,1,0,0,0,0,0,0,0,0,9.12292e-07
 312,3,1000,AdherentDrug-Piperaquine,0.054,1,0,0,0,0,0,0,0,0,9.14905e-07
@@ -1579,4 +1579,4 @@ Time,NodeID,NodePopulation,InterventionName,FractionHas,AvgNumberOfInterventions
 315,3,1000,AdherentDrug-Piperaquine,0.048,1,0,0,0,0,0,0,0,0,7.5929e-07
 315,2,1000,AdherentDrug-Piperaquine,0.042,1,0,0,0,0,0,0,0,0,7.58247e-07
 315,1,1000,AdherentDrug-Piperaquine,0.043,1,0,0,0,0,0,0,0,0,7.58247e-07
-316,3,1000,AdherentDrug-Piperaquine,0.001,1,0,0,0,0,0,0,0,0,7.4333e-07
+316,3,1000,AdherentDrug-Piperaquine,0.003,1,0,0,0,0,0,0,0,0,7.20673e-07
