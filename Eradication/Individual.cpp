@@ -799,7 +799,6 @@ namespace Kernel
         
         if( (GetRng()!= nullptr) && GetRng()->SmartDraw( adjusted_rate ) )
         {
-            // LOG_DEBUG_F("%s died of natural causes at age %f with daily_mortality_rate = %f\n", (GetGender() == Gender::FEMALE ? "Female" : "Male"), GetAge() / DAYSPERYEAR, m_daily_mortality_rate);
             Die( HumanStateChange::DiedFromNaturalCauses );
         }
     }
@@ -1365,7 +1364,9 @@ namespace Kernel
             break;
 
             default:
-            release_assert( false );
+            {
+                release_assert( false );
+            }
             break;
         }
     }
