@@ -1505,10 +1505,6 @@ namespace Kernel
         }
 
         json::QuickBuilder custom_schema = pVariable->GetSchema();
-        if (pVariable->HasValidDefault())
-        {
-            newParamSchema["default"] = custom_schema["default"];
-        }
 
         if( _dryrun )
         {

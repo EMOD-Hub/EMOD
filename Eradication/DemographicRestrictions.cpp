@@ -40,14 +40,7 @@ namespace Kernel
     {
         if( use_demographic_coverage )
         {
-            pParent->initConfigTypeMap( "Demographic_Coverage", 
-                                        &demographic_coverage,
-                                        p_demographic_coverage_desc_text,
-                                        0.0, 
-                                        1.0, 
-                                        DEFAULT_DEMOGRAPHIC_COVERAGE/*, 
-                                        "Intervention_Config.*.iv_type", 
-                                        "IndividualTargeted"*/ );
+            pParent->initConfigTypeMap( "Demographic_Coverage",        &demographic_coverage, p_demographic_coverage_desc_text,        0.0f,    1.0f,  DEFAULT_DEMOGRAPHIC_COVERAGE);
         }
 
         release_assert( default_target_demographic == TargetDemographicType::Everyone );
@@ -104,7 +97,7 @@ namespace Kernel
         }
     }
 
-    void DemographicRestrictions::CheckConfiguration()  
+    void DemographicRestrictions::CheckConfiguration()
     {
         if( target_age_min_years >= target_age_max_years )
         {

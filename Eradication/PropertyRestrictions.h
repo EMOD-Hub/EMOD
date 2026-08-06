@@ -8,6 +8,7 @@
 #include "Configure.h"
 #include "Properties.h"
 #include "NodeProperties.h"
+#include "JsonConfigurableCollection.h"
 
 namespace Kernel
 {
@@ -21,6 +22,7 @@ namespace Kernel
     public:
         PropertyRestrictions();
         virtual void ConfigureFromJsonAndKey( const Configuration *, const std::string &key ) override;
+
         virtual json::QuickBuilder GetSchema() override;
         virtual bool  HasValidDefault() const override { return true; }
 

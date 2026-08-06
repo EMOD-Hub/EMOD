@@ -77,9 +77,9 @@ namespace Kernel
                 }
                 std::string value = (std::string)s2sarray[ idx ][ prop_key ].As< json::String >();
                 KeyValue kv( prop_key, value );
-                container.Add( kv );
+                container.Add(kv);
             }
-            _restrictions.push_back( container );
+            _restrictions.push_back(container);
         }
     }
 
@@ -90,23 +90,7 @@ namespace Kernel
         auto tn = JsonConfigurable::_typename_label();
         auto ts = JsonConfigurable::_typeschema_label();
 
-        std::string key_name = typeid(Key).name();
-#ifdef WIN32
-        key_name = key_name.substr( 14 ); // remove "class Kernel::"
-#else
-        key_name = abi::__cxa_demangle( key_name.c_str(), 0, 0, nullptr );
-        key_name = key_name.substr( 8 ); // remove "Kernel::"
-#endif
-
-        // this is kind of hacky, but there only two types right now.
-        if( key_name == "IPKey" )
-        {
-            schema[ tn ] = json::String( "idmType:PropertyRestrictions" );
-        }
-        else
-        {
-            schema[ tn ] = json::String( "idmType:NodePropertyRestrictions" );
-        }
+        schema[ tn ] = json::String( "idmType:PropertyRestrictions" );
 
         schema[ ts ] = json::Object();
         schema[ ts ][ "default" ] = json::Array();
