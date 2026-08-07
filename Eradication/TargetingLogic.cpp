@@ -108,11 +108,6 @@ namespace Kernel
         return schema;
     }
 
-    bool OrAndCollection::HasValidDefault() const
-    {
-        return true;
-    }
-
     // ------------------------------------------------------------------------
     // --- TargetingLogic
     // ------------------------------------------------------------------------

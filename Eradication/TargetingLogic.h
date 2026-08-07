@@ -17,7 +17,6 @@ namespace Kernel
         //IComplexJsonConfigurable
         virtual void ConfigureFromJsonAndKey( const Configuration* inputJson, const std::string& key );
         virtual json::QuickBuilder GetSchema();
-        virtual bool  HasValidDefault() const;
 
         void CheckConfiguration( const char* parameterName );
 

@@ -37,7 +37,6 @@ namespace Kernel
 
         virtual void ConfigureFromJsonAndKey( const Configuration* inputJson, const std::string& key ) override;
         virtual json::QuickBuilder GetSchema() override;
-        virtual bool  HasValidDefault() const override { return false; }
 
         const std::vector<IVectorHabitat*>& GetHabitats() const;
         bool HasHabitatType( VectorHabitatType::Enum habitatType ) const;

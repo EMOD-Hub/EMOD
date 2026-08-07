@@ -45,11 +45,6 @@ namespace Kernel
         virtual QueryResult QueryInterface( iid_t iid, void** pinstance ) { return QueryResult::e_NOINTERFACE; }
 
         // IComplexJsonConfigurable methods
-        virtual bool  HasValidDefault() const override
-        {
-            return false;
-        }
-
         virtual json::QuickBuilder GetSchema() override
         {
             JsonConfigurableClass* p_jcc = CreateObject();

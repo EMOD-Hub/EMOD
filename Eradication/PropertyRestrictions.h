@@ -24,7 +24,6 @@ namespace Kernel
         virtual void ConfigureFromJsonAndKey( const Configuration *, const std::string &key ) override;
 
         virtual json::QuickBuilder GetSchema() override;
-        virtual bool  HasValidDefault() const override { return true; }
 
         int Size() const;
         void Add( std::map< std::string, std::string >& rMap );
