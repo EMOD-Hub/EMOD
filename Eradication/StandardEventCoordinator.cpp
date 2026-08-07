@@ -495,7 +495,7 @@ namespace Kernel
 
         if( distributed )
         {
-            LOG_DEBUG_F( "Distributed an intervention (%p) to individual %d at a cost of %f\n", di->GetName().c_str(), ihec->GetSuid().data, incrementalCostOut );
+            LOG_DEBUG_F( "Distributed an intervention (%s) to individual %d at a cost of %f\n", di->GetName().c_str(), ihec->GetSuid().data, incrementalCostOut );
         }
         return distributed;
     }
