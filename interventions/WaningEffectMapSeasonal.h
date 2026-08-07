@@ -10,13 +10,12 @@ namespace Kernel
 {
     class IDMAPI WaningEffectMapLinearSeasonal : public WaningEffectMapLinear
     {
-        DECLARE_FACTORY_REGISTERED_EXPORT( WaningEffectFactory, WaningEffectMapLinearSeasonal, IWaningEffect )
+        DECLARE_FACTORY_REGISTERED( WaningEffectFactory, WaningEffectMapLinearSeasonal, IWaningEffect )
         DECLARE_QUERY_INTERFACE()
     public:
         WaningEffectMapLinearSeasonal();
         WaningEffectMapLinearSeasonal( const WaningEffectMapLinearSeasonal& rOrig );
         virtual ~WaningEffectMapLinearSeasonal();
-        virtual IWaningEffect* Clone() override;
 
         virtual void  Update( float dt ) override;
         virtual void SetContextTo( IIndividualHumanContext *context ) override;

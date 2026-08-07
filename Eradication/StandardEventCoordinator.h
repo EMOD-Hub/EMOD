@@ -30,7 +30,7 @@ namespace Kernel
         StandardInterventionDistributionEventCoordinator( bool useDemographicCoverage = true );
         virtual ~StandardInterventionDistributionEventCoordinator();
 
-        virtual bool Configure(const Configuration* config);
+        virtual bool Configure(const Configuration* config) override;
         virtual IConfigurable* GetConfigurable() override { return JsonConfigurable::GetConfigurable(); }
 
         // IEventCoordinator

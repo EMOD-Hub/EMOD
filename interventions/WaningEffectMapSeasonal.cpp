@@ -31,11 +31,6 @@ namespace Kernel
     {
     }
 
-    IWaningEffect* WaningEffectMapLinearSeasonal::Clone()
-    {
-        return new WaningEffectMapLinearSeasonal( *this );
-    }
-
     void  WaningEffectMapLinearSeasonal::Update( float dt )
     {
         WaningEffectMapLinear::Update( dt );

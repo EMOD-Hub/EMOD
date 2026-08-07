@@ -44,14 +44,13 @@ namespace Kernel
 
     class IDMAPI WaningEffectMapLinear : public WaningEffectMapAbstract
     {
-        DECLARE_FACTORY_REGISTERED_EXPORT(WaningEffectFactory, WaningEffectMapLinear, IWaningEffect)
+        DECLARE_FACTORY_REGISTERED(WaningEffectFactory, WaningEffectMapLinear, IWaningEffect)
     public:
         DECLARE_QUERY_INTERFACE()
 
         WaningEffectMapLinear( float maxTime = 999999.0f );
         WaningEffectMapLinear( const WaningEffectMapLinear& rOrig );
         virtual ~WaningEffectMapLinear();
-        virtual IWaningEffect* Clone() override;
 
         virtual float GetMultiplier( float timeSinceStart ) const override;
 
@@ -61,7 +60,7 @@ namespace Kernel
 
     class IDMAPI WaningEffectMapPiecewise : public WaningEffectMapAbstract
     {
-        DECLARE_FACTORY_REGISTERED_EXPORT(WaningEffectFactory, WaningEffectMapPiecewise, IWaningEffect)
+        DECLARE_FACTORY_REGISTERED(WaningEffectFactory, WaningEffectMapPiecewise, IWaningEffect)
     public:
         DECLARE_QUERY_INTERFACE()
 
@@ -69,7 +68,6 @@ namespace Kernel
         WaningEffectMapPiecewise( float minTime, float maxTime, float minValue, float maxValue );
         WaningEffectMapPiecewise( const WaningEffectMapPiecewise& rOrig );
         virtual ~WaningEffectMapPiecewise();
-        virtual IWaningEffect* Clone() override;
 
         virtual float GetMultiplier( float timeSinceStart ) const override;
 

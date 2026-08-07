@@ -9,16 +9,16 @@ namespace Kernel
     class ReferenceTrackingEventCoordinatorTrackingConfig : public StandardInterventionDistributionEventCoordinator
                                                           , public IEventCoordinatorEventContext
     {
-        DECLARE_FACTORY_REGISTERED_EXPORT(EventCoordinatorFactory, ReferenceTrackingEventCoordinatorTrackingConfig, IEventCoordinator)    
+        DECLARE_FACTORY_REGISTERED(EventCoordinatorFactory, ReferenceTrackingEventCoordinatorTrackingConfig, IEventCoordinator)    
 
     public:
-        DECLARE_CONFIGURED(ReferenceTrackingEventCoordinatorTrackingConfig)
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
         DECLARE_QUERY_INTERFACE()
 
         ReferenceTrackingEventCoordinatorTrackingConfig();
         virtual ~ReferenceTrackingEventCoordinatorTrackingConfig() { } 
 
+        virtual bool Configure(const Configuration* config) override;
         virtual void SetContextTo(ISimulationEventContext *isec) override;
         virtual void Update(float dt) override;
         virtual void CheckStartDay( float campaignStartDay ) const override;

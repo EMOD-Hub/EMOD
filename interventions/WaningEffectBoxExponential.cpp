@@ -27,11 +27,6 @@ namespace Kernel
     {
     }
 
-    IWaningEffect* WaningEffectBoxExponential::Clone()
-    {
-        return new WaningEffectBoxExponential( *this );
-    }
-
     bool WaningEffectBoxExponential::Configure( const Configuration * pInputJson )
     {
         initConfigTypeMap("Box_Duration",        &boxDuration,       WEB_Box_Duration_DESC_TEXT,       0, 100000, 100);

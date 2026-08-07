@@ -59,8 +59,7 @@ namespace Kernel
 
     class FirstNodeWithNodePropertyEventCoordinator : public TriggeredEventCoordinator
     {
-        DECLARE_FACTORY_REGISTERED_EXPORT( EventCoordinatorFactory, FirstNodeWithNodePropertyEventCoordinator, IEventCoordinator )
-        DECLARE_CONFIGURED( FirstNodeWithNodePropertyEventCoordinator )
+        DECLARE_FACTORY_REGISTERED( EventCoordinatorFactory, FirstNodeWithNodePropertyEventCoordinator, IEventCoordinator )
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
         DECLARE_QUERY_INTERFACE()
 
@@ -68,6 +67,7 @@ namespace Kernel
         FirstNodeWithNodePropertyEventCoordinator();
         virtual ~FirstNodeWithNodePropertyEventCoordinator();
 
+        virtual bool Configure(const Configuration* config) override;
         virtual void UpdateNodes( float dt ) override;
         virtual void Update( float dt ) override;
         virtual bool notifyOnEvent( IEventCoordinatorEventContext * pEntity, const EventTriggerCoordinator & trigger ) override;

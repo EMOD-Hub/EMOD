@@ -26,11 +26,6 @@ namespace Kernel
     {
     }
 
-    IWaningEffect* WaningEffectExponential::Clone()
-    {
-        return new WaningEffectExponential( *this );
-    }
-
     bool WaningEffectExponential::Configure( const Configuration * pInputJson )
     {
         initConfigTypeMap("Decay_Time_Constant", &decayTimeConstant, WEE_Decay_Time_Constant_DESC_TEXT, 0, 100000, 100);

@@ -8,14 +8,15 @@ namespace Kernel
 {
     class DelayEventCoordinator : public TriggeredEventCoordinator
     {
-        DECLARE_FACTORY_REGISTERED_EXPORT( EventCoordinatorFactory, DelayEventCoordinator, IEventCoordinator )
-        DECLARE_CONFIGURED( DelayEventCoordinator )
+        DECLARE_FACTORY_REGISTERED( EventCoordinatorFactory, DelayEventCoordinator, IEventCoordinator )
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
         DECLARE_QUERY_INTERFACE()
 
     public:
         DelayEventCoordinator();
         ~DelayEventCoordinator();
+
+        virtual bool Configure(const Configuration* config) override;
         void Callback( float dt );
         void UpdateNodes( float dt ) override;
         virtual void Update( float dt ) override;

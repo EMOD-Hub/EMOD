@@ -32,11 +32,6 @@ namespace Kernel
     {
     }
 
-    IWaningEffect* WaningEffectMapLinearAge::Clone()
-    {
-        return new WaningEffectMapLinearAge( *this );
-    }
-
     bool WaningEffectMapLinearAge::ConfigureExpiration( const Configuration* config )
     {
         // disable m_ExpireAtDurationMapEnd

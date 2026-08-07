@@ -17,7 +17,7 @@ namespace Kernel
         GET_SCHEMA_STATIC_WRAPPER(ClimateKoppen)
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
         DECLARE_QUERY_INTERFACE()
-        bool Configure( const Configuration* config );
+        virtual bool Configure( const Configuration* config ) override;
 
     public:
         enum KoppenType { Af, Am, As, Aw,

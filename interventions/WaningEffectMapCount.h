@@ -10,16 +10,14 @@ namespace Kernel
 {
     class WaningEffectMapCount : public WaningEffectMapPiecewise, public IWaningEffectCount
     {
-        DECLARE_FACTORY_REGISTERED_EXPORT( WaningEffectFactory, WaningEffectMapCount, IWaningEffect )
+        DECLARE_FACTORY_REGISTERED( WaningEffectFactory, WaningEffectMapCount, IWaningEffect )
         DECLARE_QUERY_INTERFACE()
     public:
         WaningEffectMapCount();
         WaningEffectMapCount( const WaningEffectMapCount& rOrig );
         virtual ~WaningEffectMapCount();
 
-
         // WaningEffectMapAbstract methods
-        virtual IWaningEffect* Clone() override;
         virtual void  Update( float dt ) override;
         virtual float Current() const override;
 

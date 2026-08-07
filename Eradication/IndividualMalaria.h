@@ -14,11 +14,11 @@ namespace Kernel
     class IndividualHumanMalariaConfig : public JsonConfigurable 
     {
         GET_SCHEMA_STATIC_WRAPPER(IndividualHumanMalariaConfig)
-        IMPLEMENT_DEFAULT_REFERENCE_COUNTING()  
+        IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
         DECLARE_QUERY_INTERFACE()
 
     public:
-        virtual bool Configure( const Configuration* config );
+        virtual bool Configure( const Configuration* config ) override;
 
         static float mean_sporozoites_per_bite;
         static float base_sporozoite_survival_fraction;

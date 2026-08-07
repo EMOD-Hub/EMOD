@@ -63,7 +63,7 @@ public:
 
 protected:
     SpatialReport();
-    virtual bool Configure( const Configuration* config );
+    virtual bool Configure( const Configuration* config ) override;
 
     virtual const char* GetChannelsDependsOn() const;
 

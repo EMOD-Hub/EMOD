@@ -178,11 +178,6 @@ namespace Kernel
     {
     }
 
-    IWaningEffect* WaningEffectMapLinear::Clone()
-    {
-        return new WaningEffectMapLinear( *this );
-    }
-
     float WaningEffectMapLinear::GetMultiplier( float timeSinceStart ) const
     {
         return m_DurationMap.getValueLinearInterpolation( timeSinceStart );
@@ -221,11 +216,6 @@ namespace Kernel
     WaningEffectMapPiecewise::WaningEffectMapPiecewise( const WaningEffectMapPiecewise& rOrig )
     : WaningEffectMapAbstract( rOrig )
     {
-    }
-
-    IWaningEffect* WaningEffectMapPiecewise::Clone()
-    {
-        return new WaningEffectMapPiecewise( *this );
     }
 
     float WaningEffectMapPiecewise::GetMultiplier( float timeSinceVaccination ) const

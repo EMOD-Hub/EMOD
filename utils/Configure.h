@@ -901,7 +901,7 @@ namespace Kernel
             const std::map<std::string, std::string>* depends_list = nullptr
         );
 
-        virtual bool Configure( const Configuration* inputJson );
+        virtual bool Configure( const Configuration* inputJson ) override;
 
         void handleMissingParam( const std::string& key, const std::string& rDataLocation );
     };

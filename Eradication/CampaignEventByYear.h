@@ -9,11 +9,12 @@ namespace Kernel
 
     public:
         friend class CampaignEventFactory;
-        DECLARE_CONFIGURED(CampaignEventByYear)
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()  
         DECLARE_QUERY_INTERFACE()
 
         CampaignEventByYear();
         virtual ~CampaignEventByYear();
+
+        virtual bool Configure(const Configuration* config) override;
     };
 }

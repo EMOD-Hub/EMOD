@@ -55,7 +55,7 @@ namespace Kernel
     // Extend so we can override the object factory
     class IDMAPI NChooserEventCoordinatorSTI : public NChooserEventCoordinator
     {
-        DECLARE_FACTORY_REGISTERED_EXPORT(EventCoordinatorFactory, NChooserEventCoordinatorSTI, IEventCoordinator)    
+        DECLARE_FACTORY_REGISTERED(EventCoordinatorFactory, NChooserEventCoordinatorSTI, IEventCoordinator)    
     public:
         NChooserEventCoordinatorSTI();
         NChooserEventCoordinatorSTI( NChooserObjectFactory* pObjectFactory );

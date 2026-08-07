@@ -37,7 +37,7 @@ namespace Kernel
 
     class IDMAPI CommunityHealthWorkerEventCoordinator : public IEventCoordinator, public JsonConfigurable, public IIndividualEventObserver
     {
-        DECLARE_FACTORY_REGISTERED_EXPORT(EventCoordinatorFactory, CommunityHealthWorkerEventCoordinator, IEventCoordinator)    
+        DECLARE_FACTORY_REGISTERED(EventCoordinatorFactory, CommunityHealthWorkerEventCoordinator, IEventCoordinator)    
     public:
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
         DECLARE_QUERY_INTERFACE()

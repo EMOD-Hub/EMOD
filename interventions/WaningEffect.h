@@ -15,10 +15,9 @@ namespace Kernel
     // --------------------------- WaningEffectConstant ---------------------------
     class IDMAPI WaningEffectConstant : public IWaningEffect, public JsonConfigurable
     {
-        DECLARE_FACTORY_REGISTERED_EXPORT(WaningEffectFactory, WaningEffectConstant, IWaningEffect)
+        DECLARE_FACTORY_REGISTERED(WaningEffectFactory, WaningEffectConstant, IWaningEffect)
 
     public:
-        DECLARE_CONFIGURED(WaningEffectConstant)
         IMPLEMENT_NO_REFERENCE_COUNTING()
         DECLARE_QUERY_INTERFACE()
 
@@ -26,9 +25,9 @@ namespace Kernel
         WaningEffectConstant( const WaningEffectConstant& rOrig );
         virtual ~WaningEffectConstant() {};
 
+        virtual bool Configure(const Configuration* config) override;
         virtual IConfigurable*  GetConfigurable()  override  { return JsonConfigurable::GetConfigurable(); }
 
-        virtual IWaningEffect* Clone() override;
         virtual void  Update(float dt) override;
         virtual void  SetCurrentTime(float dt) override {};
         virtual float Current() const override;
@@ -47,7 +46,7 @@ namespace Kernel
     // --------------------------- WaningEffectExponential ---------------------------
     class IDMAPI WaningEffectExponential : public WaningEffectConstant
     {
-        DECLARE_FACTORY_REGISTERED_EXPORT(WaningEffectFactory, WaningEffectExponential, IWaningEffect)
+        DECLARE_FACTORY_REGISTERED(WaningEffectFactory, WaningEffectExponential, IWaningEffect)
 
     public:
         DECLARE_QUERY_INTERFACE()
@@ -59,7 +58,6 @@ namespace Kernel
         virtual IConfigurable*  GetConfigurable()  override  { return JsonConfigurable::GetConfigurable(); }
 
         virtual bool Configure( const Configuration *config ) override;
-        virtual IWaningEffect* Clone() override;
         virtual void  Update(float dt) override;
 
     protected:
@@ -71,7 +69,7 @@ namespace Kernel
     // --------------------------- WaningEffectBox ---------------------------
     class IDMAPI WaningEffectBox : public WaningEffectConstant
     {
-        DECLARE_FACTORY_REGISTERED_EXPORT(WaningEffectFactory, WaningEffectBox, IWaningEffect)
+        DECLARE_FACTORY_REGISTERED(WaningEffectFactory, WaningEffectBox, IWaningEffect)
 
     public:
         DECLARE_QUERY_INTERFACE()
@@ -83,7 +81,6 @@ namespace Kernel
         virtual IConfigurable*  GetConfigurable()  override  { return JsonConfigurable::GetConfigurable(); }
 
         virtual bool Configure( const Configuration *config ) override;
-        virtual IWaningEffect* Clone() override;
         virtual void  Update(float dt) override;
 
     protected:
@@ -95,7 +92,7 @@ namespace Kernel
     // --------------------------- WaningEffectBoxExponential ---------------------------
     class IDMAPI WaningEffectBoxExponential : public WaningEffectConstant
     {
-        DECLARE_FACTORY_REGISTERED_EXPORT(WaningEffectFactory, WaningEffectBoxExponential, IWaningEffect)
+        DECLARE_FACTORY_REGISTERED(WaningEffectFactory, WaningEffectBoxExponential, IWaningEffect)
 
     public:
         DECLARE_QUERY_INTERFACE()
@@ -107,7 +104,6 @@ namespace Kernel
         virtual IConfigurable*  GetConfigurable()  override  { return JsonConfigurable::GetConfigurable(); }
 
         virtual bool Configure( const Configuration *config ) override;
-        virtual IWaningEffect* Clone() override;
         virtual void  Update(float dt) override;
 
     protected:

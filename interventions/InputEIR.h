@@ -19,10 +19,9 @@ namespace Kernel
                  ENUM_VALUE_SPEC( MONTHLY, 0 )
                  ENUM_VALUE_SPEC( DAILY, 1 ) )
 
-        class InputEIR : public BaseNodeIntervention
+    class InputEIR : public BaseNodeIntervention
     {
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
-        DECLARE_CONFIGURED(Outbreak)
         DECLARE_FACTORY_REGISTERED(NodeIVFactory, InputEIR, INodeDistributableIntervention)
 
     public:
@@ -30,12 +29,11 @@ namespace Kernel
         InputEIR( const InputEIR& master );
         virtual ~InputEIR() { }
 
-        // INodeDistributableIntervention
         virtual QueryResult QueryInterface(iid_t iid, void **ppvObject) override;
+        virtual bool Configure(const Configuration* config) override;
         virtual bool Distribute( INodeEventContext *pNodeContext, IEventCoordinator2 *pEC ) override;
         virtual void Update(float dt) override;
 
-        // IBaseIntervention
         virtual float GetCostPerUnit() const override;
     protected:
         EIRType::Enum eir_type;

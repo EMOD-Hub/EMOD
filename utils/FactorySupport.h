@@ -99,23 +99,4 @@ namespace Kernel
 
 #define IMPLEMENT_FACTORY_REGISTERED(classname) \
     classname::RegistrationHookCaller classname::registration_hook_caller;
-
-
-// This definition will be gone eventually once we do campaign/event coordinator dll
-#define DECLARE_FACTORY_REGISTERED_EXPORT(factoryname, classname, via_interface) \
-    private: \
-    class DTK_DLLEXPORT RegistrationHookCaller\
-    {\
-    public:\
-        RegistrationHookCaller()\
-        {\
-            classname::in_class_registration_hook();\
-        }\
-    };\
-    static void in_class_registration_hook()\
-    {\
-        factoryname::getInstance()->Register(#classname, \
-            []() { return (ISupports*)(via_interface*)(_new_ classname()); });\
-    }\
-    static RegistrationHookCaller registration_hook_caller;
 }

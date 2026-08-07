@@ -27,11 +27,6 @@ namespace Kernel
     {
     }
 
-    IWaningEffect* WaningEffectConstant::Clone()
-    {
-        return new WaningEffectConstant( *this );
-    }
-
     bool WaningEffectConstant::Configure( const Configuration * pInputJson )
     {
          initConfigTypeMap("Initial_Effect", &currentEffect, WE_Initial_Effect_DESC_TEXT, 0, 1, notSetByUser);

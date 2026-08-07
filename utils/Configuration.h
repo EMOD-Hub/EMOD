@@ -176,10 +176,4 @@ namespace Kernel
         virtual json::Array GetSimTypes() = 0;
         virtual void ClearSchema() = 0;
     };
-
-#define DECLARE_CONFIGURED(classname) \
-protected: \
-    template<class Mode> void common_configured_dispatch(const Configuration *config, /*caller supplies base object, out param*/ QuickBuilder *schema);\
-public: \
-    virtual bool Configure(const Configuration *config);
 }

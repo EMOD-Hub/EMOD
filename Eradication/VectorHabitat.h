@@ -114,7 +114,6 @@ namespace Kernel
 
         virtual IVectorHabitat* Clone() override;
         virtual void UpdateCurrentLarvalCapacity(float dt, INodeContext* node) override;
- 
     protected:
         DECLARE_SERIALIZABLE(WaterVegetationHabitat);
     };
@@ -127,7 +126,6 @@ namespace Kernel
 
         virtual IVectorHabitat* Clone() override;
         virtual void UpdateCurrentLarvalCapacity(float dt, INodeContext* node) override;
-
     protected:
         DECLARE_SERIALIZABLE(HumanPopulationHabitat);
     };
@@ -151,11 +149,10 @@ namespace Kernel
         LinearSplineHabitat();
         LinearSplineHabitat( const LinearSplineHabitat& rMaster );
 
-        virtual bool Configure( const Configuration* inputJson );
+        virtual bool Configure( const Configuration* inputJson ) override;
 
         virtual IVectorHabitat* Clone() override;
         virtual void UpdateCurrentLarvalCapacity(float dt, INodeContext* node) override;
-
     protected:
         float day_of_distribution;
         float duration_of_distribution; 

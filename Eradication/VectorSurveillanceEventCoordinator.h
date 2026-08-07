@@ -147,7 +147,7 @@ namespace Kernel
                                              , public IEventCoordinatorEventContext
                                              , public ICoordinatorEventObserver
     {
-        DECLARE_FACTORY_REGISTERED_EXPORT(EventCoordinatorFactory, VectorSurveillanceEventCoordinator, IEventCoordinator)
+        DECLARE_FACTORY_REGISTERED(EventCoordinatorFactory, VectorSurveillanceEventCoordinator, IEventCoordinator)
     public:
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
         DECLARE_QUERY_INTERFACE()

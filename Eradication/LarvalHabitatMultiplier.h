@@ -19,7 +19,7 @@ namespace Kernel
 
     public:
         LarvalHabitatMultiplierSpec();
-        virtual bool Configure(const Configuration* config);
+        virtual bool Configure(const Configuration* config) override;
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
         DECLARE_QUERY_INTERFACE()
 
@@ -33,7 +33,7 @@ namespace Kernel
         std::string m_species;
     };
 
-    class IDMAPI LarvalHabitatMultiplier : public JsonConfigurableCollection<LarvalHabitatMultiplierSpec>
+    class LarvalHabitatMultiplier : public JsonConfigurableCollection<LarvalHabitatMultiplierSpec>
     {
     public:
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()

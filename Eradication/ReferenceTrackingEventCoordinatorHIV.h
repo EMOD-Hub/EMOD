@@ -16,20 +16,20 @@ namespace Kernel
 
     class ReferenceTrackingEventCoordinatorHIV : public ReferenceTrackingEventCoordinator 
     {
-        DECLARE_FACTORY_REGISTERED_EXPORT(EventCoordinatorFactory, ReferenceTrackingEventCoordinatorHIV, IEventCoordinator)    
+        DECLARE_FACTORY_REGISTERED(EventCoordinatorFactory, ReferenceTrackingEventCoordinatorHIV, IEventCoordinator)    
 
     public:
-        DECLARE_CONFIGURED(ReferenceTrackingEventCoordinatorHIV)
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
         DECLARE_QUERY_INTERFACE()
 
         ReferenceTrackingEventCoordinatorHIV();
         virtual ~ReferenceTrackingEventCoordinatorHIV() { } 
 
-        virtual bool qualifiesDemographically( const IIndividualHumanEventContext * pIndividual );
+        virtual bool Configure(const Configuration* config) override;
+        virtual bool qualifiesDemographically( const IIndividualHumanEventContext* pIndividual );
 
     protected:
-        IIndividualHumanHIV* GetIndividualHIV( const IIndividualHumanEventContext * pIndividual ) const;
+        IIndividualHumanHIV* GetIndividualHIV( const IIndividualHumanEventContext* pIndividual ) const;
 
         TargetDiseaseStateType::Enum target_disease_state;
     };

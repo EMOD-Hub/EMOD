@@ -9,13 +9,12 @@ namespace Kernel
 {
     class IDMAPI WaningEffectMapLinearAge : public WaningEffectMapLinear
     {
-        DECLARE_FACTORY_REGISTERED_EXPORT( WaningEffectFactory, WaningEffectMapLinearAge, IWaningEffect )
+        DECLARE_FACTORY_REGISTERED( WaningEffectFactory, WaningEffectMapLinearAge, IWaningEffect )
         DECLARE_QUERY_INTERFACE()
     public:
         WaningEffectMapLinearAge();
         WaningEffectMapLinearAge( const WaningEffectMapLinearAge& rOrig );
         virtual ~WaningEffectMapLinearAge();
-        virtual IWaningEffect* Clone() override;
 
         virtual void SetContextTo( IIndividualHumanContext *context ) override;
         virtual float GetMultiplier( float timeSinceStart ) const override;

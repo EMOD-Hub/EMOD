@@ -14,7 +14,7 @@ namespace Kernel {
         ReportHIVInfection( const ISimulation * sim = nullptr );
         static IReport* ReportHIVInfection::Create(const ISimulation * parent) { return new ReportHIVInfection( parent ); }
 
-        virtual bool Configure( const Configuration* inputJson );
+        virtual bool Configure( const Configuration* inputJson ) override;
         virtual bool IsCollectingIndividualData( float currentTime, float dt ) const ;
         virtual void LogIndividualData( IIndividualHuman* individual );
 

@@ -24,7 +24,7 @@ namespace Kernel
         // than hard-coding them
 
         // JsonConfigurable Methods
-        virtual bool Configure(const Configuration *config);
+        virtual bool Configure(const Configuration *config) override;
 
     private:    
         static float DistributionInvCDF(float rand, float kappa, float lambda);

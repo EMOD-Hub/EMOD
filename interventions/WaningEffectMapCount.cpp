@@ -33,11 +33,6 @@ namespace Kernel
     {
     }
 
-    IWaningEffect* WaningEffectMapCount::Clone()
-    {
-        return new WaningEffectMapCount( *this );
-    }
-
     void WaningEffectMapCount::Update( float dt )
     {
     }

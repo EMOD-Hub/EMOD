@@ -233,7 +233,7 @@ namespace Kernel
     // This is an event coordinator that distributes N interventions over a given time period to a particular demographic.
     class IDMAPI NChooserEventCoordinator : public IEventCoordinator, public JsonConfigurable
     {
-        DECLARE_FACTORY_REGISTERED_EXPORT(EventCoordinatorFactory, NChooserEventCoordinator, IEventCoordinator)    
+        DECLARE_FACTORY_REGISTERED(EventCoordinatorFactory, NChooserEventCoordinator, IEventCoordinator)    
     public:
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
         DECLARE_QUERY_INTERFACE()

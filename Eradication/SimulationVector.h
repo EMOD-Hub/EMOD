@@ -22,7 +22,7 @@ namespace Kernel
         static SimulationVector *CreateSimulation(const ::Configuration *config);
         virtual ~SimulationVector();
 
-        virtual bool Configure( const Configuration* inputJson );
+        virtual bool Configure( const Configuration* inputJson ) override;
 
         // IVectorSimulationContext methods
         virtual void  PostMigratingVector( const suids::suid& nodeSuid, IVectorCohort* ind ) override;
@@ -44,16 +44,16 @@ namespace Kernel
         virtual INodeInfo* CreateNodeInfo( int rank, INodeContext* pNC ) override;
 
     protected:
+        SimulationVector();
+
+        virtual void Initialize(const ::Configuration *config) override;
+
+        static bool ValidateConfiguration(const ::Configuration *config);
 
         // holds a vector of migrating vectors for each node rank
         vector<vector<IVectorCohort*>> migratingVectorQueues;
         vector< IVectorMigrationReporting* > vector_migration_reports;
         std::map<suids::suid, float> node_populations_map;
-
-        virtual void Initialize(const ::Configuration *config) override;
-
-        SimulationVector();
-        static bool ValidateConfiguration(const ::Configuration *config);
 
         virtual void resolveMigration() override;
         virtual void setupMigrationQueues() override;

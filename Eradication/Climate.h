@@ -34,7 +34,7 @@ namespace Kernel
         // for JsonConfigurable stuff...
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
         DECLARE_QUERY_INTERFACE()
-        bool Configure( const Configuration* config );
+        virtual bool Configure( const Configuration* config ) override;
         ClimateUpdateResolution::Enum   climate_update_resolution;
 
         float          base_airtemperature;
@@ -104,7 +104,7 @@ namespace Kernel
         GET_SCHEMA_STATIC_WRAPPER(ClimateFactory)
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()  
         DECLARE_QUERY_INTERFACE()
-        bool Configure( const Configuration* config );
+        virtual bool Configure( const Configuration* config ) override;
 
         static ClimateFactory* CreateClimateFactory(boost::bimap<ExternalNodeId_t, suids::suid> * nodeid_suid_map, const ::Configuration *config, const std::string idreference);
         ~ClimateFactory();

@@ -36,11 +36,6 @@ namespace Kernel
     {
     }
 
-    IWaningEffect* WaningEffectRandomBox::Clone()
-    {
-        return new WaningEffectRandomBox( *this );
-    }
-
     bool WaningEffectRandomBox::Configure(const Configuration * pInputJson)
     {
         initConfigTypeMap("Expected_Discard_Time", &m_ExpectedDiscardTime, WERB_Expected_Discard_Time_DESC_TEXT, 0, 100000, 100);

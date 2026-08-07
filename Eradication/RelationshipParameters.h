@@ -6,8 +6,7 @@
 
 namespace Kernel 
 {
-    class RelationshipParameters : public JsonConfigurable
-                                 , public IRelationshipParameters
+    class RelationshipParameters : public IRelationshipParameters, public JsonConfigurable
     {
     public:
         RelationshipParameters( RelationshipType::Enum type );
@@ -15,7 +14,7 @@ namespace Kernel
 
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
         virtual QueryResult QueryInterface(iid_t iid, void **ppvObject) { return e_NOINTERFACE; }
-        virtual bool Configure( const Configuration* config );
+        virtual bool Configure( const Configuration* config ) override;
 
         RelationshipType::Enum GetType() const;
 

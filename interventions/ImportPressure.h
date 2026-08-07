@@ -18,15 +18,14 @@ namespace Kernel
     class ImportPressure : public Outbreak
     {
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
-        DECLARE_CONFIGURED(Outbreak)
         DECLARE_FACTORY_REGISTERED(NodeIVFactory, ImportPressure, INodeDistributableIntervention)
 
     public:
         ImportPressure();
         virtual ~ImportPressure();
 
-        // INodeDistributableIntervention
         virtual QueryResult QueryInterface(iid_t iid, void **ppvObject);
+        virtual bool Configure(const Configuration* config) override;
         virtual void Update(float dt);
         virtual void SetContextTo(INodeEventContext *context);
         virtual bool Distribute(INodeEventContext *context, IEventCoordinator2* pEC);
@@ -41,8 +40,7 @@ namespace Kernel
 
         NaturalNumber num_imports; // NaturalNumber, number of particles randomly drawn using import_pressure as input
 
-        typedef std::pair<NaturalNumber, NonNegativeFloat> duration_pressure_pair;
-        std::vector<duration_pressure_pair> durations_and_pressures;
+        std::vector<std::pair<NaturalNumber, NonNegativeFloat>> durations_and_pressures;
 
         void ConstructDistributionCalendar();
         virtual void ExtraConfiguration();

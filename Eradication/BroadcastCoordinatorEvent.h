@@ -9,7 +9,7 @@ namespace Kernel
 {
     class BroadcastCoordinatorEvent : public JsonConfigurable, public IEventCoordinator, public IEventCoordinatorEventContext
     {
-        DECLARE_FACTORY_REGISTERED_EXPORT( EventCoordinatorFactory, BroadcastCoordinatorEvent, IEventCoordinator )
+        DECLARE_FACTORY_REGISTERED( EventCoordinatorFactory, BroadcastCoordinatorEvent, IEventCoordinator )
     public:
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()
         DECLARE_QUERY_INTERFACE()

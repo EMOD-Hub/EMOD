@@ -91,7 +91,7 @@ namespace Kernel
 
     class IDMAPI NChooserEventCoordinatorHIV : public NChooserEventCoordinatorSTI
     {
-        DECLARE_FACTORY_REGISTERED_EXPORT(EventCoordinatorFactory, NChooserEventCoordinatorHIV, IEventCoordinator)    
+        DECLARE_FACTORY_REGISTERED(EventCoordinatorFactory, NChooserEventCoordinatorHIV, IEventCoordinator)    
     public:
         NChooserEventCoordinatorHIV();
         NChooserEventCoordinatorHIV( NChooserObjectFactory* pObjectFactory );

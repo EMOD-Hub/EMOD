@@ -16,7 +16,7 @@
 namespace Kernel
 {
     struct IIndividualImmunityChangerEffects;
-    /* Keep around as an identity solution??? */
+
     struct IIndividualImmunityChanger : public ISupports
     {
     };
@@ -24,7 +24,7 @@ namespace Kernel
     class IndividualImmunityChanger : public BaseIntervention, public IIndividualImmunityChanger
     {
         public:
-        bool Configure( const Configuration * config );
+        virtual bool Configure( const Configuration * config ) override;
 
         DECLARE_FACTORY_REGISTERED(IndividualIVFactory, IndividualImmunityChanger, IDistributableIntervention)
 

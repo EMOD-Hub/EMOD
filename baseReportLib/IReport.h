@@ -19,15 +19,8 @@ namespace Kernel
     public:
         virtual ~IReport() {} ;
 
-        // ----------------------------
-        // --- JsonConfigurable Methods 
-        // ----------------------------
-        // make public from JsonConfigurable
         virtual bool Configure( const Configuration* inputJson ) = 0;
 
-        // ------------------
-        // --- Public Methods
-        // ------------------
         virtual void Initialize(unsigned int nrmSize) = 0;
         virtual void CheckForValidNodeIDs(const std::vector<ExternalNodeId_t>& demographicNodeIds) = 0;
 
@@ -60,7 +53,7 @@ namespace Kernel
         // ---------------------
         // --- ISupport Methods
         // ---------------------
-        virtual bool Configure( const Configuration* inputJson ) { return true ; };
+        virtual bool Configure( const Configuration* inputJson ) override { return true ; };
         virtual Kernel::QueryResult QueryInterface(Kernel::iid_t iid, void **ppvObject) { return Kernel::e_NOINTERFACE; }
         virtual int32_t AddRef()  { return -1 ; }
         virtual int32_t Release() { return -1 ; }

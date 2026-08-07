@@ -39,12 +39,13 @@ namespace Kernel
 
     public:
         friend class CampaignEventFactory;
-        DECLARE_CONFIGURED(CampaignEvent)
         IMPLEMENT_DEFAULT_REFERENCE_COUNTING()  
         DECLARE_QUERY_INTERFACE()
 
         CampaignEvent();
         virtual ~CampaignEvent();
+
+        virtual bool Configure(const Configuration* config);
         float GetStartDay() const;
         int   GetEventIndex() const;
         void  SetEventIndex(int index);
