@@ -15,7 +15,7 @@ namespace Kernel
 {
 
 #define MODIFIER_EQUATION_NAME "Vector_Migration_Modifier_Equation"
-#define MAX_DESTINATIONS (100) // maximum number of destinations per node in migration file
+#define MAX_DESTINATIONS (1000) // maximum number of destinations per node in migration file
 
 #define MMV_AlleleCombinations_DESC_TEXT "An array of allele combinations (pairs of alleles) to use for mapping migration rates to in the migration binary file. Depends on GenderDataType=VECTOR_MIGRATION_BY_GENETICS."
 
