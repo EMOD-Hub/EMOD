@@ -127,11 +127,6 @@ namespace Kernel
     {
     }
 
-    IWaningEffect* WaningEffectCombo::Clone()
-    {
-        return new WaningEffectCombo( *this );
-    }
-
     bool WaningEffectCombo::Configure( const Configuration * pInputJson )
     {
         initConfigTypeMap( "Add_Effects", &m_IsAdditive, WEC_Add_Effects_DESC_TEXT, false );
