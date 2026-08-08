@@ -61,6 +61,7 @@ namespace Kernel
         const MicrosporidiaParameters& GetStrain( const std::string& rStrainName ) const;
         const std::vector<float>& GetMortalityModifierListMale() const;
         const std::vector<float>& GetMortalityModifierListFemale() const;
+        float GetTemperatureDependentModifier(float temperature) const;
 
     protected:
         virtual MicrosporidiaParameters* CreateObject() override;
@@ -68,6 +69,6 @@ namespace Kernel
         jsonConfigurable::tDynamicStringSet m_StrainNames;
         std::vector<float> m_MortalityModifierMale;
         std::vector<float> m_MortalityModifierFemale;
-
+        InterpolatedValueMap m_TemperatureDependentModifierModel;
     };
 }

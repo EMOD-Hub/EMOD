@@ -33,5 +33,6 @@ namespace Kernel
 
         std::vector<std::string> m_SpeciesList ;
         std::vector<std::vector<std::string>> m_MsStrainNamesBySpecies;
+        bool m_IncludeMicrosporidiaModifier;
     };
 }

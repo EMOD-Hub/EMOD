@@ -1,0 +1,30 @@
+{
+    "Events": [
+        {
+            "class": "CampaignEvent",
+            "Comment": "Strain_A, 50% coverage, ALL_HABITATS, box infectivity 0.3 for 60 days",
+            "Start_Day": 20,
+            "Nodeset_Config": {
+                "class": "NodeSetAll"
+            },
+            "Event_Coordinator_Config": {
+                "class": "StandardInterventionDistributionEventCoordinator",
+                "Number_Repetitions": 1,
+                "Timesteps_Between_Repetitions": 1,
+                "Intervention_Config": {
+                    "class": "LarvalMicrosporidiaIntervention",
+                    "Cost_To_Consumer": 10,
+                    "Habitat_Target": "ALL_HABITATS",
+                    "Habitat_Coverage": 0.5,
+                    "Strain_Name": "Strain_A",
+                    "Infectivity_Config": {
+                        "class": "WaningEffectBox",
+                        "Initial_Effect": 0.3,
+                        "Box_Duration": 60
+                    }
+                }
+            }
+        }
+    ],
+    "Use_Defaults": 1
+}

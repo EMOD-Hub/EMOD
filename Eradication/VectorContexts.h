@@ -169,6 +169,7 @@ namespace Kernel
         virtual float getSumAgeAtDeath( VectorStateEnum::Enum state ) const = 0;
         virtual float getSumAgeAtDeath( VectorStateEnum::Enum state, const VectorGenome& rGenome ) const = 0;
         virtual std::vector<std::string> GetMicrosporidiaStrainNames() const = 0;
+        virtual float getMicrosporidiaModifier() const = 0;
         virtual uint32_t getProgressFromLarvaeToImmatureNum() const = 0;
         virtual float    getProgressFromLarvaeToImmatureSumDuration() const = 0;
         virtual void visitVectors(vector_cohort_visit_function_t func, VectorGender::Enum gender) = 0;

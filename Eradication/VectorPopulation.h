@@ -132,6 +132,7 @@ namespace Kernel
         virtual float getSumAgeAtDeath( VectorStateEnum::Enum state ) const override;
         virtual float getSumAgeAtDeath( VectorStateEnum::Enum state, const VectorGenome& rGenome ) const override;
         virtual std::vector<std::string> GetMicrosporidiaStrainNames() const override;
+        virtual float getMicrosporidiaModifier() const override;
         virtual uint32_t getProgressFromLarvaeToImmatureNum() const override;
         virtual float    getProgressFromLarvaeToImmatureSumDuration() const override;
         virtual void visitVectors(vector_cohort_visit_function_t func, VectorGender::Enum gender) override;
@@ -473,6 +474,7 @@ namespace Kernel
         float dryheatmortality;
         float infectiouscorrection;
         float infected_progress_this_timestep;
+        float microsporidia_modifier_this_timestep;
 
         // intermediate counters
         float indoorinfectiousbites;

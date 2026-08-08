@@ -466,4 +466,55 @@ SUITE(MicrosporidiaTest)
 
         CHECK_EQUAL(true, result.empty());
     }
+
+    // -------------------------------------------------------------------------
+    // --- GetTemperatureDependentModifier tests
+    // -------------------------------------------------------------------------
+    // Default breakpoints: (10,0.1) (26,1.0) (36,1.7) (42,2.0) (47,0.1)
+
+    TEST_FIXTURE(MicrosporidiaFixture, TestTemperatureModifier_AtBreakpoints)
+    {
+        MicrosporidiaCollection collection;
+        CHECK_CLOSE( 0.1f, collection.GetTemperatureDependentModifier( 10.0f ), FLT_EPSILON );
+        CHECK_CLOSE( 1.0f, collection.GetTemperatureDependentModifier( 26.0f ), FLT_EPSILON );
+        CHECK_CLOSE( 1.7f, collection.GetTemperatureDependentModifier( 36.0f ), FLT_EPSILON );
+        CHECK_CLOSE( 2.0f, collection.GetTemperatureDependentModifier( 42.0f ), FLT_EPSILON );
+        CHECK_CLOSE( 0.1f, collection.GetTemperatureDependentModifier( 47.0f ), FLT_EPSILON );
+    }
+
+    TEST_FIXTURE(MicrosporidiaFixture, TestTemperatureModifier_LinearInterpolation)
+    {
+        MicrosporidiaCollection collection;
+
+        // Midpoint between (10,0.1) and (26,1.0): at 18, expect 0.1 + (8/16)*0.9 = 0.55
+        CHECK_CLOSE( 0.55f, collection.GetTemperatureDependentModifier( 18.0f ), 0.001f );
+
+        // Midpoint between (26,1.0) and (36,1.7): at 31, expect 1.0 + (5/10)*0.7 = 1.35
+        CHECK_CLOSE( 1.35f, collection.GetTemperatureDependentModifier( 31.0f ), 0.001f );
+
+        // Midpoint between (36,1.7) and (42,2.0): at 39, expect 1.7 + (3/6)*0.3 = 1.85
+        CHECK_CLOSE( 1.85f, collection.GetTemperatureDependentModifier( 39.0f ), 0.001f );
+
+        // Midpoint between (42,2.0) and (47,0.1): at 44.5, expect 2.0 + (2.5/5)*(-1.9) = 1.05
+        CHECK_CLOSE( 1.05f, collection.GetTemperatureDependentModifier( 44.5f ), 0.001f );
+    }
+
+    TEST_FIXTURE(MicrosporidiaFixture, TestTemperatureModifier_BelowRange)
+    {
+        MicrosporidiaCollection collection;
+
+        // Below the first breakpoint (10): InterpolatedValueMap returns default_value = 0.0
+        CHECK_CLOSE( 0.1f, collection.GetTemperatureDependentModifier( 5.0f ),  FLT_EPSILON );
+        CHECK_CLOSE( 0.1f, collection.GetTemperatureDependentModifier( 0.0f ),  FLT_EPSILON );
+        CHECK_CLOSE( 0.1f, collection.GetTemperatureDependentModifier( -5.0f ), FLT_EPSILON );
+    }
+
+    TEST_FIXTURE(MicrosporidiaFixture, TestTemperatureModifier_AboveRange)
+    {
+        MicrosporidiaCollection collection;
+
+        // Above the last breakpoint (47): InterpolatedValueMap returns the last value (0.1)
+        CHECK_CLOSE( 0.1f, collection.GetTemperatureDependentModifier( 50.0f ), FLT_EPSILON );
+        CHECK_CLOSE( 0.1f, collection.GetTemperatureDependentModifier( 100.0f ), FLT_EPSILON );
+    }
 }

@@ -1,0 +1,14 @@
+{
+    "Reports": [
+        {
+            "Include_Microsporidia_Columns": 1,
+            "Include_Death_By_State_Columns": 1,
+            "Species_List": [
+                "SillySkeeter"
+            ],
+            "Stratify_By_Species": 0,
+            "class": "ReportVectorStats"
+        }
+    ],
+    "Use_Defaults": 1
+}
